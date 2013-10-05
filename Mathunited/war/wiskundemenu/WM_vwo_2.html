@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link type="text/css" href="jquery-ui-1.8.16.custom/css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+        <link rel="stylesheet" href="WiskundeMenu.css" type="text/css" />
+        <link rel="stylesheet" href="WM_overview.css" type="text/css" />
+        <title>WiskundeMenu</title>
+        <script type="text/javascript" src="jquery-ui-1.8.16.custom/js/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript" src="jquery-ui-1.8.16.custom/js/jquery-ui-1.8.16.custom.min.js"></script>
+        <script type="text/javascript" src="WiskundeMenu.js"></script>
+        <script type="text/javascript">
+            var filter = [];
+            filter['jaar']=['2'];
+            filter['niveau']=['VWO'];
+            var viewURL = [];
+            viewURL['ma'] = '/view?parent=mathunited.nl%2fwiskundemenu%2fWM_overview.html%3ftab%3dTabLeerlijn_v2&variant=basis';
+            viewURL['wm'] = '/view?parent=mathunited.nl%2fwiskundemenu%2fWM_overview.html%3ftab%3dTabLeerlijn_v2&variant=basis_wm&item=1';
+            wm = new WM_Manager({
+                methodURL:  '/gettextfile?id=components-jaar2.xml',
+                threadsURL: '/gettextfile?id=threads.xml',
+                show_thread_chooser: true,
+                viewURL: viewURL,
+                filter: filter
+            })
+            wm.init();
+        </script>
+        <style type="text/css">
+            #component-widget {
+                width:764px;
+            }
+        </style>
+    </head>
+  
+    <body>
+        <div class="leerlijn-chooser">
+           <div id="leerlijn-chooser-titel"></div>
+
+           <div class="canvas-wrapper" id="canvas-wrapper">
+                <div id="module-hover-div"> </div>
+                   <canvas id="canvas" width="944" height="120" ></canvas>
+                </div>
+           </div>
+           <div id="thread-container">
+               <h3 id="thread-title" class="section-container"></h3>
+               <div id="thread-info"></div>
+               <div id="component-widget" class="ui-widget clearfix"></div>
+           </div>
+        </div>
+        <div id="debug"></div>
+    </body>
+</html>

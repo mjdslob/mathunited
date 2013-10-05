@@ -1,0 +1,191 @@
+html, body {
+   margin:0; padding:0;
+   width:100%;
+   font: 15px/20px arial,sans-serif;
+   line-height:1.5em;
+   color:#555566;
+}
+html {
+/*   background: url('../sources_ma/background_rep.png');*/
+   background-color:#cdcdcd;
+   position:relative;
+}
+body {
+   background-color:transparent;
+}
+.shadow-ul {
+   background: url('../sources_ma/shadow-ul.png');
+   width:600px;
+   height:600px;
+   position:absolute;
+   top:0px; left:0px;
+   z-index:-1;
+}
+.shadow-lr {
+   background: url('../sources_ma/shadow-lr.png');
+   width:600px;
+   height:600px;
+   position:fixed;
+   bottom:0px; right:0px;
+   z-index:-1;
+}
+
+.pageDiv {
+    width:960px;
+    padding:0px 30px 40px 30px;
+    min-height:800px;
+    background-color:white;
+    margin:20px auto 20px auto;
+    position:relative;
+}
+.headingDiv {
+    padding-top:20px;
+}
+.headingDiv .headingContentDiv {
+    /*font-size:18pt;*/
+    color:#666699;
+    font-weight:bold;
+}
+.headingDiv .menuDiv {
+    height:100%;
+}
+.overzichtDiv {
+    height:28px;
+    margin-bottom:4px;
+    color:#666699;
+    font-weight:bold;
+    text-align: right;
+}
+@media print {
+    .overzichtDiv, .prev-subcomponent, .next-subcomponent, .balk {
+        visibility: hidden;
+        display: none;
+    }
+    a {color: inherit !important;}
+}
+.overzichtDiv a{
+    color:#666699;
+}
+
+.overzichtDiv .ui-icon {
+    margin:4px 0px 0px -20px;
+    float:left;
+}
+.section-title {
+    color: #d21c24;
+    font-size:14pt;
+}
+
+.sectionDiv .balk {
+/*    width:970px ;*/
+    padding:7px 0px 7px 10px;
+    color: white;
+    font-size:16pt;
+    margin-bottom:4px;
+    background-color: #666699;
+}
+.balk .list-section-nr{
+    color: #a3b0cc;
+    padding: 0px 6px 0px 0px;
+}
+.balk .list-section-nr.highlight{
+    color: white;
+}
+.balk .list-section-nr a {
+    color: #a3b0cc;
+}
+.balk .subcomponent-title {
+    padding-left:15px;
+}
+
+.contentDiv {
+    font-size:12pt;
+}
+
+.logo {
+    margin:-16px 8px 0px 0px;
+    position:relative;
+    /*margin:-10px 23px 0px -80px;*/
+}
+
+h1 {
+    font-family: Arial Black;
+    color: #333366;
+    font-size: 24pt;
+    text-align: left;
+    }
+h2 {
+    font-family: Arial;
+    color: #333366;
+    font-size: 16pt;
+    font-weight: bold;
+    text-align: left;
+    }
+h3 {
+    font-family: Arial;
+    color: #333366;
+    font-size: 12pt;
+    font-weight: bold;
+    text-align: left;
+    margin: 5px 0px 5px 0px;
+    }
+a.navigatie
+    {text-decoration: none; 
+    color:#00a1df;
+    font-weight:bold;
+    }
+a.navigatie:hover
+    {text-decoration: none;
+    color: #FFB518
+    }
+a.navigatie:active
+    {text-decoration: none;
+    color: #FFB518
+    }
+a
+    {text-decoration: none;
+    color: #00a1df;
+    }
+a:hover
+    {text-decoration: underline;
+    color: #CC0000;
+    }
+a.knop2
+    {text-decoration: none;
+    color: #FFB518;
+    }
+a.knop2:hover
+    {text-decoration: none;
+    color: #FFB518;
+    }
+
+.prikbord-header {
+	background-color:rgb(200,200,200);
+	font-weight:bold;
+	padding:3px 0px 3px 10px;
+}
+.prikbord-item {
+	padding:3px 0px 3px 10px;
+	clear:both;
+}
+.item-name {
+	float:left;
+	width:300px;
+}
+.item-type {
+	float:left;
+	width:150px;
+}
+.item-user {
+	float:left;
+	width:150px;
+}
+.voeg-toe-button {
+	cursor: pointer;
+	display:block;
+	margin-top:20px;
+	padding:3px 10px;
+	background-color:#666699;
+	color:white;
+	font-weight:bold;
+}

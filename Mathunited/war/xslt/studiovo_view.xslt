@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsl:stylesheet version="1.0"
+xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns:exsl="http://exslt.org/common"
+xmlns:saxon="http://saxon.sf.net/"
+exclude-result-prefixes="saxon"
+extension-element-prefixes="exsl">
+<xsl:param name="item"/>
+<xsl:param name="num"/>
+<xsl:param name="refbase"/> <!-- used for includes: base path. Includes final / -->
+<xsl:param name="ws_id"/>
+<xsl:param name="comp"/>
+<xsl:param name="option"/>
+<xsl:param name="component"/>
+<xsl:param name="subcomp"/>
+<xsl:param name="is_mobile"/>
+<xsl:param name="id"/>
+<xsl:variable name="host_type">auteur</xsl:variable>
+<xsl:variable name="cm2px" select="number(50)"/>
+<xsl:variable name="parsed_component" select="saxon:parse($component)"/>
+<xsl:variable name="subcomponent" select="$parsed_component/component/subcomponents/subcomponent[@id=$subcomp]"/>
+<xsl:variable name="variant">studiovo_view</xsl:variable>
+<xsl:variable name="intraLinkPrefix">
+    <xsl:choose>
+        <xsl:when test="$option">
+            <xsl:value-of select="concat('view?comp=',$comp,'&amp;variant=',$variant,'&amp;option=',$option,'&amp;subcomp=')"/>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:value-of select="concat('view?comp=',$comp,'&amp;variant=',$variant,'&amp;subcomp=')"/>
+        </xsl:otherwise>
+    </xsl:choose>
+</xsl:variable>
+<xsl:variable name="overviewRef"><xsl:value-of select="string('/auteur/math4all.html')"/></xsl:variable>
+<xsl:variable name="urlbase"><xsl:value-of select="concat('/data/',$refbase)"/></xsl:variable>
+<xsl:variable name="docbase" select="$refbase"></xsl:variable>
+<xsl:variable name="_cross_ref_as_links_" select="true()"/>
+<xsl:variable name="_sheetref_as_links_" select="true()"/>
+<xsl:variable name="lang">nl</xsl:variable>
+
+<xsl:output method="html" doctype-system="http://www.w3.org/TR/html4/strict.dtd" doctype-public="-//W3C//DTD HTML 4.01//EN"
+indent="yes" encoding="utf-8"/>
+
+<xsl:include href="calstable.xslt"/>
+<xsl:include href="content.xslt"/>
+
+<!--   **************** -->
+<!--   START PROCESSING -->
+<!--   **************** -->
+<xsl:template match="/">
+<html>
+<head>
+   <link type="text/css" href="javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
+   <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
+   <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
+   <script type="text/javascript" src="javascript/MathUnited.js"/>
+   <script type="text/javascript" src="javascript/MathUnited_studiovo.js"/>
+   <script type="text/javascript" src="javascript/jquery.ui.touch-punch.min.js"/>
+   <script type="text/javascript" src="javascript/jquery.jplayer.min.js"/>
+   <script src='videojs.playlist.js'></script>
+   <link href="videojs.playlist.css" rel="stylesheet"/>
+   <link rel="stylesheet" href="css/content.css" type="text/css"/>
+   <link rel="stylesheet" href="css/basis_studiovo.css" type="text/css"/>
+   <title><xsl:value-of select="$subcomponent/title"/></title>
+   
+   <link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet"/>
+   <script src="http://vjs.zencdn.net/c/video.js"></script>	
+
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            extensions: ["mml2jax.js","asciimath2jax.js"],
+            config : ["MMLorHTML.js" ],
+            AsciiMath: {
+                decimal: ","
+            },
+            jax: ["input/MathML","input/AsciiMath"]
+        });
+    </script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js">
+    </script>
+
+</head>
+
+<!--   **************** -->
+<!--        BODY        -->
+<!--   **************** -->
+<body>
+<div class="pageDiv">
+    <div id="menubar">
+        <xsl:if test="subcomponent/meta/param[@name='menu-color']">
+            <xsl:attribute name="style">
+                background-color:<xsl:value-of select="subcomponent/meta/param[@name='menu-color']"/>;
+            </xsl:attribute>
+        </xsl:if>
+        <div id="logo">
+            <img src="sources_studiovo/logo.png"/>
+            <span id="logo-text"><xsl:value-of select="$parsed_component/component/subtitle"/></span>
+        </div>
+        <xsl:apply-templates select="subcomponent/componentcontent/*" mode="navigation"/>
+
+        <div id="menu-lines">
+            <div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/>
+        </div>
+    </div>
+    <div id="page-right">
+        <div id="header">
+            <img src="{concat($urlbase, subcomponent/meta/param[@name='banner-image']/resource/name)}"/>
+        </div>
+        <div id="ribbon">
+            <span id="kruimelpad"></span>
+            <span class="subcomponent-title"><xsl:value-of select="$subcomponent/title"/></span>
+        </div>
+        <div id="content">
+            <xsl:apply-templates select="subcomponent/componentcontent/*"/>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+</xsl:template>
+
+
+<!--   **************** -->
+<!--    NAVIGATION   -->
+<!--   **************** -->
+<xsl:template match="fragment" mode="navigation">
+    <xsl:variable name="pos" select="position()"/>
+    <div class="menu-hierarchy">
+        <div class="menu-item" onclick="javascript:SVO_triggerMenuItem(this)">
+            <xsl:if test="not(@education='false')">
+                <xsl:value-of select="('A','B','C','D','E','F','G','H','I','J','K','L','M','N')[$pos]"/>&#160;
+            </xsl:if>
+            <xsl:value-of select="title"/>
+        </div>
+        <xsl:apply-templates select="*" mode="navigation">
+            <xsl:with-param name="menuref" select="concat('explore-',$pos)"></xsl:with-param>
+        </xsl:apply-templates>
+    </div>
+</xsl:template>
+
+<!-- explore, exercises can be remove -->
+<xsl:template match="explore" mode="navigation">
+    <xsl:variable name="pos" select="position()"/>
+    <div class="menu-hierarchy">
+        <div class="menu-item" onclick="javascript:SVO_triggerMenuItem(this)">
+            <xsl:value-of select="('A','B','C','D','E')[$pos]"/>&#160;
+            <xsl:value-of select="title"/>
+        </div>
+        <xsl:apply-templates select="*" mode="navigation">
+            <xsl:with-param name="menuref" select="concat('explore-',$pos)"></xsl:with-param>
+        </xsl:apply-templates>
+    </div>
+</xsl:template>
+<xsl:template match="exercises" mode="navigation">
+    <xsl:variable name="pos" select="position()"/>
+    <div class="menu-hierarchy">
+        <div class="menu-item" onclick="javascript:SVO_triggerMenuItem(this)">
+            <xsl:value-of select="('A','B','C','D','E')[$pos]"/>&#160;
+            <xsl:value-of select="title"/>
+        </div>
+        <xsl:apply-templates select="*" mode="navigation">
+            <xsl:with-param name="menuref" select="concat('exercises-',$pos)"></xsl:with-param>
+        </xsl:apply-templates>
+    </div>
+</xsl:template>
+<xsl:template match="digest" mode="navigation">
+    <xsl:variable name="pos" select="position()"/>
+    <div class="menu-hierarchy">
+        <div class="menu-item" onclick="javascript:SVO_triggerMenuItem(this)">
+            <xsl:value-of select="('A','B','C','D','E')[$pos]"/>&#160;
+            <xsl:value-of select="title"/>
+        </div>
+        <xsl:apply-templates select="*" mode="navigation">
+            <xsl:with-param name="menuref" select="concat('digest-',$pos)"></xsl:with-param>
+        </xsl:apply-templates>
+    </div>
+</xsl:template>
+
+<xsl:template match="block | exercise" mode="navigation">
+    <xsl:param name="menuref"/>
+    <div class="submenu-item" id="{concat($menuref,'-',position())}"  
+            tabid="{concat('tab-',$menuref,'-',position())}" onclick="javascript:SVO_triggerSubMenuItem(this)">
+        <xsl:value-of select="title"/>
+    </div>
+</xsl:template>
+
+
+<!--  ******************* -->
+<!--   CONTENT STRUCTURE  -->
+<!--  ******************* -->
+<xsl:template match="fragment">
+    <xsl:apply-templates select="*">
+        <xsl:with-param name="menuref" select="concat('explore-',position())"/>
+    </xsl:apply-templates>
+</xsl:template>
+<xsl:template match="explore">
+    <xsl:apply-templates select="*">
+        <xsl:with-param name="menuref" select="concat('explore-',position())"/>
+    </xsl:apply-templates>
+</xsl:template>
+<xsl:template match="exercises">
+    <xsl:apply-templates select="*">
+        <xsl:with-param name="menuref" select="concat('exercises-',position())"/>
+    </xsl:apply-templates>
+</xsl:template>
+<xsl:template match="digest">
+    <xsl:apply-templates select="*">
+        <xsl:with-param name="menuref" select="concat('digest-',position())"/>
+    </xsl:apply-templates>
+</xsl:template>
+<xsl:template match="block">
+    <xsl:param name="menuref"/>
+    <div class="content-tab" id="{concat('tab-',$menuref,'-',position())}">
+        <xsl:apply-templates mode="content"/>
+    </div>
+</xsl:template>
+<xsl:template match="block" mode="content">
+    <xsl:apply-templates mode="content"/>
+</xsl:template>
+<xsl:template match="block/title" mode="content"></xsl:template>
+<xsl:template match="include" mode="content">
+    <xsl:apply-templates select="document(concat($docbase,@filename))" mode="content"/>
+</xsl:template>
+
+
+
+<xsl:template match="p">
+    <xsl:apply-templates mode="content"/>
+</xsl:template>
+
+<xsl:template match="textref" mode="content">
+    <xsl:choose>
+        <xsl:when test="@ref">
+            <span class="textref" ref="{@ref}"><xsl:value-of select="."/></span>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:variable name="_comp">
+                <xsl:choose>
+                    <xsl:when test="@comp"><xsl:value-of select="@comp"/></xsl:when>
+                    <xsl:otherwise><xsl:value-of select="$comp"/></xsl:otherwise>
+                </xsl:choose>
+            </xsl:variable>
+            <xsl:variable name="_subcomp">
+                <xsl:choose>
+                    <xsl:when test="@subcomp"><xsl:value-of select="@subcomp"/></xsl:when>
+                    <xsl:otherwise><xsl:value-of select="$subcomp"/></xsl:otherwise>
+                </xsl:choose>
+            </xsl:variable>
+            
+            <xsl:choose>
+                <xsl:when test="$_cross_ref_as_links_">
+                    <a class="textref" item="{@item}">
+                        <xsl:if test="@target">
+                            <xsl:attribute name="target"><xsl:value-of select="@target"/></xsl:attribute>
+                        </xsl:if>
+                        <xsl:attribute name="href"><xsl:value-of select="concat('view?comp=',$_comp,'&amp;subcomp=',$_subcomp,'&amp;variant=',$variant)"/></xsl:attribute>
+                        <xsl:value-of select="."/>
+
+                    </a>
+                </xsl:when>
+                <xsl:otherwise>
+                    <span class="textref" item="{@item}">
+                        <xsl:value-of select="."/>
+                    </span>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:otherwise>
+    </xsl:choose>
+</xsl:template>
+<xsl:template match="pages" mode="content">
+    <div class="pages-container">
+        <xsl:apply-templates select="page" mode="content"/>
+    </div>
+</xsl:template>
+<xsl:template match="page" mode="content">
+    <xsl:variable name="pos" select="position()"/>
+    <div num="{$pos}">
+        <xsl:choose>
+            <xsl:when test="$pos=1">
+                <xsl:attribute name="class">page selected</xsl:attribute>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:attribute name="class">page</xsl:attribute>
+            </xsl:otherwise>
+        </xsl:choose>
+        <xsl:apply-templates mode="content"/>
+        <div class="page-navigator">
+            <xsl:for-each select="preceding-sibling::page">
+                <div class="page-navigator-ref" onclick="javascript:togglePage(this)"><xsl:value-of select="position()"/></div>
+            </xsl:for-each>
+            <div class="page-navigator-ref selected"><xsl:value-of select="$pos"/></div>
+            <xsl:for-each select="following-sibling::page">
+                <div class="page-navigator-ref" onclick="javascript:togglePage(this)"><xsl:value-of select="$pos+position()"/></div>
+            </xsl:for-each>
+            <div style="clear:both"/>
+        </div>
+    </div>
+</xsl:template>
+<xsl:template match='block[@medium="web"]'><xsl:apply-templates/></xsl:template>
+
+<!--  ******************** -->
+<!--   EXERCISES (QTI)     -->
+<!--  ******************** -->
+<xsl:template match="assessment" mode="content">
+    <div class="assessment-wrapper">
+        <xsl:choose>
+            <xsl:when test="@width"><xsl:attribute name="popup_width" select="@width"/></xsl:when>
+            <xsl:otherwise><xsl:attribute name="popup_width" select="495"/></xsl:otherwise>
+        </xsl:choose>    
+        <xsl:choose>
+            <xsl:when test="@display='popup'">
+                <div class="assessment-button">
+                    <span class="assessment-label" onclick="javascript:toggleAssessment(this)"><xsl:value-of select="@label"/></span>
+                    <span class="assessment-label-text"><xsl:apply-templates mode="content"/></span>
+                </div>
+            </xsl:when>
+            <xsl:otherwise>
+                <p><xsl:apply-templates mode="content"/></p>
+            </xsl:otherwise>
+        </xsl:choose>
+        <div class="assessment-content">
+        <iframe>
+            <xsl:if test="not(@display='popup')">
+                <xsl:attribute name="class">visible</xsl:attribute>
+            </xsl:if>
+            <xsl:attribute name="style">
+                <xsl:choose>
+                    <xsl:when test="@width">width:<xsl:value-of select="@width"/>px;</xsl:when>
+                    <xsl:otherwise><xsl:attribute name="width">width:495px;</xsl:attribute></xsl:otherwise>
+                </xsl:choose><xsl:choose>
+                    <xsl:when test="@height">height:<xsl:value-of select="@height"/>px;</xsl:when>
+                    <xsl:otherwise>height:300px;</xsl:otherwise>
+                </xsl:choose>
+            </xsl:attribute>
+            <xsl:attribute name="src" select="concat('http://qt-studiovo.pulseon.nl/qt/player.html?testId=',@src,'&amp;lang=nl-NL&amp;window=false')"/>
+    <!--
+            <xsl:attribute name="src" select="concat('http://qt-demo.pulseon.nl/qt/player.html?testId=0k2xWZR1aR33tx_9MP-_qXbIXncQzNnCAWsbUDdY8BQ','&amp;lang=nl-NL&amp;window=',$dowindow)"/>
+    -->        
+            <xsl:apply-templates mode="content"/>
+        </iframe>
+        </div>
+    </div>
+</xsl:template>
+
+<!--  ******************** -->
+<!--   EXERCISES (NON-QTI  -->
+<!--  ******************** -->
+<xsl:template match="exercise">
+    <xsl:param name="menuref"/>
+    <div class="content-tab" id="{concat('tab-',$menuref,'-',position())}">
+        <xsl:apply-templates select="." mode="content"/>
+    </div>
+</xsl:template>
+<xsl:template match="exercise-sequence" mode="content">
+    <div class="exercise-sequence">
+        <xsl:for-each select="*">
+            <xsl:variable name="pos" select="position()"/>
+            <div nr="{position()}">
+                <xsl:choose>
+                    <xsl:when test="$pos=1">
+                        <xsl:attribute name="class">exercise-seq-item selected</xsl:attribute>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:attribute name="class">exercise-seq-item</xsl:attribute>                        
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:apply-templates select="." mode="content"/>
+            </div>
+        </xsl:for-each>
+    </div>
+</xsl:template>
+<xsl:template match="exercise" mode="content">
+    <div class="exercise">
+        <xsl:if test="@width">
+            <xsl:attribute name="style">width:<xsl:value-of select="@width"/>px</xsl:attribute>
+        </xsl:if>
+        <xsl:apply-templates mode="content"/>
+        <div class="exercise-completed">klaar!</div>
+    </div>
+</xsl:template>
+
+<xsl:template match="multi-item" mode="content">
+    <div class="exercise-multi-item">
+        <xsl:apply-templates select="items/item" mode="content"/>
+    </div>
+</xsl:template>
+
+<xsl:template match="item" mode="content">
+    <xsl:variable name="pos" select="position()"/>
+    <div>
+        <xsl:choose>
+            <xsl:when test="$pos=1">
+                <xsl:attribute name="class">exercise-item selected</xsl:attribute>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:attribute name="class">exercise-item</xsl:attribute>                        
+            </xsl:otherwise>
+        </xsl:choose>
+        <xsl:apply-templates select="." mode="exercise-item"/>
+    </div>
+</xsl:template>
+<xsl:template match="item[@type='closed']" mode="exercise-item">
+    <div class="choice-exercise-question">
+        <xsl:apply-templates select="itemcontent/itemintro/*" mode="content"/>
+    </div>
+    <xsl:for-each select="alternatives/alternative">
+        <div class="choice-exercise-option">
+            <xsl:if test="@state='yes'">
+                <xsl:attribute name="state">yes</xsl:attribute>
+            </xsl:if>
+            <div class="choise-exercise-label" onclick="javascript:choiceLabelClick(this)"/>
+            <xsl:apply-templates select="*" mode="content"/>
+        </div>
+    </xsl:for-each>
+    <div style="clear:left"/>
+    <div class="item-completed" onclick="javascript:nextItem(this)"></div>
+</xsl:template>
+
+<xsl:template match="item[@type='dragtexttotext']" mode="exercise-item">
+    <div class="exercise-item-drop">
+        <xsl:if test="itemcontent/intro">
+            <div class="exercise-drop-intro">
+                <xsl:apply-templates select="itemcontent/intro" mode="content"/>
+            </div>
+        </xsl:if>
+        <div class="exercise-drop-text">
+           <xsl:apply-templates select="itemcontent/question" mode="content"/>
+        </div>
+        <div class="exercise-drop-cells">
+            <xsl:for-each select="itemcontent/question//drop-item">
+                <xsl:sort select="."/>
+                <div class="exercise-drop-cell" nr="{count(preceding-sibling::drop-item)+1}">
+                    <xsl:value-of select="."/>
+                </div>
+            </xsl:for-each>
+        </div>
+    </div>
+</xsl:template>
+<xsl:template match="drop-item" mode="content">
+    <span class="drop-item" nr="{count(preceding-sibling::drop-item)+1}"></span>
+</xsl:template>
+
+
+<!-- overrule default in content.xslt: images are in folder of xml content -->
+<xsl:template match="resource" mode="content" priority="2">
+   <xsl:variable name="width" select="number(substring-before(width,'cm'))*$cm2px"/>
+   <img>
+       <xsl:choose>
+          <xsl:when test="$host_type='GAE'">
+             <xsl:attribute name="src"><xsl:value-of select="name"/></xsl:attribute>
+          </xsl:when>
+          <xsl:otherwise>
+             <xsl:attribute name="src"><xsl:value-of select="concat($urlbase,name)"/></xsl:attribute>
+          </xsl:otherwise>
+       </xsl:choose>
+       <xsl:if test="$width>0">
+           <xsl:attribute name="style">width:<xsl:value-of select="$width"/>px</xsl:attribute>
+       </xsl:if>
+   </img>
+</xsl:template>
+<!-- overrule default in content.xslt: resources are in folder of xml content -->
+<xsl:template match="resourcelink" mode="content" priority="2">
+    <a target="_blank" class="dox" > <!-- @class='dox' is used in GenerateQTI to find these resourcelink, do not change -->
+        <xsl:for-each select="@*">
+            <xsl:choose>
+                <!-- relative url w.r.t. base path of content -->
+                <xsl:when test="name()='href'">
+	                <xsl:choose>
+	                   <xsl:when test="$host_type='GAE'">
+		                    <xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
+	                   </xsl:when>
+	                   <xsl:otherwise>
+		                    <xsl:attribute name="href"><xsl:value-of select="concat($urlbase,.)"/></xsl:attribute>
+	                   </xsl:otherwise>
+	                </xsl:choose>
+                </xsl:when>
+                <xsl:otherwise>
+                   <xsl:attribute name="{name()}">
+                      <xsl:value-of select="."/>
+                   </xsl:attribute>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:for-each>
+        <xsl:apply-templates mode="content"/>
+    </a>
+</xsl:template>
+
+<xsl:template match="popup" mode="content">
+    <xsl:variable name="width">
+        <xsl:choose>
+            <xsl:when test="@width"><xsl:value-of select="@width"/></xsl:when>
+            <xsl:otherwise>500</xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable> 
+   <div class="popup-wrapper">
+       <span class="popup-label" onclick="{concat('javascript:togglePopup(',$width,', this)')}"><xsl:value-of select="@label"/></span>
+       <div class="popup-content">
+           <xsl:apply-templates mode="content"/>
+       </div>
+   </div>    
+</xsl:template>
+
+<xsl:template match="movie" mode="content" priority="2">
+    <div class="movie-wrapper">
+        <xsl:if test="@optional='true'">
+            <img src="/MathUnited/sources/movie_icon_60.gif" class="studiovo-movie-icon" onclick="javascript:toggleMovie(this)"/>
+            <span class="movie-title"><xsl:value-of select="@title"/></span>
+        </xsl:if>
+        <div>
+            <xsl:choose>
+                <xsl:when test="@optional='true'">
+                    <xsl:attribute name="class">movie optional</xsl:attribute>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:attribute name="class">movie</xsl:attribute>                    
+                </xsl:otherwise>
+            </xsl:choose>
+            <xsl:attribute name="style">width:<xsl:value-of select="@width"/>px;height:<xsl:value-of select="@height"/>px;</xsl:attribute>
+            <xsl:choose>
+                <xsl:when test="substring(@href,1,18) = 'http://www.youtube' or substring(@href,1,14) = 'http://youtube'">
+                    <iframe frameborder="0" allowfullscreen="true">
+                        <xsl:attribute name="height"><xsl:value-of select="@height"/></xsl:attribute>
+                        <xsl:attribute name="width"><xsl:value-of select="@width"/></xsl:attribute>
+                        <xsl:attribute name="src"><xsl:value-of select="@href"/></xsl:attribute>
+                    </iframe>
+                </xsl:when>
+                <xsl:otherwise>
+                    <video id="{generate-id()}" class="video-js vjs-default-skin" 
+                            width="{@width}" height="{@height}"
+                            controls="true">
+                            <source src="{concat($urlbase,@href)}" type='video/mp4'/>
+                    </video>
+                    <div style="clear:both"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </div>
+    </div>
+</xsl:template>
+
+<xsl:template match="audio" mode="content" priority="2">
+    <div class="movie">
+        <audio id="{generate-id()}" class="video-js vjs-default-skin" 
+                width="{@width}" height="{@height}"
+                controls="true">
+                <source src="{concat($urlbase,@href)}" type='audio/mp3'/>
+        </audio>
+    </div>
+</xsl:template>
+
+<xsl:template match="iframe" mode="content" priority="2">
+    <iframe>
+        <xsl:choose>
+            <xsl:when test="starts-with(@src,'http://')">
+                <xsl:copy-of select="@*"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:copy-of select="@*[name()!='src']"/>
+                <xsl:attribute name="src" select="concat($urlbase, @src)"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </iframe>
+</xsl:template>
+
+<xsl:template match="*"/>
+<xsl:template match="*" mode="navigation"/>
+</xsl:stylesheet>

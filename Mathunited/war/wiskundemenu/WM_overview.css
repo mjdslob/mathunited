@@ -1,0 +1,230 @@
+html, body {
+   margin:0; padding:0;
+   width:100%;
+   font: 16px arial,sans-serif;
+   line-height:1.5em;
+   color: #808080;/*#34446b;*/
+   background-color:white;
+}
+
+
+.content {
+    position:relative;
+    display:block;
+    width:1024px;
+    height:100%;
+    background-color: white;
+    overflow:auto;
+    margin-top:20px;
+}
+.content .inner {
+    padding:40px 80px 20px 180px;
+    min-height:700px;
+}
+
+#thread-container {
+    padding-left:180px;
+}
+
+.WM_logo {
+    width:279px;
+    height:42px;
+    background-image: url('sources/WM_logo_grijs.png');
+}
+#algebrakit-logo {
+    margin:10px 10px 10px 0px;
+}
+#algebrakit-logo img {
+    width:160px;
+}
+#geoenzo-logo {
+    margin:10px 10px 10px 0px;
+}
+#geoenzo-logo img {
+    width:160px;
+}
+a {
+    text-decoration:none;
+}
+a:hover {
+    color:red;
+}
+
+a.green-button {
+    display:block;
+    width:240px;
+    height:25px;
+    background-color:#8cdb24;
+    color:white;
+    text-align:center;
+    line-height:25px;
+    text-decoration:none;
+}
+
+.wm-logo {
+    position:absolute;
+    top:0px;
+    right:0px;
+}
+.wm-logo img {
+    width:120px;
+}
+.m4a-logo {
+    position:absolute;
+    top:-10px;
+    right:140px;
+}
+.m4a-logo img {
+    width:100px;
+}
+/***************/
+/* tabs       */
+/***************/
+.tab {
+    /*
+    width:1024px;
+    */
+    width:0px;
+    height:0px;
+    margin:0px auto;
+    overflow:hidden;
+}
+.vorige-button {
+   display:block;
+   height: 52px;
+   width: 66px;
+   background: url('sources/knoppen-uit_14.png') no-repeat center center;
+   position:absolute;
+   top:500px;
+   left:0px;
+   z-index:10;
+}
+.vorige-button:hover, .vorige-button-hover {
+   background: url('sources/knoppen-active_14.png') no-repeat center center;
+   outline:0;
+}
+.vorige-button:active, .vorige-button-active {
+   background: url('sources/knoppen-hoover_14.png') no-repeat center center;
+   outline:0;
+}
+
+
+.volgende-button {
+   display:block;
+   height: 52px;
+   width: 66px;
+   background: url('sources/knoppen-uit_11.png') no-repeat center center;
+   position:absolute;
+   top:500px;
+   right:0px;
+   z-index:10;
+}
+.volgende-button:hover, .volgende-button-hover {
+   background: url('sources/knoppen-active_11.png') no-repeat center center;
+   outline:0;
+}
+.volgende-button:active, .volgende-button-active {
+   background: url('sources/knoppen-hoover_11.png') no-repeat center center;
+   outline:0;
+}
+
+/***************/
+/* menu        */
+/***************/
+.wm-menu {
+    position:absolute;
+    top:100px;
+    left:0px;
+    box-shadow:         3px 3px 10px 3px #D9D9D9;
+    background-color:#F0F0F0;
+    padding:5px 0px 5px 0px;
+    border-radius: 5px;
+}
+.wm-menu-item {
+    display:block;
+    background-color:#F0F0F0;
+    padding:3px 15px 3px 5px;
+    font-family:Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
+    font-size:1.1em;
+    text-decoration: none;
+    border-left:6px solid #F0F0F0;
+}
+.wm-menu-active {
+    border-left:6px solid #F0C0C0;
+}
+.wm-menu-item:hover {
+    background-color: #E0E0E0;
+}
+/***************/
+/* input       */
+/***************/
+.input-container { }
+.input-container .label {
+    width:150px;
+    color:rgb(40,120,40);
+    float:left;
+    height:24px;
+    line-height:24px;
+    padding-top:2px;
+}
+.input-container input {
+    float:left;
+    display:block;
+    line-height:22px;
+}
+/***************/
+/* fancy select*/
+/***************/
+/* all form DIVs have position property set to relative so we can easily position newly created SPAN */
+.select-container {position:relative; width:240px;}
+
+/* setting the width and height of the SELECT element to match the replacing graphics */
+select.select{
+    position:relative;
+    z-index:10;
+    opacity:0;
+    width:240px !important;
+    height:25px !important;
+    line-height:25px;
+    -khtml-appearance:none;
+    filter:alpha(opacity=0);
+}
+
+/* dynamically created SPAN, placed below the SELECT */
+span.select{
+    position:absolute;
+    bottom:0;
+    float:left;
+    left:0;
+    width:240px;
+    height:25px;
+    line-height:25px;
+    /*text-indent:10px;*/
+    text-align:center;
+    cursor:default;
+    z-index:1;
+}
+span.greenselect {
+    background:#8cdb24 url('sources/dropdown-icon-green.png') no-repeat 215px 0;
+    color:white;
+}
+span.grayselect {
+    background:#a0a0a0 url('sources/dropdown-icon-gray.png') no-repeat 215px 0;
+    color:white;
+}
+.keuze-float {
+    width:240px;
+    float:left;
+    margin-right:100px;
+}
+.button-wrap {
+    margin:200px 170px;
+    width:240px;
+}
+
+.eventList {
+    width:700px;
+}
+.eventList td,.eventList th{
+    text-align:left;
+}

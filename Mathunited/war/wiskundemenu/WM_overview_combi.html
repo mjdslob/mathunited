@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link type="text/css" href="jquery-ui-1.8.16.custom/css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+        <link rel="stylesheet" href="WiskundeMenu.css" type="text/css" />
+        <link rel="stylesheet" href="WM_overview.css" type="text/css" />
+        <title>WiskundeMenu</title>
+        <script type="text/javascript" src="jquery-ui-1.8.16.custom/js/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript" src="jquery-ui-1.8.16.custom/js/jquery-ui-1.8.16.custom.min.js"></script>
+        <script type="text/javascript" src="WiskundeMenu-dev.js"></script>
+        <script type="text/javascript">
+            var filter = [];
+            filter['jaar']=['1','2'];
+            filter['niveau']=['HAVO-VWO'];
+            var viewURL = [];
+            viewURL['ma'] = '/MathUnited/view?variant=basis';
+            viewURL['wm'] = '/MathUnited/view?variant=basis_wm&item=1';
+            wm = new WM_Manager({
+                methodURL:  '/content/methods-overview.xml',
+                threadsURL: '/content/threadsCombi.xml',
+                show_thread_chooser: true,
+                viewURL: viewURL,
+                filter: filter
+            })
+            wm.init();
+        </script>
+        <style type="text/css">
+            #component-widget {
+                width:764px;
+            }
+        </style>
+    </head>
+  
+    <body>
+        <div class="image-preload" style="height:1px; width:1px; position:absolute; left:0px; top:0px;">
+            <div class="volgende-button-hover"></div>
+            <div class="vorige-button-hover"></div>
+            <div class="volgende-button-active"></div>
+            <div class="vorige-button-active"></div>
+            <div class="preview-button-hover"></div>
+            <div class="preview-button-active"></div>
+            <div class="stoppen-button-hover"></div>
+            <div class="stoppen-button-active"></div>
+            <div class="opslaan-button-hover"></div>
+            <div class="opslaan-button-active"></div>
+        </div>
+
+<!--
+Intro
+-->
+
+        <div id="TabIntro" class="tab" name="Home">
+            <div class="content">
+                <div class="WM_logo"> </div>
+<!--                <a href="javascript:WM_Toggle('TabStart');" class="vorige-button"> </a> -->
+                <a href="javascript:WM_Toggle('TabLeerlijn');" class="volgende-button"> </a>
+                <div class="wm-logo">
+                    <img src="sources/wm-logo-new.jpg">
+                </div>
+                <div class="m4a-logo">
+                    <img src="sources/LogoM4Ainvlak.gif">
+                </div>
+                <div class="inner">
+
+
+<!-- -------------------- -->
+<!-- HIER TEKST TOEVOEGEN -->
+<!-- -------------------- -->
+
+                    <h3>Voorbeeldlesmateriaal Math4All en Wageningse methode</h3>
+                    <p>Speciaal ten behoeve van VO-Content presenteren Math4All en Wageningse methode voorbeelden uit hun stercollectie voor klas 1 havo-vwo.</p>
+                    <iframe width="420" height="315" src="http://www.youtube.com/embed/5tQRZqRlAN8" frameborder="0" allowfullscreen></iframe>
+
+                    <p>U kunt hier <a href="javascript:WM_Toggle('TabLeerlijn');">demomateriaal</a> van Math4All en Wageningse
+                       Methode bekijken.</p>
+                    <p>
+                  Ons voorbeeldlesmateriaal wordt geschikt gemaakt voor gebruik op papier, voor gebruik op laptop, PC of tablet en in een elo.</p>
+
+                </div>
+            </div>
+         </div>
+
+
+<!--
+LEERLIJN
+-->
+        <div id="TabLeerlijn" class="tab" name="Materiaal">
+            <div class="content">
+                <div class="WM_logo"> </div>
+                <a href="javascript:WM_Toggle('TabIntro');" class="vorige-button"> </a>
+                <a href="javascript:WM_Toggle('TabWerkgroep');" class="volgende-button"> </a>
+                <div class="inner">
+                    <p>Klik ergens op het bolletjes-diagram om voorbeeldlesmateriaal van een deel van deze stercollectie te bekijken. </p>
+                    <p> Deze site gaat uit van een browser die HTML5 ondersteunt. Hieraan voldoet elke moderne browser, met als
+                       uitzondering Internet Explorer onder Windows XP. Dus indien u een computer heeft met Windows XP, zult u
+                       <a href="http://www.mozilla.org/nl/firefox/new/">Firefox</a> of <a href="https://www.google.com/chrome/index.html?hl=nl&brand=CHMB&utm_campaign=nl&utm_source=nl-ha-emea-nl-sk&utm_medium=ha">Chrome</a>
+                       (gratis) moeten installeren.</p>
+                    <p> In dit wiskundelesmateriaal staan applets en clips van schooltv die nog niet op alle tablets zichtbaar zijn.
+                  Per 1-8-2012 zijn naar verwachting ook alle GeoGebra-applets en de clips van schooltv op alle tablets te bekijken en dan is ons lesmateriaal ipad-proof.</p>
+                    <div style="height:10px"></div>
+                    <div class="leerlijn-chooser">
+                        <div id="leerlijn-chooser-titel"></div>
+
+                        <div class="canvas-wrapper" id="canvas-wrapper">
+                            <div id="module-hover-div"> </div>
+                            <canvas id="canvas" width="944" height="120" ></canvas>
+                        </div>
+                    </div>
+                    <div id="thread-container">
+                        <h3 id="thread-title" class="section-container"></h3>
+                        <div id="thread-info"></div>
+                        <div id="component-widget" class="ui-widget clearfix"></div>
+                    </div>
+                </div>
+                <div id="debug"></div>
+            </div>
+        </div>
+
+<!--
+Werkgroepen
+-->
+
+        <div id="TabWerkgroep" class="tab" name="Werkgroepen">
+            <div class="content">
+                <div class="WM_logo"> </div>
+                <a href="javascript:WM_Toggle('TabLeerlijn');" class="vorige-button"> </a>
+                <a href="javascript:WM_Toggle('TabLinks');" class="volgende-button"> </a>
+                <div class="wm-logo">
+                    <img src="sources/wm-logo-new.jpg">
+                </div>
+                <div class="m4a-logo">
+                    <img src="sources/LogoM4Ainvlak.gif">
+                </div>
+                <div class="inner">
+                    <h1>Werkgroepen</h1>
+                    <table class="eventList">
+                      <tr>
+                        <th>datum</th><th>MathUnited werkgroep</th>
+                      </tr>
+
+                      <tr>
+                      <td>8 mrt 2012</td><td>Liemers College - Zevenaar</td>
+                      </tr>
+                      <tr>
+                        <td>12 mrt 2012</td><td>CSV - Veenendaal</td>
+                      </tr>
+                      <tr>
+                        <td>13 mrt 2012</td><td>Sg Nelson Mandela - Purmerend</td>
+                      </tr>
+                      <tr>
+                        <td>2 apr 2012</td><td>Christiaan Huygens - Eindhoven</td>
+                      </tr>
+                      <tr>
+                        <td>5 apr 2012</td><td>Olympus College - Arnhem</td>
+                      </tr>
+                      <tr>
+                        <td>11 apr 2012</td><td>Oranje Nassau College - Zoetermeer</td>
+                      </tr><tr>
+                        <td>17 apr 2012</td><td>Bornego College - Heerenveen</td>
+                      </tr>
+                      <tr>
+                        <td>23 apr 2012</td><td>Osg Erasmus - Almelo</td>
+                      </tr>
+                      <tr>
+                        <td>24 apr 2012</td><td>Blariacum College - Venlo</td>
+                      </tr>
+                    </table><p>
+                  Voor meer informatie mail naar <a href="mailto: info@mathunited.nl" target="_blank">info@mathunited.nl</a></p>
+                </div>
+                    <div style="height:50px;"> </div>
+            </div>
+        </div>
+
+<!--
+LINKS
+-->
+        <div id="TabLinks" class="tab" name="Links">
+            <div class="content">
+                <div class="WM_logo"> </div>
+                <a href="javascript:WM_Toggle('TabWerkgroep');" class="vorige-button"> </a>
+<!--
+                <a href="javascript:WM_FilterNextButton();" class="volgende-button"> </a>
+-->
+                <div class="inner">
+                    <h1>AlgebraKIT</h1>
+                    <div id="algebrakit-logo" style="float:right">
+                        <a href="http://www.algebrakit.nl" target="_blank"><img src="sources/AlgebraKITlogo_top2.png"/></a>
+                    </div>
+                    <p><a href="http://www.algebrakit.nl"><i>Algebra</i><b>KiT</b></a> is een online en gratis Computer Algebra Systeem (CAS) voor het trainen van de
+                    algebra&iuml;sche vaardigheden in het middelbaar wiskundeonderwijs.</p>
+
+                    <h1>GeoEnzo</h1>
+                    <div id="geoenzo-logo" style="float:right">
+                        <a href="http://geoenzo.nl" target="_blank"><img src="sources/geoenzo.jpg"/></a>
+                    </div>
+                    <p><a href="http://geoenzo.nl">GeoEnZo</a> is h&egrave;t wiskundig basispakket voor het digitale schoolbord. </p>
+
+                    <div style="height:400px"></div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

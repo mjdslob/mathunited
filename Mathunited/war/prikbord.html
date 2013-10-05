@@ -1,0 +1,47 @@
+<html>
+<head>
+    <link type="text/css" href="/javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
+    <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
+    <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
+	<script type="text/javascript" src="javascript/prikbord.js"></script>
+    <link rel="stylesheet" href="/css/grid.css" type="text/css"/>
+    <link rel="stylesheet" href="/css/prikbord.css" type="text/css"/>
+</head>
+<body>
+<div class="shadow-ul"/>
+<div class="pageDiv">
+<div class="headingDiv container_12 clearfix">
+    <div class="headingContentDiv grid_10">
+        <img class="logo" src="sources_ma/LogoM4Ainvlak.gif" align="middle"  height="33" border="0"/>
+        <xsl:if test="$is_mobile='true'">
+            (m)
+        </xsl:if>
+        <xsl:value-of select="$component_title"/> &gt; <xsl:value-of select="$subcomponent_title"/>
+    </div>
+    <div class="overzichtDiv grid_2">
+        <a>
+              <xsl:attribute name="href"><xsl:value-of select="$overviewRef"/></xsl:attribute>Overzicht
+        </a>
+    </div>
+</div>
+<div class="sectionDiv container_12">
+   <div class="balk grid_12">
+       <xsl:call-template name="list-section-nrs">
+           <xsl:with-param name="i"><xsl:value-of select="number(1)"/></xsl:with-param>
+           <xsl:with-param name="count"><xsl:value-of select="number($num_of_subcomponents)"/></xsl:with-param>
+           <xsl:with-param name="highlight"><xsl:value-of select="number($subcomponent_index)"/></xsl:with-param>
+       </xsl:call-template>
+       <span class="subcomponent-title"><xsl:value-of select="$subcomponent_title"/></span>
+       
+   </div>
+</div>
+<div class="contentDiv container_12 clearfix">
+<div class="grid_10">
+	<h1>Prikbord</h1>
+	<div id='contents'></div>
+</div>
+</div>
+<div class="shadow-lr"/>
+
+</body>
+</html>

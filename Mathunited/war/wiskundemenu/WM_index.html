@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link type="text/css" href="jquery-ui-1.8.16.custom/css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+        <link rel="stylesheet" href="WiskundeMenu.css" type="text/css" />
+        <title>WiskundeMenu</title>
+        <script type="text/javascript" src="jquery-ui-1.8.16.custom/js/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript" src="jquery-ui-1.8.16.custom/js/jquery-ui-1.8.16.custom.min.js"></script>
+        <script type="text/javascript" src="WiskundeMenu.js"></script>
+    </head>
+    <body>
+         <div class="image-preload" style="height:1px; width:1px; position:absolute; left:0px; top:0px;">
+            <div class="volgende-button-hover"></div>
+            <div class="vorige-button-hover"></div>
+            <div class="volgende-button-active"></div>
+            <div class="vorige-button-active"></div>
+            <div class="preview-button-hover"></div>
+            <div class="preview-button-active"></div>
+            <div class="stoppen-button-hover"></div>
+            <div class="stoppen-button-active"></div>
+            <div class="opslaan-button-hover"></div>
+            <div class="opslaan-button-active"></div>
+         </div>
+<!--
+INLOGGEN
+-->
+<!--
+        <div id="TabStart" class="tab">
+            <div class="content">
+                <div class="WM_logo"> </div>
+                <a href="javascript:WM_Toggle('TabLeerlijn');" style="display:none" class="vorige-button"> </a>
+                <a href="javascript:WM_Toggle('TabKies');" class="volgende-button"> </a>
+                <div class="inner">
+                    <p>Trek even je eigen leerlijn!</p>
+                    <div id="login">
+                        <p>Wel eerst even inloggen:</p>
+                        <div class="input-container">
+                            <div class="label">
+                               gebruikersnaam:
+                            </div>
+                            <input name="username"/>
+                        </div>
+                        <div class="input-container">
+                            <div class="label">
+                               wachtwoord:
+                            </div>
+                            <input type="password" name="password"/>
+                        </div>
+                        <div style="clear:both;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+-->
+<!--
+KEUZE ONDERWERP
+-->
+
+        <div id="TabKies" class="tab">
+            <div class="content">
+                <div class="WM_logo"> </div>
+<!--                <a href="javascript:WM_Toggle('TabStart');" class="vorige-button"> </a> -->
+                <a href="javascript:WM_FilterNextButton();" class="volgende-button"> </a>  
+                <div class="inner">
+                    <p>Trek even je eigen leerlijn!</p>
+                    <p>Kies een leerjaar en een onderwerp:</p>
+                    <form id="filter-form" action="javascript:WM_evalFilterForm()">
+                        <div id="jaar-container" class="form-part">
+                            <span class="form-label">Leerjaar:</span>
+                        </div>
+                        <div id="niveau-container" class="form-part">
+                            <span class="form-label">Niveau:</span>
+                        </div>
+                        <!--
+                        <div id="collectie-container" class="form-part">
+                            <span class="form-label">Collecties:</span>
+                        </div>
+                        -->
+                    </form>
+
+                </div>
+            </div>
+         </div>
+
+<!--
+LEERLIJN
+-->
+
+         <div id="TabLeerlijn" class="tab">
+            <div class="content">
+                <div class="WM_logo"> </div>
+                <a href="javascript:WM_Toggle('TabKies');" class="vorige-button"> </a>
+                <a href="#" class="volgende-button" style="display:none"> </a>
+                <div class="inner">
+                    <p>De groene leerlijn is een goed uitgangspunt, de grijze zijn alternatieven.<br/>
+                    Klik 'ergens' om van het gebaande pad af te wijken!</p>
+                    <div class="leerlijn-chooser">
+                        <div id="leerlijn-chooser-titel"></div>
+                        
+                        <div class="canvas-wrapper" id="canvas-wrapper">
+                           <div id="module-hover-div"> </div>
+                           <canvas id="canvas" width="984" height="120" ></canvas>
+                        </div>
+                    </div>
+                    <div id="thread-container">
+                        <h3 id="thread-title" class="section-container"></h3>
+                        <div id="thread-info"></div>
+                        <div id="component-widget" class="ui-widget clearfix"></div>
+                        <a id="leerlijn-submit">Kies deze leerlijn</a>
+                    </div>
+                    <!--
+                    <div id="leerlijn-info">
+                        <div id="leerlijn-info-titel"></div>
+                        <div id="leerlijn-info-beschrijving"></div>
+                    </div>
+                    -->
+                 </div>
+            </div>
+            <div id="debug"></div>
+        </div>
+
+
+    </body>
+</html>
