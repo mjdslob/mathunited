@@ -2,4 +2,4 @@ Code which runs in Google App Engine. Contains the following functionality:
 - XSLT transforms of XML content for viewing or to generate format for 3rd party tools (e.g. PulseOn)
 - receiving or deleting content (files, binary resources)
 
-Use of Eclipse is recommended with Google App Engine plugin. Also add Egit plugin to manage this git repository from the Eclipse
+Use of Eclipse is recommended with Google App Engine plugin. Also add Egit plugin to manage this git repository from Eclipse
