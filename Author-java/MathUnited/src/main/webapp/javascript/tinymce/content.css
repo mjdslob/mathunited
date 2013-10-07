@@ -1,0 +1,9 @@
+html, body {
+   font: 14px/20px Helvetiva,arial,sans-serif;
+   line-height:1.5em;
+   color:#555566;
+}
+.textref {
+    color:red;
+    text-decoration: underline;
+}

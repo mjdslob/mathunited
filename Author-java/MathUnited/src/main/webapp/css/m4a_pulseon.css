@@ -1,0 +1,71 @@
+.definitions {
+    margin: 10px 0px 10px 0px;
+    font-weight:bold;
+}
+.keyword {
+    color: #333366;
+    font-weight:bold;
+}
+.figureDiv-center {
+    text-align:center;
+}
+.figureDiv {
+    margin:15px auto 15px auto;
+    display:inline-block;
+}
+.figureDiv.right {
+    margin:0px 0px 15px 0px;
+    float:right;
+    clear:right;
+    position:relative;
+    left:20px;
+}
+.figureDiv table img {
+    margin-right:20px;
+}
+.subcaption {
+    width:100%;
+    text-align:center;
+    font-weight:bold;
+}
+ul,ol {
+    padding-left:16px;
+}
+iframe {
+    border:0;
+}
+table.wm-default-table {
+    border-collapse: collapse;
+    border:1px solid gray;
+}
+table.wm-default-table td, table.wm-default-table th{
+    border:1px solid gray;
+    padding:3px 5px;
+}
+.example-answer-button {
+    font-weight:bold;
+    padding:10px 0px 10px 0px;
+}
+.example-answer-button:hover {
+    cursor:pointer;
+}
+.m4a-problem {
+    height:0px;
+}
+.m4a-answer {
+    color: gray;
+    display: none;
+}
+.m4a-answer.selected {
+    display:block;
+}
+.example-answer-button.hidden {
+    display:none;
+}
+
+.movie-icon {
+    width:60px; height:60px;
+    background-image: url('http://www.mathunited.nl/sources/movie_icon_60.gif');
+    float:right;
+}
+

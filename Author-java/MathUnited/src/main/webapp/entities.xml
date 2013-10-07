@@ -1,0 +1,2072 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:m="http://www.w3.org/1998/Math/MathML"
+      xmlns:qti="http://www.imsglobal.org/xsd/imsqti_v2p1">
+   <qti:assessmentTest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 imsqti_v2p1.xsd"
+                       identifier="hv-me11"
+                       title="Figuren - Lijn, lijnstuk, punt">
+      <qti:outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>0</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="PASS" cardinality="single" baseType="boolean">
+         <qti:defaultValue>
+            <qti:value>false</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="MAXSCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>10</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="SCORE_1"
+                              cardinality="single"
+                              baseType="float"
+                              interpretation="#interpretation#">
+         <qti:defaultValue>
+            <qti:value>0</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:testPart identifier="testpartID"
+                    navigationMode="nonlinear"
+                    submissionMode="individual">
+         <qti:assessmentSection identifier="section-hv-me11"
+                                fixed="false"
+                                title="Figuren - Lijn, lijnstuk, punt"
+                                visible="true">
+            <qti:assessmentItemRef identifier="hv-me11-d109e2" href="hv-me11-d109e2.xml" fixed="false"/>
+            <qti:assessmentItemRef identifier="hv-me11-d113e2" href="hv-me11-d113e2.xml" fixed="false"/>
+            <qti:assessmentItemRef identifier="hv-me11-d114e2" href="hv-me11-d114e2.xml" fixed="false"/>
+            <qti:assessmentItemRef identifier="hv-me11-d116e2" href="hv-me11-d116e2.xml" fixed="false"/>
+            <qti:assessmentItemRef identifier="hv-me11-d117e2" href="hv-me11-d117e2.xml" fixed="false"/>
+            <qti:assessmentItemRef identifier="hv-me11-d119e2" href="hv-me11-d119e2.xml" fixed="false"/>
+            <qti:assessmentItemRef identifier="hv-me11-d120e2" href="hv-me11-d120e2.xml" fixed="false"/>
+            <qti:assessmentItemRef identifier="hv-me11-d121e2" href="hv-me11-d121e2.xml" fixed="false"/>
+            <qti:assessmentItemRef identifier="hv-me11-d122e2" href="hv-me11-d122e2.xml" fixed="false"/>
+            <qti:assessmentItemRef identifier="hv-me11-d123e2" href="hv-me11-d123e2.xml" fixed="false"/>
+            <qti:assessmentItemRef identifier="hv-me11-d124e2" href="hv-me11-d124e2.xml" fixed="false"/>
+            <qti:assessmentItemRef identifier="hv-me11-d125e2" href="hv-me11-d125e2.xml" fixed="false"/>
+            <qti:assessmentItemRef identifier="hv-me11-d127e2" href="hv-me11-d127e2.xml" fixed="false"/>
+            <qti:assessmentItemRef identifier="hv-me11-d128e2" href="hv-me11-d128e2.xml" fixed="false"/>
+            <qti:assessmentItemRef identifier="hv-me11-d129e2" href="hv-me11-d129e2.xml" fixed="false"/>
+         </qti:assessmentSection>
+      </qti:testPart>
+      <qti:outcomeProcessing>
+         <qti:setOutcomeValue identifier="SCORE">
+            <qti:sum>
+               <qti:testVariables variableIdentifier="SCORE"/>
+            </qti:sum>
+         </qti:setOutcomeValue>
+         <qti:outcomeCondition>
+            <qti:outcomeIf>
+               <qti:gte>
+                  <qti:sum>
+                     <qti:testVariables variableIdentifier="SCORE"/>
+                  </qti:sum>
+                  <qti:baseValue baseType="float">6</qti:baseValue>
+               </qti:gte>
+               <qti:setOutcomeValue identifier="PASS">
+                  <qti:baseValue baseType="boolean">true</qti:baseValue>
+               </qti:setOutcomeValue>
+            </qti:outcomeIf>
+            <qti:outcomeElse>
+               <qti:setOutcomeValue identifier="PASS">
+                  <qti:baseValue baseType="boolean">false</qti:baseValue>
+               </qti:setOutcomeValue>
+            </qti:outcomeElse>
+         </qti:outcomeCondition>
+         <qti:setOutcomeValue identifier="SCORE_1">
+            <qti:sum>
+               <qti:testVariables variableIdentifier="SCORE" sectionIdentifier="section-hv-me11"/>
+            </qti:sum>
+         </qti:setOutcomeValue>
+      </qti:outcomeProcessing>
+   </qti:assessmentTest>
+   <qti:assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 imsqti_v2p1.xsd"
+                       identifier="hv-me11-d109e2"
+                       title="Figuren - Lijn, lijnstuk, punt - Opgave "
+                       adaptive="false"
+                       timeDependent="false">
+      <qti:responseDeclaration identifier="RESPONSE_d109e2" cardinality="single" baseType="string">
+         <qti:correctResponse>
+            <qti:value>a) 
+<p xmlns="">
+De rails hebben dezelfde richting.
+</p>
+b) 
+<p xmlns="">
+De dwarsliggers hebben dezelfde richting.
+</p>
+c) 
+<p xmlns="">
+De dwarsliggers staan recht (haaks) op de rails.
+</p>
+            </qti:value>
+         </qti:correctResponse>
+         <qti:mapping defaultValue="0">
+            <qti:mapEntry mapKey="" mappedValue="5.0" caseSensitive="false"/>
+         </qti:mapping>
+      </qti:responseDeclaration>
+      <qti:outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>0</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="MAXSCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>5</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="FEEDBACKBASIC"
+                              cardinality="single"
+                              baseType="identifier"
+                              view="testConstructor">
+         <qti:defaultValue>
+            <qti:value>empty</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:itemBody>
+         <div xmlns="" class="exercise-heading">
+            <strong>
+               <font size="3" color="#ff0000">Verkennen</font>
+            </strong>
+         </div>
+         <div xmlns="" class="exercise-heading">
+            <strong>Opgave </strong>
+         </div>
+         <div xmlns="" class="exercise-contents">
+
+            <div class="multi-item">
+               <div class="intro">
+                  <div class="figureDiv right">
+                     <img src="../data/content-ma/concept/hv/me1/hv-me11/../images/highres/Rails02.jpg"
+                          style="width:250px"/>
+                     <div class="caption"/>
+                  </div>
+                  <p>
+Je ziet hier een plaatje van spoorrails van een modelspoorbaan. De rails zijn bevestigd op dwarsliggers.
+</p>
+               </div>
+               <div class="multi-item-items">
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">a</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Hoe liggen de rails ten opzicht van elkaar?
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">b</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Hoe liggen de dwarsliggers ten opzicht van elkaar?
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">c</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Hoe liggen de dwarsliggers ten opzichte van de rails?
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+               </div>
+            </div>
+
+         </div>
+         <extendedTextInteraction responseIdentifier="RESPONSE_d109e2"/>
+      </qti:itemBody>
+      <qti:responseProcessing>
+         <qti:responseCondition>
+            <qti:responseIf>
+               <qti:not>
+                  <qti:isNull>
+                     <qti:variable identifier="RESPONSE_d109e2"/>
+                  </qti:isNull>
+               </qti:not>
+               <qti:setOutcomeValue identifier="FEEDBACKBASIC">
+                  <qti:baseValue baseType="identifier">incorrect</qti:baseValue>
+               </qti:setOutcomeValue>
+            </qti:responseIf>
+         </qti:responseCondition>
+      </qti:responseProcessing>
+   </qti:assessmentItem>
+   <qti:assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 imsqti_v2p1.xsd"
+                       identifier="hv-me11-d113e2"
+                       title="Figuren - Lijn, lijnstuk, punt - Opgave 2"
+                       adaptive="false"
+                       timeDependent="false">
+      <qti:responseDeclaration identifier="RESPONSE_d113e2" cardinality="single" baseType="string">
+         <qti:correctResponse>
+            <qti:value>a) 
+<p xmlns="">
+Echt goed omschrijven kun je dit niet, je gaat er van uit dat iedereen wel weet wat je met een punt bedoeld.
+</p>
+b) 
+<p xmlns="">
+Zonder afmetingen gaat natuurlijk niet, want dan zie je punt 
+    `A`
+ helemaal niet. Hier is de punt een minuscuul rondje.
+</p>
+c) 
+<p xmlns="">
+Ja, zie punt 
+    `B`
+.
+</p>
+d) 
+<p xmlns="">
+Ja, maar dan wel oneindig veel.
+</p>
+e) 
+<p xmlns="">
+Door twee snijdende lijnen te tekenen bepaal je het snijpunt.
+</p>
+            </qti:value>
+         </qti:correctResponse>
+         <qti:mapping defaultValue="0">
+            <qti:mapEntry mapKey="" mappedValue="5.0" caseSensitive="false"/>
+         </qti:mapping>
+      </qti:responseDeclaration>
+      <qti:outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>0</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="MAXSCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>5</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="FEEDBACKBASIC"
+                              cardinality="single"
+                              baseType="identifier"
+                              view="testConstructor">
+         <qti:defaultValue>
+            <qti:value>empty</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:itemBody>
+         <div xmlns="" class="exercise-heading">
+            <strong>
+               <font size="3" color="#ff0000">Uitleg</font>
+            </strong>
+         </div>
+         <div xmlns="" class="exercise-heading">
+            <strong>Opgave 2</strong>
+         </div>
+         <div xmlns="" class="exercise-contents">
+
+            <div class="multi-item">
+               <div class="intro">
+                  <p>
+Bekijk de eerste figuur van de <span class="textref">Uitleg </span>.
+</p>
+                  <p medium="web">
+Je kunt zowel punt 
+    `A`
+ als lijn 
+    `l`
+ verplaatsen.
+</p>
+               </div>
+               <div class="multi-item-items">
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">a</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Er staat geen omschrijving van wat een punt nou precies is. Waarom is dat, denk je?
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">b</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Je zou kunnen zeggen dat een punt iets is zonder afmetingen. Maar hoe zit het dan met "punt" 
+    `A`
+?
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">c</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Kan een punt op een lijn liggen?
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">d</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Bestaat een lijn uit allemaal punten?
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">e</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Hoe kun je met twee lijnen een punt bepalen?
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+               </div>
+            </div>
+
+         </div>
+         <extendedTextInteraction responseIdentifier="RESPONSE_d113e2"/>
+      </qti:itemBody>
+      <qti:responseProcessing>
+         <qti:responseCondition>
+            <qti:responseIf>
+               <qti:not>
+                  <qti:isNull>
+                     <qti:variable identifier="RESPONSE_d113e2"/>
+                  </qti:isNull>
+               </qti:not>
+               <qti:setOutcomeValue identifier="FEEDBACKBASIC">
+                  <qti:baseValue baseType="identifier">incorrect</qti:baseValue>
+               </qti:setOutcomeValue>
+            </qti:responseIf>
+         </qti:responseCondition>
+      </qti:responseProcessing>
+   </qti:assessmentItem>
+   <qti:assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 imsqti_v2p1.xsd"
+                       identifier="hv-me11-d114e2"
+                       title="Figuren - Lijn, lijnstuk, punt - Opgave 3"
+                       adaptive="false"
+                       timeDependent="false">
+      <qti:responseDeclaration identifier="RESPONSE_d114e2" cardinality="single" baseType="string">
+         <qti:correctResponse>
+            <qti:value>a) 
+<p xmlns="">
+Ja, want punt 
+    `S`
+ligt op de lijn door 
+    `A`
+en 
+    `B`
+(op lijn 
+    `AB`
+).
+</p>
+b) 
+<p xmlns="">
+Het gemeenschappelijke punt van beide lijnen.
+</p>
+c) 
+<p xmlns="">
+Als de punten 
+    `A`
+en 
+    `B`
+ aan verschillende kanten van lijn 
+    `l`
+ liggen. Eén van beide punten mag ook nog op 
+    `l`
+ liggen.
+</p>
+            </qti:value>
+         </qti:correctResponse>
+         <qti:mapping defaultValue="0">
+            <qti:mapEntry mapKey="" mappedValue="5.0" caseSensitive="false"/>
+         </qti:mapping>
+      </qti:responseDeclaration>
+      <qti:outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>0</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="MAXSCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>5</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="FEEDBACKBASIC"
+                              cardinality="single"
+                              baseType="identifier"
+                              view="testConstructor">
+         <qti:defaultValue>
+            <qti:value>empty</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:itemBody>
+         <div xmlns="" class="exercise-heading">
+            <strong>
+               <font size="3" color="#ff0000">Uitleg</font>
+            </strong>
+         </div>
+         <div xmlns="" class="exercise-heading">
+            <strong>Opgave 3</strong>
+         </div>
+         <div xmlns="" class="exercise-contents">
+
+            <div class="multi-item">
+               <div class="intro">
+                  <p>
+Bekijk de tweede figuur in de <span class="textref">Uitleg </span>.
+</p>
+               </div>
+               <div class="multi-item-items">
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">a</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Is lijn 
+    `AB`
+ hetzelfde als lijn 
+    `AS`
+? Hoe komt dat?
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">b</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Hoe zou je het snijpunt van twee lijnen in woorden omschrijven?
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">c</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Wanneer heeft lijnstuk 
+    `AB`
+ een snijpunt met lijn 
+    `l`
+?
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+               </div>
+            </div>
+
+         </div>
+         <extendedTextInteraction responseIdentifier="RESPONSE_d114e2"/>
+      </qti:itemBody>
+      <qti:responseProcessing>
+         <qti:responseCondition>
+            <qti:responseIf>
+               <qti:not>
+                  <qti:isNull>
+                     <qti:variable identifier="RESPONSE_d114e2"/>
+                  </qti:isNull>
+               </qti:not>
+               <qti:setOutcomeValue identifier="FEEDBACKBASIC">
+                  <qti:baseValue baseType="identifier">incorrect</qti:baseValue>
+               </qti:setOutcomeValue>
+            </qti:responseIf>
+         </qti:responseCondition>
+      </qti:responseProcessing>
+   </qti:assessmentItem>
+   <qti:assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 imsqti_v2p1.xsd"
+                       identifier="hv-me11-d116e2"
+                       title="Figuren - Lijn, lijnstuk, punt - Opgave 4"
+                       adaptive="false"
+                       timeDependent="false">
+      <qti:responseDeclaration identifier="RESPONSE_d116e2" cardinality="single" baseType="string">
+         <qti:correctResponse>
+            <qti:value>a) 
+<p xmlns="">
+
+    `l`
+ en 
+    `k`
+ zijn loodrecht, let op het loodrechthaakje!
+</p>
+b) 
+<p xmlns="">
+Door de rechte hoek van je geodriehoek op punt 
+    `C`
+ te leggen en te kijken of de lijnen dan langs de zijden van de geodriehoek liggen.
+</p>
+c) 
+<p xmlns="">
+Punt 
+    `C`
+.
+</p>
+            </qti:value>
+         </qti:correctResponse>
+         <qti:mapping defaultValue="0">
+            <qti:mapEntry mapKey="" mappedValue="5.0" caseSensitive="false"/>
+         </qti:mapping>
+      </qti:responseDeclaration>
+      <qti:outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>0</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="MAXSCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>5</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="FEEDBACKBASIC"
+                              cardinality="single"
+                              baseType="identifier"
+                              view="testConstructor">
+         <qti:defaultValue>
+            <qti:value>empty</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:itemBody>
+         <div xmlns="" class="exercise-heading">
+            <strong>
+               <font size="3" color="#ff0000">Theorie</font>
+            </strong>
+         </div>
+         <div xmlns="" class="exercise-heading">
+            <strong>Opgave 4</strong>
+         </div>
+         <div xmlns="" class="exercise-contents">
+
+            <div class="multi-item">
+               <div class="intro">
+                  <div class="figureDiv right">
+                     <img src="../data/content-ma/concept/hv/me1/hv-me11/../images/highres/Me0101.jpg"
+                          style="width:300px"/>
+                     <div class="caption"/>
+                  </div>
+                  <p>
+Bekijk de figuur hiernaast.
+</p>
+
+               </div>
+               <div class="multi-item-items">
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">a</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Welke twee lijnen staan loodrecht op elkaar? Waaraan zie je dat?
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">b</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Hoe kun je dit met je geodriehoek zelf controleren?
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">c</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Welk punt is het snijpunt van de twee loodrechte lijnen?
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+               </div>
+            </div>
+
+         </div>
+         <extendedTextInteraction responseIdentifier="RESPONSE_d116e2"/>
+      </qti:itemBody>
+      <qti:responseProcessing>
+         <qti:responseCondition>
+            <qti:responseIf>
+               <qti:not>
+                  <qti:isNull>
+                     <qti:variable identifier="RESPONSE_d116e2"/>
+                  </qti:isNull>
+               </qti:not>
+               <qti:setOutcomeValue identifier="FEEDBACKBASIC">
+                  <qti:baseValue baseType="identifier">incorrect</qti:baseValue>
+               </qti:setOutcomeValue>
+            </qti:responseIf>
+         </qti:responseCondition>
+      </qti:responseProcessing>
+   </qti:assessmentItem>
+   <qti:assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 imsqti_v2p1.xsd"
+                       identifier="hv-me11-d117e2"
+                       title="Figuren - Lijn, lijnstuk, punt - Opgave 5"
+                       adaptive="false"
+                       timeDependent="false">
+      <qti:responseDeclaration identifier="RESPONSE_d117e2" cardinality="single" baseType="string">
+         <qti:correctResponse>
+            <qti:value>a) 
+<p xmlns="">
+Doen, zie het voorbeeld.
+</p>
+b) 
+<p xmlns="">
+Doen.
+</p>
+c) 
+<p xmlns="">
+De lijnen 
+    `l`
+ en 
+    `m`
+ hebben dezelfde richting.
+</p>
+            </qti:value>
+         </qti:correctResponse>
+         <qti:mapping defaultValue="0">
+            <qti:mapEntry mapKey="" mappedValue="5.0" caseSensitive="false"/>
+         </qti:mapping>
+      </qti:responseDeclaration>
+      <qti:outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>0</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="MAXSCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>5</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="FEEDBACKBASIC"
+                              cardinality="single"
+                              baseType="identifier"
+                              view="testConstructor">
+         <qti:defaultValue>
+            <qti:value>empty</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:itemBody>
+         <div xmlns="" class="exercise-heading">
+            <strong>
+               <font size="3" color="#ff0000">Theorie</font>
+            </strong>
+         </div>
+         <div xmlns="" class="exercise-heading">
+            <strong>Opgave 5</strong>
+         </div>
+         <div xmlns="" class="exercise-contents">
+
+            <div class="multi-item">
+               <div class="intro">
+                  <p>
+Teken op een stukje papier een lijn en een punt dat niet op die lijn ligt.
+Noem de lijn 
+    `l`
+ en het punt 
+    `P`
+.
+</p>
+
+               </div>
+               <div class="multi-item-items">
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">a</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Teken met je geodriehoek een lijn door 
+    `P`
+ loodrecht op 
+    `l`
+. Noem die nieuwe lijn 
+    `k`
+.
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">b</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Teken nu een lijn door 
+    `P`
+ en loodrecht op 
+    `k`
+. Noem die nieuwe lijn 
+    `m`
+.
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">c</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Wat weet je van de lijnen 
+    `l`
+ en 
+    `m`
+?
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+               </div>
+            </div>
+
+         </div>
+         <extendedTextInteraction responseIdentifier="RESPONSE_d117e2"/>
+      </qti:itemBody>
+      <qti:responseProcessing>
+         <qti:responseCondition>
+            <qti:responseIf>
+               <qti:not>
+                  <qti:isNull>
+                     <qti:variable identifier="RESPONSE_d117e2"/>
+                  </qti:isNull>
+               </qti:not>
+               <qti:setOutcomeValue identifier="FEEDBACKBASIC">
+                  <qti:baseValue baseType="identifier">incorrect</qti:baseValue>
+               </qti:setOutcomeValue>
+            </qti:responseIf>
+         </qti:responseCondition>
+      </qti:responseProcessing>
+   </qti:assessmentItem>
+   <qti:assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 imsqti_v2p1.xsd"
+                       identifier="hv-me11-d119e2"
+                       title="Figuren - Lijn, lijnstuk, punt - Opgave 6"
+                       adaptive="false"
+                       timeDependent="false">
+      <qti:responseDeclaration identifier="RESPONSE_d119e2" cardinality="single" baseType="string">
+         <qti:correctResponse>
+            <qti:value>a) 
+<p xmlns="">
+
+    `l`
+ en 
+    `m`
+.
+</p>
+b) 
+<p xmlns="">
+Leg de onderkant van je geodriehoek op 
+    `l`
+ zo, dat de driehoek over 
+    `m`
+ heen ligt. Controleer nu de evenwijdigheid met behulp van de evenwijdige lijnen op je geodriehoek. Bekijk eventueel het voorbeeld nog eens.
+</p>
+c) 
+<p xmlns="">
+Doen.
+</p>
+d) 
+<p xmlns="">
+
+    `n`
+ staat ook loodrecht op 
+    `m`
+, maar niet op 
+    `k`
+.
+</p>
+            </qti:value>
+         </qti:correctResponse>
+         <qti:mapping defaultValue="0">
+            <qti:mapEntry mapKey="" mappedValue="5.0" caseSensitive="false"/>
+         </qti:mapping>
+      </qti:responseDeclaration>
+      <qti:outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>0</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="MAXSCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>5</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="FEEDBACKBASIC"
+                              cardinality="single"
+                              baseType="identifier"
+                              view="testConstructor">
+         <qti:defaultValue>
+            <qti:value>empty</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:itemBody>
+         <div xmlns="" class="exercise-heading">
+            <strong>
+               <font size="3" color="#ff0000">Theorie</font>
+            </strong>
+         </div>
+         <div xmlns="" class="exercise-heading">
+            <strong>Opgave 6</strong>
+         </div>
+         <div xmlns="" class="exercise-contents">
+
+            <div class="multi-item">
+               <div class="intro">
+                  <div class="figureDiv right">
+                     <img src="../data/content-ma/concept/hv/me1/hv-me11/../images/highres/Me0102.jpg"
+                          style="width:300px"/>
+                     <div class="caption"/>
+                  </div>
+                  <p>
+Bekijk de figuur hiernaast. Hij staat ook op een <a target="_blank"
+                        href="view?comp=hv-me1&subcomp=hv-me11&variant=m4a_view&item=&ws_id=hv-me11-w01">werkblad</a>.
+</p>
+
+               </div>
+               <div class="multi-item-items">
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">a</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Welke twee lijnen zijn evenwijdig?
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">b</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Hoe kun je dit met je geodriehoek zelf controleren?
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">c</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Teken een lijn 
+    `n`
+ door punt 
+    `A`
+ en loodrecht op 
+    `l`
+.
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">d</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Staat lijn 
+    `n`
+ ook loodrecht op 
+    `m`
+? En op 
+    `k`
+?
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+               </div>
+            </div>
+
+
+
+         </div>
+         <extendedTextInteraction responseIdentifier="RESPONSE_d119e2"/>
+      </qti:itemBody>
+      <qti:responseProcessing>
+         <qti:responseCondition>
+            <qti:responseIf>
+               <qti:not>
+                  <qti:isNull>
+                     <qti:variable identifier="RESPONSE_d119e2"/>
+                  </qti:isNull>
+               </qti:not>
+               <qti:setOutcomeValue identifier="FEEDBACKBASIC">
+                  <qti:baseValue baseType="identifier">incorrect</qti:baseValue>
+               </qti:setOutcomeValue>
+            </qti:responseIf>
+         </qti:responseCondition>
+      </qti:responseProcessing>
+   </qti:assessmentItem>
+   <qti:assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 imsqti_v2p1.xsd"
+                       identifier="hv-me11-d120e2"
+                       title="Figuren - Lijn, lijnstuk, punt - Opgave 7"
+                       adaptive="false"
+                       timeDependent="false">
+      <qti:responseDeclaration identifier="RESPONSE_d120e2" cardinality="single" baseType="string">
+         <qti:correctResponse>
+            <qti:value>a) 
+<p xmlns="">
+Doen, zie het voorbeeld.
+</p>
+b) 
+<p xmlns="">
+Doen.
+</p>
+c) 
+<p xmlns="">
+De lijnen 
+    `k`
+ en 
+    `m`
+ staan loodrecht op elkaar.
+</p>
+            </qti:value>
+         </qti:correctResponse>
+         <qti:mapping defaultValue="0">
+            <qti:mapEntry mapKey="" mappedValue="5.0" caseSensitive="false"/>
+         </qti:mapping>
+      </qti:responseDeclaration>
+      <qti:outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>0</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="MAXSCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>5</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="FEEDBACKBASIC"
+                              cardinality="single"
+                              baseType="identifier"
+                              view="testConstructor">
+         <qti:defaultValue>
+            <qti:value>empty</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:itemBody>
+         <div xmlns="" class="exercise-heading">
+            <strong>
+               <font size="3" color="#ff0000">Theorie</font>
+            </strong>
+         </div>
+         <div xmlns="" class="exercise-heading">
+            <strong>Opgave 7</strong>
+         </div>
+         <div xmlns="" class="exercise-contents">
+
+            <div class="multi-item">
+               <div class="intro">
+                  <p>
+Teken op een stukje papier een lijn en een punt dat niet op die lijn ligt.
+Noem de lijn 
+    `l`
+ en het punt 
+    `P`
+.
+</p>
+
+               </div>
+               <div class="multi-item-items">
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">a</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Teken met je geodriehoek een lijn door 
+    `P`
+ evenwijdig aan 
+    `l`
+. Noem die nieuwe lijn 
+    `k`
+.
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">b</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Teken nu een lijn door 
+    `P`
+ en loodrecht op 
+    `k`
+. Noem die nieuwe lijn 
+    `m`
+.
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">c</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Wat weet je van de lijnen 
+    `k`
+ en 
+    `m`
+?
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+               </div>
+            </div>
+
+         </div>
+         <extendedTextInteraction responseIdentifier="RESPONSE_d120e2"/>
+      </qti:itemBody>
+      <qti:responseProcessing>
+         <qti:responseCondition>
+            <qti:responseIf>
+               <qti:not>
+                  <qti:isNull>
+                     <qti:variable identifier="RESPONSE_d120e2"/>
+                  </qti:isNull>
+               </qti:not>
+               <qti:setOutcomeValue identifier="FEEDBACKBASIC">
+                  <qti:baseValue baseType="identifier">incorrect</qti:baseValue>
+               </qti:setOutcomeValue>
+            </qti:responseIf>
+         </qti:responseCondition>
+      </qti:responseProcessing>
+   </qti:assessmentItem>
+   <qti:assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 imsqti_v2p1.xsd"
+                       identifier="hv-me11-d121e2"
+                       title="Figuren - Lijn, lijnstuk, punt - Opgave 8"
+                       adaptive="false"
+                       timeDependent="false">
+      <qti:responseDeclaration identifier="RESPONSE_d121e2" cardinality="single" baseType="string">
+         <qti:correctResponse>
+            <qti:value>) 
+<p xmlns="">
+Doe je best, maak het je gemakkelijk door te beginnen met een horizontale lijn.
+</p>
+            </qti:value>
+         </qti:correctResponse>
+         <qti:mapping defaultValue="0">
+            <qti:mapEntry mapKey="" mappedValue="5.0" caseSensitive="false"/>
+         </qti:mapping>
+      </qti:responseDeclaration>
+      <qti:outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>0</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="MAXSCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>5</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="FEEDBACKBASIC"
+                              cardinality="single"
+                              baseType="identifier"
+                              view="testConstructor">
+         <qti:defaultValue>
+            <qti:value>empty</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:itemBody>
+         <div xmlns="" class="exercise-heading">
+            <strong>
+               <font size="3" color="#ff0000">Theorie</font>
+            </strong>
+         </div>
+         <div xmlns="" class="exercise-heading">
+            <strong>Opgave 8</strong>
+         </div>
+         <div xmlns="" class="exercise-contents">
+
+            <div class="single-item">
+               <div class="item">
+                  <div class="item-content">
+                     <div class="item-itemcontent">
+                        <div class="question">
+                           <p>
+Neem een blanco stuk papier en teken dit kruispunt na.<br/>
+Ga er van uit dat lijnen die evenwijdig lijken dat ook zijn en dat lijnen die loodrecht op elkaar lijken te staan dat ook doen.
+</p>
+                           <div class="figureDiv">
+                              <img src="../data/content-ma/concept/hv/me1/hv-me11/../images/highres/Me0103.jpg"
+                                   style="width:400px"/>
+                              <div class="caption"/>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div style="clear:left"/>
+            </div>
+
+         </div>
+         <extendedTextInteraction responseIdentifier="RESPONSE_d121e2"/>
+      </qti:itemBody>
+      <qti:responseProcessing>
+         <qti:responseCondition>
+            <qti:responseIf>
+               <qti:not>
+                  <qti:isNull>
+                     <qti:variable identifier="RESPONSE_d121e2"/>
+                  </qti:isNull>
+               </qti:not>
+               <qti:setOutcomeValue identifier="FEEDBACKBASIC">
+                  <qti:baseValue baseType="identifier">incorrect</qti:baseValue>
+               </qti:setOutcomeValue>
+            </qti:responseIf>
+         </qti:responseCondition>
+      </qti:responseProcessing>
+   </qti:assessmentItem>
+   <qti:assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 imsqti_v2p1.xsd"
+                       identifier="hv-me11-d122e2"
+                       title="Figuren - Lijn, lijnstuk, punt - Opgave 9"
+                       adaptive="false"
+                       timeDependent="false">
+      <qti:responseDeclaration identifier="RESPONSE_d122e2" cardinality="single" baseType="string">
+         <qti:correctResponse>
+            <qti:value>a) 
+<p xmlns="">
+Staafje 6.
+</p>
+b) 
+<p xmlns="">
+Staafjes 1 en 5.
+</p>
+            </qti:value>
+         </qti:correctResponse>
+         <qti:mapping defaultValue="0">
+            <qti:mapEntry mapKey="" mappedValue="5.0" caseSensitive="false"/>
+         </qti:mapping>
+      </qti:responseDeclaration>
+      <qti:outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>0</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="MAXSCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>5</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="FEEDBACKBASIC"
+                              cardinality="single"
+                              baseType="identifier"
+                              view="testConstructor">
+         <qti:defaultValue>
+            <qti:value>empty</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:itemBody>
+         <div xmlns="" class="exercise-heading">
+            <strong>
+               <font size="3" color="#ff0000">Verwerken</font>
+            </strong>
+         </div>
+         <div xmlns="" class="exercise-heading">
+            <strong>Opgave 9</strong>
+         </div>
+         <div xmlns="" class="exercise-contents">
+
+            <div class="multi-item">
+               <div class="intro">
+                  <p>
+Iemand heeft een aantal lange dunne staafjes op tafel gegooid. Sommige staafjes liggen precies evenwijdig aan elkaar, andere liggen loodrecht op elkaar.
+</p>
+                  <div class="figureDiv">
+                     <img src="../data/content-ma/concept/hv/me1/hv-me11/../images/highres/Me0105.jpg"
+                          style="width:350px"/>
+                     <div class="caption"/>
+                  </div>
+               </div>
+               <div class="multi-item-items">
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">a</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Welk(e) staafje(s) ligt (liggen) evenwijdig met staafje 7?
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">b</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Welk(e) staafje(s) ligt (liggen) loodrecht op staafje 7?
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+               </div>
+            </div>
+
+         </div>
+         <extendedTextInteraction responseIdentifier="RESPONSE_d122e2"/>
+      </qti:itemBody>
+      <qti:responseProcessing>
+         <qti:responseCondition>
+            <qti:responseIf>
+               <qti:not>
+                  <qti:isNull>
+                     <qti:variable identifier="RESPONSE_d122e2"/>
+                  </qti:isNull>
+               </qti:not>
+               <qti:setOutcomeValue identifier="FEEDBACKBASIC">
+                  <qti:baseValue baseType="identifier">incorrect</qti:baseValue>
+               </qti:setOutcomeValue>
+            </qti:responseIf>
+         </qti:responseCondition>
+      </qti:responseProcessing>
+   </qti:assessmentItem>
+   <qti:assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 imsqti_v2p1.xsd"
+                       identifier="hv-me11-d123e2"
+                       title="Figuren - Lijn, lijnstuk, punt - Opgave 10"
+                       adaptive="false"
+                       timeDependent="false">
+      <qti:responseDeclaration identifier="RESPONSE_d123e2" cardinality="single" baseType="string">
+         <qti:correctResponse>
+            <qti:value>a) 
+<p xmlns="">
+Zie figuur.
+</p>
+               <div xmlns="" class="figureDiv">
+                  <img src="../data/content-ma/concept/hv/me1/hv-me11/../images/highres/Me0106.jpg"
+                       style="width:300px"/>
+                  <div class="caption"/>
+               </div>
+b) 
+<p xmlns="">
+Zie figuur.
+</p>
+c) 
+<p xmlns="">
+
+    `m`
+ en 
+    `n`
+ zijn evenwijdig.
+</p>
+d) 
+<p xmlns="">
+Zie figuur.
+</p>
+            </qti:value>
+         </qti:correctResponse>
+         <qti:mapping defaultValue="0">
+            <qti:mapEntry mapKey="" mappedValue="5.0" caseSensitive="false"/>
+         </qti:mapping>
+      </qti:responseDeclaration>
+      <qti:outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>0</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="MAXSCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>5</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="FEEDBACKBASIC"
+                              cardinality="single"
+                              baseType="identifier"
+                              view="testConstructor">
+         <qti:defaultValue>
+            <qti:value>empty</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:itemBody>
+         <div xmlns="" class="exercise-heading">
+            <strong>
+               <font size="3" color="#ff0000">Verwerken</font>
+            </strong>
+         </div>
+         <div xmlns="" class="exercise-heading">
+            <strong>Opgave 10</strong>
+         </div>
+         <div xmlns="" class="exercise-contents">
+
+            <div class="multi-item">
+               <div class="intro">
+                  <p>
+Teken een lijn 
+    `l`
+ met een punt 
+    `P`
+ op die lijn. Teken een punt 
+    `Q`
+ dat niet op 
+    `l`
+ ligt.
+</p>
+               </div>
+               <div class="multi-item-items">
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">a</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Teken een lijn door 
+    `P`
+ loodrecht op lijn 
+    `l`
+. Noem die lijn 
+    `m`
+.
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">b</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Teken een lijn door 
+    `Q`
+ loodrecht op lijn 
+    `l`
+. Noem die lijn 
+    `n`
+.
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">c</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Wat weet je nu van de lijnen 
+    `m`
+ en 
+    `n`
+?
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">d</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Het snijpunt van de lijnen 
+    `n`
+ en 
+    `l`
+ noem je 
+    `R`
+. Teken een lijn door 
+    `R`
+ evenwijdig lijnstuk 
+    `PQ`
+. Noem die lijn 
+    `p`
+.
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+               </div>
+            </div>
+
+         </div>
+         <extendedTextInteraction responseIdentifier="RESPONSE_d123e2"/>
+      </qti:itemBody>
+      <qti:responseProcessing>
+         <qti:responseCondition>
+            <qti:responseIf>
+               <qti:not>
+                  <qti:isNull>
+                     <qti:variable identifier="RESPONSE_d123e2"/>
+                  </qti:isNull>
+               </qti:not>
+               <qti:setOutcomeValue identifier="FEEDBACKBASIC">
+                  <qti:baseValue baseType="identifier">incorrect</qti:baseValue>
+               </qti:setOutcomeValue>
+            </qti:responseIf>
+         </qti:responseCondition>
+      </qti:responseProcessing>
+   </qti:assessmentItem>
+   <qti:assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 imsqti_v2p1.xsd"
+                       identifier="hv-me11-d124e2"
+                       title="Figuren - Lijn, lijnstuk, punt - Opgave 11"
+                       adaptive="false"
+                       timeDependent="false">
+      <qti:responseDeclaration identifier="RESPONSE_d124e2" cardinality="single" baseType="string">
+         <qti:correctResponse>
+            <qti:value>a) 
+<p xmlns="">
+Maak gebruik van 
+    "hokjes tellen"
+: de gegeven lijn 
+    `AB`
+ gaat steeds 
+    `2`
+ naar rechts en 
+    `1`
+ omhoog.
+De evenwijdige lijn krijg je door vanuit 
+    `C`
+ een serie punten te tekenen die 
+    `2`
+ hokjes naar rechts en 
+    `1`
+ omhoog ten opzichte van elkaar liggen. Je mag ook 
+    `2`
+ naar links en 
+    `1`
+ naar beneden.
+</p>
+b) 
+<p xmlns="">
+De loodrechte lijn kun je tekenen door vanuit 
+    `C`
+ steeds 
+    `1`
+ hokje naar rechts en 
+    `2`
+ naar beneden te gaan.
+</p>
+            </qti:value>
+         </qti:correctResponse>
+         <qti:mapping defaultValue="0">
+            <qti:mapEntry mapKey="" mappedValue="5.0" caseSensitive="false"/>
+         </qti:mapping>
+      </qti:responseDeclaration>
+      <qti:outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>0</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="MAXSCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>5</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="FEEDBACKBASIC"
+                              cardinality="single"
+                              baseType="identifier"
+                              view="testConstructor">
+         <qti:defaultValue>
+            <qti:value>empty</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:itemBody>
+         <div xmlns="" class="exercise-heading">
+            <strong>
+               <font size="3" color="#ff0000">Verwerken</font>
+            </strong>
+         </div>
+         <div xmlns="" class="exercise-heading">
+            <strong>Opgave 11</strong>
+         </div>
+         <div xmlns="" class="exercise-contents">
+
+            <div class="multi-item">
+               <div class="intro">
+                  <div class="figureDiv right">
+                     <img src="../data/content-ma/concept/hv/me1/hv-me11/../images/highres/Me0104.jpg"
+                          style="width:300px"/>
+                     <div class="caption"/>
+                  </div>
+                  <p>
+Een rooster kan je helpen bij het tekenen van evenwijdige en loodrechte lijnen.
+</p>
+               </div>
+               <div class="multi-item-items">
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">a</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Laat zien hoe je met het rooster lijn 
+    `m`
+ door punt 
+    `C`
+ evenwijdig aan lijn 
+    `AB`
+ tekent.
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+                  <div class="item">
+                     <div class="item-content">
+                        <div class="item-label">b</div>
+                        <div class="item-itemcontent">
+                           <div class="question">
+                              <p>
+Laat zien hoe je met het rooster lijn 
+    `n`
+ door punt 
+    `C`
+ loodrecht op lijn 
+    `AB`
+ tekent.
+</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear:left"/>
+               </div>
+            </div>
+
+         </div>
+         <extendedTextInteraction responseIdentifier="RESPONSE_d124e2"/>
+      </qti:itemBody>
+      <qti:responseProcessing>
+         <qti:responseCondition>
+            <qti:responseIf>
+               <qti:not>
+                  <qti:isNull>
+                     <qti:variable identifier="RESPONSE_d124e2"/>
+                  </qti:isNull>
+               </qti:not>
+               <qti:setOutcomeValue identifier="FEEDBACKBASIC">
+                  <qti:baseValue baseType="identifier">incorrect</qti:baseValue>
+               </qti:setOutcomeValue>
+            </qti:responseIf>
+         </qti:responseCondition>
+      </qti:responseProcessing>
+   </qti:assessmentItem>
+   <qti:assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 imsqti_v2p1.xsd"
+                       identifier="hv-me11-d125e2"
+                       title="Figuren - Lijn, lijnstuk, punt - Opgave 12"
+                       adaptive="false"
+                       timeDependent="false">
+      <qti:responseDeclaration identifier="RESPONSE_d125e2" cardinality="single" baseType="string">
+         <qti:correctResponse>
+            <qti:value>) 
+<p xmlns="">
+Doen, zie eventueel de figuur bij <span class="textref">opgave 1</span>.
+</p>
+            </qti:value>
+         </qti:correctResponse>
+         <qti:mapping defaultValue="0">
+            <qti:mapEntry mapKey="" mappedValue="5.0" caseSensitive="false"/>
+         </qti:mapping>
+      </qti:responseDeclaration>
+      <qti:outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>0</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="MAXSCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>5</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="FEEDBACKBASIC"
+                              cardinality="single"
+                              baseType="identifier"
+                              view="testConstructor">
+         <qti:defaultValue>
+            <qti:value>empty</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:itemBody>
+         <div xmlns="" class="exercise-heading">
+            <strong>
+               <font size="3" color="#ff0000">Verwerken</font>
+            </strong>
+         </div>
+         <div xmlns="" class="exercise-heading">
+            <strong>Opgave 12</strong>
+         </div>
+         <div xmlns="" class="exercise-contents">
+
+            <div class="single-item">
+               <div class="item">
+                  <div class="item-content">
+                     <div class="subintro">
+                        <p>
+De spoorrails van een modelspoorbaan liggen 
+    `4`
+ cm uit elkaar en zijn 
+    `2`
+ mm dik.
+Ze liggen op dwarsliggers van 
+    `6`
+ cm lang en 
+    `0,5`
+ cm dik.
+</p>
+                     </div>
+                     <div class="item-itemcontent">
+                        <div class="question">
+                           <p>
+Teken een stuk van deze modelspoorbaan.
+</p>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div style="clear:left"/>
+            </div>
+
+         </div>
+         <extendedTextInteraction responseIdentifier="RESPONSE_d125e2"/>
+      </qti:itemBody>
+      <qti:responseProcessing>
+         <qti:responseCondition>
+            <qti:responseIf>
+               <qti:not>
+                  <qti:isNull>
+                     <qti:variable identifier="RESPONSE_d125e2"/>
+                  </qti:isNull>
+               </qti:not>
+               <qti:setOutcomeValue identifier="FEEDBACKBASIC">
+                  <qti:baseValue baseType="identifier">incorrect</qti:baseValue>
+               </qti:setOutcomeValue>
+            </qti:responseIf>
+         </qti:responseCondition>
+      </qti:responseProcessing>
+   </qti:assessmentItem>
+   <qti:assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 imsqti_v2p1.xsd"
+                       identifier="hv-me11-d127e2"
+                       title="Figuren - Lijn, lijnstuk, punt - Opgave 13"
+                       adaptive="false"
+                       timeDependent="false">
+      <qti:responseDeclaration identifier="RESPONSE_d127e2" cardinality="single" baseType="string">
+         <qti:correctResponse>
+            <qti:value>) 
+<p xmlns="">
+Doen, elk vakje wordt 
+    `1`
+ cm bij 
+    `1`
+ cm.
+</p>
+            </qti:value>
+         </qti:correctResponse>
+         <qti:mapping defaultValue="0">
+            <qti:mapEntry mapKey="" mappedValue="5.0" caseSensitive="false"/>
+         </qti:mapping>
+      </qti:responseDeclaration>
+      <qti:outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>0</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="MAXSCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>5</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="FEEDBACKBASIC"
+                              cardinality="single"
+                              baseType="identifier"
+                              view="testConstructor">
+         <qti:defaultValue>
+            <qti:value>empty</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:itemBody>
+         <div xmlns="" class="exercise-heading">
+            <strong>
+               <font size="3" color="#ff0000">Toepassen</font>
+            </strong>
+         </div>
+         <div xmlns="" class="exercise-heading">
+            <strong>Opgave 13</strong>
+         </div>
+         <div xmlns="" class="exercise-contents">
+
+            <title>Schaakspel</title>
+
+            <div class="single-item">
+               <div class="item">
+                  <div class="item-content">
+                     <div class="subintro">
+
+                        <p medium="web">
+Hierboven zie je een schaakbord.
+</p>
+                     </div>
+                     <div class="item-itemcontent">
+                        <div class="question">
+                           <p>
+Neem een stuk blanco papier en teken daarop een klein schaakbord van 
+    `8`
+ cm bij 
+    `8`
+ cm.
+Maak loodrechte en evenwijdige lijnen.
+</p>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div style="clear:left"/>
+            </div>
+
+         </div>
+         <extendedTextInteraction responseIdentifier="RESPONSE_d127e2"/>
+      </qti:itemBody>
+      <qti:responseProcessing>
+         <qti:responseCondition>
+            <qti:responseIf>
+               <qti:not>
+                  <qti:isNull>
+                     <qti:variable identifier="RESPONSE_d127e2"/>
+                  </qti:isNull>
+               </qti:not>
+               <qti:setOutcomeValue identifier="FEEDBACKBASIC">
+                  <qti:baseValue baseType="identifier">incorrect</qti:baseValue>
+               </qti:setOutcomeValue>
+            </qti:responseIf>
+         </qti:responseCondition>
+      </qti:responseProcessing>
+   </qti:assessmentItem>
+   <qti:assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 imsqti_v2p1.xsd"
+                       identifier="hv-me11-d128e2"
+                       title="Figuren - Lijn, lijnstuk, punt - Opgave 14"
+                       adaptive="false"
+                       timeDependent="false">
+      <qti:responseDeclaration identifier="RESPONSE_d128e2" cardinality="single" baseType="string">
+         <qti:correctResponse>
+            <qti:value>) 
+<p xmlns="">
+Je gelooft je ogen niet, maar in de linkerfiguur zijn alle horizontale lijnen evenwijdig. En in de rechter figuur geldt dit voor alle lijnen die schuin omlaag lopen.
+Overigens barst het in beide figuren ook van de evenwijdige lijnstukjes.
+</p>
+            </qti:value>
+         </qti:correctResponse>
+         <qti:mapping defaultValue="0">
+            <qti:mapEntry mapKey="" mappedValue="5.0" caseSensitive="false"/>
+         </qti:mapping>
+      </qti:responseDeclaration>
+      <qti:outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>0</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="MAXSCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>5</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="FEEDBACKBASIC"
+                              cardinality="single"
+                              baseType="identifier"
+                              view="testConstructor">
+         <qti:defaultValue>
+            <qti:value>empty</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:itemBody>
+         <div xmlns="" class="exercise-heading">
+            <strong>
+               <font size="3" color="#ff0000">Toepassen</font>
+            </strong>
+         </div>
+         <div xmlns="" class="exercise-heading">
+            <strong>Opgave 14</strong>
+         </div>
+         <div xmlns="" class="exercise-contents">
+
+            <title>Optische illusies</title>
+
+            <div class="single-item">
+               <div class="item">
+                  <div class="item-content">
+                     <div class="item-itemcontent">
+                        <div class="question">
+                           <p>
+Bekijk deze figuren en ga na of de getekende lijnen evenwijdig zijn.
+</p>
+                           <div class="figureDiv">
+                              <table>
+                                 <tr>
+                                    <td>
+                                       <img src="../data/content-ma/concept/hv/me1/hv-me11/../images/highres/Illusie01.jpg"
+                                            style="width:300px"/>
+                                       <div class="subcaption"/>
+                                    </td>
+                                    <td>
+                                       <img src="../data/content-ma/concept/hv/me1/hv-me11/../images/highres/Illusie02.jpg"
+                                            style="width:200px"/>
+                                       <div class="subcaption"/>
+                                    </td>
+                                 </tr>
+                              </table>
+                              <div class="caption"/>
+                           </div>
+
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div style="clear:left"/>
+            </div>
+
+         </div>
+         <extendedTextInteraction responseIdentifier="RESPONSE_d128e2"/>
+      </qti:itemBody>
+      <qti:responseProcessing>
+         <qti:responseCondition>
+            <qti:responseIf>
+               <qti:not>
+                  <qti:isNull>
+                     <qti:variable identifier="RESPONSE_d128e2"/>
+                  </qti:isNull>
+               </qti:not>
+               <qti:setOutcomeValue identifier="FEEDBACKBASIC">
+                  <qti:baseValue baseType="identifier">incorrect</qti:baseValue>
+               </qti:setOutcomeValue>
+            </qti:responseIf>
+         </qti:responseCondition>
+      </qti:responseProcessing>
+   </qti:assessmentItem>
+   <qti:assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 imsqti_v2p1.xsd"
+                       identifier="hv-me11-d129e2"
+                       title="Figuren - Lijn, lijnstuk, punt - Opgave 15"
+                       adaptive="false"
+                       timeDependent="false">
+      <qti:responseDeclaration identifier="RESPONSE_d129e2" cardinality="single" baseType="string">
+         <qti:correctResponse>
+            <qti:value>) 
+<p xmlns="">
+De linker is het NS-logo en de rechter is het beeldmerk van het Rode Kruis.<br/>
+Het natekenen van zeker het beeldmerk van de NS is op blanco papier nog niet zo gemakkelijk. Ga er van uit dat beide pijlpunten echt bestaan uit loodrechte lijnstukken.
+</p>
+            </qti:value>
+         </qti:correctResponse>
+         <qti:mapping defaultValue="0">
+            <qti:mapEntry mapKey="" mappedValue="5.0" caseSensitive="false"/>
+         </qti:mapping>
+      </qti:responseDeclaration>
+      <qti:outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>0</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="MAXSCORE" cardinality="single" baseType="float">
+         <qti:defaultValue>
+            <qti:value>5</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:outcomeDeclaration identifier="FEEDBACKBASIC"
+                              cardinality="single"
+                              baseType="identifier"
+                              view="testConstructor">
+         <qti:defaultValue>
+            <qti:value>empty</qti:value>
+         </qti:defaultValue>
+      </qti:outcomeDeclaration>
+      <qti:itemBody>
+         <div xmlns="" class="exercise-heading">
+            <strong>
+               <font size="3" color="#ff0000">Toepassen</font>
+            </strong>
+         </div>
+         <div xmlns="" class="exercise-heading">
+            <strong>Opgave 15</strong>
+         </div>
+         <div xmlns="" class="exercise-contents">
+
+            <title>Beeldmerken</title>
+
+            <div class="single-item">
+               <div class="item">
+                  <div class="item-content">
+                     <div class="item-itemcontent">
+                        <div class="question">
+                           <p>
+Ontwerpers van beeldmerken voor instellingen en bedrijven maken veel van evenwijdigheid en loodrechte stand gebruik.
+Hier zie je twee heel erg bekende beeldmerken. Weet je waar ze van zijn?<br/>
+Probeer ze nauwkeurig te tekenen op blanco papier.
+</p>
+                           <div class="figureDiv">
+                              <table>
+                                 <tr>
+                                    <td>
+                                       <img src="../data/content-ma/concept/hv/me1/hv-me11/../images/highres/NSlogo.jpg"
+                                            style="width:150px"/>
+                                       <div class="subcaption"/>
+                                    </td>
+                                    <td>
+                                       <img src="../data/content-ma/concept/hv/me1/hv-me11/../images/highres/RedCrosslogo.jpg"
+                                            style="width:150px"/>
+                                       <div class="subcaption"/>
+                                    </td>
+                                 </tr>
+                              </table>
+                              <div class="caption"/>
+                           </div>
+
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div style="clear:left"/>
+            </div>
+
+         </div>
+         <extendedTextInteraction responseIdentifier="RESPONSE_d129e2"/>
+      </qti:itemBody>
+      <qti:responseProcessing>
+         <qti:responseCondition>
+            <qti:responseIf>
+               <qti:not>
+                  <qti:isNull>
+                     <qti:variable identifier="RESPONSE_d129e2"/>
+                  </qti:isNull>
+               </qti:not>
+               <qti:setOutcomeValue identifier="FEEDBACKBASIC">
+                  <qti:baseValue baseType="identifier">incorrect</qti:baseValue>
+               </qti:setOutcomeValue>
+            </qti:responseIf>
+         </qti:responseCondition>
+      </qti:responseProcessing>
+   </qti:assessmentItem>
+</root>

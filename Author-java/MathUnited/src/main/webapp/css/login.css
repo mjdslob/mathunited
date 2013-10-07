@@ -1,0 +1,33 @@
+html, body {
+    margin:0; padding:0;
+}
+
+.panel {
+    padding:20px;
+    width:330px;
+    height:110px;
+    background-color:white;
+    box-shadow: 0px 0px 24px 1px #D0D0D0;
+}
+.fieldname {
+    width:150px;
+    padding:3px 5px;
+    float:left; 
+    clear:left;
+}
+input {
+    display:block;
+    float:left;
+    width:150px;
+}
+
+#submit-button {
+    float:right;
+    margin:10px 20px;
+}
+#message {
+    color:red;
+    padding:3px 5px;
+    height:20px;
+    margin:0px 0px 5px 0px;
+}

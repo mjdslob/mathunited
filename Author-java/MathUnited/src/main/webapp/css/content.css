@@ -1,0 +1,119 @@
+
+.stepaligntable .stepaligntable-c1 {
+    padding:4px 0px 4px 0px;
+}
+
+.stepaligntable td  .stepaligntable-text {
+    color:red;
+    position:relative;
+    left:10px;
+    top:17px;
+    font-size:0.8em;
+}
+.stepaligntable .stepaligntable-c1 {
+    text-align:right;
+}
+.stepaligntable .stepaligntable-c2 {
+    text-align:center;
+}
+.stepaligntable .stepaligntable-c3 {
+    text-align:left;
+}
+
+
+.caption {
+    text-align: center;
+    font-style: italic;
+    margin-top:10px;
+}
+.applet-source {
+    text-align: center;
+    font-style: italic;
+}
+
+.worksheet-container{
+    width:100%;
+    margin-top:40px;
+}
+.worksheet-container .figureDiv{
+    text-align:center;
+    display:block;
+}
+.worksheet-header {
+    font-size:1.3em;
+    font-weight:bold;
+    margin:20px 0px 50px 0px;
+}
+@media print {
+    .printbutton {
+        visibility: hidden;
+        display: none;
+    }
+}
+div.citation {
+    font-style: italic;
+    clear:both;
+}
+span.citation {
+    font-style: italic;
+}
+
+.sequence-widget {
+    position:relative;
+    margin: 10px 0px 20px 0px;
+    padding:10px;
+    border:1px solid lightgray;
+    clear:both;
+}
+.sequence-widget-button-bar {
+    position:relative;
+    padding: 3px 0px 3px 0px;
+    /*border-radius: 3px;*/
+    /*border:1px solid #666699;*/
+    width:100%;
+    height:16px;
+    margin:5px auto 0px auto;
+    background-color : #666699;
+}
+.sequence-item {
+    display:none;
+}
+.sequence-item.visible {
+    display:block;
+}
+.sequence-widget-next {
+   float:right;
+   background: url('../sources_ma/PijlVolgend.gif');
+   width:16px;
+   height:16px;
+   margin-right:10px;
+}
+.sequence-widget-next:hover {
+   background: url('../sources_ma/PijlVolgend_hover.gif');
+    cursor:pointer;
+}
+.sequence-widget-prev {
+   float:left;
+   background: url('../sources_ma/PijlVorig.gif');
+   width:16px;
+   height:16px;
+   margin-left:10px;
+}
+.sequence-widget-prev:hover {
+   background: url('../sources_ma/PijlVorig_hover.gif');
+    cursor:pointer;
+}
+.movie-icon {
+    width:60px; height:60px;
+    background-image: url('../sources/movie_icon_60.gif');
+}
+.movie.optional {
+    position:absolute;
+    left:-1000px; top:0px;
+}
+.movie.optional.visible {
+    position:static;
+}
+.textref {
+    display:inline-block;
+}

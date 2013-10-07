@@ -1,0 +1,905 @@
+<?xml version="1.0" encoding="UTF-8"?><html xmlns:html="http://www.w3.org/1999/xhtml">
+   <body>
+      <div class="headingDiv">
+         
+         <div class="headingContentDiv"><img align="middle" class="logo" src="sources_ma/LogoM4Ainvlak.gif" border="0" height="33" />Formules voor omtrek en oppervlakte &gt; Oppervlakte van vierhoeken
+            
+         </div>
+         
+         <div class="overzichtDiv"><a shape="rect" href="http://mathunited.pragma-ade.nl:41080/Publisher/html/publisher-ma.html">Overzicht
+               </a></div>
+         
+         <div style="clear:both"></div>
+         
+      </div>
+      
+      <div class="sectionDiv">
+         
+         <div class="balk"><span class="subcomponent-title">Oppervlakte van vierhoeken</span></div>
+         
+      </div>
+      
+      <div class="contentDiv">
+         
+         <div class="contentDiv-content">
+            
+            <div tag="explore">
+               
+               
+               
+               <div tag="include" filename="hv-me73-e1.xml">
+                  
+                  <div tag="exercise">
+                     
+                     <div class="exercise-with-heading open" id="hv-me73-e1" type="explore">
+                        
+                        <div class="exercise-heading">
+                           Opgave <span class="opgave-title-span"></span><div class="opgave-label-button"></div>
+                           
+                        </div>
+                        
+                        <div class="exercise-contents">
+                           
+                           
+                           
+                           <div tag="multi-item">
+                              
+                              
+                              
+                              <div tag="intro">
+                                 
+                                 
+                                 <div class="editor-paperfigure-container">
+                                    
+                                    <div class="figureDiv right">
+                                       <img src="../data/content-ma/concept/hv/me7/hv-me73/../images/highres/hv-me73-e1-t01.jpg" style="width:300px" />
+                                       
+                                       
+                                       <div class="caption"></div>
+                                       
+                                    </div>
+                                    
+                                    <div id="hv-me73-e1-fig1" tag="paperfigure" location="right" type="t" label="hv-me73-e1-fig1">
+                                       
+                                       <div tag="caption"></div>
+                                       
+                                       <div tag="content">
+                                          
+                                          
+                                          <div tag="resource" type="graphic">
+                                             
+                                             
+                                             <div tag="name">hv-me73-e1-t01.jpg</div>
+                                             
+                                             
+                                             <div tag="id"></div>
+                                             
+                                             
+                                             <div tag="width">6cm</div>
+                                             
+                                             
+                                             <div tag="height"></div>
+                                             
+                                             
+                                             <div tag="description">vierhoek</div>
+                                             
+                                             
+                                             <div tag="owner">math4all</div>
+                                             
+                                             
+                                          </div>
+                                          
+                                          
+                                       </div>
+                                       
+                                    </div>
+                                    
+                                 </div>
+                                 
+                                 
+                                 <div tag="p">
+                                    
+                                    <div class="close-paragraph"></div>
+                                    
+                                    <div class="paragraph-content" id="d21e36">
+                                       Dit is een vierhoek <span class="math-container"><span tag="m:math">
+                                             <span tag="m:mrow"><span tag="m:mi">A</span><span tag="m:mi">B</span><span tag="m:mi">C</span><span tag="m:mi">D</span></span>
+                                             </span><span class="MathJax" id="MathJax-Element-1-Frame" style="" aria-readonly="true" role="textbox">
+                                             <nobr><span class="math" id="MathJax-Span-1"><span style="display: inline-block; position: relative; width: 44px; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.713em, 1000em, 2.756em, -0.587em); top: -2.56em; left: 0em;"><span class="mrow" id="MathJax-Span-2"><span class="mrow" id="MathJax-Span-3"><span class="mi" id="MathJax-Span-4" style="font-family: STIXGeneral; font-style: italic;">A</span><span class="mi" id="MathJax-Span-5" style="font-family: STIXGeneral; font-style: italic;">B</span><span class="mi" id="MathJax-Span-6" style="font-family: STIXGeneral; font-style: italic;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.022em;"></span></span><span class="mi" id="MathJax-Span-7" style="font-family: STIXGeneral; font-style: italic;">D</span></span></span><span style="display: inline-block; width: 0px; height: 2.56em;"></span></span></span><span style="border-left: 0em solid; display: inline-block; overflow: hidden; width: 0px; height: 0.966em; vertical-align: -0.093em;"></span></span></nobr></span><script id="MathJax-Element-1" type="math/mml">&lt;m:math&gt;
+                                                
+                                                &lt;m:mrow&gt;
+                                                   &lt;m:mi&gt;A&lt;/m:mi&gt;
+                                                   &lt;m:mi&gt;B&lt;/m:mi&gt;
+                                                   &lt;m:mi&gt;C&lt;/m:mi&gt;
+                                                   &lt;m:mi&gt;D&lt;/m:mi&gt;
+                                                &lt;/m:mrow&gt;
+                                                
+                                             &lt;/m:math&gt;</script></span> waarvan de punten <span class="math-container"><span tag="m:math"><span tag="m:mi">A</span></span><span class="MathJax" id="MathJax-Element-2-Frame" style="" aria-readonly="true" role="textbox">
+                                             <nobr><span class="math" id="MathJax-Span-8"><span style="display: inline-block; position: relative; width: 10px; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.713em, 1000em, 2.738em, -0.587em); top: -2.56em; left: 0em;"><span class="mrow" id="MathJax-Span-9"><span class="mi" id="MathJax-Span-10" style="font-family: STIXGeneral; font-style: italic;">A</span></span><span style="display: inline-block; width: 0px; height: 2.56em;"></span></span></span><span style="border-left: 0em solid; display: inline-block; overflow: hidden; width: 0px; height: 0.944em; vertical-align: -0.071em;"></span></span></nobr></span><script id="MathJax-Element-2" type="math/mml">&lt;m:math&gt;
+                                                &lt;m:mi&gt;A&lt;/m:mi&gt;
+                                             &lt;/m:math&gt;</script></span> en <span class="math-container"><span tag="m:math"><span tag="m:mi">C</span></span><span class="MathJax" id="MathJax-Element-3-Frame" style="" aria-readonly="true" role="textbox">
+                                             <nobr><span class="math" id="MathJax-Span-11"><span style="display: inline-block; position: relative; width: 12px; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.715em, 1000em, 2.756em, -0.47em); top: -2.56em; left: 0em;"><span class="mrow" id="MathJax-Span-12"><span class="mi" id="MathJax-Span-13" style="font-family: STIXGeneral; font-style: italic;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.022em;"></span></span></span><span style="display: inline-block; width: 0px; height: 2.56em;"></span></span></span><span style="border-left: 0em solid; display: inline-block; overflow: hidden; width: 0px; height: 0.964em; vertical-align: -0.093em;"></span></span></nobr></span><script id="MathJax-Element-3" type="math/mml">&lt;m:math&gt;
+                                                &lt;m:mi&gt;C&lt;/m:mi&gt;
+                                             &lt;/m:math&gt;</script></span> op gelijke hoogte zijn gelegd.
+                                       
+                                       
+                                    </div>
+                                    
+                                 </div>
+                                 
+                                 
+                              </div>
+                              
+                              
+                              
+                              <div tag="items">
+                                 
+                                 
+                                 
+                                 <div tag="item" type="open" label="a">
+                                    
+                                    <div class="multi-item-item-label">a</div>
+                                    
+                                    
+                                    <div tag="itemcontent">
+                                       
+                                       
+                                       <div tag="question">
+                                          
+                                          
+                                          <div tag="p">
+                                             
+                                             <div class="close-paragraph"></div>
+                                             
+                                             <div class="paragraph-content" id="d21e69">
+                                                Je kunt deze vierhoek op twee manieren in twee driehoeken verdelen. Hoe?
+                                                
+                                                
+                                             </div>
+                                             
+                                          </div>
+                                          
+                                          
+                                       </div>
+                                       
+                                       
+                                    </div>
+                                    
+                                    
+                                    <div tag="answer">
+                                       
+                                       
+                                       <div tag="p">
+                                          
+                                          <div class="close-paragraph"></div>
+                                          
+                                          <div class="paragraph-content" id="d21e76">
+                                             Door er een diagonaal in te tekenen. En er zijn twee diagonalen.
+                                             
+                                             
+                                          </div>
+                                          
+                                       </div>
+                                       
+                                       
+                                    </div>
+                                    
+                                    
+                                 </div>
+                                 
+                                 
+                                 
+                                 <div tag="item" type="open" label="b">
+                                    
+                                    <div class="multi-item-item-label">b</div>
+                                    
+                                    
+                                    <div tag="itemcontent">
+                                       
+                                       
+                                       <div tag="question">
+                                          
+                                          
+                                          <div tag="p">
+                                             
+                                             <div class="close-paragraph"></div>
+                                             
+                                             <div class="paragraph-content" id="d21e87">
+                                                Bij welke van deze twee verdelingen kun je de oppervlakte van de driehoeken uitrekenen
+                                                met de gegeven afmetingen?
+                                                
+                                                
+                                             </div>
+                                             
+                                          </div>
+                                          
+                                          
+                                       </div>
+                                       
+                                       
+                                    </div>
+                                    
+                                    
+                                    <div tag="answer">
+                                       
+                                       
+                                       <div tag="p">
+                                          
+                                          <div class="close-paragraph"></div>
+                                          
+                                          <div class="paragraph-content" id="d21e94">
+                                             Zie figuur. Je gebruikt dan diagonaal <span class="math-container"><span tag="m:math"><span tag="m:mi">A</span><span tag="m:mi">C</span></span><span class="MathJax" id="MathJax-Element-4-Frame" style="" aria-readonly="true" role="textbox">
+                                                   <nobr><span class="math" id="MathJax-Span-14"><span style="display: inline-block; position: relative; width: 21px; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.713em, 1000em, 2.756em, -0.587em); top: -2.56em; left: 0em;"><span class="mrow" id="MathJax-Span-15"><span class="mi" id="MathJax-Span-16" style="font-family: STIXGeneral; font-style: italic;">A</span><span class="mi" id="MathJax-Span-17" style="font-family: STIXGeneral; font-style: italic;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.022em;"></span></span></span><span style="display: inline-block; width: 0px; height: 2.56em;"></span></span></span><span style="border-left: 0em solid; display: inline-block; overflow: hidden; width: 0px; height: 0.966em; vertical-align: -0.093em;"></span></span></nobr></span><script id="MathJax-Element-4" type="math/mml">&lt;m:math&gt;
+                                                      &lt;m:mi&gt;A&lt;/m:mi&gt;
+                                                      &lt;m:mi&gt;C&lt;/m:mi&gt;
+                                                   &lt;/m:math&gt;</script></span>.
+                                             
+                                             
+                                          </div>
+                                          
+                                       </div>
+                                       
+                                       
+                                       <div class="editor-paperfigure-container">
+                                          
+                                          <div class="figureDiv">
+                                             <img src="../data/content-ma/concept/hv/me7/hv-me73/../images/highres/hv-me73-e1-t02.jpg" style="width:300px" />
+                                             
+                                             
+                                             <div class="caption"></div>
+                                             
+                                          </div>
+                                          
+                                          <div id="hv-me73-e1-fig2" tag="paperfigure" location="here" type="t" label="hv-me73-e1-fig2">
+                                             
+                                             <div tag="caption"></div>
+                                             
+                                             <div tag="content">
+                                                
+                                                
+                                                <div tag="resource" type="graphic">
+                                                   
+                                                   
+                                                   <div tag="name">hv-me73-e1-t02.jpg</div>
+                                                   
+                                                   
+                                                   <div tag="id"></div>
+                                                   
+                                                   
+                                                   <div tag="width">6cm</div>
+                                                   
+                                                   
+                                                   <div tag="height"></div>
+                                                   
+                                                   
+                                                   <div tag="description">vierhoek</div>
+                                                   
+                                                   
+                                                   <div tag="owner">math4all</div>
+                                                   
+                                                   
+                                                </div>
+                                                
+                                                
+                                             </div>
+                                             
+                                          </div>
+                                          
+                                       </div>
+                                       
+                                       
+                                    </div>
+                                    
+                                    
+                                 </div>
+                                 
+                                 
+                                 
+                                 <div tag="item" type="open" label="c">
+                                    
+                                    <div class="multi-item-item-label">c</div>
+                                    
+                                    
+                                    <div tag="itemcontent">
+                                       
+                                       
+                                       <div tag="question">
+                                          
+                                          
+                                          <div tag="p">
+                                             
+                                             <div class="close-paragraph"></div>
+                                             
+                                             <div class="paragraph-content" id="d21e139">
+                                                Bereken nu de oppervlakte van de vierhoek <span class="math-container"><span tag="m:math">
+                                                      <span tag="m:mrow"><span tag="m:mi">A</span><span tag="m:mi">B</span><span tag="m:mi">C</span><span tag="m:mi">D</span></span>
+                                                      </span><span class="MathJax" id="MathJax-Element-5-Frame" style="" aria-readonly="true" role="textbox">
+                                                      <nobr><span class="math" id="MathJax-Span-18"><span style="display: inline-block; position: relative; width: 44px; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.713em, 1000em, 2.756em, -0.587em); top: -2.56em; left: 0em;"><span class="mrow" id="MathJax-Span-19"><span class="mrow" id="MathJax-Span-20"><span class="mi" id="MathJax-Span-21" style="font-family: STIXGeneral; font-style: italic;">A</span><span class="mi" id="MathJax-Span-22" style="font-family: STIXGeneral; font-style: italic;">B</span><span class="mi" id="MathJax-Span-23" style="font-family: STIXGeneral; font-style: italic;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.022em;"></span></span><span class="mi" id="MathJax-Span-24" style="font-family: STIXGeneral; font-style: italic;">D</span></span></span><span style="display: inline-block; width: 0px; height: 2.56em;"></span></span></span><span style="border-left: 0em solid; display: inline-block; overflow: hidden; width: 0px; height: 0.966em; vertical-align: -0.093em;"></span></span></nobr></span><script id="MathJax-Element-5" type="math/mml">&lt;m:math&gt;
+                                                         
+                                                         &lt;m:mrow&gt;
+                                                            &lt;m:mi&gt;A&lt;/m:mi&gt;
+                                                            &lt;m:mi&gt;B&lt;/m:mi&gt;
+                                                            &lt;m:mi&gt;C&lt;/m:mi&gt;
+                                                            &lt;m:mi&gt;D&lt;/m:mi&gt;
+                                                         &lt;/m:mrow&gt;
+                                                         
+                                                      &lt;/m:math&gt;</script></span>.
+                                                
+                                                
+                                             </div>
+                                             
+                                          </div>
+                                          
+                                          
+                                       </div>
+                                       
+                                       
+                                    </div>
+                                    
+                                    
+                                    <div tag="answer">
+                                       
+                                       
+                                       <div class="noneditable" tag="p">
+                                          
+                                          <div class="close-paragraph"></div>
+                                          
+                                          <div class="paragraph-content" id="d21e159">
+                                             Je telt de oppervlaktes van beide driehoeken op: <span class="math-container"><span tag="m:math">
+                                                   <span tag="m:mrow"><span tag="m:mstyle" scriptlevel="1"><span tag="m:mfrac"><span tag="m:mn">1</span><span tag="m:mn">2</span></span></span><span tag="m:mo">⋅</span><span tag="m:mn">5</span><span tag="m:mo">⋅</span><span tag="m:mn">3</span><span tag="m:mo">+</span><span tag="m:mstyle" scriptlevel="1"><span tag="m:mfrac"><span tag="m:mn">1</span><span tag="m:mn">2</span></span></span><span tag="m:mo">⋅</span><span tag="m:mn">5</span><span tag="m:mo">⋅</span><span tag="m:mn">1</span><span tag="m:mo">=</span><span tag="m:mn">10</span></span>
+                                                   </span><span class="MathJax" id="MathJax-Element-6-Frame" style="" aria-readonly="true" role="textbox">
+                                                   <nobr><span class="math" id="MathJax-Span-25"><span style="display: inline-block; position: relative; width: 165px; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.693em, 1000em, 3.071em, -0.416em); top: -2.56em; left: 0em;"><span class="mrow" id="MathJax-Span-26"><span class="mrow" id="MathJax-Span-27"><span class="mstyle" id="MathJax-Span-28"><span class="mrow" id="MathJax-Span-29"><span class="mfrac" id="MathJax-Span-30" style="padding-left: 0.12em; padding-right: 0.12em;"><span style="display: inline-block; position: relative; width: 0.358em; height: 0px;"><span style="position: absolute; clip: rect(1.686em, 1000em, 2.381em, -0.48em); top: -2.551em; left: 50%; margin-left: -0.119em;"><span class="mn" id="MathJax-Span-31" style="font-size: 50%; font-family: STIXGeneral;">1</span><span style="display: inline-block; width: 0px; height: 2.202em;"></span></span><span style="position: absolute; clip: rect(1.686em, 1000em, 2.381em, -0.521em); top: -1.87em; left: 50%; margin-left: -0.119em;"><span class="mn" id="MathJax-Span-32" style="font-size: 50%; font-family: STIXGeneral;">2</span><span style="display: inline-block; width: 0px; height: 2.202em;"></span></span><span style="position: absolute; clip: rect(0.818em, 1000em, 1.25em, -0.536em); top: -1.218em; left: 0em;"><span style="border-left: 0.358em solid; display: inline-block; overflow: hidden; width: 0px; height: 1.25px; vertical-align: 0em;"></span><span style="display: inline-block; width: 0px; height: 1.071em;"></span></span></span></span></span></span><span class="mo" id="MathJax-Span-33" style="font-family: STIXGeneral; padding-left: 0.25em;">⋅</span><span class="mn" id="MathJax-Span-34" style="font-family: STIXGeneral; padding-left: 0.25em;">5</span><span class="mo" id="MathJax-Span-35" style="font-family: STIXGeneral; padding-left: 0.25em;">⋅</span><span class="mn" id="MathJax-Span-36" style="font-family: STIXGeneral; padding-left: 0.25em;">3</span><span class="mo" id="MathJax-Span-37" style="font-family: STIXGeneral; padding-left: 0.25em;">+</span><span class="mstyle" id="MathJax-Span-38" style="padding-left: 0.25em;"><span class="mrow" id="MathJax-Span-39"><span class="mfrac" id="MathJax-Span-40" style="padding-left: 0.12em; padding-right: 0.12em;"><span style="display: inline-block; position: relative; width: 0.358em; height: 0px;"><span style="position: absolute; clip: rect(1.686em, 1000em, 2.381em, -0.48em); top: -2.551em; left: 50%; margin-left: -0.119em;"><span class="mn" id="MathJax-Span-41" style="font-size: 50%; font-family: STIXGeneral;">1</span><span style="display: inline-block; width: 0px; height: 2.202em;"></span></span><span style="position: absolute; clip: rect(1.686em, 1000em, 2.381em, -0.521em); top: -1.87em; left: 50%; margin-left: -0.119em;"><span class="mn" id="MathJax-Span-42" style="font-size: 50%; font-family: STIXGeneral;">2</span><span style="display: inline-block; width: 0px; height: 2.202em;"></span></span><span style="position: absolute; clip: rect(0.818em, 1000em, 1.25em, -0.536em); top: -1.218em; left: 0em;"><span style="border-left: 0.358em solid; display: inline-block; overflow: hidden; width: 0px; height: 1.25px; vertical-align: 0em;"></span><span style="display: inline-block; width: 0px; height: 1.071em;"></span></span></span></span></span></span><span class="mo" id="MathJax-Span-43" style="font-family: STIXGeneral; padding-left: 0.25em;">⋅</span><span class="mn" id="MathJax-Span-44" style="font-family: STIXGeneral; padding-left: 0.25em;">5</span><span class="mo" id="MathJax-Span-45" style="font-family: STIXGeneral; padding-left: 0.25em;">⋅</span><span class="mn" id="MathJax-Span-46" style="font-family: STIXGeneral; padding-left: 0.25em;">1</span><span class="mo" id="MathJax-Span-47" style="font-family: STIXGeneral; padding-left: 0.313em;">=</span><span class="mn" id="MathJax-Span-48" style="font-family: STIXGeneral; padding-left: 0.313em;">10</span></span></span><span style="display: inline-block; width: 0px; height: 2.56em;"></span></span></span><span style="border-left: 0em solid; display: inline-block; overflow: hidden; width: 0px; height: 1.368em; vertical-align: -0.471em;"></span></span></nobr></span><script id="MathJax-Element-6" type="math/mml">&lt;m:math&gt;
+                                                      
+                                                      &lt;m:mrow&gt;
+                                                         &lt;m:mstyle scriptlevel="1"&gt;
+                                                            &lt;m:mfrac&gt;
+                                                               &lt;m:mn&gt;1&lt;/m:mn&gt;
+                                                               &lt;m:mn&gt;2&lt;/m:mn&gt;
+                                                            &lt;/m:mfrac&gt;
+                                                         &lt;/m:mstyle&gt;
+                                                         &lt;m:mo&gt;⋅&lt;/m:mo&gt;
+                                                         &lt;m:mn&gt;5&lt;/m:mn&gt;
+                                                         &lt;m:mo&gt;⋅&lt;/m:mo&gt;
+                                                         &lt;m:mn&gt;3&lt;/m:mn&gt;
+                                                         &lt;m:mo&gt;+&lt;/m:mo&gt;
+                                                         &lt;m:mstyle scriptlevel="1"&gt;
+                                                            &lt;m:mfrac&gt;
+                                                               &lt;m:mn&gt;1&lt;/m:mn&gt;
+                                                               &lt;m:mn&gt;2&lt;/m:mn&gt;
+                                                            &lt;/m:mfrac&gt;
+                                                         &lt;/m:mstyle&gt;
+                                                         &lt;m:mo&gt;⋅&lt;/m:mo&gt;
+                                                         &lt;m:mn&gt;5&lt;/m:mn&gt;
+                                                         &lt;m:mo&gt;⋅&lt;/m:mo&gt;
+                                                         &lt;m:mn&gt;1&lt;/m:mn&gt;
+                                                         &lt;m:mo&gt;=&lt;/m:mo&gt;
+                                                         &lt;m:mn&gt;10&lt;/m:mn&gt;
+                                                      &lt;/m:mrow&gt;
+                                                      
+                                                   &lt;/m:math&gt;</script></span> cm
+                                             
+                                             <div tag="sup">2</div>.
+                                             
+                                             
+                                          </div>
+                                          
+                                       </div>
+                                       
+                                       
+                                    </div>
+                                    
+                                    
+                                 </div>
+                                 
+                                 
+                                 
+                                 <div tag="item" type="open" label="d">
+                                    
+                                    <div class="multi-item-item-label">d</div>
+                                    
+                                    
+                                    <div tag="itemcontent">
+                                       
+                                       
+                                       <div tag="question">
+                                          
+                                          
+                                          <div tag="p">
+                                             
+                                             <div class="close-paragraph"></div>
+                                             
+                                             <div class="paragraph-content" id="d21e213">
+                                                Kun je van elke vierhoek op deze manier de oppervlakte berekenen?
+                                                
+                                                
+                                             </div>
+                                             
+                                          </div>
+                                          
+                                          
+                                       </div>
+                                       
+                                       
+                                    </div>
+                                    
+                                    
+                                    <div tag="answer">
+                                       
+                                       
+                                       <div tag="p">
+                                          
+                                          <div class="close-paragraph"></div>
+                                          
+                                          <div class="paragraph-content" id="d21e220">
+                                             Je kunt elke vierhoek met behulp van een diagonaal in twee driehoeken verdelen.
+                                             Als je de lengte van die diagonaal weet (of hebt gemeten) en de hoogtes van de twee
+                                             driehoeken weet (of hebt gemeten) kun je de oppervlakte van de vierhoek berekenen
+                                             (of benaderen).
+                                             
+                                             
+                                          </div>
+                                          
+                                       </div>
+                                       
+                                       
+                                    </div>
+                                    
+                                    
+                                 </div>
+                                 
+                                 
+                                 
+                              </div>
+                              
+                              
+                              
+                           </div>
+                           
+                           
+                           
+                        </div>
+                        
+                     </div>
+                     
+                  </div>
+                  
+               </div>
+               
+               
+               
+               <div tag="include" filename="hv-me73-e2.xml">
+                  
+                  <div tag="exercise">
+                     
+                     <div class="exercise-with-heading open" id="hv-me73-e2" type="explore">
+                        
+                        <div class="exercise-heading">
+                           Opgave <span class="opgave-title-span"></span><div class="opgave-label-button"></div>
+                           
+                        </div>
+                        
+                        <div class="exercise-contents">
+                           
+                           
+                           
+                           <div tag="multi-item">
+                              
+                              
+                              
+                              <div tag="intro">
+                                 
+                                 
+                                 <div class="editor-paperfigure-container">
+                                    
+                                    <div class="figureDiv right">
+                                       <img src="../data/content-ma/concept/hv/me7/hv-me73/../images/highres/hv-me73-e2-t01.jpg" style="width:300px" />
+                                       
+                                       
+                                       <div class="caption"></div>
+                                       
+                                    </div>
+                                    
+                                    <div id="hv-me73-e2-fig1" tag="paperfigure" location="right" type="t" label="hv-me73-e2-fig1">
+                                       
+                                       <div tag="caption"></div>
+                                       
+                                       <div tag="content">
+                                          
+                                          
+                                          <div tag="resource" type="graphic">
+                                             
+                                             
+                                             <div tag="name">hv-me73-e2-t01.jpg</div>
+                                             
+                                             
+                                             <div tag="id"></div>
+                                             
+                                             
+                                             <div tag="width">6cm</div>
+                                             
+                                             
+                                             <div tag="height"></div>
+                                             
+                                             
+                                             <div tag="description">vierhoek</div>
+                                             
+                                             
+                                             <div tag="owner">math4all</div>
+                                             
+                                             
+                                          </div>
+                                          
+                                          
+                                       </div>
+                                       
+                                    </div>
+                                    
+                                 </div>
+                                 
+                                 
+                                 <div tag="p">
+                                    
+                                    <div class="close-paragraph"></div>
+                                    
+                                    <div class="paragraph-content" id="d22e36">
+                                       Vierhoek <span class="math-container"><span tag="m:math">
+                                             <span tag="m:mrow"><span tag="m:mi">A</span><span tag="m:mi">B</span><span tag="m:mi">C</span><span tag="m:mi">D</span></span>
+                                             </span><span class="MathJax" id="MathJax-Element-7-Frame" style="" aria-readonly="true" role="textbox">
+                                             <nobr><span class="math" id="MathJax-Span-49"><span style="display: inline-block; position: relative; width: 44px; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.713em, 1000em, 2.756em, -0.587em); top: -2.56em; left: 0em;"><span class="mrow" id="MathJax-Span-50"><span class="mrow" id="MathJax-Span-51"><span class="mi" id="MathJax-Span-52" style="font-family: STIXGeneral; font-style: italic;">A</span><span class="mi" id="MathJax-Span-53" style="font-family: STIXGeneral; font-style: italic;">B</span><span class="mi" id="MathJax-Span-54" style="font-family: STIXGeneral; font-style: italic;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.022em;"></span></span><span class="mi" id="MathJax-Span-55" style="font-family: STIXGeneral; font-style: italic;">D</span></span></span><span style="display: inline-block; width: 0px; height: 2.56em;"></span></span></span><span style="border-left: 0em solid; display: inline-block; overflow: hidden; width: 0px; height: 0.966em; vertical-align: -0.093em;"></span></span></nobr></span><script id="MathJax-Element-7" type="math/mml">&lt;m:math&gt;
+                                                
+                                                &lt;m:mrow&gt;
+                                                   &lt;m:mi&gt;A&lt;/m:mi&gt;
+                                                   &lt;m:mi&gt;B&lt;/m:mi&gt;
+                                                   &lt;m:mi&gt;C&lt;/m:mi&gt;
+                                                   &lt;m:mi&gt;D&lt;/m:mi&gt;
+                                                &lt;/m:mrow&gt;
+                                                
+                                             &lt;/m:math&gt;</script></span> is een parallellogram.
+                                       
+                                       
+                                    </div>
+                                    
+                                 </div>
+                                 
+                                 
+                              </div>
+                              
+                              
+                              
+                              <div tag="items">
+                                 
+                                 
+                                 
+                                 <div tag="item" type="open" label="a">
+                                    
+                                    <div class="multi-item-item-label">a</div>
+                                    
+                                    
+                                    <div tag="itemcontent">
+                                       
+                                       
+                                       <div tag="question">
+                                          
+                                          
+                                          <div tag="p">
+                                             
+                                             <div class="close-paragraph"></div>
+                                             
+                                             <div class="paragraph-content" id="d22e61">
+                                                Je kunt ook van zo'n parallelogram de oppervlakte berekenen door het in twee driehoeken
+                                                te verdelen.
+                                                Laat zien hoe.
+                                                
+                                                
+                                             </div>
+                                             
+                                          </div>
+                                          
+                                          
+                                       </div>
+                                       
+                                       
+                                    </div>
+                                    
+                                    
+                                    <div tag="answer">
+                                       
+                                       
+                                       <div class="noneditable" tag="p">
+                                          
+                                          <div class="close-paragraph"></div>
+                                          
+                                          <div class="paragraph-content" id="d22e68">
+                                             Zie figuur. Je gebruikt diagonaal <span class="math-container"><span tag="m:math"><span tag="m:mi">A</span><span tag="m:mi">C</span></span><span class="MathJax" id="MathJax-Element-8-Frame" style="" aria-readonly="true" role="textbox">
+                                                   <nobr><span class="math" id="MathJax-Span-56"><span style="display: inline-block; position: relative; width: 21px; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.713em, 1000em, 2.756em, -0.587em); top: -2.56em; left: 0em;"><span class="mrow" id="MathJax-Span-57"><span class="mi" id="MathJax-Span-58" style="font-family: STIXGeneral; font-style: italic;">A</span><span class="mi" id="MathJax-Span-59" style="font-family: STIXGeneral; font-style: italic;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.022em;"></span></span></span><span style="display: inline-block; width: 0px; height: 2.56em;"></span></span></span><span style="border-left: 0em solid; display: inline-block; overflow: hidden; width: 0px; height: 0.966em; vertical-align: -0.093em;"></span></span></nobr></span><script id="MathJax-Element-8" type="math/mml">&lt;m:math&gt;
+                                                      &lt;m:mi&gt;A&lt;/m:mi&gt;
+                                                      &lt;m:mi&gt;C&lt;/m:mi&gt;
+                                                   &lt;/m:math&gt;</script></span> en de oppervlakte is die van twee gelijke driehoeken (waarvan er één 
+                                             
+                                             <div tag="quotation">op de kop</div> ligt). De oppervlakte van het parm is dus <span class="math-container"><span tag="m:math">
+                                                   <span tag="m:mrow"><span tag="m:mn">2</span><span tag="m:mo">⋅</span><span tag="m:mstyle" scriptlevel="1"><span tag="m:mfrac"><span tag="m:mn">1</span><span tag="m:mn">2</span></span></span><span tag="m:mo">⋅</span><span tag="m:mn">4</span><span tag="m:mo">⋅</span><span tag="m:mn">5</span><span tag="m:mo">=</span><span tag="m:mn">20</span></span>
+                                                   </span><span class="MathJax" id="MathJax-Element-9-Frame" style="" aria-readonly="true" role="textbox">
+                                                   <nobr><span class="math" id="MathJax-Span-60"><span style="display: inline-block; position: relative; width: 114px; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.693em, 1000em, 3.071em, -0.507em); top: -2.56em; left: 0em;"><span class="mrow" id="MathJax-Span-61"><span class="mrow" id="MathJax-Span-62"><span class="mn" id="MathJax-Span-63" style="font-family: STIXGeneral;">2</span><span class="mo" id="MathJax-Span-64" style="font-family: STIXGeneral; padding-left: 0.25em;">⋅</span><span class="mstyle" id="MathJax-Span-65" style="padding-left: 0.25em;"><span class="mrow" id="MathJax-Span-66"><span class="mfrac" id="MathJax-Span-67" style="padding-left: 0.12em; padding-right: 0.12em;"><span style="display: inline-block; position: relative; width: 0.358em; height: 0px;"><span style="position: absolute; clip: rect(1.686em, 1000em, 2.381em, -0.48em); top: -2.551em; left: 50%; margin-left: -0.119em;"><span class="mn" id="MathJax-Span-68" style="font-size: 50%; font-family: STIXGeneral;">1</span><span style="display: inline-block; width: 0px; height: 2.202em;"></span></span><span style="position: absolute; clip: rect(1.686em, 1000em, 2.381em, -0.521em); top: -1.87em; left: 50%; margin-left: -0.119em;"><span class="mn" id="MathJax-Span-69" style="font-size: 50%; font-family: STIXGeneral;">2</span><span style="display: inline-block; width: 0px; height: 2.202em;"></span></span><span style="position: absolute; clip: rect(0.818em, 1000em, 1.25em, -0.536em); top: -1.218em; left: 0em;"><span style="border-left: 0.358em solid; display: inline-block; overflow: hidden; width: 0px; height: 1.25px; vertical-align: 0em;"></span><span style="display: inline-block; width: 0px; height: 1.071em;"></span></span></span></span></span></span><span class="mo" id="MathJax-Span-70" style="font-family: STIXGeneral; padding-left: 0.25em;">⋅</span><span class="mn" id="MathJax-Span-71" style="font-family: STIXGeneral; padding-left: 0.25em;">4</span><span class="mo" id="MathJax-Span-72" style="font-family: STIXGeneral; padding-left: 0.25em;">⋅</span><span class="mn" id="MathJax-Span-73" style="font-family: STIXGeneral; padding-left: 0.25em;">5</span><span class="mo" id="MathJax-Span-74" style="font-family: STIXGeneral; padding-left: 0.313em;">=</span><span class="mn" id="MathJax-Span-75" style="font-family: STIXGeneral; padding-left: 0.313em;">20</span></span></span><span style="display: inline-block; width: 0px; height: 2.56em;"></span></span></span><span style="border-left: 0em solid; display: inline-block; overflow: hidden; width: 0px; height: 1.368em; vertical-align: -0.471em;"></span></span></nobr></span><script id="MathJax-Element-9" type="math/mml">&lt;m:math&gt;
+                                                      
+                                                      &lt;m:mrow&gt;
+                                                         &lt;m:mn&gt;2&lt;/m:mn&gt;
+                                                         &lt;m:mo&gt;⋅&lt;/m:mo&gt;
+                                                         &lt;m:mstyle scriptlevel="1"&gt;
+                                                            &lt;m:mfrac&gt;
+                                                               &lt;m:mn&gt;1&lt;/m:mn&gt;
+                                                               &lt;m:mn&gt;2&lt;/m:mn&gt;
+                                                            &lt;/m:mfrac&gt;
+                                                         &lt;/m:mstyle&gt;
+                                                         &lt;m:mo&gt;⋅&lt;/m:mo&gt;
+                                                         &lt;m:mn&gt;4&lt;/m:mn&gt;
+                                                         &lt;m:mo&gt;⋅&lt;/m:mo&gt;
+                                                         &lt;m:mn&gt;5&lt;/m:mn&gt;
+                                                         &lt;m:mo&gt;=&lt;/m:mo&gt;
+                                                         &lt;m:mn&gt;20&lt;/m:mn&gt;
+                                                      &lt;/m:mrow&gt;
+                                                      
+                                                   &lt;/m:math&gt;</script></span> cm
+                                             
+                                             <div tag="sup">2</div>.
+                                             
+                                             
+                                          </div>
+                                          
+                                       </div>
+                                       
+                                       
+                                       <div class="editor-paperfigure-container">
+                                          
+                                          <div class="figureDiv">
+                                             <img src="../data/content-ma/concept/hv/me7/hv-me73/../images/highres/hv-me73-e2-t02.jpg" style="width:300px" />
+                                             
+                                             
+                                             <div class="caption"></div>
+                                             
+                                          </div>
+                                          
+                                          <div id="hv-me73-e2-fig2" tag="paperfigure" location="here" type="t" label="hv-me73-e2-fig2">
+                                             
+                                             <div tag="caption"></div>
+                                             
+                                             <div tag="content">
+                                                
+                                                
+                                                <div tag="resource" type="graphic">
+                                                   
+                                                   
+                                                   <div tag="name">hv-me73-e2-t02.jpg</div>
+                                                   
+                                                   
+                                                   <div tag="id"></div>
+                                                   
+                                                   
+                                                   <div tag="width">6cm</div>
+                                                   
+                                                   
+                                                   <div tag="height"></div>
+                                                   
+                                                   
+                                                   <div tag="description">vierhoek</div>
+                                                   
+                                                   
+                                                   <div tag="owner">math4all</div>
+                                                   
+                                                   
+                                                </div>
+                                                
+                                                
+                                             </div>
+                                             
+                                          </div>
+                                          
+                                       </div>
+                                       
+                                       
+                                    </div>
+                                    
+                                    
+                                 </div>
+                                 
+                                 
+                                 
+                                 <div tag="item" type="open" label="b">
+                                    
+                                    <div class="multi-item-item-label">b</div>
+                                    
+                                    
+                                    <div tag="itemcontent">
+                                       
+                                       
+                                       <div tag="question">
+                                          
+                                          
+                                          <div tag="p">
+                                             
+                                             <div class="close-paragraph"></div>
+                                             
+                                             <div class="paragraph-content" id="d22e146">
+                                                Ga na, dat je dezelfde uitkomst krijgt als je het parallellogram met de andere diagonaal
+                                                verdeelt.
+                                                
+                                                
+                                             </div>
+                                             
+                                          </div>
+                                          
+                                          
+                                       </div>
+                                       
+                                       
+                                    </div>
+                                    
+                                    
+                                    <div tag="answer">
+                                       
+                                       
+                                       <div tag="p">
+                                          
+                                          <div class="close-paragraph"></div>
+                                          
+                                          <div class="paragraph-content" id="d22e153">
+                                             Ga na dat behalve de basis ook de hoogte van beide driehoeken hetzelfde is als bij
+                                             a.
+                                             
+                                             
+                                          </div>
+                                          
+                                       </div>
+                                       
+                                       
+                                    </div>
+                                    
+                                    
+                                 </div>
+                                 
+                                 
+                                 
+                                 <div tag="item" type="open" label="c">
+                                    
+                                    <div class="multi-item-item-label">c</div>
+                                    
+                                    
+                                    <div tag="itemcontent">
+                                       
+                                       
+                                       <div tag="question">
+                                          
+                                          
+                                          <div tag="p">
+                                             
+                                             <div class="close-paragraph"></div>
+                                             
+                                             <div class="paragraph-content" id="d22e164">
+                                                Kun je dit parallellogram met behulp van alleen de twee afmetingen in de figuur zelf
+                                                tekenen?
+                                                
+                                                
+                                             </div>
+                                             
+                                          </div>
+                                          
+                                          
+                                       </div>
+                                       
+                                       
+                                    </div>
+                                    
+                                    
+                                    <div tag="answer">
+                                       
+                                       
+                                       <div tag="p">
+                                          
+                                          <div class="close-paragraph"></div>
+                                          
+                                          <div class="paragraph-content" id="d22e171">
+                                             Nee, met behulp van deze twee afmetingen ligt de figuur nog niet vast. Je moet ook
+                                             bijvoorbeeld <span class="math-container"><span tag="m:math">
+                                                   <span tag="m:mrow"><span tag="m:mo">∠</span><span tag="m:mi">B</span><span tag="m:mi">A</span><span tag="m:mi">C</span></span>
+                                                   </span><span class="MathJax" id="MathJax-Element-10-Frame" style="" aria-readonly="true" role="textbox">
+                                                   <nobr><span class="math" id="MathJax-Span-76"><span style="display: inline-block; position: relative; width: 43px; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.713em, 1000em, 2.756em, -0.513em); top: -2.56em; left: 0em;"><span class="mrow" id="MathJax-Span-77"><span class="mrow" id="MathJax-Span-78"><span class="mo" id="MathJax-Span-79" style="font-family: STIXGeneral;">∠</span><span class="mi" id="MathJax-Span-80" style="font-family: STIXGeneral; font-style: italic;">B</span><span class="mi" id="MathJax-Span-81" style="font-family: STIXGeneral; font-style: italic;">A</span><span class="mi" id="MathJax-Span-82" style="font-family: STIXGeneral; font-style: italic;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.022em;"></span></span></span></span><span style="display: inline-block; width: 0px; height: 2.56em;"></span></span></span><span style="border-left: 0em solid; display: inline-block; overflow: hidden; width: 0px; height: 0.966em; vertical-align: -0.093em;"></span></span></nobr></span><script id="MathJax-Element-10" type="math/mml">&lt;m:math&gt;
+                                                      
+                                                      &lt;m:mrow&gt;
+                                                         &lt;m:mo&gt;∠&lt;/m:mo&gt;
+                                                         &lt;m:mi&gt;B&lt;/m:mi&gt;
+                                                         &lt;m:mi&gt;A&lt;/m:mi&gt;
+                                                         &lt;m:mi&gt;C&lt;/m:mi&gt;
+                                                      &lt;/m:mrow&gt;
+                                                      
+                                                   &lt;/m:math&gt;</script></span> weten. Voor de oppervlakte maakt dat kennelijk geen verschil!
+                                             
+                                             
+                                          </div>
+                                          
+                                       </div>
+                                       
+                                       
+                                    </div>
+                                    
+                                    
+                                 </div>
+                                 
+                                 
+                                 
+                              </div>
+                              
+                              
+                              
+                           </div>
+                           
+                           
+                           
+                        </div>
+                        
+                     </div>
+                     
+                  </div>
+                  
+               </div>
+               
+               
+               
+            </div>
+            
+         </div>
+         
+         <div class="menuDiv" style="margin-top: 0px;">
+            
+            <div class="menuDiv-shadow"></div>
+            
+            <div class="menuDiv-inner">
+               
+               <div class="menu-item-padding"></div>
+               
+               <div class="menu-item-div" item="explore"><a shape="rect" id="selected-menu-item" href="view?comp=hv-me7&amp;subcomp=hv-me73&amp;variant=editor&amp;item=explore">
+                     </a><div class="menu-item-dot-wrapper">
+                     
+                     <div class="menu-item-dot"></div>
+                     
+                  </div>
+                  Verkennen
+               </div>
+               
+               <div class="menu-item-div" item="explanation"><a shape="rect" class="navigatie" href="view?comp=hv-me7&amp;subcomp=hv-me73&amp;variant=editor&amp;item=explanation">
+                     Uitleg</a></div>
+               
+               <div class="menu-item-div" item="example" num="1"><a shape="rect" class="navigatie" href="view?comp=hv-me7&amp;subcomp=hv-me73&amp;variant=editor&amp;item=example&amp;num=1">
+                     Voorbeeld 1</a></div>
+               
+               <div class="menu-item-div" item="example" num="2"><a shape="rect" class="navigatie" href="view?comp=hv-me7&amp;subcomp=hv-me73&amp;variant=editor&amp;item=example&amp;num=2">
+                     Voorbeeld 2</a></div>
+               
+               <div class="menu-item-div" item="example" num="3"><a shape="rect" class="navigatie" href="view?comp=hv-me7&amp;subcomp=hv-me73&amp;variant=editor&amp;item=example&amp;num=3">
+                     Voorbeeld 3</a></div>
+               
+               <div class="menu-item-div" item="digest"><a shape="rect" class="navigatie" href="view?comp=hv-me7&amp;subcomp=hv-me73&amp;variant=editor&amp;item=digest">
+                     Verwerken</a></div>
+               
+               <div class="menu-item-div" item="application"><a shape="rect" class="navigatie" href="view?comp=hv-me7&amp;subcomp=hv-me73&amp;variant=editor&amp;item=application">
+                     Toepassen</a></div>
+               
+               <div class="menu-item-div menu-item-answer" item="answers"><a shape="rect" class="navigatie" href="view?comp=hv-me7&amp;subcomp=hv-me73&amp;variant=editor&amp;item=answers">
+                     Antwoorden</a></div>
+               
+               <div class="menu-item-padding"></div>
+               
+            </div>
+            
+         </div>
+         
+         <div style="clear:both"></div>
+         
+      </div>
+      
+      <div class="commit-button" onclick="javascript:submitDocument('hv-me7','hv-me73')"></div>
+      
+   </body>
+</html>
+
+
+
+

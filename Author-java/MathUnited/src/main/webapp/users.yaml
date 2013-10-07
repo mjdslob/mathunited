@@ -1,0 +1,31 @@
+users :
+  mslob:
+    password: 9bd3f491f6d9108203255063abd5b02e
+    roles: [editor_saba,editor_concept_alt]
+    salt: 735118
+    mail: m.slob@math4all.nl
+  jgademan:
+    password: a9dae7d0274002065f8723551af1281c
+    roles: [editor_saba,editor_concept_alt]
+    salt: 296093
+    mail: j.gademan@math4all.nl
+  fspijkers:
+    password: 5c0d56b797fba4e3b175fe5f34769748
+    roles: [editor_saba,editor_concept_alt]
+    salt: 26771
+    mail: f.spijkers@math4all.nl
+  cgault:
+    mail: C.Gault@rsgslingerboslevant.nl
+    password: 6a5207e64d28ef6e160b78a72711ea9e
+    roles: [editor_saba]
+    salt: 541311
+  xsnoeker:
+    mail: info@xs4math.nl
+    password: 60bd5fbfc585701f3f506865b2d53af7
+    roles: [editor_saba]
+    salt: 50929
+  mhensmann:
+    mail: mhensmann@gmail.com
+    password: 418c2499f689a5a41819e9ba42743878
+    roles: [editor_saba]
+    salt: 493463    

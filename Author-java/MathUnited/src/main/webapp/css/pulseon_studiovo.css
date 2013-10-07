@@ -1,0 +1,226 @@
+html, body {
+   margin:0; padding:0;
+   width:100%;
+   font: 12px verdana,arial,sans-serif;
+   line-height:1.6em;
+   color:black;
+}
+html {
+   /*background-color:#a7a69a;*/
+   position:relative;
+}
+
+.header {
+    width:  770px;
+    height: 111px;
+    margin:1px 0px 3px 0px;
+    overflow:hidden;
+}
+.header img {
+    position:relative;
+    left:-30px;
+}
+.ribbon {
+    width:764px;
+    height:30px;
+    border-top:1px solid black;
+    border-bottom:1px solid black;
+    padding-top:5px;
+}
+.subcomponent-title {
+    font-size:1.2em;
+    font-weight:bold;
+    color:red;
+    display:block;
+    float:left;
+    margin:5px 0px 0px 10px;
+}
+.component-title {
+    font-size:1.4em;
+    font-weight:bold;
+    color:red;
+    display:block;
+    float:right;
+    margin:5px 30px 0px 0px;
+}
+#logo {
+    width:180px;
+    height:93px;
+    margin-left:11px;
+    margin-bottom:26px;
+    position:relative;
+}
+#logo img {
+    width:180px;
+    height:93px;
+    margin-bottom:20px;
+}
+#logo span {
+    position:absolute;
+    top:60px;
+    left:0px;
+    width:180px;
+    display:inline-block;
+    color:white;
+    text-align:center;
+}
+#content {
+    padding: 10px 6px 10px 10px;
+}
+p {
+    margin:2px 0px 15px 0px;
+}
+h2 {
+    font-size: 1.1em;
+    margin-bottom:2px;
+    margin-top:2px;
+
+}
+.content-tab {
+    display:block;
+    overflow:auto;
+    clear:both;
+}
+.figureDiv.right {
+    float:right;
+    margin-left:20px;
+}
+ul.learningaspects li{
+    margin:20px 0px 20px 0px;
+}
+#content ul {
+    padding-left:20px;
+}
+/*---------------------------*/
+/* WIDGET: exercise-sequence */
+/*---------------------------*/
+.exercise {
+    width:500px;
+    /*border:1px solid black;*/
+    padding:5px;
+    position:relative;
+    left:-5px;
+    margin-bottom:5px;
+}
+.exercise-multi-item {
+    /*
+    border:1px solid rgb(100,100,100);
+    padding:15px;
+    */
+}
+.exercise-multi-item .exercise-item {
+    display:none;
+}
+.exercise-multi-item .exercise-item.selected {
+    display:block;
+}
+/*---------------------------*/
+/* WIDGET: meerkeuzevraag    */
+/*---------------------------*/
+.choise-exercise-label {
+    width:18px;
+    height:18px;
+    float:left;
+    border:1px solid rgb(100,100,100);
+    clear:left;
+    margin-right:10px;
+}
+.choise-exercise-label.good-answer {
+    background-color:green;
+}
+.choise-exercise-label.wrong-answer {
+    background-color:red;
+}
+.choice-exercise-option {
+    margin-bottom:10px;
+}
+.exercise-completed {
+    display:none;
+}
+.exercise-completed.show {
+    display:block;
+}
+.item-completed {
+    display:none;
+    width:66px;
+    height:52px;
+    float:right;
+    position:relative;
+    top:-30px;
+}
+.item-completed.show {
+    display:block;
+    background-image: url('../sources_studiovo/knoppen-uit_11.png');
+}
+.item-completed.show:hover {
+    background-image: url('../sources_studiovo/knoppen-active_11.png');
+}
+.item-completed.show:active {
+    background-image: url('../sources_studiovo/knoppen-hoover_11.png');
+}
+/*---------------------------*/
+/* WIDGET: sleepopgave       */
+/*---------------------------*/
+.exercise-drop-text {
+    
+}
+.textentry-item {
+    border:1px solid black;
+    width:130px;
+    height:20px;
+    display:inline-block;
+}
+.exercise-drop-cells {
+    position:absolute;
+    right:-110px;
+    bottom:20px;
+    width:100px;    
+}
+.exercise-drop-cell {
+    width:130px;
+    height:20px;
+    border: 1px solid black;
+    margin:10px 0px;
+    padding:0px 5px 0px 5px;
+    background-color:rgb(200,200,200);
+    font-weight:bold;
+    text-align:center;
+}
+.drop-item {
+    width:140px;
+    height:20px;
+    border: 1px solid black;
+    display:inline-block;
+    position:relative;
+    top:5px;
+}
+
+/*---------------------------*/
+/* pages                     */
+/*---------------------------*/
+
+.page {
+    position:relative;
+    height:100%;
+    clear:both;
+}
+.page.selected {
+    display:block;
+}
+.page-navigator {
+    position:absolute;
+    right:0px;
+    bottom:0px;
+    cursor:pointer;
+    font-size:0.7em;
+}
+.page-navigator-ref {
+    background-color:rgb(0,0,100);
+    color:white;
+    float:left;
+    margin-left:3px;
+    padding:2px 5px;
+}
+.page-navigator-ref.selected {
+    color:red;
+}
