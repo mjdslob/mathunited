@@ -1,5 +1,25 @@
+Content management and publishing for MathUnited-based content.
+
+GAE (Google App Engine)
+------------------------
 Code which runs in Google App Engine. Contains the following functionality:
-- XSLT transforms of XML content for viewing or to generate format for 3rd party tools (e.g. PulseOn)
-- receiving or deleting content (files, binary resources)
+1) XSLT transforms of XML content for viewing or to generate format for 3rd party tools (e.g. PulseOn)
+2) receiving or deleting content (files, binary resources)
 
 Use of Eclipse is recommended with Google App Engine plugin. Also add Egit plugin to manage this git repository from Eclipse
+
+Publisher
+----------
+Web-portal and PHP-tools for authoring educative content in the MathUnited XML format.
+
+Author-Java
+-----------
+Java-based code for author-side processing of XML content.
+1) viewers, based on XSLT transformation
+2) basic editor functionality (commit, modify, etc)
+3) To do: content management functionality
+This is a Maven project which can directly be openen from Netbeans, no need to set up a new project.
+After building the project, a 'target' folder is generated which contains the war file to deploy in Tomcat. As it is a generated folder, the 'target' folder is not part of the repository.
+
+
+For questions contact Martijn Slob (mjdslob@gmail.com)
