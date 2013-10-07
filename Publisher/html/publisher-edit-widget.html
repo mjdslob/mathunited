@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
+        <link type="text/css" href="javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="stylesheet" />
+        <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
+        <link rel="stylesheet" href="publisher-ui.css" type="text/css" />
+        <script type="text/javascript" src="javascript/PublisherUI-Main.js"></script>
+        <link rel="stylesheet" type="text/css" href="WiskundeMenu.css" title="style" />
+        <script type="text/javascript" src="javascript/WiskundeMenu.js"></script>
+ <script type="text/javascript">
+     function gup( name )  {
+        name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+        var href = window.location.href.replace('%20',' ');
+        var regexS = "[\\?&]"+name+"=([^&#]*)";
+        var regex = new RegExp( regexS );
+        var results = regex.exec( href );
+        if( results == null )
+            return "";
+        else
+            return results[1];
+     }
+     var viewURL = [];
+     var method = gup('repo');
+     viewURL['m4a'] = '/MathUnited/view?parent=mathunited.pragma-ade.nl:41080/Publisher/html/publisher-ma.html&variant=m4a_editor';
+     viewURL['wm'] = '/MathUnited/view?parent=mathunited.pragma-ade.nl:41080/Publisher/html/publisher-ma.html&variant=wm_editor&item=1';
+     var baseFolder = [];
+     baseFolder['m4a'] = '/data/content-ma/concept/';
+     baseFolder['wm'] = '/data/content-wm/concept/';
+     baseFolder['studiovo'] = '/data/content-studiovo/concept/';
+     baseFolder['m4a_en'] = '/data/content-ma/saba/';
+     wm = new WM_Manager({
+        methodURL:  baseFolder[method]+'leerlijnen/components.xml',
+        threadsURL: baseFolder[method]+'leerlijnen/threads.xml',
+        methodId :  false,
+        threadId :  gup('thread_id'),
+        show_thread_chooser: false,
+        viewURL  :  viewURL[method]
+     })
+     wm.init();
+  </script>
+  <style type="text/css">
+      #component-widget {
+        width:595px;
+      }
+      body {
+          background-color: white;
+      }
+  </style>
+</head>
+
+<body>
+        <div class="inner">
+            <div id="thread-container">
+                <h3 id="thread-title" class="section-container"></h3>
+                <div id="thread-info"></div>
+                <div id="component-widget" class="ui-widget clearfix"></div>
+            </div>
+        </div>
+</body>
+</html>

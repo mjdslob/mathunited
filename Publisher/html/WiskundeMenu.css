@@ -1,0 +1,155 @@
+canvas {
+    position:absolute;
+    left:0px;
+}
+#canvas-wrapper {
+    height:80px;
+}
+/*--------------*/
+/* jquery stuff */
+/*--------------*/
+#components-container {
+    /*width  : 350px;*/
+    width:275px;
+    padding: 15px 0px;
+}
+#component-widget.ui-widget {
+    font-family: Helvetica, arial;
+}
+#subcomponent-container {
+    /*width  : 348px;*/
+    width:275px;
+    margin-left:0px;
+    position:relative;
+    float:left;
+}
+#subcomponent-container .subcomponent-header {
+    margin: 5px 0px 5px 30px;
+    font-weight: bold;
+    color:#CC0000;
+}
+#subcomponent-container ol {
+    color: #CC0000;
+    font-weight:bold;
+    counter-reset: item;   /* to remove dot after list number */
+    list-style-type: none; /* to remove dot after list number */
+    padding:0; 
+}
+
+#subcomponent-container ol li { 
+    display: block;  /* to remove dot after list number */
+}
+
+#subcomponent-container ol li:before {  /* to remove dot after list number */
+    content: counter(item) "  "; 
+    counter-increment: item 
+}
+
+
+#subcomponent-container li{
+    margin:5px 0px 5px 0px;
+}
+#subcomponent-container a{
+    color : #6060A8;
+    text-decoration:none;
+    font-weight:normal;
+    padding-left:10px;
+    font-size:14px;
+}
+.mu-subcomponent-inactive{
+    color : gray;
+}
+
+#subcomponent-container a:hover{
+    color : #CC0000;
+}
+#components-container .header .ui-icon {
+    float:left;
+    margin: 2px 5px;
+}
+#components-container .header  {
+    /*width:350px;*/
+    width:100%;
+    text-align:left;
+    height:26px;
+    padding-top:4px;
+    color:#8cdb24;
+}
+#components-container .header.mu-header-inactive {
+    color:gray;
+}
+#thread-info {
+    margin: 10px 20px 10px 0px;
+    min-height:30px;
+}
+#components-container .header.mu-header-inactive.mu-selected {
+    padding-right:5px;
+/*    background-color:rgb(240,240,240);*/
+    color:#CC0000;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    font-weight:bold;
+}
+#components-container .mu-active {
+    color: #CC0000;
+    font-weight:bold;
+}
+#components-container .module-hovered {
+    color: #CC0000 !important;
+    font-weight:bold;
+}
+/*--------------*/
+/* page markup  */
+/*--------------*/
+
+#choose-thread-container {
+    background-color: #666699;
+    color:white;
+    padding: 10px 0px 0px 10px;
+    min-height:200px;
+}
+#choose-thread-container .mu-thread-menu-item {
+    font-weight: bold;
+    padding: 10px 0px 10px 0px;
+}
+
+#choose-thread-container .mu-thread-menu-item.mu-thread-item-active {
+    color: #FF8888;
+}
+#choose-thread-container .mu-thread-menu-item.mu-thread-item-selected {
+    color: #FFB518;
+}
+
+.leerlijn-chooser {
+    color:#c0c0c0;
+}
+
+#method-name-div {
+    width:150px;
+    position:absolute;
+    left:-150px;
+    height:120px;
+
+}
+#method-name-div div {
+    margin: 20px 0px 20px 0px;
+}
+/*********************/
+/* module hover      */
+/*********************/
+#module-hover-div {
+    position:absolute;
+    top:0px;
+    left:0px;
+    z-index:-5;
+    background-color:#fcee9c;
+    color:#555555;
+    height:60px;
+    padding:5px 10px 5px 10px;
+    visibility: hidden;
+}
+
+
+
+
+

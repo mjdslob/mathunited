@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--This file was created using: Onyx Editor, Version 3.7 (Full, licensed version), (c)2012 BPS Bildungsportal Sachsen GmbH-->
+<assessmentTest xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 imsqti_v2p1.xsd" 
+identifier="#id#" title="#title#">
+    <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+        <defaultValue>
+            <value>0</value>
+        </defaultValue>
+    </outcomeDeclaration>
+    <outcomeDeclaration identifier="PASS" cardinality="single" baseType="boolean">
+        <defaultValue>
+            <value>false</value>
+        </defaultValue>
+    </outcomeDeclaration>
+    <outcomeDeclaration identifier="MAXSCORE" cardinality="single" baseType="float">
+        <defaultValue>
+            <value>10</value>
+        </defaultValue>
+    </outcomeDeclaration>
+    <outcomeDeclaration identifier="SCORE_1" cardinality="single" baseType="float" interpretation="#interpretation#">
+        <defaultValue>
+            <value>0</value>
+        </defaultValue>
+    </outcomeDeclaration>
+    <testPart identifier="testpartID" navigationMode="nonlinear" submissionMode="individual">
+    </testPart>
+    <outcomeProcessing>
+        <setOutcomeValue identifier="SCORE">
+            <sum>
+                <testVariables variableIdentifier="SCORE" />
+            </sum>
+        </setOutcomeValue>
+        <outcomeCondition>
+            <outcomeIf>
+                <gte>
+                    <sum>
+                        <testVariables variableIdentifier="SCORE" />
+                    </sum>
+                    <baseValue baseType="float">6</baseValue>
+                </gte>
+                <setOutcomeValue identifier="PASS">
+                    <baseValue baseType="boolean">true</baseValue>
+                </setOutcomeValue>
+            </outcomeIf>
+            <outcomeElse>
+                <setOutcomeValue identifier="PASS">
+                    <baseValue baseType="boolean">false</baseValue>
+                </setOutcomeValue>
+            </outcomeElse>
+        </outcomeCondition>
+        <setOutcomeValue identifier="SCORE_1">
+            <sum>
+                <testVariables variableIdentifier="SCORE" sectionIdentifier="#section-id#" />
+            </sum>
+        </setOutcomeValue>
+    </outcomeProcessing>
+</assessmentTest>
