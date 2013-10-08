@@ -402,7 +402,7 @@ table tr td
 .thread-content.open {
     display:block;
 }
-#publish-button {
+.publish-button {
     background-color: rgb(200,200,240);
     padding:3px 10px;
     color:white;
@@ -411,10 +411,10 @@ table tr td
     text-align:center;
     margin-top:20px;
 }
-#publish-button:hover {
+.publish-button:hover {
     background-color: rgb(220,220,255);
 }
-#publish-button.disabled {
+.publish-button.disabled {
     background-color: rgb(220,220,220);
     border:1px solid rgb(200,200,240);
     color:rgb(220,220,220);

@@ -68,7 +68,7 @@ try{
             echo "<h1>Leerlijnen</h1>";
             $threads = $doc->xpath("/threads/thread");
             foreach($threads as $thread) {
-                echo "<a href='http://ontwikkel.scalamedia.nl/Publisher/pulseon_content_overview.php?repo=studiovo&thread=".$thread['id']."'>".$thread->title."</a></br/>";
+                echo "<a href='http://ontwikkel.scalamedia.nl/Publisher/php/pulseon_content_overview.php?repo=studiovo&thread=".$thread['id']."'>".$thread->title."</a></br/>";
             }
             return;
         }
