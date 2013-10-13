@@ -186,7 +186,8 @@ class GAEPlatform extends Platform {
                 $getUrl = $this->sendResource($imagefname, $compId, $correctedId, $repo, $type, $mimetype, $logger);
                 $imgId->name = $getUrl; //put the direct URL in the xml
             } else {
-                throw new Exception("Missing image: File $correctedId does not exist in subcomponent $compId.");
+                  $logger->trace(LEVEL_ERROR, "Missing image: File $correctedId does not exist in subcomponent $compId."); 
+//                throw new Exception("Missing image: File $correctedId does not exist in subcomponent $compId.");
             }
         }
         //...Geogebra applets...
@@ -204,7 +205,8 @@ class GAEPlatform extends Platform {
                 $getUrl = $this->sendResource($ggbfname, $compId, $correctedId, $repo, $type, $mimetype, $logger);
                 $ggbId['filename'] = $getUrl; //put the direct URL in the xml
             } else {
-                throw new Exception("Invalid Geogebra applet: File $ggbfname does not exist in subcomponent $compId.");
+                  $logger->trace(LEVEL_ERROR, "Invalid Geogebra applet: File $ggbfname does not exist in subcomponent $compId."); 
+//                throw new Exception("Invalid Geogebra applet: File $ggbfname does not exist in subcomponent $compId.");
             }
         }
         //...other resources...
@@ -220,7 +222,8 @@ class GAEPlatform extends Platform {
                 $getUrl = $this->sendResource($fname, $compId, $id, $repo, $type, $mimetype, $logger);
                 $rsrcId['href'] = $getUrl."&attachment=true"; //put the direct URL in the xml
             } else {
-                throw new Exception("Broken resourcelink: File $fname does not exist in subcomponent $compId.");
+                  $logger->trace(LEVEL_ERROR, "Broken resourcelink: File $fname does not exist in subcomponent $compId."); 
+//                throw new Exception("Broken resourcelink: File $fname does not exist in subcomponent $compId.");
             }
         }
 
