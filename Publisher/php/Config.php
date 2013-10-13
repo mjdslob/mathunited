@@ -12,7 +12,8 @@ $config_repos = array(
             'hb/'
             ),
         'index_xsl'=>'../xslt/generate-index-ma.xslt',
-        'get_QTI_url' => 'http://localhost:8080/MathUnited/view?repo=m4a&variant=m4a_view_pulseon&comp={#COMP}&subcomp={#SUBCOMP}'
+        'get_QTI_url' => 'http://mathunited.nl/view?repo=m4a&variant=m4a_view_pulseon&comp={#COMP}&subcomp={#SUBCOMP}'
+//        'get_QTI_url' => 'http://localhost:8080/MathUnited/view?repo=m4a&variant=m4a_view_pulseon&comp={#COMP}&subcomp={#SUBCOMP}'
     ),
     'm4a_en' => array(
         'id'=>'m4a_en',
