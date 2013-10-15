@@ -16,6 +16,10 @@ extension-element-prefixes="exsl">
 <xsl:param name="subcomp"/>
 <xsl:param name="is_mobile"/>
 <xsl:param name="id"/>
+<xsl:param name="repo"/>
+<xsl:param name="repo-path"/>
+<xsl:param name="baserepo-path"/>
+
 <xsl:variable name="host_type">auteur</xsl:variable>
 <xsl:variable name="cm2px" select="number(50)"/>
 <xsl:variable name="parsed_component" select="saxon:parse($component)"/>

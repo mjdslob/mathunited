@@ -73,6 +73,7 @@ extension-element-prefixes="exsl">
 
 
 <!-- TABLES -->
+<!-- copy the table (it it html anyway) but add the @tag attributes -->
 <xsl:template match="table" mode="editor">
     <table tag="table">
          <xsl:apply-templates mode="editor"/>

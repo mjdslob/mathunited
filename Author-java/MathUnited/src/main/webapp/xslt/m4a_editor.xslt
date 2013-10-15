@@ -20,6 +20,8 @@
     <xsl:param name="is_mobile"/>
     <xsl:param name="id"/>
     <xsl:param name="repo"/>
+    <xsl:param name="repo-path"/>
+    <xsl:param name="baserepo-path"/>
     <xsl:param name="component"/>
     <xsl:variable name="parsed_component" select="saxon:parse($component)"/>
     <xsl:variable name="subcomponent" select="$parsed_component/component/subcomponents/subcomponent[@id=$subcomp]"/>
@@ -146,12 +148,10 @@
                     <xsl:call-template name="paragraph-template"/>
                 </div>
                 <div id="meta-data-container" style="display:none">
-                    <span id="meta-data-comp">
-                        <xsl:value-of select="$comp"/>
-                    </span>
-                    <span id="meta-data-refbase">
-                        <xsl:value-of select="$refbase"/>
-                    </span>
+                    <span id="meta-data-comp"><xsl:value-of select="$comp"/></span>
+                    <span id="meta-data-refbase"><xsl:value-of select="$refbase"/></span>
+                    <span id="meta-data-repo-path"><xsl:value-of select="$repo-path"/></span>
+                    <span id="meta-data-baserepo-path"><xsl:value-of select="$baserepo-path"/></span>
                 </div>
                 <div style="display:none">
                     <div id="dialog-remove-item-confirm" title="Item verwijderen?">

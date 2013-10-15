@@ -158,7 +158,19 @@ function allowEditing(par) {
 }
 
 $(document).ready(function() {
-//explicitly set WIDTH and HEIGHT attributes on images for proper usage in tinymce
+    //check if images exist, if not fallback to backup repository
+    var baseRepo = $('#meta-data-baserepo-path').text();
+    var repo= $('#meta-data-repo-path').text();
+    $('img').each(function() {
+        var img = $(this);
+        debugger;
+        if(img[0].naturalWidth===0) {
+            var src = img[0].src;
+            img[0].src = src.replace(repo,baseRepo);
+        }
+    });
+
+    //explicitly set WIDTH and HEIGHT attributes on images for proper usage in tinymce
     $('img').each(function() {
         var img = $(this);
         var w = img.width();

@@ -103,10 +103,14 @@ public class ViewServlet extends HttpServlet {
             	if(repo==null)
             		throw new Exception("Het verplichte argument 'repo' ontbreekt: "+repo);
             }
-            
-            Repository repository = config.getRepos().get(repo);
+            Map<String, Repository> repoMap = config.getRepos();
+            Repository repository = repoMap.get(repo);
             if(repository==null) {
                 throw new Exception("Onbekende repository: "+repo);
+            }
+            Repository baserepo = null;
+            if(repository.baseRepo!=null) {
+                baserepo = repoMap.get(repository.baseRepo);
             }
             //get default variant for this repo or get it from the url
             if(variant==null) {
@@ -162,7 +166,8 @@ public class ViewServlet extends HttpServlet {
             int ind = sub.file.lastIndexOf('/');
             parameterMap.put("refbase", repository.path+"/"+sub.file.substring(0, ind+1));
             parameterMap.put("component", component.getXML());
-            parameterMap.put("repo", repo);
+            parameterMap.put("repo-path", repository.path);
+            parameterMap.put("baserepo-path", baserepo==null?"":baserepo.path);
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             ContentResolver resolver = new ContentResolver(repo, context);
             

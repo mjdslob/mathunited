@@ -20,6 +20,9 @@ extension-element-prefixes="exsl">
 <xsl:param name="component"/>
 <xsl:variable name="parsed_component" select="saxon:parse($component)"/>
 <xsl:variable name="subcomponent" select="$parsed_component/component/subcomponents/subcomponent[@id=$subcomp]"/>
+<xsl:param name="repo"/>
+<xsl:param name="repo-path"/>
+<xsl:param name="baserepo-path"/>
 
 <!--   /////////////////////////////////////////////   -->
 <!--  Specific for auteurssite (do not copy from GAE): -->
