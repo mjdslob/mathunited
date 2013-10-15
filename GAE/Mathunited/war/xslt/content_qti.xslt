@@ -25,13 +25,13 @@ extension-element-prefixes="exsl">
 <xsl:template match="paperfigure"  mode="content">
       <xsl:choose>
           <xsl:when test="@location='right' or @location='margin'">
-             <div class="figureDiv right">
+             <div class="figureDiv right" xmlns="">
                  <xsl:apply-templates select="*[name()!='caption']" mode="content"/>
                  <xsl:apply-templates select="caption" mode="content"/>
              </div>
           </xsl:when>
           <xsl:otherwise>
-             <div class="figureDiv">
+             <div class="figureDiv" xmlns="">
                  <xsl:apply-templates select="*[name()!='caption']" mode="content"/>
                  <xsl:apply-templates select="caption" mode="content"/>
              </div>
@@ -44,7 +44,7 @@ extension-element-prefixes="exsl">
 </xsl:template>
 
 <xsl:template match="combination" mode="content">
-    <table><tbody>
+    <table xmlns=""><tbody>
         <xsl:apply-templates select="combiblock" mode="content">
             <xsl:with-param name="nx" select="number(@nx)"/>
             <xsl:with-param name="ny" select="number(@ny)"/>
@@ -73,10 +73,10 @@ extension-element-prefixes="exsl">
 
 <xsl:template match="resource" mode="content">
    <xsl:variable name="width" select="number(substring-before(width,'cm'))*$cm2px"/>
-   <img>
+   <img xmlns="">
        <xsl:choose>
           <xsl:when test="$host_type='GAE'">
-             <xsl:attribute name="src"><xsl:value-of select="name"/></xsl:attribute>
+             <xsl:attribute name="src"><xsl:value-of select="concat($urlbase,name)"/></xsl:attribute>
           </xsl:when>
           <xsl:otherwise>
              <xsl:attribute name="src"><xsl:value-of select="concat($urlbase,'../images/highres/',replace(name,'Images/',''))"/></xsl:attribute>
@@ -93,18 +93,18 @@ extension-element-prefixes="exsl">
     <xsl:apply-templates mode="content"/>
 </xsl:template>
 <xsl:template match="subcaption" mode="content">
-    <div class="subcaption">
+    <div class="subcaption" xmlns="">
         <xsl:apply-templates mode="content"/>
     </div>
 </xsl:template>
 <xsl:template match="paperfigure/caption" mode="content">
-    <div class="caption">
+    <div class="caption" xmlns="">
         <xsl:apply-templates mode="content"/>
     </div>
 </xsl:template>
 
 <xsl:template match="movie" mode="content">
-    <div class="movie-wrapper">
+    <div class="movie-wrapper" xmlns="">
         <xsl:if test="@optional='true'">
             <div class="movie-icon" onclick="javascript:toggleMovie(this)"/>
         </xsl:if>
@@ -139,11 +139,11 @@ extension-element-prefixes="exsl">
     </div>
 </xsl:template>
 <xsl:template match="keyword" mode="content">
-   <span class="keyword"><xsl:value-of select="text"/></span>
+   <span class="keyword" xmlns=""><xsl:value-of select="text"/></span>
 </xsl:template>
 
 <xsl:template match="hyperlink" mode="content">
-    <a>
+    <a xmlns="">
         <xsl:for-each select="@*">
             <xsl:attribute name="{name()}"><xsl:value-of select="."/></xsl:attribute>
         </xsl:for-each>
@@ -152,14 +152,14 @@ extension-element-prefixes="exsl">
 </xsl:template>
 
 <xsl:template match="resourcelink" mode="content">
-    <a target="_blank" class="dox" > <!-- @class='dox' is used in GenerateQTI to find these resourcelink, do not change -->
+    <a target="_blank" class="dox"  xmlns=""> <!-- @class='dox' is used in GenerateQTI to find these resourcelink, do not change -->
         <xsl:for-each select="@*">
             <xsl:choose>
                 <!-- relative url w.r.t. base path of content -->
                 <xsl:when test="name()='href'">
 	                <xsl:choose>
 	                   <xsl:when test="$host_type='GAE'">
-		                    <xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
+		                    <xsl:attribute name="href"><xsl:value-of select="concat($urlbase,.)"/></xsl:attribute>
 	                   </xsl:when>
 	                   <xsl:otherwise>
 		                    <xsl:attribute name="href"><xsl:value-of select="concat($urlbase,'../dox/',.)"/></xsl:attribute>
@@ -178,17 +178,17 @@ extension-element-prefixes="exsl">
 </xsl:template>
 
 <xsl:template match="itemize[@type='packed']" mode="content">
-     <ul><xsl:apply-templates mode="content"/></ul>
+     <ul xmlns=""><xsl:apply-templates mode="content"/></ul>
 </xsl:template>
 <xsl:template match="itemize[not(@type='packed')]" mode="content">
-     <ol><xsl:apply-templates mode="content"/></ol>
+     <ol xmlns=""><xsl:apply-templates mode="content"/></ol>
 </xsl:template>
 <xsl:template match="itemize/item" mode="content">
     <li><xsl:apply-templates mode="content"/></li>
 </xsl:template>
 
 <xsl:template match="examplecontent" mode="content">
-    <div class="examplecontent">
+    <div class="examplecontent" xmlns="">
         <xsl:apply-templates mode="content"/>
     </div>
 </xsl:template>
@@ -196,7 +196,7 @@ extension-element-prefixes="exsl">
 
 <xsl:template match="examplesolution" mode="content">
     <xsl:if test="not(normalize-space()='')">
-        <div class="m4a-example">
+        <div class="m4a-example" xmlns="">
                 <div onclick="javascript:M4A_ShowExampleAnswer(this)" class="example-answer-button">&gt; antwoord</div>
                 <div class="m4a-answer">
                     <xsl:apply-templates mode="content"/>
@@ -218,7 +218,7 @@ extension-element-prefixes="exsl">
                 <div  onclick="javascript:M4A_CloseAnswer(this)" class="answerCloseButton"/>
             </div>
 -->            
-            <div class="m4a-answer selected">       
+            <div class="m4a-answer selected" xmlns="">       
                 <xsl:apply-templates mode="content"/>
                 <div style="clear:both"/>
             </div>
@@ -231,7 +231,7 @@ extension-element-prefixes="exsl">
 </xsl:template>
 
 <xsl:template match="website" mode="content">
-    <a target="_blank">
+    <a target="_blank" xmlns="">
         <xsl:attribute name="href">http://<xsl:value-of select="."/></xsl:attribute>
         <xsl:value-of select="."/>
     </a>
@@ -272,11 +272,11 @@ extension-element-prefixes="exsl">
     "<xsl:apply-templates mode="content"/>"
 </xsl:template>
 <xsl:template match="citation" mode="content">
-     <cite class="citation">"<xsl:apply-templates mode="content"/>"</cite>
+     <cite class="citation" xmlns="">"<xsl:apply-templates mode="content"/>"</cite>
 </xsl:template>
 <xsl:template match="applet[@type='ggb']" mode="content">
             <xsl:apply-templates mode="content"/>
-            <iframe style="overflow:hidden" _type='ggb'>
+            <iframe style="overflow:hidden" _type='ggb' xmlns="">
                 <xsl:if test="@width">
                     <xsl:attribute name="width"><xsl:value-of select="@width"/></xsl:attribute>
                 </xsl:if>
@@ -288,7 +288,7 @@ extension-element-prefixes="exsl">
                 </xsl:if>
                 <xsl:choose>
                    <xsl:when test="$host_type='GAE'">
-            		    <xsl:attribute name="src"><xsl:value-of select="concat('https://mathunited2012.appspot.com/geogebra?file=',encode-for-uri(@filename))"/></xsl:attribute>
+            		    <xsl:attribute name="src"><xsl:value-of select="concat($urlbase,'/geogebra?file=',encode-for-uri(@filename))"/></xsl:attribute>
                    </xsl:when>
                    <xsl:otherwise>
 		                <xsl:attribute name="src"><xsl:value-of select="concat('http://mathunited.pragma-ade.nl:41080/MathUnited/geogebra?file=..',$urlbase,replace(@filename,'GeoGebra/','../geogebra/'))"/></xsl:attribute>
@@ -491,12 +491,12 @@ extension-element-prefixes="exsl">
 <!--        HTML          -->
 <!-- //////////////////// -->
 <xsl:template match="center" mode="content">
-    <span style="text-align:center">
+    <span style="text-align:center" xmlns="">
         <xsl:apply-templates mode="content"/>
     </span>
 </xsl:template>
 <xsl:template match="mark" mode="content">
-    <span style="background-color:yellow;color:black;">
+    <span style="background-color:yellow;color:black;" xmlns="">
         <xsl:apply-templates mode="content"/>
     </span>
 </xsl:template>
@@ -504,7 +504,7 @@ extension-element-prefixes="exsl">
 
 <xsl:template match="img | qti:img" mode="content">
    <xsl:variable name="width" select="number(substring-before(width,'cm'))*$cm2px"/>
-   <img>
+   <img xmlns="">
        <xsl:choose>
           <xsl:when test="$host_type='GAE'">
 		       <xsl:attribute name="src"><xsl:value-of select="name"/></xsl:attribute>

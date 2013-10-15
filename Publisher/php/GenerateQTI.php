@@ -181,6 +181,8 @@ try{
             copy($ref_org, $ref_dest);
             $dox['href'] = str_replace($tempfolder, '', $ref_dest);
         }
+ 
+ 
         //geogebra
         /*
         $ggblist = $doc->xpath('//iframe[@_type="ggb"]');

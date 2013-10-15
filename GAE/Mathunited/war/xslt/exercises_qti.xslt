@@ -24,6 +24,9 @@ extension-element-prefixes="exsl">
                 identifier="{$asm-id}" 
                 title="{concat($parsed_component/component/title,' - ', $subcomponent/title,' - Opgave ',$nr)}" adaptive="false" timeDependent="false">
         <qti:responseDeclaration identifier="{concat('RESPONSE_',generate-id(single-item/item))}" cardinality="single" baseType="string">
+			<qti:correctResponse><qti:value>
+        		<xsl:apply-templates select="single-item/item/answer/node()" mode="content"/>
+            </qti:value></qti:correctResponse>
         </qti:responseDeclaration>
         <qti:outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
             <qti:defaultValue>
@@ -41,8 +44,8 @@ extension-element-prefixes="exsl">
             </qti:defaultValue>
         </qti:outcomeDeclaration>
         <qti:itemBody>
-            <h1><xsl:value-of select="$item-list/item-list/*[name()=$item]/@name"/></h1>
-            <h2>Opgave <xsl:value-of select="$nr"/></h2>
+            <h1 xmlns=""><xsl:value-of select="$item-list/item-list/*[name()=$item]/@name"/></h1>
+            <h2 xmlns="">Opgave <xsl:value-of select="$nr"/></h2>
             <xsl:apply-templates select="single-item/item/itemcontent/itemintro/node()" mode="content"/>
             <xsl:apply-templates select="single-item/item/itemcontent/subintro/node()" mode="content"/>
             <xsl:apply-templates select="single-item/item/itemcontent/intro/node()" mode="content"/>
@@ -69,6 +72,9 @@ extension-element-prefixes="exsl">
                 title="{concat($parsed_component/component/title,' - ', $subcomponent/title,' - Opgave ',$nr)}" adaptive="false" timeDependent="false">
         <xsl:for-each select="multi-item/items/item">
             <qti:responseDeclaration identifier="{concat('RESPONSE_',generate-id())}" cardinality="single" baseType="string">
+				<qti:correctResponse><qti:value>
+	        		<xsl:apply-templates select="answer/node()" mode="content"/>
+	            </qti:value></qti:correctResponse>
             </qti:responseDeclaration>
         </xsl:for-each>
         <qti:outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
@@ -154,7 +160,7 @@ extension-element-prefixes="exsl">
             </div>
         </div>
     </xsl:for-each>
-    <div style="clear:left"/>
+    <div style="clear:left"  xmlns=""/>
     <!--
     <div class="item-completed" onclick="javascript:nextItem(this)"></div>
     -->

@@ -275,49 +275,26 @@ extension-element-prefixes="exsl">
      <cite class="citation">"<xsl:apply-templates mode="content"/>"</cite>
 </xsl:template>
 <xsl:template match="applet[@type='ggb']" mode="content">
-    <xsl:choose>
-        <xsl:when test="$is_mobile!='DISABLEtrue'">
-            <xsl:apply-templates mode="content"/>
-            <iframe style="overflow:hidden" _type='ggb'>
-                <xsl:if test="@width">
-                    <xsl:attribute name="width"><xsl:value-of select="@width"/></xsl:attribute>
-                </xsl:if>
-                <xsl:if test="@height">
-                    <xsl:attribute name="height"><xsl:value-of select="@height"/></xsl:attribute>
-                </xsl:if>
-                <xsl:if test="@location='right'">
-                    <xsl:attribute name="style">float:right</xsl:attribute>
-                </xsl:if>
-                <xsl:choose>
-                   <xsl:when test="$host_type='GAE'">
-            		    <xsl:attribute name="src"><xsl:value-of select="concat('http://mathunited2012.appspot.com/geogebra?file=',encode-for-uri(@filename))"/></xsl:attribute>
-                   </xsl:when>
-                   <xsl:otherwise>
-		                <xsl:attribute name="src"><xsl:value-of select="concat('http://mathunited.pragma-ade.nl:41080/MathUnited/geogebra?file=..',$urlbase,replace(@filename,'GeoGebra/','../geogebra/'))"/></xsl:attribute>
-                   </xsl:otherwise>
-                </xsl:choose>
-            </iframe>
-        </xsl:when>
-        <xsl:otherwise>
-            <applet code="geogebra.GeoGebraApplet" codebase="/sources/" archive="geogebra.jar">
-                <!--
-                   <xsl:attribute name="archive"><xsl:value-of select="$URLgeogebra"/></xsl:attribute>
-                -->
-                <xsl:attribute name="width"><xsl:value-of select="@width"/></xsl:attribute>
-                <xsl:attribute name="height"><xsl:value-of select="@height"/></xsl:attribute>
-                <xsl:if test="@location='right'">
-                    <xsl:attribute name="style">float:right</xsl:attribute>
-                </xsl:if>
-                <param name="java_arguments" value="-Xmx512m -Djnlp.packEnabled=true"/>
-                <param name="filename">
-                    <xsl:attribute name="value"><xsl:value-of select="@filename"/></xsl:attribute>
-                </param>
-                <param name="framePossible" value="false"/>
-                <xsl:apply-templates mode="content"/>
-                Sorry, de GeoGebra Applet start niet. Zorg dat Java 1.4.2 (of een nieuwere versie) actief is. (<a href="http://java.sun.com/getjava">klik hier om Java nu te installeren</a>)
-            </applet>
-        </xsl:otherwise>
-    </xsl:choose>
+    <xsl:apply-templates mode="content"/>
+    <iframe style="overflow:hidden" _type='ggb'>
+        <xsl:if test="@width">
+            <xsl:attribute name="width"><xsl:value-of select="@width"/></xsl:attribute>
+        </xsl:if>
+        <xsl:if test="@height">
+            <xsl:attribute name="height"><xsl:value-of select="@height"/></xsl:attribute>
+        </xsl:if>
+        <xsl:if test="@location='right'">
+            <xsl:attribute name="style">float:right</xsl:attribute>
+        </xsl:if>
+        <xsl:choose>
+           <xsl:when test="$host_type='GAE'">
+                <xsl:attribute name="src"><xsl:value-of select="concat('http://mathunited2012.appspot.com/geogebra?file=',encode-for-uri(@filename))"/></xsl:attribute>
+           </xsl:when>
+           <xsl:otherwise>
+                <xsl:attribute name="src"><xsl:value-of select="concat('http://mathunited.nl/geogebra?file=%2Fgetresource%3Frepo=', $repo,'%26subcomp=',$subcomp,'%26id=',replace(@filename,'GeoGebra/',''))"/></xsl:attribute>
+           </xsl:otherwise>
+        </xsl:choose>
+    </iframe>
 </xsl:template>
 
 

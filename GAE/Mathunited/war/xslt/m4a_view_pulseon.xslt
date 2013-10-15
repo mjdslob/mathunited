@@ -47,7 +47,7 @@
 <!--   /////////////////////////////////////////////   -->
 <xsl:variable name="host_type">GAE</xsl:variable>
 <xsl:variable name="docbase"></xsl:variable>
-<xsl:variable name="urlbase"><xsl:value-of select="concat('http://mathunited.pragma-ade.nl:41080/data/',$refbase)"/></xsl:variable>
+<xsl:variable name="urlbase"><xsl:value-of select="'http://mathunited.nl'"/></xsl:variable>
 <xsl:variable name="prikbord-url" select="concat('/view?comp=',$comp,'&amp;subcomp=',$subcomp,'&amp;variant=prikbord-m4a')"/>
 <!--   /////////////////////////////////////////////   -->
 <!--   /////////////////////////////////////////////   -->
@@ -367,12 +367,14 @@
         <imscp:dependency identifierref="{@identifier}" />
         <xsl:apply-templates mode="imscp-dependency"/>
     </xsl:template>
+<!--      
     <xsl:template match="img" mode="imscp-dependency">
         <imscp:file href="{@src}" />
     </xsl:template>
     <xsl:template match="a[@class='dox']" mode="imscp-dependency">
         <imscp:file href="{@href}" />
     </xsl:template>
+-->    
     <!--
     <xsl:template match="iframe[@_type='ggb']" mode="imscp-dependency">
         <imscp:file href="{@src}" />
@@ -451,13 +453,17 @@
 
     <xsl:template match="theory" mode="rubric">
         <qti:rubricBlock view="candidate">
-            <xsl:apply-templates mode="content"/>
+            <div xmlns="">
+               <xsl:apply-templates mode="content"/>
+            </div>
         </qti:rubricBlock>
     </xsl:template>
         
     <xsl:template match="example | explanation | application" mode="rubric">
         <qti:rubricBlock view="candidate">
-            <xsl:apply-templates mode="content"/>
+            <div xmlns="">
+	            <xsl:apply-templates mode="content"/>
+	        </div>
         </qti:rubricBlock>
     </xsl:template>
     <xsl:template match="*" mode="rubric"></xsl:template>
@@ -524,7 +530,7 @@
     </xsl:template>
     <xsl:template match="exercise" mode="content">
         <xsl:param name="options"/>
-        <div class="exercise">
+        <div class="exercise" xmlns="">
             <xsl:apply-templates mode="content">
                 <xsl:with-param name="options" select="$options"/>
             </xsl:apply-templates>
@@ -535,7 +541,7 @@
     Introduction
 -->
     <xsl:template match="learningaspects" mode="content">
-        <p>
+        <p xmlns="">
             <b>Je leert in dit onderwerp:</b>
             <ul>
                 <xsl:for-each select="aspect">
@@ -548,7 +554,7 @@
     </xsl:template>
 
     <xsl:template match="knownaspects" mode="content">
-        <p>
+        <p xmlns="">
             <b>Voorkennis:</b>
             <ul>
                 <xsl:for-each select="aspect">
@@ -561,14 +567,14 @@
     </xsl:template>
 
     <xsl:template match="definitions" mode="content">
-        <div class="definitions">
+        <div class="definitions" xmlns="">
             Begrippenlijst
         </div>
         <xsl:apply-templates mode="content"/>
     </xsl:template>
 
     <xsl:template match="definition" mode="content">
-        <div class="definition">
+        <div class="definition" xmlns="">
             <a>
                 <xsl:attribute name="href">
                     <xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',@id,'&amp;variant=',$variant,'&amp;item=theory')"/>
@@ -579,14 +585,14 @@
     </xsl:template>
 
     <xsl:template match="activities" mode="content">
-        <div class="definitions">
+        <div class="definitions" xmlns="">
             Activiteitenlijst
         </div>
         <xsl:apply-templates mode="content"/>
     </xsl:template>
 
     <xsl:template match="activity" mode="content">
-        <div class="definition">
+        <div class="definition" xmlns="">
             <a>
                 <xsl:attribute name="href">
                     <xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',@id,'&amp;variant=',$variant,'&amp;item=theory')"/>
@@ -597,7 +603,7 @@
     </xsl:template>
 
     <xsl:template match="proof" mode="content">
-        <div class="m4a-example">
+        <div class="m4a-example" xmlns="">
             <div onclick="javascript:M4A_ShowExampleAnswer(this)" class="example-answer-button">&gt; bewijs</div>
             <div class="m4a-answer">
                 <xsl:apply-templates mode="content"/>

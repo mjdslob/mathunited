@@ -26,6 +26,7 @@ public class GeogebraGenerator extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
+         LOGGER.setLevel(Level.INFO);
          super.init(config);
     }
 
@@ -34,7 +35,6 @@ public class GeogebraGenerator extends HttpServlet {
     public void doGet (  HttpServletRequest request,
                          HttpServletResponse response)
              throws ServletException, IOException {
-
         Writer w = response.getWriter();
         PrintWriter pw = new PrintWriter(w);
         try{
@@ -42,8 +42,9 @@ public class GeogebraGenerator extends HttpServlet {
             if(fname==null) {
                 throw new Exception("Please supply a filename");
             }
-            
-            URL url = new URL("http://mathunited2012.appspot.com"+URLDecoder.decode(fname,"UTF-8"));
+            String urlname = "http://mathunited2012.appspot.com"+URLDecoder.decode(fname,"UTF-8")+"&type=ggb";
+            LOGGER.info("Geogebra generator: retrieving Geogebra file from "+urlname);
+            URL url = new URL(urlname);
             URLConnection conn = url.openConnection();
             int length = conn.getContentLength();
             byte[] b;
