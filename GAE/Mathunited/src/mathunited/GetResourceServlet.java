@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.Writer;
 import java.net.URLDecoder;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletConfig;
@@ -30,7 +31,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Text;
 
 public class GetResourceServlet extends HttpServlet {
-        private final static Logger LOGGER = Logger.getLogger(GetTextFileServlet.class.getName());
+        private final static Logger LOGGER = Logger.getLogger(GetResourceServlet.class.getName());
         private final BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 		private final BlobInfoFactory infoFactory = new BlobInfoFactory();
 	    private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -38,6 +39,7 @@ public class GetResourceServlet extends HttpServlet {
 
         public void init(ServletConfig config) throws ServletException {
             try{
+                LOGGER.setLevel(Level.INFO);
                 super.init(config);
                 context = getServletContext();
             } catch(Exception e) {
@@ -48,7 +50,6 @@ public class GetResourceServlet extends HttpServlet {
         @Override
 	    public void doGet (  HttpServletRequest request, HttpServletResponse response)
 	             throws ServletException, IOException {
-		   
  		   String blobKeyStr = request.getParameter("blob-key");
  		   if(blobKeyStr!=null) getFromBlobKey(blobKeyStr, request,response);
  		   else {
@@ -65,7 +66,7 @@ public class GetResourceServlet extends HttpServlet {
  			   if(type==null) {
  				   type="TextFile";
  			   }
- 			  getFromDataStore(repo, subcomp, id, type, request,response);
+ 			   getFromDataStore(repo, subcomp, id, type, request,response);
  		   }
         }
         

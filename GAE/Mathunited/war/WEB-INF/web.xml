@@ -41,6 +41,14 @@
         <url-pattern>/getresource</url-pattern>
     </servlet-mapping>
      <servlet>
+        <servlet-name>getresource_s</servlet-name>
+        <servlet-class>mathunited.GetResourceServlet</servlet-class>
+    </servlet>
+     <servlet-mapping>
+        <servlet-name>getresource_s</servlet-name>
+        <url-pattern>/getresource_s</url-pattern>
+    </servlet-mapping>
+     <servlet>
         <servlet-name>puttextfile</servlet-name>
         <servlet-class>mathunited.PutTextFileServlet</servlet-class>
     </servlet>
@@ -77,6 +85,14 @@
         <servlet-class>mathunited.GeogebraGenerator</servlet-class>
     </servlet>
     <servlet-mapping>
+        <servlet-name>encodeBase64_s</servlet-name>
+        <url-pattern>/geogebra_s</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>encodeBase64_s</servlet-name>
+        <servlet-class>mathunited.GeogebraGenerator</servlet-class>
+    </servlet>
+    <servlet-mapping>
         <servlet-name>encodeBase64</servlet-name>
         <url-pattern>/geogebra</url-pattern>
     </servlet-mapping>
@@ -93,5 +109,14 @@
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
  
- 
+<security-constraint>
+  <web-resource-collection>
+    <web-resource-name>secure</web-resource-name>
+    <url-pattern>/geogebra_s</url-pattern>
+    <url-pattern>/getresource_s</url-pattern>
+  </web-resource-collection>
+  <user-data-constraint>
+    <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+  </user-data-constraint>
+</security-constraint> 
 </web-app>

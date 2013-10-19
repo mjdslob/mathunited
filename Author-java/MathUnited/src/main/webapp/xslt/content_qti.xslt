@@ -291,7 +291,7 @@ extension-element-prefixes="exsl">
                 <xsl:attribute name="src"><xsl:value-of select="concat('http://mathunited2012.appspot.com/geogebra?file=',encode-for-uri(@filename))"/></xsl:attribute>
            </xsl:when>
            <xsl:otherwise>
-                <xsl:attribute name="src"><xsl:value-of select="concat('http://mathunited.nl/geogebra?file=%2Fgetresource%3Frepo=', $repo,'%26subcomp=',$subcomp,'%26id=',replace(@filename,'GeoGebra/',''))"/></xsl:attribute>
+                <xsl:attribute name="src"><xsl:value-of select="concat('https://mathunited2012.appspot.com/geogebra_s?file=%2Fgetresource_s%3Frepo=', $repo,'%26subcomp=',$subcomp,'%26id=',replace(@filename,'GeoGebra/',''))"/></xsl:attribute>
            </xsl:otherwise>
         </xsl:choose>
     </iframe>

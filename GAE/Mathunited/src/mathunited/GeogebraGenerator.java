@@ -22,7 +22,7 @@ import mathunited.configuration.Component;
 
 public class GeogebraGenerator extends HttpServlet {
     private final static Logger LOGGER = Logger.getLogger(GeogebraGenerator.class.getName());
-    String ggbSource = "http://www.geogebra.org/web/4.2/web/web.nocache.js";
+    String ggbSource   = "www.geogebra.org/web/4.2/web/web.nocache.js";
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -42,7 +42,16 @@ public class GeogebraGenerator extends HttpServlet {
             if(fname==null) {
                 throw new Exception("Please supply a filename");
             }
-            String urlname = "http://mathunited2012.appspot.com"+URLDecoder.decode(fname,"UTF-8")+"&type=ggb";
+            fname = URLDecoder.decode(fname,"UTF-8");
+            if(!fname.contains("blob-key")) fname+="&type=ggb";
+            
+            String protocol = "http://";
+            if(request.getRequestURL().toString().contains("https://")) {
+            	fname=fname.replace("/getresource?", "/getresource_s?");
+                protocol = "https://";
+                LOGGER.info("Using https: url="+protocol+request.getServerName()+fname);
+            }
+            String urlname = protocol+request.getServerName()+fname;
             LOGGER.info("Geogebra generator: retrieving Geogebra file from "+urlname);
             URL url = new URL(urlname);
             URLConnection conn = url.openConnection();
@@ -61,15 +70,16 @@ public class GeogebraGenerator extends HttpServlet {
                 int count;
                 byte buffer[] = new byte[1024];
 
-                while ((count = bis.read(buffer, 0, buffer.length)) != -1)
-                  bos.write(buffer, 0, count);
+                while ((count = bis.read(buffer, 0, buffer.length)) != -1){
+                    bos.write(buffer, 0, count);
+                }
                 b = bos.toByteArray();
                 bis.close();
                 bos.close();
             }
             String b64 = DatatypeConverter.printBase64Binary(b);
             response.setContentType("text/html");
-            pw.println("<html style='overflow:hidden'><head><style type='text/css'><!--body { font-family:Arial,Helvetica,sans-serif; margin-left:40px }--></style><script type='text/javascript' language='javascript' src='"+ggbSource+"'></script></head>");
+            pw.println("<html style='overflow:hidden'><head><style type='text/css'><!--body { font-family:Arial,Helvetica,sans-serif; margin-left:40px }--></style><script type='text/javascript' language='javascript' src='"+protocol+ggbSource+"'></script></head>");
             pw.println("<body><article class='geogebraweb' style='display:inline-block;' data-param-ggbbase64='"+b64+"'></article>");
             pw.println("<script type='text/javascript'>var ggbApplet = document.ggbApplet;function ggbOnInit() {}</script></body></html>");
         } catch(Exception e) {
