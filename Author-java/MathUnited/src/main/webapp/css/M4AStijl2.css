@@ -520,6 +520,7 @@ ul,ol {
 }
 iframe {
     border:0;
+    overflow:hidden;
 }
 table.wm-default-table {
     border-collapse: collapse;

@@ -361,7 +361,7 @@ extension-element-prefixes="exsl">
     </div>
 </xsl:template>
 <xsl:template match="iframe" mode="content">
-    <iframe>
+    <iframe scrolling="no">
         <xsl:choose>
             <xsl:when test="starts-with(@src,'http://')">
                 <xsl:copy-of select="@*"/>
@@ -559,6 +559,5 @@ extension-element-prefixes="exsl">
         <xsl:apply-templates select="@*|node()" mode="content"/>
     </xsl:copy>
 </xsl:template>
-
 
 </xsl:stylesheet>
