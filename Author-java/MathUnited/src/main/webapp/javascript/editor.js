@@ -163,7 +163,6 @@ $(document).ready(function() {
     var repo= $('#meta-data-repo-path').text();
     $('img').each(function() {
         var img = $(this);
-        debugger;
         if(img[0].naturalWidth===0) {
             var src = img[0].src;
             img[0].src = src.replace(repo,baseRepo);

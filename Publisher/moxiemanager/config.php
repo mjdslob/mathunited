@@ -88,9 +88,11 @@ $moxieManagerConfig['thumbnail.jpeg_quality'] = 75;
 $moxieManagerConfig['thumbnail.allow_override'] = '*';
 
 // Authentication
-$moxieManagerConfig['authenticator'] = 'BasicAuthenticator';
-$moxieManagerConfig['authenticator.login_page'] = '';
-
+//$moxieManagerConfig['authenticator'] = 'BasicAuthenticator';
+//$moxieManagerConfig['authenticator.login_page'] = '';
+$_SESSION['isLoggedIn'] = true; // True/false if user is logged in or not, should be same as above
+//$moxieManagerConfig['authenticator'] = 'SessionAuthenticator';
+$moxieManagerConfig['authenticator'] = '';
 // SessionAuthenticator
 $moxieManagerConfig['SessionAuthenticator.logged_in_key'] = 'isLoggedIn';
 $moxieManagerConfig['SessionAuthenticator.user_key'] = 'user';
