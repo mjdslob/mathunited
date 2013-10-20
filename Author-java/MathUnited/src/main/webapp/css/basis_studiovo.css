@@ -221,6 +221,15 @@ iframe {
 .popup-content.visible {
     display:block;
 }
+
+/*---------------------------*/
+/* Dialogs                   */
+/*---------------------------*/
+.ui-dialog  
+{
+    border: 1px solid rgb(0,0,0); 
+}
+
 /*---------------------------*/
 /* WIDGET: exercise-sequence */
 /*---------------------------*/
@@ -332,7 +341,7 @@ iframe {
 .page {
     display:none;
     position:relative;
-    min-height:425px;
+    height:425px;
 }
 .page.selected {
     display:block;
