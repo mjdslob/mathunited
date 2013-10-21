@@ -81,10 +81,10 @@ class PulseOnPlatform extends Platform {
      
 
     private function sendAssessment($fname, $logger) {
-        $curdir = getcwd();
-        $ind = strrpos($fname, '/');
-        $path = substr($fname, 0, $ind);
-        $name = substr($fname, $ind+1);
+        $curdir = getcwd();                //store current working directory
+        $ind = strrpos($fname, '/');       //and change working directory to location of qti-file
+        $path = substr($fname, 0, $ind);   //this is necessary as PulseOn does not want to see any path info
+        $name = substr($fname, $ind+1);    //in the filename
         chdir($path);
         $fields = array(
             'file'=>"@$name",
@@ -133,22 +133,26 @@ class PulseOnPlatform extends Platform {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);
         $ind = strpos($response, $name);
-        if($ind===FALSE) {
-            $logger->trace(LEVEL_ERROR, "QTI-Assessment $name not found on PulseOn server");
-            return;
-        }
-        $ind = strpos($response,'identifier', $ind);
-        $ind = strpos($response,':', $ind);
-        $ind += 2;
-        $indEnd = strpos($response,'"', $ind);
-        $id = substr($response, $ind, $indEnd-$ind);
+        while($ind!==FALSE){
+            $ind = strrpos($response, '{', -(strlen($response)-$ind));
+            $ind = strpos($response,'identifier', $ind);
+            $ind = strpos($response,':', $ind);
+            $ind += 2;
+            $indEnd = strpos($response,'"', $ind);
+            $id = substr($response, $ind, $indEnd-$ind);
 
-        $ch = curl_init($this->uploadURL.'/'.$id); 
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-        $response = curl_exec($ch);
-        $logger->trace(LEVEL_INFO, "Delete: name=$name, id=$id, response=$response");
-        
+            $ch = curl_init($this->uploadURL.'/'.$id); 
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+            $response = curl_exec($ch);
+            $logger->trace(LEVEL_INFO, "Delete: name=$name, id=$id, response=$response");
+
+            //retrieve assessment id
+            $ch = curl_init($this->uploadURL);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $response = curl_exec($ch);
+            $ind = strpos($response, $name);
+        }
     }
 
 }
