@@ -218,9 +218,6 @@ indent="yes" encoding="utf-8"/>
         <xsl:apply-templates mode="content"/>
     </div>
 </xsl:template>
-<xsl:template match="block" mode="content">
-    <xsl:apply-templates mode="content"/>
-</xsl:template>
 <xsl:template match="block/title" mode="content"></xsl:template>
 <xsl:template match="include" mode="content">
     <xsl:apply-templates select="document(concat($docbase,@filename))" mode="content"/>

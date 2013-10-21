@@ -511,7 +511,7 @@ extension-element-prefixes="exsl">
 <xsl:template match="p[@medium='paper']" mode="content"></xsl:template>
 <xsl:template match="p[@medium='paper']"></xsl:template>
 <xsl:template match="block" mode="content">
-    <xsl:if test="@medium!='paper'">
+    <xsl:if test="not(@medium='paper')">
         <xsl:apply-templates mode="content"/>
     </xsl:if>
 </xsl:template>
