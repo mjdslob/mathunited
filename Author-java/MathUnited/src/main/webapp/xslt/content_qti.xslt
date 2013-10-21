@@ -123,7 +123,7 @@ extension-element-prefixes="exsl">
                     <iframe frameborder="0" allowfullscreen="true">
                         <xsl:attribute name="height"><xsl:value-of select="@height"/></xsl:attribute>
                         <xsl:attribute name="width"><xsl:value-of select="@width"/></xsl:attribute>
-                        <xsl:attribute name="src"><xsl:value-of select="@href"/></xsl:attribute>
+                        <xsl:attribute name="src"><xsl:value-of select="replace(@href,'http://','https://')"/></xsl:attribute>
                     </iframe>
                 </xsl:when>
                 <xsl:otherwise>
@@ -389,10 +389,12 @@ extension-element-prefixes="exsl">
                 <xsl:attribute name="href">
                     <xsl:choose>
                         <xsl:when test="string-length($num) > 0">
-                            <xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',$subcomp,'&amp;variant=',$variant,'&amp;item=', $item,'&amp;num=', $num,'&amp;ws_id=', @item)"/>
+                            <!-- add host explicitly, to prevent opening inside PulseOn -->
+                            <xsl:value-of select="concat('http://www.mathunited.nl/view?comp=',$comp,'&amp;subcomp=',$subcomp,'&amp;variant=',$variant,'&amp;item=', $item,'&amp;num=', $num,'&amp;ws_id=', @item)"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',$subcomp,'&amp;variant=',$variant,'&amp;item=', $item,'&amp;ws_id=', @item)"/>
+                            <!-- add host explicitly, to prevent opening inside PulseOn -->
+                            <xsl:value-of select="concat('http://www.mathunited.nl/view?comp=',$comp,'&amp;subcomp=',$subcomp,'&amp;variant=',$variant,'&amp;item=', $item,'&amp;ws_id=', @item)"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:attribute>

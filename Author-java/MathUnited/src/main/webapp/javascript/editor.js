@@ -382,7 +382,6 @@ function insertActions(jqParent) {
            $(this).parent().addClass('noneditable');
        }
     });
-//    var compbase = '/data/'+$('#meta-data-refbase').text();
     var compbase = '/data/'+$('#meta-data-refbase').text();
     var ind = compbase.lastIndexOf('/'); //2 times, because of trailing /
     compbase = compbase.substr(0,ind);
@@ -396,7 +395,6 @@ function insertActions(jqParent) {
             // Location of TinyMCE script
             script_url : 'javascript/tinymce/tinymce.jquery.js',
             content_css : "javascript/tinymce/content.css",
-//            oninit : function() {            },
             external_plugins: {
                 "moxiemanager": "/Publisher/moxiemanager/plugin.js",
                 "m4a_keyword": "../tinymce_plugins/m4a_keyword/plugin.js",
@@ -418,13 +416,10 @@ function insertActions(jqParent) {
             },
             // General options
             theme : "modern",
-//            plugins : "style,inlinepopups,paste,fullscreen, table, m4a_keyword, m4a_quotation, m4a_textref",
             plugins : "paste,fullscreen, table, link, charmap",
             toolbar: "undo redo | bold italic | numlist bullist outdent indent | link unlink m4a_textref | m4a_keyword m4a_quotation | m4a_image | charmap",
-//            menu: "undo redo",
             moxiemanager_rootpath: compbase,
             moxiemanager_path: compbase,
-//            remove_script_host:false,
             relative_urls:false,
         
         //clean HTML. Not XHTML, we rely on TagSoup on the server to convert to XML
