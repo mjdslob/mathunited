@@ -217,6 +217,7 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
+        
         <xsl:variable name="assessment-test">
             <mslob:file name="{concat($subcomponent/@id,'.xml')}">
                 <qti:assessmentTest xmlns:m="http://www.w3.org/1998/Math/MathML"
@@ -464,22 +465,53 @@
         <xsl:apply-templates select="examples"/>
     </xsl:template>
     <xsl:template match="examples">
-        <qti:assessmentSection identifier="{concat('section-',$subcomponent/@id,'-example-',position())}" fixed="false" title="{$item-list/item-list/example/@name}" visible="true">
-            <xsl:apply-templates select="include" mode="rubric">
-                <xsl:with-param name="item">
-                    <xsl:value-of select="name()"/>
-                </xsl:with-param>
-            </xsl:apply-templates>
-            <xsl:apply-templates select="following-sibling::exercises[1]/include" mode="link-assignments"/>
-        </qti:assessmentSection>
+        <xsl:variable name="pass1">
+            <qti:assessmentSection identifier="{concat('section-',$subcomponent/@id,'-example-',position())}" fixed="false" title="{$item-list/item-list/example/@name}" visible="true">
+                <xsl:apply-templates select="include" mode="rubric">
+                    <xsl:with-param name="item">
+                        <xsl:value-of select="name()"/>
+                    </xsl:with-param>
+                </xsl:apply-templates>
+                <xsl:apply-templates select="following-sibling::exercises[1]/include" mode="link-assignments"/>
+            </qti:assessmentSection>
+        </xsl:variable>
+        <xsl:apply-templates select="$pass1" mode="process-worksheet-refs">
+            <xsl:with-param name="item">example</xsl:with-param>
+            <xsl:with-param name="num"><xsl:value-of select="count(preceding-sibling::examples)+1"/></xsl:with-param>
+        </xsl:apply-templates>
     </xsl:template>
 
+    <xsl:template match="node() | @*" mode="process-worksheet-refs">
+        <xsl:param name="item"/>
+        <xsl:param name="num"/>
+        <xsl:copy>
+            <xsl:apply-templates select="node() | @*" mode="process-worksheet-refs">
+                <xsl:with-param name="item" select="$item"/>
+                <xsl:with-param name="num" select="$num"/>
+            </xsl:apply-templates>
+        </xsl:copy>
+    </xsl:template>
+    <xsl:template match="a" mode="process-worksheet-refs" priority="2">
+        <xsl:param name="item"/>
+        <xsl:param name="num"/>
+        <xsl:copy>
+            <xsl:for-each select="@*">
+                <xsl:if test="name()!='href'">
+                    <xsl:attribute name="{name()}"><xsl:value-of select="."/></xsl:attribute>
+                </xsl:if>
+            </xsl:for-each>
+            <xsl:attribute name="href"><xsl:value-of select="replace(@href,'item=&amp;',concat('item=',$item,'&amp;num=',$num,'&amp;'))"/></xsl:attribute>
+            <xsl:apply-templates  mode="process-worksheet-refs"/>
+        </xsl:copy>
+    </xsl:template>
+    
     <xsl:template match="include" mode="rubric">
         <xsl:param name="item"/>
         <xsl:apply-templates select="document(concat($docbase,@filename))" mode="rubric">
             <xsl:with-param name="item" select="$item"/>
         </xsl:apply-templates>
     </xsl:template>
+    
     <xsl:template match="include" mode="link-assignments">
         <xsl:param name="item"/>
         <xsl:if test="not(parent::block[@medium='paper'])">
@@ -525,7 +557,13 @@
         <xsl:apply-templates select="examples" mode="assessmentItem"/>
     </xsl:template>
     <xsl:template match="examples" mode="assessmentItem">
-        <xsl:apply-templates select="following-sibling::exercises[1]/include" mode="assessmentItem"/>
+        <xsl:variable name="pass1">
+            <xsl:apply-templates select="following-sibling::exercises[1]/include" mode="assessmentItem"/>
+        </xsl:variable>
+        <xsl:apply-templates select="$pass1" mode="process-worksheet-refs">
+            <xsl:with-param name="item">example</xsl:with-param>
+            <xsl:with-param name="num"><xsl:value-of select="count(preceding-sibling::examples)+1"/></xsl:with-param>
+        </xsl:apply-templates>
     </xsl:template>
 
     <xsl:template match="include" mode="assessmentItem">
