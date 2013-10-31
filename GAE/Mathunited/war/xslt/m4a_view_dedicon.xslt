@@ -18,6 +18,7 @@ extension-element-prefixes="exsl">
 <xsl:param name="parent"/>  <!-- eg.: mathunited.nl/wiskundemenu/WM_overview.html -->
 <xsl:param name="is_mobile"/>
 <xsl:param name="id"/>
+<xsl:param name="repo"/>
 <xsl:param name="component"/>
 <xsl:variable name="parsed_component" select="saxon:parse($component)"/>
 <xsl:variable name="subcomponent" select="$parsed_component/component/subcomponents/subcomponent[@id=$subcomp]"/>
@@ -25,47 +26,12 @@ extension-element-prefixes="exsl">
 <xsl:variable name="lang">nl</xsl:variable>
 
 <!--   /////////////////////////////////////////////   -->
-<!--  Specific for auteurssite (do not copy from GAE): -->
+<!--  Specific for GAE (do not copy from auteurssite): -->
 <!--   /////////////////////////////////////////////   -->
-<xsl:param name="repo"/>
-<xsl:variable name="host_type">auteur</xsl:variable>
-<xsl:variable name="docbase" select="$refbase"></xsl:variable>
-<xsl:variable name="urlbase"><xsl:value-of select="concat('../data/',$refbase)"/></xsl:variable>
-<xsl:variable name="indexDoc" select="document(concat($refbase,'../index.xml'))"/>
-<xsl:template match="subcomponent" mode="numbering">
-    <xsl:copy>
-        <xsl:apply-templates select="@*" mode="numbering"/>
-        <internal-meta>
-            <subcomponents>
-                <xsl:for-each select="$indexDoc/index/component[@id=$comp]/subcomponent">
-                    <subcomponent id="{@id}" _nr="{@_nr}"/>
-                </xsl:for-each>
-            </subcomponents>
-        </internal-meta>
-        <xsl:apply-templates mode="numbering"/>
-    </xsl:copy>
-</xsl:template>
-<xsl:template match="textref" mode="content">
-    <xsl:variable name="ref">
-        <xsl:choose>
-            <xsl:when test="@ref"><xsl:value-of select="@ref"/></xsl:when>
-            <xsl:otherwise><xsl:value-of select="@item"/></xsl:otherwise>
-        </xsl:choose>
-    </xsl:variable>
-    <xsl:choose>
-        <xsl:when test="$indexDoc/index/component[@id=$parsed_component/component/@id]//*[@id=$ref]">
-            <span class="textref">
-                <xsl:value-of select="."/>&#160;<xsl:value-of select="$indexDoc/index/component[@id=$parsed_component/component/@id]//*[@id=$ref]/@_nr"/>
-            </span>
-        </xsl:when>
-        <xsl:otherwise>
-            <span class="textref">
-                <xsl:apply-templates select="@*|node()" mode="content"/>
-            </span>
-        </xsl:otherwise>
-    </xsl:choose>
-</xsl:template>
-
+<xsl:variable name="host_type">GAE</xsl:variable>
+<xsl:variable name="docbase"></xsl:variable>
+<xsl:variable name="urlbase"><xsl:value-of select="concat('http://mathunited.pragma-ade.nl:41080/data/',$refbase)"/></xsl:variable>
+<xsl:variable name="prikbord-url" select="concat('/view?comp=',$comp,'&amp;subcomp=',$subcomp,'&amp;variant=prikbord-m4a')"/>
 <!--   /////////////////////////////////////////////   -->
 <!--   /////////////////////////////////////////////   -->
 
