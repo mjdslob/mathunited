@@ -16,7 +16,6 @@ extension-element-prefixes="exsl">
 <xsl:param name="subcomp"/>
 <xsl:param name="is_mobile"/>
 <xsl:param name="id"/>
-<xsl:variable name="host_type">auteur</xsl:variable>
 <xsl:variable name="cm2px" select="number(50)"/>
 <xsl:variable name="parsed_component" select="saxon:parse($component)"/>
 <xsl:variable name="subcomponent" select="$parsed_component/component/subcomponents/subcomponent[@id=$subcomp]"/>
@@ -32,11 +31,19 @@ extension-element-prefixes="exsl">
     </xsl:choose>
 </xsl:variable>
 <xsl:variable name="overviewRef"><xsl:value-of select="string('/auteur/math4all.html')"/></xsl:variable>
-<xsl:variable name="urlbase"><xsl:value-of select="concat('/data/',$refbase)"/></xsl:variable>
-<xsl:variable name="docbase" select="$refbase"></xsl:variable>
 <xsl:variable name="_cross_ref_as_links_" select="true()"/>
 <xsl:variable name="_sheetref_as_links_" select="true()"/>
 <xsl:variable name="lang">nl</xsl:variable>
+
+<!--   /////////////////////////////////////////////   -->
+<!--  Specific for GAE (do not copy from auteurssite): -->
+<!--   /////////////////////////////////////////////   -->
+<xsl:variable name="host_type">GAE</xsl:variable>
+<xsl:variable name="docbase"></xsl:variable>
+<xsl:variable name="urlbase"><xsl:value-of select="concat('http://mathunited.pragma-ade.nl:41080/data/',$refbase)"/></xsl:variable>
+<xsl:variable name="prikbord-url" select="concat('/view?comp=',$comp,'&amp;subcomp=',$subcomp,'&amp;variant=prikbord-m4a')"/>
+<!--   /////////////////////////////////////////////   -->
+<!--   /////////////////////////////////////////////   -->
 
 <xsl:output method="html" doctype-system="http://www.w3.org/TR/html4/strict.dtd" doctype-public="-//W3C//DTD HTML 4.01//EN"
 indent="yes" encoding="utf-8"/>
@@ -228,45 +235,6 @@ indent="yes" encoding="utf-8"/>
     <xsl:apply-templates mode="content"/>
 </xsl:template>
 
-<xsl:template match="textref" mode="content">
-    <xsl:choose>
-        <xsl:when test="@ref">
-            <span class="textref" ref="{@ref}"><xsl:value-of select="."/></span>
-        </xsl:when>
-        <xsl:otherwise>
-            <xsl:variable name="_comp">
-                <xsl:choose>
-                    <xsl:when test="@comp"><xsl:value-of select="@comp"/></xsl:when>
-                    <xsl:otherwise><xsl:value-of select="$comp"/></xsl:otherwise>
-                </xsl:choose>
-            </xsl:variable>
-            <xsl:variable name="_subcomp">
-                <xsl:choose>
-                    <xsl:when test="@subcomp"><xsl:value-of select="@subcomp"/></xsl:when>
-                    <xsl:otherwise><xsl:value-of select="$subcomp"/></xsl:otherwise>
-                </xsl:choose>
-            </xsl:variable>
-            
-            <xsl:choose>
-                <xsl:when test="$_cross_ref_as_links_">
-                    <a class="textref" item="{@item}">
-                        <xsl:if test="@target">
-                            <xsl:attribute name="target"><xsl:value-of select="@target"/></xsl:attribute>
-                        </xsl:if>
-                        <xsl:attribute name="href"><xsl:value-of select="concat('view?comp=',$_comp,'&amp;subcomp=',$_subcomp,'&amp;variant=',$variant)"/></xsl:attribute>
-                        <xsl:value-of select="."/>
-
-                    </a>
-                </xsl:when>
-                <xsl:otherwise>
-                    <span class="textref" item="{@item}">
-                        <xsl:value-of select="."/>
-                    </span>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:otherwise>
-    </xsl:choose>
-</xsl:template>
 <xsl:template match="pages" mode="content">
     <div class="pages-container">
         <xsl:apply-templates select="page" mode="content"/>
