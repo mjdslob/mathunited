@@ -57,17 +57,36 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="/">
 <html>
 <head>
-   <link type="text/css" href="javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
-   <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
-   <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
-   <script type="text/javascript" src="javascript/MathUnited.js"/>
-   <script type="text/javascript" src="javascript/MathUnited_studiovo.js"/>
-   <script type="text/javascript" src="javascript/jquery.ui.touch-punch.min.js"/>
-   <script type="text/javascript" src="javascript/jquery.jplayer.min.js"/>
-   <script src='videojs.playlist.js'></script>
-   <link href="videojs.playlist.css" rel="stylesheet"/>
-   <link rel="stylesheet" href="css/content.css" type="text/css"/>
-   <link rel="stylesheet" href="css/basis_studiovo.css" type="text/css"/>
+   <xsl:choose>
+      <!--  subtitle difference in references: leading slash or not -->
+      <xsl:when test="$host_type='GAE'">
+	   <link type="text/css" href="/javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
+	   <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
+	   <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
+	   <script type="text/javascript" src="/javascript/MathUnited.js"/>
+	   <script type="text/javascript" src="/javascript/MathUnited_studiovo.js"/>
+	   <script type="text/javascript" src="/javascript/jquery.ui.touch-punch.min.js"/>
+	   <script type="text/javascript" src="/javascript/jquery.jplayer.min.js"/>
+	   <script src='videojs.playlist.js'></script>
+	   <link href="videojs.playlist.css" rel="stylesheet"/>
+	   <link rel="stylesheet" href="/css/content.css" type="text/css"/>
+	   <link rel="stylesheet" href="/css/basis_studiovo.css" type="text/css"/>
+      </xsl:when>
+      <xsl:otherwise>
+	   <link type="text/css" href="javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
+	   <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
+	   <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
+	   <script type="text/javascript" src="javascript/MathUnited.js"/>
+	   <script type="text/javascript" src="javascript/MathUnited_studiovo.js"/>
+	   <script type="text/javascript" src="javascript/jquery.ui.touch-punch.min.js"/>
+	   <script type="text/javascript" src="javascript/jquery.jplayer.min.js"/>
+	   <script src='videojs.playlist.js'></script>
+	   <link href="videojs.playlist.css" rel="stylesheet"/>
+	   <link rel="stylesheet" href="css/content.css" type="text/css"/>
+	   <link rel="stylesheet" href="css/basis_studiovo.css" type="text/css"/>
+      </xsl:otherwise>
+   </xsl:choose>
+
    <title><xsl:value-of select="$subcomponent/title"/></title>
    
    <link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet"/>
@@ -100,7 +119,16 @@ indent="yes" encoding="utf-8"/>
             </xsl:attribute>
         </xsl:if>
         <div id="logo">
-            <img src="sources_studiovo/logo.png"/>
+		   <xsl:choose>
+		      <!--  subtitle difference in references: leading slash or not -->
+		      <xsl:when test="$host_type='GAE'">
+            	<img src="/sources_studiovo/logo.png"/>
+		      </xsl:when>
+		      <xsl:otherwise>
+            	<img src="sources_studiovo/logo.png"/>
+	    	  </xsl:otherwise>
+	   	  </xsl:choose>
+            	
             <span id="logo-text"><xsl:value-of select="$parsed_component/component/subtitle"/></span>
         </div>
         <xsl:apply-templates select="subcomponent/componentcontent/*" mode="navigation"/>
@@ -111,7 +139,7 @@ indent="yes" encoding="utf-8"/>
     </div>
     <div id="page-right">
         <div id="header">
-            <img src="{concat($urlbase, subcomponent/meta/param[@name='banner-image']/resource/name)}"/>
+            <img src="{subcomponent/meta/param[@name='banner-image']/resource/name}"/>
         </div>
         <div id="ribbon">
             <span id="kruimelpad"></span>
