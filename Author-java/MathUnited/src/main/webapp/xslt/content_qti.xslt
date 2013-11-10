@@ -369,6 +369,7 @@ extension-element-prefixes="exsl">
 
 <xsl:template match="table" mode="content">
     <table class="wm-default-table">
+        <xsl:apply-templates select="@*" mode="content"/>
         <xsl:choose>
             <xsl:when test="tbody">
                 <xsl:apply-templates mode="content"/>
@@ -480,7 +481,7 @@ extension-element-prefixes="exsl">
 <xsl:template match="p[@medium='paper']" mode="content"></xsl:template>
 <xsl:template match="p[@medium='paper']"></xsl:template>
 <xsl:template match="block" mode="content">
-    <xsl:if test="@medium!='paper'">
+    <xsl:if test="not(@medium='paper')">
         <xsl:apply-templates mode="content"/>
     </xsl:if>
 </xsl:template>
