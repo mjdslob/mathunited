@@ -131,7 +131,7 @@ indent="yes" encoding="utf-8"/>
     <xsl:variable name="pos" select="position()"/>
     <div class="menu-hierarchy">
         <div class="menu-item" onclick="javascript:SVO_triggerMenuItem(this)">
-            <xsl:if test="not(@education='false')">
+            <xsl:if test="not(@education='false') and (count(../fragment) &gt; 1)">
                 <xsl:value-of select="('A','B','C','D','E','F','G','H','I','J','K','L','M','N')[$pos]"/>&#160;
             </xsl:if>
             <xsl:value-of select="title"/>
@@ -495,7 +495,11 @@ indent="yes" encoding="utf-8"/>
     </xsl:variable> 
    <div class="popup-wrapper">
        <span class="popup-label" onclick="{concat('javascript:togglePopup(',$width,', this)')}"><xsl:value-of select="@label"/></span>
+       <span class="popup-label-text"><xsl:value-of select="@titel"/></span>
        <div class="popup-content">
+           <xsl:attribute name="title">
+               <xsl:value-of select="@titel"/>
+           </xsl:attribute>
            <xsl:apply-templates mode="content"/>
        </div>
    </div>    
