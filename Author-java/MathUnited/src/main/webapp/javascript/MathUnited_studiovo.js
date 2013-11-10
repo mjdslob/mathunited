@@ -154,8 +154,11 @@ function togglePopup(width, elm) {
     if(content.parents('.popup-content').length>0) {
         position = {my:'center top', at:'center center', of:$(elm)};
     }
+
+    // clone else the popup cannot be reopened after close
     content.clone().dialog({
-        width:parseFloat(width),
+        modal: true, // else the same popup can be opened twice 
+        width: parseFloat(width),
         position:position,
         close: function( event, ui ) {
             content.dialog( "destroy" );
@@ -166,11 +169,13 @@ function toggleAssessment(elm) {
     var parent = $(elm).parents('.assessment-wrapper');
     var asm = $('div.assessment-content',parent);
     asm.css('width',parent.attr('popup_width')+'px');
-    //asm.toggleClass('visible');
-    
-    asm.dialog({
-        width:parseFloat(parent.attr('popup_width'))+25,
-        beforeClose: function( event, ui ) {
+
+    // clone else the popup cannot be reopened after close
+    asm.clone().dialog({
+        modal: true, // else the same popup can be opened twice 
+        width: parseFloat(parent.attr('popup_width')) + 25,
+        close: function (event, ui) {
+            content.dialog("destroy");
         }
     });
 }
