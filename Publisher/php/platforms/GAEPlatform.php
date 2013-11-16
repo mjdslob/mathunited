@@ -165,7 +165,7 @@ class GAEPlatform extends Platform {
             //$imagefname = $this->URLBASE[$repo].$id;
             $correctedId = str_replace('Images/','',$id);
             $fileExists = false;
-            if(file_exists($base.$correctedId)) {
+            if(file_exists($base.$correctedId)) { 
                 $imagefname = $base.$correctedId;
                 $fileExists = true;
             } else if(file_exists($base.'../images/highres/'.$correctedId)){
@@ -213,16 +213,26 @@ class GAEPlatform extends Platform {
         $resrcs = $doc->xpath("//resourcelink");
         foreach($resrcs as $rsrcId){
             $id = (string)$rsrcId['href'];
+            $id = urldecode($id);
             $type = "dox";
-            $fname = $base.'../dox/'.$id;
-            if(file_exists($fname)){
+            $fileExists = false;
+            if(file_exists($base.$id)) { 
+                $fname = $base.$id;
+                $fileExists = true;
+            } else if(file_exists($base.'../dox/'.$id)){
+                $fname = $base.'../dox/'.$id;
+                $fileExists = true;
+            } else {
+                $fileExists = false;
+            }
+            if($fileExists){
                 $mimetype = $this->getMIMEtype($fname);
                 //$mimetype = "application/octet-stream";
                 $logger->trace(LEVEL_INFO, 'publishing resource (dox) (id='.$id.', repo='.$repo.', fname='.$fname);        
                 $getUrl = $this->sendResource($fname, $compId, $id, $repo, $type, $mimetype, $logger);
                 $rsrcId['href'] = $getUrl."&attachment=true"; //put the direct URL in the xml
             } else {
-                  $logger->trace(LEVEL_ERROR, "Broken resourcelink: File $fname does not exist in subcomponent $compId."); 
+                  $logger->trace(LEVEL_ERROR, "Broken resourcelink: File $id does not exist in subcomponent $compId."); 
 //                throw new Exception("Broken resourcelink: File $fname does not exist in subcomponent $compId.");
             }
         }

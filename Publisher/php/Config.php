@@ -16,7 +16,7 @@ $config_repos = array(
         'get_QTI_url' => 'http://localhost:8080/MathUnited/view?repo=m4a&variant=m4a_view_pulseon&comp={#COMP}&subcomp={#SUBCOMP}'
     ),
     'm4a_en' => array(
-        'id'=>'m4a_en',
+        'id'=>'m4a_en-2013-07-19',
         'basePath'=>'content-ma/saba/',
         'paths'=>array(
             'ha/',
@@ -25,7 +25,7 @@ $config_repos = array(
         'index_xsl'=>'../xslt/generate-index-ma_en.xslt'
     ),
     'wm' => array(
-        'id'=>'wm',
+        'id'=>'wm-2013-07-19',
         'basePath'=>'content-wm/concept/',
         'paths'=>array(
             'lj1-hv/',
@@ -37,7 +37,7 @@ $config_repos = array(
         'index_xsl'=>'../xslt/generate-index-wm.xslt'
     ),
     'studiovo' => array(
-        'id'=>'studiovo',
+        'id'=>'studiovo-2013-07-19',
         'basePath'=>'content-studiovo/concept/',
         'paths'=>array(
             ''

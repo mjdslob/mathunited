@@ -30,6 +30,7 @@ public class PutTextFileServlet extends HttpServlet {
             try{
                 super.init(config);
                 context = getServletContext();
+       	        LOGGER.setLevel(Level.INFO);
             } catch(Exception e) {
             	LOGGER.severe((new StringBuilder("Init of PutTextFileServlet failed")).append(e.getMessage()).toString());
             }
@@ -40,7 +41,6 @@ public class PutTextFileServlet extends HttpServlet {
 	             throws ServletException, IOException {
 		   
     	   try{
-    		   LOGGER.setLevel(Level.INFO);
                Configuration config = Configuration.getInstance(context);
 
                String id = request.getParameter("id");

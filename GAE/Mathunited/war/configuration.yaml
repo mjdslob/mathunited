@@ -37,6 +37,11 @@ repos :
     baseRepo : m4a
     edit_permission: editor_saba
     defaultVariant: m4a_view_en
+  studiovo :
+    id : studiovo-2013-07-19
+    path: content-studiovo/concept
+    edit_permission: 
+    defaultVariant: studiovo_view
 
 userFile : /data/content-overview/users.yaml
 contentRoot : /data/
