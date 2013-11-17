@@ -9,7 +9,9 @@ html {
    /*background-color:#a7a69a;*/
    position:relative;
 }
-
+.lommetadata {
+    display:none;
+}
 .header {
     width:  770px;
     height: 111px;

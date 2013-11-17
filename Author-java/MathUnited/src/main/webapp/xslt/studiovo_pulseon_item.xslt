@@ -4,6 +4,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 xmlns:xs="http://www.w3.org/2001/XMLSchema"
 xmlns:exsl="http://exslt.org/common"
 xmlns:saxon="http://saxon.sf.net/"
+xmlns:mulom="http://www.mathunited.nl/nl-lom"
 xmlns:cals="http://www.someplace.org/cals"
 exclude-result-prefixes="saxon cals"
 extension-element-prefixes="exsl">
@@ -87,14 +88,130 @@ indent="yes" encoding="utf-8"/>
 <!--        BODY        -->
 <!--   **************** -->
 
-<body>
+    <xsl:variable name="phase1">
         <div id="content">
             <xsl:apply-templates select="subcomponent/componentcontent/*"/>
         </div>
+    </xsl:variable>
+    <xsl:variable name="lom-set">
+        <lom-set>
+            <xsl:copy-of select="document(concat($docbase,'../',$parsed_component/component/@relativePath,'component.xml'))/component/mulom:lom"/>
+            <xsl:copy-of select="subcomponent/mulom:lom"/>
+            <xsl:for-each select="$phase1//mulom:lom">
+                <xsl:copy-of select="."/>
+            </xsl:for-each>
+        </lom-set>
+    </xsl:variable>
+
+<body>
+    <xsl:apply-templates select="$lom-set" mode="metadata"/>
+    <xsl:apply-templates select="$phase1" mode="postprocess"/>
 </body>
 </html>
 </xsl:template>
 
+
+<!--  ******************* -->
+<!--   metadata           -->
+<!--  ******************* -->
+<xsl:template match="lom-set" mode="metadata">
+    <div class='lommetadata'>
+        <xsl:variable name="description">
+            <set>
+                <xsl:for-each select="mulom:lom/mulom:educational/mulom:description[string-length()>0]">
+                    <xsl:copy-of select="."/>
+                </xsl:for-each>
+            </set>
+        </xsl:variable>
+        <xsl:variable name="difficulty">
+            <set>
+                <xsl:for-each select="mulom:lom/mulom:educational/mulom:difficulty[string-length()>0]">
+                    <xsl:copy-of select="."/>
+                </xsl:for-each>
+            </set>
+        </xsl:variable>
+        <xsl:variable name="learningResourceType">
+            <set>
+                <xsl:for-each select="mulom:lom/mulom:educational/mulom:learningResourceType[string-length()>0]">
+                    <xsl:copy-of select="."/>
+                </xsl:for-each>
+            </set>
+        </xsl:variable>
+        <xsl:variable name="interactivityLevel">
+            <set>
+                <xsl:for-each select="mulom:lom/mulom:educational/mulom:interactivityLevel[string-length()>0]">
+                    <xsl:copy-of select="."/>
+                </xsl:for-each>
+            </set>
+        </xsl:variable>
+        <xsl:variable name="semanticDensity">
+            <set>
+                <xsl:for-each select="mulom:lom/mulom:educational/mulom:semanticDensity[string-length()>0]">
+                    <xsl:copy-of select="."/>
+                </xsl:for-each>
+            </set>
+        </xsl:variable>
+        <xsl:variable name="typicallearningtime">
+            <set>
+                <xsl:for-each select="mulom:lom/mulom:educational/mulom:typicallearningtime[string-length()>0]">
+                    <xsl:copy-of select="."/>
+                </xsl:for-each>
+            </set>
+        </xsl:variable>
+        <xsl:variable name="language">
+            <set>
+                <xsl:for-each select="mulom:lom/mulom:educational/mulom:language[string-length()>0]">
+                    <xsl:copy-of select="."/>
+                </xsl:for-each>
+            </set>
+        </xsl:variable>
+        <xsl:variable name="intendedenduserrole">
+            <set>
+                <xsl:for-each select="mulom:lom/mulom:educational/mulom:intendedenduserrole[string-length()>0]">
+                    <xsl:copy-of select="."/>
+                </xsl:for-each>
+            </set>
+        </xsl:variable>
+        <xsl:variable name="context">
+            <set>
+                <xsl:for-each select="mulom:lom/mulom:educational/mulom:context[string-length()>0]">
+                    <xsl:copy-of select="."/>
+                </xsl:for-each>
+            </set>
+        </xsl:variable>
+        <xsl:variable name="keywords">
+            <keywords>
+                <xsl:for-each select="mulom:lom/mulom:general/mulom:keyword/mulom:langstring[string-length()>0]">
+                    <xsl:copy-of select="."/>
+                </xsl:for-each>
+            </keywords>
+        </xsl:variable>
+        <span class='description'><xsl:value-of select="$description/set/mulom:description[position()=last()]/text()"/></span>
+        <span class='learningresourcetype'><xsl:value-of select="$learningResourceType/set/mulom:learningResourceType[position()=last()]/text()"/></span>
+        <span class='difficulty'><xsl:value-of select="$difficulty/set/mulom:difficulty[position()=last()]/text()"/></span>
+        <span class='interactivitylevel'><xsl:value-of select="$interactivityLevel/set/mulom:interactivityLevel[position()=last()]/text()"/></span>
+        <span class='semanticdensity'><xsl:value-of select="$semanticDensity/set/mulom:semanticDensity[position()=last()]/text()"/></span>
+        <span class='typicallearningtime'><xsl:value-of select="$typicallearningtime/set/mulom:typicallearningtime[position()=last()]/text()"/></span>
+        <span class='intendedenduserrole'><xsl:value-of select="$intendedenduserrole/set/mulom:intendedenduserrole[position()=last()]/text()"/></span>
+        <span class='language'><xsl:value-of select="$language/set/mulom:language[position()=last()]/text()"/></span>
+        <span class='context'><xsl:value-of select="$context/set/mulom:context[position()=last()]/text()"/></span>
+        <span class='keyword'>
+            <xsl:for-each select="$keywords/keywords/mulom:langstring">
+                <span class="langstring"><xsl:value-of select="text()"/></span>
+            </xsl:for-each>
+            <xsl:value-of select="$description/set/mulom:interactivityLevel[position()=last()]/text()"/>
+        </span>
+    </div>
+</xsl:template>
+<!--  ******************* -->
+<!--   remove lom data    -->
+<!--  ******************* -->
+<xsl:template match="node()|@*" mode="postprocess">
+    <xsl:copy>
+        <xsl:apply-templates select="node()|@*" mode="postprocess"/>
+    </xsl:copy>
+</xsl:template>
+<xsl:template match="mulom:lom" mode="postprocess" priority="2"/>
 
 <!--  ******************* -->
 <!--   CONTENT STRUCTURE  -->
@@ -119,7 +236,7 @@ indent="yes" encoding="utf-8"/>
         </div>
     </xsl:if>
 </xsl:template>
-<xsl:template match="block/title" mode="content"></xsl:template>
+<xsl:template match="block/title" mode="content" priority="2"></xsl:template>
 <xsl:template match="include" mode="content">
     <xsl:apply-templates select="document(concat($docbase,@filename))" mode="content"/>
 </xsl:template>

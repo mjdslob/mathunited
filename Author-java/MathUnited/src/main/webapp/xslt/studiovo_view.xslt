@@ -3,6 +3,7 @@
 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 xmlns:xs="http://www.w3.org/2001/XMLSchema"
 xmlns:exsl="http://exslt.org/common"
+xmlns:mulom="http://www.mathunited.nl/nl-lom"
 xmlns:saxon="http://saxon.sf.net/"
 exclude-result-prefixes="saxon"
 extension-element-prefixes="exsl">
@@ -123,7 +124,8 @@ indent="yes" encoding="utf-8"/>
 </html>
 </xsl:template>
 
-
+<xsl:template match="mulom:*"/>
+<xsl:template match="mulom:*" mode="content"/>
 <!--   **************** -->
 <!--    NAVIGATION   -->
 <!--   **************** -->
