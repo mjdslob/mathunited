@@ -9,7 +9,7 @@ html {
    /*background-color:#a7a69a;*/
    position:relative;
 }
-.lommetadata {
+.lommetadata, .learningobjectives {
     display:none;
 }
 .header {

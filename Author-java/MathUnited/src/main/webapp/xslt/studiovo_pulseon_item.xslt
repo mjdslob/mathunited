@@ -202,6 +202,20 @@ indent="yes" encoding="utf-8"/>
             <xsl:value-of select="$description/set/mulom:interactivityLevel[position()=last()]/text()"/>
         </span>
     </div>
+    <div class="learningobjectives">
+        <ul>
+            <xsl:for-each select="mulom:lom/mulom:objectives/mulom:objective[string-length()>0]">
+                <xsl:choose>
+                    <xsl:when test="@type='obk'">
+                        <li class="obkobjective"><xsl:value-of select="."/></li>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <li class="objective"><xsl:value-of select="."/></li>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:for-each>
+        </ul>
+    </div>
 </xsl:template>
 <!--  ******************* -->
 <!--   remove lom data    -->

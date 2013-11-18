@@ -70,7 +70,7 @@ indent="yes" encoding="utf-8"/>
 </xsl:template>
 <xsl:template match="block">
     <xsl:param name="fragment"/>
-    <a href="{concat($intraLinkPrefix,$fragment,'&amp;block=',1+count(preceding-sibling::block))}"><xsl:value-of select="title"/></a><br/>
+    <a class="contenturl" href="{concat($intraLinkPrefix,$fragment,'&amp;block=',1+count(preceding-sibling::block))}"><xsl:value-of select="title"/></a><br/>
 </xsl:template>
 
 
