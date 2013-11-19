@@ -185,6 +185,12 @@ ul.learningaspects li{
 .movie-title {
     padding:0px 0px 0px 10px;
 }
+.studiovo-speaker-icon
+{
+    width: 16px;
+    height: 12px;
+    cursor: pointer;
+}
 .assessment-wrapper iframe {
     display:none;
 }
