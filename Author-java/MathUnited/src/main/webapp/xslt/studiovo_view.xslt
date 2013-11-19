@@ -186,6 +186,12 @@ indent="yes" encoding="utf-8"/>
     <xsl:param name="menuref"/>
     <div class="submenu-item" id="{concat($menuref,'-',position())}"  
             tabid="{concat('tab-',$menuref,'-',position())}" onclick="javascript:SVO_triggerSubMenuItem(this)">
+        <xsl:if test="count(../*) &lt; 3">
+            <!-- if there is only one submenu, hide it in css but keep its functionality (so still render it) -->
+            <xsl:attribute name="style">
+                display:none;
+            </xsl:attribute>
+        </xsl:if>
         <xsl:value-of select="title"/>
     </div>
 </xsl:template>
@@ -545,13 +551,26 @@ indent="yes" encoding="utf-8"/>
 </xsl:template>
 
 <xsl:template match="audio" mode="content" priority="2">
-    <div class="movie">
-        <audio id="{generate-id()}" class="video-js vjs-default-skin" 
-                width="{@width}" height="{@height}"
-                controls="true">
-                <source src="{concat($urlbase,@href)}" type='audio/mp3'/>
-        </audio>
-    </div>
+    <xsl:choose>
+        <xsl:when test="@inline='true'">
+            <a onclick="this.getElementsByTagName('audio')[0].play()">
+                <audio id="{generate-id()}" class="video-js vjs-default-skin"
+                        width="{@width}" height="{@height}">
+                    <source src="{concat($urlbase,@href)}" type='audio/mp3'/>
+                </audio>
+                <img src="/MathUnited/sources_studiovo/speaker-16.png" class="studiovo-speaker-icon" />
+            </a>
+        </xsl:when>
+        <xsl:otherwise>
+            <div class="movie">
+                <audio id="{generate-id()}" class="video-js vjs-default-skin"
+                        width="{@width}" height="{@height}"
+                        controls="true">
+                    <source src="{concat($urlbase,@href)}" type='audio/mp3'/>
+                </audio>
+            </div>
+        </xsl:otherwise>
+    </xsl:choose>
 </xsl:template>
 
 <xsl:template match="iframe" mode="content" priority="2">
