@@ -1,3 +1,6 @@
+var popupElements = new Array();
+var popupDialogs = new Array();
+
 $(document).ready(function() {
     var TOLX = 20; var TOLY=10;
     var elm = $('.menu-hierarchy').first();
@@ -148,34 +151,41 @@ function toggleMovie(elm) {
 }
 function togglePopup(width, elm) {
     var parent = $(elm).parents('.popup-wrapper').first();
-    var content = $('.popup-content',parent).first();
-    //if this is a nested popup, position relative to parent popup. 
-    var position = {my:'center center', at:'center top', of:'#content'};
-    if(content.parents('.popup-content').length>0) {
-        position = {my:'center top', at:'center center', of:$(elm)};
-    }
-
-    // clone else the popup cannot be reopened after close
-    content.clone().dialog({
-        modal: true, // else the same popup can be opened twice 
-        width: parseFloat(width),
-        position:position,
-        close: function( event, ui ) {
-            content.dialog( "destroy" );
+    var content = $('.popup-content', parent).first();
+    var index = popupElements.indexOf(elm);
+    if (index == -1) {
+        //if this is a nested popup, position relative to parent popup. 
+        var position = { my: 'center center', at: 'center top', of: '#content' };
+        if (content.parents('.popup-content').length > 0) {
+            position = { my: 'center top', at: 'center center', of: $(elm) };
         }
-    });
+
+        var dialog = content.dialog({
+            autoOpen: false,
+            width: parseFloat(width),
+            position: position
+        });
+        popupElements.push(elm);
+        popupDialogs.push(dialog);
+        dialog.dialog('open');
+    }
+    else
+        popupDialogs[index].dialog('open');
 }
 function toggleAssessment(elm) {
-    var parent = $(elm).parents('.assessment-wrapper');
-    var asm = $('div.assessment-content',parent);
-    asm.css('width',parent.attr('popup_width')+'px');
-
-    // clone else the popup cannot be reopened after close
-    asm.clone().dialog({
-        modal: true, // else the same popup can be opened twice 
-        width: parseFloat(parent.attr('popup_width')) + 25,
-        close: function (event, ui) {
-            content.dialog("destroy");
-        }
-    });
+    var parent = $(elm).parents('.assessment-wrapper').first();
+    var asm = $('div.assessment-content', parent);
+    asm.css('width', parent.attr('popup_width') + 'px');
+    var index = popupElements.indexOf(elm);
+    if (index == -1) {
+        var dialog = asm.dialog({
+            autoOpen: false,
+            width: parseFloat(parent.attr('popup_width')) + 25
+        });
+        popupElements.push(elm);
+        popupDialogs.push(dialog);
+        dialog.dialog('open');
+    }
+    else
+        popupDialogs[index].dialog('open');
 }
