@@ -21,7 +21,6 @@ extension-element-prefixes="exsl">
 <xsl:param name="repo-path"/>
 <xsl:param name="baserepo-path"/>
 
-<xsl:variable name="host_type">auteur</xsl:variable>
 <xsl:variable name="cm2px" select="number(50)"/>
 <xsl:variable name="parsed_component" select="saxon:parse($component)"/>
 <xsl:variable name="subcomponent" select="$parsed_component/component/subcomponents/subcomponent[@id=$subcomp]"/>
@@ -37,11 +36,19 @@ extension-element-prefixes="exsl">
     </xsl:choose>
 </xsl:variable>
 <xsl:variable name="overviewRef"><xsl:value-of select="string('/auteur/math4all.html')"/></xsl:variable>
-<xsl:variable name="urlbase"><xsl:value-of select="concat('/data/',$refbase)"/></xsl:variable>
-<xsl:variable name="docbase" select="$refbase"></xsl:variable>
 <xsl:variable name="_cross_ref_as_links_" select="true()"/>
 <xsl:variable name="_sheetref_as_links_" select="true()"/>
 <xsl:variable name="lang">nl</xsl:variable>
+
+<!--   /////////////////////////////////////////////   -->
+<!--  Specific for auteurssite):                       -->
+<!--   /////////////////////////////////////////////   -->
+<xsl:variable name="host_type">auteur</xsl:variable>
+<xsl:variable name="docbase" select="$refbase"></xsl:variable>
+<xsl:variable name="urlbase"><xsl:value-of select="concat('/data/',$refbase)"/></xsl:variable>
+
+<!--   /////////////////////////////////////////////   -->
+<!--   /////////////////////////////////////////////   -->
 
 <xsl:output method="html" doctype-system="http://www.w3.org/TR/html4/strict.dtd" doctype-public="-//W3C//DTD HTML 4.01//EN"
 indent="yes" encoding="utf-8"/>
@@ -55,17 +62,36 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="/">
 <html>
 <head>
-   <link type="text/css" href="javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
-   <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
-   <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
-   <script type="text/javascript" src="javascript/MathUnited.js"/>
-   <script type="text/javascript" src="javascript/MathUnited_studiovo.js"/>
-   <script type="text/javascript" src="javascript/jquery.ui.touch-punch.min.js"/>
-   <script type="text/javascript" src="javascript/jquery.jplayer.min.js"/>
-   <script src='videojs.playlist.js'></script>
-   <link href="videojs.playlist.css" rel="stylesheet"/>
-   <link rel="stylesheet" href="css/content.css" type="text/css"/>
-   <link rel="stylesheet" href="css/basis_studiovo.css" type="text/css"/>
+   <xsl:choose>
+      <!--  subtitle difference in references: leading slash or not -->
+      <xsl:when test="$host_type='GAE'">
+	   <link type="text/css" href="/javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
+	   <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
+	   <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
+	   <script type="text/javascript" src="/javascript/MathUnited.js"/>
+	   <script type="text/javascript" src="/javascript/MathUnited_studiovo.js"/>
+	   <script type="text/javascript" src="/javascript/jquery.ui.touch-punch.min.js"/>
+	   <script type="text/javascript" src="/javascript/jquery.jplayer.min.js"/>
+	   <script src='videojs.playlist.js'></script>
+	   <link href="videojs.playlist.css" rel="stylesheet"/>
+	   <link rel="stylesheet" href="/css/content.css" type="text/css"/>
+	   <link rel="stylesheet" href="/css/basis_studiovo.css" type="text/css"/>
+      </xsl:when>
+      <xsl:otherwise>
+       <link type="text/css" href="javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
+       <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
+       <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
+       <script type="text/javascript" src="javascript/MathUnited.js"/>
+       <script type="text/javascript" src="javascript/MathUnited_studiovo.js"/>
+       <script type="text/javascript" src="javascript/jquery.ui.touch-punch.min.js"/>
+       <script type="text/javascript" src="javascript/jquery.jplayer.min.js"/>
+       <script src='videojs.playlist.js'></script>
+       <link href="videojs.playlist.css" rel="stylesheet"/>
+       <link rel="stylesheet" href="css/content.css" type="text/css"/>
+       <link rel="stylesheet" href="css/basis_studiovo.css" type="text/css"/>
+      </xsl:otherwise>
+   </xsl:choose>
+    
    <title><xsl:value-of select="$subcomponent/title"/></title>
    
    <link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet"/>
@@ -98,7 +124,16 @@ indent="yes" encoding="utf-8"/>
             </xsl:attribute>
         </xsl:if>
         <div id="logo">
-            <img src="sources_studiovo/logo.png"/>
+		   <xsl:choose>
+		      <!--  subtitle difference in references: leading slash or not -->
+		      <xsl:when test="$host_type='GAE'">
+            	<img src="/sources_studiovo/logo.png"/>
+		      </xsl:when>
+		      <xsl:otherwise>
+            	<img src="sources_studiovo/logo.png"/>
+	    	  </xsl:otherwise>
+	   	  </xsl:choose>
+
             <span id="logo-text"><xsl:value-of select="$parsed_component/component/subtitle"/></span>
         </div>
         <xsl:apply-templates select="subcomponent/componentcontent/*" mode="navigation"/>
@@ -226,12 +261,13 @@ indent="yes" encoding="utf-8"/>
         <xsl:apply-templates mode="content"/>
     </div>
 </xsl:template>
+<!--xsl:template match="block" mode="content">
+    <xsl:apply-templates mode="content"/>
+</xsl:template-->
 <xsl:template match="block/title" mode="content"></xsl:template>
 <xsl:template match="include" mode="content">
     <xsl:apply-templates select="document(concat($docbase,@filename))" mode="content"/>
 </xsl:template>
-
-
 
 <xsl:template match="p">
     <xsl:apply-templates mode="content"/>
@@ -276,6 +312,7 @@ indent="yes" encoding="utf-8"/>
         </xsl:otherwise>
     </xsl:choose>
 </xsl:template>
+
 <xsl:template match="pages" mode="content">
     <div class="pages-container">
         <xsl:apply-templates select="page" mode="content"/>
@@ -558,7 +595,14 @@ indent="yes" encoding="utf-8"/>
                         width="{@width}" height="{@height}">
                     <source src="{concat($urlbase,@href)}" type='audio/mp3'/>
                 </audio>
-                <img src="/MathUnited/sources_studiovo/speaker-16.png" class="studiovo-speaker-icon" />
+                <xsl:choose>
+                    <xsl:when test="$host_type='GAE'">
+                        <img src="/sources_studiovo/speaker-16.png" class="studiovo-speaker-icon" />
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <img src="sources_studiovo/speaker-16.png" class="studiovo-speaker-icon" />
+                    </xsl:otherwise>
+                </xsl:choose>
             </a>
         </xsl:when>
         <xsl:otherwise>

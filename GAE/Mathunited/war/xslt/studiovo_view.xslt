@@ -3,6 +3,7 @@
 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 xmlns:xs="http://www.w3.org/2001/XMLSchema"
 xmlns:exsl="http://exslt.org/common"
+xmlns:mulom="http://www.mathunited.nl/nl-lom"
 xmlns:saxon="http://saxon.sf.net/"
 exclude-result-prefixes="saxon"
 extension-element-prefixes="exsl">
@@ -16,6 +17,10 @@ extension-element-prefixes="exsl">
 <xsl:param name="subcomp"/>
 <xsl:param name="is_mobile"/>
 <xsl:param name="id"/>
+<xsl:param name="repo"/>
+<xsl:param name="repo-path"/>
+<xsl:param name="baserepo-path"/>
+    
 <xsl:variable name="cm2px" select="number(50)"/>
 <xsl:variable name="parsed_component" select="saxon:parse($component)"/>
 <xsl:variable name="subcomponent" select="$parsed_component/component/subcomponents/subcomponent[@id=$subcomp]"/>
@@ -139,7 +144,7 @@ indent="yes" encoding="utf-8"/>
     </div>
     <div id="page-right">
         <div id="header">
-            <img src="{subcomponent/meta/param[@name='banner-image']/resource/name}"/>
+            <img src="{concat($urlbase, subcomponent/meta/param[@name='banner-image']/resource/name)}"/>
         </div>
         <div id="ribbon">
             <span id="kruimelpad"></span>
@@ -154,7 +159,8 @@ indent="yes" encoding="utf-8"/>
 </html>
 </xsl:template>
 
-
+<xsl:template match="mulom:*"/>
+<xsl:template match="mulom:*" mode="content"/>
 <!--   **************** -->
 <!--    NAVIGATION   -->
 <!--   **************** -->
@@ -162,7 +168,7 @@ indent="yes" encoding="utf-8"/>
     <xsl:variable name="pos" select="position()"/>
     <div class="menu-hierarchy">
         <div class="menu-item" onclick="javascript:SVO_triggerMenuItem(this)">
-            <xsl:if test="not(@education='false')">
+            <xsl:if test="not(@education='false') and (count(../fragment) &gt; 1)">
                 <xsl:value-of select="('A','B','C','D','E','F','G','H','I','J','K','L','M','N')[$pos]"/>&#160;
             </xsl:if>
             <xsl:value-of select="title"/>
@@ -215,6 +221,12 @@ indent="yes" encoding="utf-8"/>
     <xsl:param name="menuref"/>
     <div class="submenu-item" id="{concat($menuref,'-',position())}"  
             tabid="{concat('tab-',$menuref,'-',position())}" onclick="javascript:SVO_triggerSubMenuItem(this)">
+        <xsl:if test="count(../*) &lt; 3">
+            <!-- if there is only one submenu, hide it in css but keep its functionality (so still render it) -->
+            <xsl:attribute name="style">
+                display:none;
+            </xsl:attribute>
+        </xsl:if>
         <xsl:value-of select="title"/>
     </div>
 </xsl:template>
@@ -528,7 +540,11 @@ indent="yes" encoding="utf-8"/>
     </xsl:variable> 
    <div class="popup-wrapper">
        <span class="popup-label" onclick="{concat('javascript:togglePopup(',$width,', this)')}"><xsl:value-of select="@label"/></span>
+       <span class="popup-label-text"><xsl:value-of select="@titel"/></span>
        <div class="popup-content">
+           <xsl:attribute name="title">
+               <xsl:value-of select="@titel"/>
+           </xsl:attribute>
            <xsl:apply-templates mode="content"/>
        </div>
    </div>    
@@ -572,13 +588,33 @@ indent="yes" encoding="utf-8"/>
 </xsl:template>
 
 <xsl:template match="audio" mode="content" priority="2">
-    <div class="movie">
-        <audio id="{generate-id()}" class="video-js vjs-default-skin" 
-                width="{@width}" height="{@height}"
-                controls="true">
-                <source src="{concat($urlbase,@href)}" type='audio/mp3'/>
-        </audio>
-    </div>
+    <xsl:choose>
+        <xsl:when test="@inline='true'">
+            <a onclick="this.getElementsByTagName('audio')[0].play()">
+                <audio id="{generate-id()}" class="video-js vjs-default-skin"
+                        width="{@width}" height="{@height}">
+                    <source src="{concat($urlbase,@href)}" type='audio/mp3'/>
+                </audio>
+                <xsl:choose>
+                    <xsl:when test="$host_type='GAE'">
+                        <img src="/sources_studiovo/speaker-16.png" class="studiovo-speaker-icon" />
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <img src="sources_studiovo/speaker-16.png" class="studiovo-speaker-icon" />
+                    </xsl:otherwise>
+                </xsl:choose>
+            </a>
+        </xsl:when>
+        <xsl:otherwise>
+            <div class="movie">
+                <audio id="{generate-id()}" class="video-js vjs-default-skin"
+                        width="{@width}" height="{@height}"
+                        controls="true">
+                    <source src="{concat($urlbase,@href)}" type='audio/mp3'/>
+                </audio>
+            </div>
+        </xsl:otherwise>
+    </xsl:choose>
 </xsl:template>
 
 <xsl:template match="iframe" mode="content" priority="2">
