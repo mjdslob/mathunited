@@ -257,10 +257,48 @@ indent="yes" encoding="utf-8"/>
     <xsl:apply-templates select="document(concat($docbase,@filename))" mode="content"/>
 </xsl:template>
 
-
-
 <xsl:template match="p">
     <xsl:apply-templates mode="content"/>
+</xsl:template>
+
+<xsl:template match="textref" mode="content">
+    <xsl:choose>
+        <xsl:when test="@ref">
+            <span class="textref" ref="{@ref}"><xsl:value-of select="."/></span>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:variable name="_comp">
+                <xsl:choose>
+                    <xsl:when test="@comp"><xsl:value-of select="@comp"/></xsl:when>
+                    <xsl:otherwise><xsl:value-of select="$comp"/></xsl:otherwise>
+                </xsl:choose>
+            </xsl:variable>
+            <xsl:variable name="_subcomp">
+                <xsl:choose>
+                    <xsl:when test="@subcomp"><xsl:value-of select="@subcomp"/></xsl:when>
+                    <xsl:otherwise><xsl:value-of select="$subcomp"/></xsl:otherwise>
+                </xsl:choose>
+            </xsl:variable>
+            
+            <xsl:choose>
+                <xsl:when test="$_cross_ref_as_links_">
+                    <a class="textref" item="{@item}">
+                        <xsl:if test="@target">
+                            <xsl:attribute name="target"><xsl:value-of select="@target"/></xsl:attribute>
+                        </xsl:if>
+                        <xsl:attribute name="href"><xsl:value-of select="concat('view?comp=',$_comp,'&amp;subcomp=',$_subcomp,'&amp;variant=',$variant)"/></xsl:attribute>
+                        <xsl:value-of select="."/>
+
+                    </a>
+                </xsl:when>
+                <xsl:otherwise>
+                    <span class="textref" item="{@item}">
+                        <xsl:value-of select="."/>
+                    </span>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:otherwise>
+    </xsl:choose>
 </xsl:template>
 
 <xsl:template match="pages" mode="content">
