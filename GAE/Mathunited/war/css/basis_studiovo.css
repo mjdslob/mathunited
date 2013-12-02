@@ -170,8 +170,11 @@ h2 {
 ul.learningaspects li{
     margin:20px 0px 20px 0px;
 }
-#content ul, #content ol {
-    padding-left:20px;
+#content ol {
+    padding-left: 2.3em; 
+}
+#content ul {
+    padding-left: 1.5em; 
 }
 .studiovo-movie-icon {
     height:1.5em; 
@@ -181,6 +184,12 @@ ul.learningaspects li{
 }
 .movie-title {
     padding:0px 0px 0px 10px;
+}
+.studiovo-speaker-icon
+{
+    width: 16px;
+    height: 12px;
+    cursor: pointer;
 }
 .assessment-wrapper iframe {
     display:none;
@@ -208,12 +217,13 @@ iframe {
     display:none;
 }
 .popup-label {
-    display:inline;
+    display:inline-block;
     background-color: #528CE0;
     padding:4px 10px;
     color:white;
     font-weight:bold;
     cursor:pointer;
+    margin-right: 0.5em;
 }
 .popup-label:hover {
     background-color: #74AEFF;    
@@ -221,6 +231,15 @@ iframe {
 .popup-content.visible {
     display:block;
 }
+
+/*---------------------------*/
+/* Dialogs                   */
+/*---------------------------*/
+.ui-dialog  
+{
+    border: 1px solid rgb(0,0,0); 
+}
+
 /*---------------------------*/
 /* WIDGET: exercise-sequence */
 /*---------------------------*/
@@ -332,7 +351,7 @@ iframe {
 .page {
     display:none;
     position:relative;
-    min-height:425px;
+    height:425px;
 }
 .page.selected {
     display:block;
