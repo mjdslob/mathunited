@@ -104,7 +104,15 @@ indent="yes" encoding="utf-8"/>
             AsciiMath: {
                 decimal: ","
             },
-            jax: ["input/MathML","input/AsciiMath"]
+            jax: ["input/MathML","input/AsciiMath"],
+            "HTML-CSS": {
+                availableFonts: [],
+                preferredFont: "TeX",
+                webFont: "",
+                imageFont: "",
+                undefinedFamily: "'Arial Unicode MS','sans-serif'",
+                scale: 80
+            }
         });
     </script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js">
