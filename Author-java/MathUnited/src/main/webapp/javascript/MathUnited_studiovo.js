@@ -172,7 +172,7 @@ function togglePopup(width, elm) {
     else
         popupDialogs[index].dialog('open');
 }
-function toggleAssessment(elm) {
+function toggleAssessment(elm, src) {
     var parent = $(elm).parents('.assessment-wrapper').first();
     var asm = $('div.assessment-content', parent);
     asm.css('width', parent.attr('popup_width') + 'px');
@@ -184,6 +184,8 @@ function toggleAssessment(elm) {
         });
         popupElements.push(elm);
         popupDialogs.push(dialog);
+        var frame = $('iframe', asm);
+        frame.attr('src', src);
         dialog.dialog('open');
     }
     else

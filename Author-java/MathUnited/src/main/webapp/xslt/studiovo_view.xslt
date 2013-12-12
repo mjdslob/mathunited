@@ -46,7 +46,6 @@ extension-element-prefixes="exsl">
 <xsl:variable name="host_type">auteur</xsl:variable>
 <xsl:variable name="docbase" select="$refbase"></xsl:variable>
 <xsl:variable name="urlbase"><xsl:value-of select="concat('/data/',$refbase)"/></xsl:variable>
-
 <!--   /////////////////////////////////////////////   -->
 <!--   /////////////////////////////////////////////   -->
 
@@ -357,6 +356,7 @@ indent="yes" encoding="utf-8"/>
 <!--  ******************** -->
 <xsl:template match="assessment" mode="content">
     <div class="assessment-wrapper">
+        <xsl:variable name="src" select="concat('http://qt-studiovo.pulseon.nl/qt/player.html?testId=',@src,'&amp;lang=nl-NL&amp;window=false')"/>
         <xsl:choose>
             <xsl:when test="@width"><xsl:attribute name="popup_width" select="@width"/></xsl:when>
             <xsl:otherwise><xsl:attribute name="popup_width" select="495"/></xsl:otherwise>
@@ -364,7 +364,7 @@ indent="yes" encoding="utf-8"/>
         <xsl:choose>
             <xsl:when test="@display='popup'">
                 <div class="assessment-button">
-                    <span class="assessment-label" onclick="javascript:toggleAssessment(this)"><xsl:value-of select="@label"/></span>
+                    <span class="assessment-label" onclick="javascript:toggleAssessment(this, '{$src}')"><xsl:value-of select="@label"/></span>
                     <span class="assessment-label-text"><xsl:apply-templates mode="content"/></span>
                 </div>
             </xsl:when>
@@ -386,10 +386,12 @@ indent="yes" encoding="utf-8"/>
                     <xsl:otherwise>height:300px;</xsl:otherwise>
                 </xsl:choose>
             </xsl:attribute>
-            <xsl:attribute name="src" select="concat('http://qt-studiovo.pulseon.nl/qt/player.html?testId=',@src,'&amp;lang=nl-NL&amp;window=false')"/>
-    <!--
+            <xsl:if test="not(@display='popup')">
+                <xsl:attribute name="src" select="$src"/>
+            </xsl:if>
+            <!--
             <xsl:attribute name="src" select="concat('http://qt-demo.pulseon.nl/qt/player.html?testId=0k2xWZR1aR33tx_9MP-_qXbIXncQzNnCAWsbUDdY8BQ','&amp;lang=nl-NL&amp;window=',$dowindow)"/>
-    -->        
+            -->        
             <xsl:apply-templates mode="content"/>
         </iframe>
         </div>
