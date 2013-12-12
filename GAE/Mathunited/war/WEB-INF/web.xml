@@ -25,6 +25,18 @@
         <url-pattern>/MathUnited/view</url-pattern>
     </servlet-mapping>
      <servlet>
+        <servlet-name>view_s</servlet-name>
+        <servlet-class>mathunited.ViewServlet</servlet-class>
+    </servlet>
+     <servlet-mapping>
+        <servlet-name>view_s</servlet-name>
+        <url-pattern>/view_s</url-pattern>
+    </servlet-mapping>
+     <servlet-mapping>
+        <servlet-name>view_s</servlet-name>
+        <url-pattern>/MathUnited/view_s</url-pattern>
+    </servlet-mapping>
+     <servlet>
         <servlet-name>getbloburl</servlet-name>
         <servlet-class>mathunited.GetBlobURLServlet</servlet-class>
     </servlet>
@@ -114,6 +126,8 @@
     <web-resource-name>secure</web-resource-name>
     <url-pattern>/geogebra_s</url-pattern>
     <url-pattern>/getresource_s</url-pattern>
+    <url-pattern>/view_s</url-pattern>
+    <url-pattern>/MathUnited/view_s</url-pattern>
   </web-resource-collection>
   <user-data-constraint>
     <transport-guarantee>CONFIDENTIAL</transport-guarantee>
