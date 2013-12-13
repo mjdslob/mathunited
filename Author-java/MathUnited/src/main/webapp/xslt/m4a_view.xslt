@@ -207,12 +207,7 @@ indent="yes" encoding="utf-8"/>
 		           },
 		           jax: ["input/MathML","input/AsciiMath"],
                            "HTML-CSS": {
-                                availableFonts: [],
-                                preferredFont: "TeX",
-                                webFont: "",
-                                imageFont: "",
-                                undefinedFamily: "'Arial Unicode MS','sans-serif'",
-                                scale: 80
+                                scale: 90
                            }
 		      });
 		   </script>
@@ -223,6 +218,9 @@ indent="yes" encoding="utf-8"/>
 		   <link rel="stylesheet" href="css/content.css" type="text/css"/>
 		   <link rel="stylesheet" href="css/exercises.css" type="text/css"/>
 		   <link rel="stylesheet" href="css/M4AStijl2.css" type="text/css"/>
+		   <link rel="stylesheet" href="/AlgebraKIT/css/StepPanel.css" type="text/css"/>
+		   <link rel="stylesheet" href="/AlgebraKIT/css/AKIT-Exercise.css" type="text/css"/>
+                   <script data-main="/AlgebraKIT/js/main.js" src="/AlgebraKIT/js/require.js"></script>
       </xsl:otherwise>
    </xsl:choose>
 

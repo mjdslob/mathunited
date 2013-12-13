@@ -1,0 +1,28 @@
+variants : 
+  basis_studiovo : {path: /xslt/studiovo_view.xslt}
+  studiovo_view : {path: /xslt/studiovo_view.xslt}
+  studiovo_pulseon : {path: /xslt/studiovo_pulseon.xslt}
+  studiovo_pulseon_item : {path: /xslt/studiovo_pulseon_item.xslt}
+  pulseon_studiovo : {path: /xslt/studiovo_pulseon.xslt}
+  pulseon_studiovo_item : {path: /xslt/studiovo_pulseon_item.xslt}
+
+roles :
+  - admin
+  
+repos :
+  studiovo :
+    path: content-studiovo/concept
+    edit_permission: 
+    defaultVariant: studiovo_view
+
+userFile : /data/content-overview/users.yaml
+contentRoot : /data/
+entitiesFile : /data/content-overview/entities.xml
+
+mail_host : smtp.xs4all.nl
+mail_smtp_port : 587
+mail_username : 
+mail_password : 
+admin_mail : m.slob@math4all.nl
+
+ 
