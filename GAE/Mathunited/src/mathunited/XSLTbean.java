@@ -62,7 +62,7 @@ public class XSLTbean {
 	            templateMap.put(name, template);
 	        }
     	} catch(Exception e) {
-    		throw new Exception("Error when trying to compile xslt-script "+name);
+    		throw new Exception("Error when trying to compile xslt-script "+name,e);
     	}
         return template;
     }
