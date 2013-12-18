@@ -17,7 +17,6 @@ extension-element-prefixes="exsl">
 <xsl:param name="subcomp"/>
 <xsl:param name="is_mobile"/>
 <xsl:param name="id"/>
-<xsl:variable name="host_type">auteur</xsl:variable>
 <xsl:variable name="cm2px" select="number(50)"/>
 <xsl:variable name="parsed_component" select="saxon:parse($component)"/>
 <xsl:variable name="subcomponent" select="$parsed_component/component/subcomponents/subcomponent[@id=$subcomp]"/>
@@ -26,8 +25,16 @@ extension-element-prefixes="exsl">
    <xsl:value-of select="concat('view?repo=studiovo&amp;comp=',$comp,'&amp;variant=pulseon_studiovo_item','&amp;subcomp=',$subcomp,'&amp;fragment=')"/>
 </xsl:variable>
 <xsl:variable name="overviewRef"><xsl:value-of select="string('/auteur/math4all.html')"/></xsl:variable>
-<xsl:variable name="urlbase"><xsl:value-of select="concat('/data/',$refbase)"/></xsl:variable>
+
+<!--   /////////////////////////////////////////////   -->
+<!--  Specific for auteurssite:                        -->
+<!--   /////////////////////////////////////////////   -->
+<xsl:variable name="host_type">auteur</xsl:variable>
 <xsl:variable name="docbase" select="$refbase"></xsl:variable>
+<xsl:variable name="urlbase"><xsl:value-of select="concat('/data/',$refbase)"/></xsl:variable>
+<!--   /////////////////////////////////////////////   -->
+<!--   /////////////////////////////////////////////   -->
+
 <xsl:variable name="_cross_ref_as_links_" select="true()"/>
 <xsl:variable name="_sheetref_as_links_" select="true()"/>
 <xsl:variable name="lang">nl</xsl:variable>
