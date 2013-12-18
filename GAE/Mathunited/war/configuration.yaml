@@ -3,6 +3,8 @@ variants :
   basis_wm : {path: /xslt/wm_view.xslt}
   basis_studiovo : {path: /xslt/studiovo_view.xslt}
   studiovo_view : {path: /xslt/studiovo_view.xslt}
+  pulseon_studiovo : {path: /xslt/studiovo_pulseon.xslt}
+  pulseon_studiovo_item : {path: /xslt/studiovo_pulseon_item.xslt}
   wm_view : {path: /xslt/wm_view.xslt}
   m4a_view : {path: /xslt/m4a_view.xslt}
   m4a_view_en : {path: /xslt/m4a_view_en.xslt}
