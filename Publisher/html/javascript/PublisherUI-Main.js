@@ -7,6 +7,7 @@ WM_CMD_PUBLISH_SUBCOMPONENT=6;
 WM_CMD_PUBLISH_SINGLE_THREAD = 7;
 WM_CMD_SHOW_THREADS2 = 8;
 WM_CMD_UPLOADQTI_SUBCOMPONENT = 9;
+WM_CMD_PUBLISH_COMPONENTFILE = 10;
 
 //spec:
 // - method: url to methods-overview.xml file
@@ -76,6 +77,9 @@ WM_Manager.prototype.continueProcessing = function() {
      case WM_CMD_PUBLISH_SUBCOMPONENT:
           this.publishSubcomponent(cmd.args);
           break;
+     case WM_CMD_PUBLISH_COMPONENTFILE:
+          this.publishComponentFile(cmd.args);
+          break;
      case WM_CMD_PUBLISH_SINGLE_THREAD:
           this.publishSingleThread(cmd.args);
           break;
@@ -118,8 +122,8 @@ WM_Manager.prototype.loadMethodData = function(args) {
 
                   $(this).find('component').each(function(){
                      var comp_id = $(this).attr('id')
-                     var comp_name = $(this).children('title').text()
-                     var comp_file = $(this).children('file').text()
+                     var comp_name = $(this).children('title').text();
+                     var comp_file = $(this).attr('file');
                      var elm_state = $(this).children('state');
                      if(elm_state) {
                          var comp_state = elm_state.attr('type');
@@ -289,9 +293,11 @@ WM_Manager.prototype.publish = function() {
         for(var ii=0; ii<comp.subcomponents.length;ii++){
             var sc = comp.subcomponents[ii];
             if(sc.id==subcompId){
-                _this.addCommand(new WM_Command(WM_CMD_PUBLISH_SUBCOMPONENT, {id: subcompId, compId: compId, ref: sc.file, repo: _this.repo, target:_this.target}));
+                _this.addCommand(new WM_Command(WM_CMD_PUBLISH_SUBCOMPONENT, {subcompId: subcompId, compId: compId, subcompRef: sc.file, compRef: comp.file, repo: _this.repo, target:_this.target}));
             }
         }
+        _this.addCommand(new WM_Command(WM_CMD_PUBLISH_COMPONENTFILE, {compId: compId, compRef: comp.file, repo: _this.repo, target:_this.target}));
+        
     });
     this.execute();
 }
@@ -335,12 +341,27 @@ WM_Manager.prototype.publishThread = function() {
     });
     this.execute();
 }
+WM_Manager.prototype.publishComponentFile = function(args) {
+    var _this = this;
+    var elm = $('#'+args.id);
+    elm.addClass('processing');
+    $.post( this.publishURL, 
+           {compId: args.compId, compRef: args.compRef, repo: args.repo, user:'mslob',passwd:'test', cmd:'publishComponentFile', target:args.target},
+           function success(data, textStatus,jqXHR) {
+               elm.removeClass('processing');
+               elm.removeClass('selected');
+               elm.addClass('published');
+                _this.continueProcessing();
+           }
+    );
+    
+}
 WM_Manager.prototype.publishSubcomponent = function(args) {
     var _this = this;
     var elm = $('#'+args.id);
     elm.addClass('processing');
     $.post( this.publishURL, 
-           {id:args.id, compId: args.compId, ref:args.ref, repo: args.repo, user:'mslob',passwd:'test', cmd:'publishSubcomponent', target:args.target},
+           {subcompId:args.subcompId, compId: args.compId, subcompRef:args.subcompRef, compRef: args.compRef, repo: args.repo, user:'mslob',passwd:'test', cmd:'publishSubcomponent', target:args.target},
            function success(data, textStatus,jqXHR) {
                elm.removeClass('processing');
                elm.removeClass('selected');

@@ -27,36 +27,50 @@ class GAEPlatform extends Platform {
         } else throw new Exception("Threads file not found: ".$path.'threads.xml');
     }
     
+    public function publishComponentFile($compId, $compRef, $basePath, $repo, $logger) {
+        $logger->trace(LEVEL_INFO, 'publishing component file for '.$compId.' repo='.$repo);
+        $compFile = $basePath.$compRef;
+        $txt = file_get_contents($compFile);
+        if($txt===false) throw new Exception("Component $compFile does not exist");
+
+        $txt = EntityConverter::convert_entities($txt);
+        $doc = new SimpleXMLElement($txt);
+        $this->sendFile($compRef, "", $repo, $doc->asXML(), $logger);
+        
+    }
     
-    //Upload a single component
-    public function publishComponent($comp, $threadID, $logger) {
-        $logger->trace(LEVEL_INFO, 'publishing subcomponent '.$comp['id']);        
+    //Upload a single subcomponent
+    public function publishSubcomponent($comp, $threadID, $logger) {
+        $logger->trace(LEVEL_INFO, 'publishing subcomponent '.$comp['subcompId']);        
         
         $repo = $comp['method'];
-        $compFile = $comp['fname'];
-        $compRef = $comp['ref'];
+        $subcompRef = $comp['subcompRef'];
+        $subcompId = $comp['subcompId'];
         $compId = $comp['compId'];
-        $subcompId = $comp['id'];
+        $compRef = $comp['compRef'];
+        $pathbase = $comp['pathbase'];
 
         //create base path
-        $ind = strrpos($compFile, '/');
+        $subcompFile = $pathbase.$subcompRef;
+        
+        $ind = strrpos($subcompFile, '/');
         $base = '';
         if($ind > 0) {
-            $base = substr($compFile, 0, $ind+1);
+            $base = substr($subcompFile, 0, $ind+1);
         }
         
         //read index file containing numbering information
         $txt = file_get_contents($base.'../index.xml');
         if($txt===false) {
-            $logger->trace(LEVEL_ERROR, "index.xml for Component $compFile does not exist");
+            $logger->trace(LEVEL_ERROR, "index.xml for Component $compRef does not exist");
             $indexDoc = null;
         } else {
             $txt = EntityConverter::convert_entities($txt);
             $indexDoc = new SimpleXMLElement($txt);
         }
 
-        $txt = file_get_contents($compFile);
-        if($txt===false) throw new Exception("Component $compFile does not exist");
+        $txt = file_get_contents($subcompFile);
+        if($txt===false) throw new Exception("Subcomponent $subcompFile does not exist");
 
         $txt = EntityConverter::convert_entities($txt);
         $doc = new SimpleXMLElement($txt);
@@ -80,7 +94,7 @@ class GAEPlatform extends Platform {
         }
         $this->setTextrefs($compId, $doc, $indexDoc, $logger);
         $this->sendResourcesFromFile($doc, $subcompId, $repo, $logger, $base);
-        $this->sendFile($compRef, "", $repo, $doc->asXML(), $logger);
+        $this->sendFile($subcompRef, "", $repo, $doc->asXML(), $logger);
 
         //also post containing includes
         $main = new SimpleXMLElement($txt);
@@ -98,7 +112,7 @@ class GAEPlatform extends Platform {
             $this->setTextrefs($compId, $doc, $indexDoc, $logger);
             $this->sendResourcesFromFile($doc, $subcompId, $repo, $logger, $base);
             //send the updated xml file
-            $this->sendFile($incId, $compRef, $repo, $doc->asXML(), $logger);
+            $this->sendFile($incId, $subcompRef, $repo, $doc->asXML(), $logger);
         }
     }
 

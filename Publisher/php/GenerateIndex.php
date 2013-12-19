@@ -138,7 +138,7 @@ try{
          $componentNode = $parent->addChild('component');
          $componentNode->addAttribute('id', $compDoc['id']);
          $componentNode->addAttribute('basePath', $this->config_contentRoot.$repo['basePath']);
-         $componentNode->addAttribute('relativePath', $cc["relativePath"]);
+         $componentNode->addAttribute('file', $cc["relativePath"].$cc["file"]);
          $componentNode->addChild('year',$metaDoc->year);
          if(strlen($compDoc->description->title)>0){
             $componentNode->addChild('title',$compDoc->description->title);
@@ -234,6 +234,7 @@ try{
                      if(strcmp($state,"live")==0) {
                          $cc = array(
                              "id"=>$id,
+                             "file"=>$file,
                              "fullname"=>$fullName,
                              "absolutePath"=>$parent.'/',
                              "relativePath"=>$subFolder,

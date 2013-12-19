@@ -102,7 +102,7 @@ indent="yes" encoding="utf-8"/>
     </xsl:variable>
     <xsl:variable name="lom-set">
         <lom-set>
-            <xsl:copy-of select="document(concat($docbase,'../',$parsed_component/component/@relativePath,'component.xml'))/component/mulom:lom"/>
+            <xsl:copy-of select="document(concat('../',$parsed_component/component/@file))/component/mulom:lom"/>
             <xsl:copy-of select="subcomponent/mulom:lom"/>
             <xsl:for-each select="$phase1//mulom:lom">
                 <xsl:copy-of select="."/>
@@ -242,7 +242,7 @@ indent="yes" encoding="utf-8"/>
         <xsl:apply-templates select="*"/>
     </xsl:if>
 </xsl:template>
-<xsl:template match="block">
+<xsl:template match="block" priority="2">
     <xsl:if test="1+count(preceding-sibling::block)=number($block)">
         <div class="content-tab">
             <div class="header">

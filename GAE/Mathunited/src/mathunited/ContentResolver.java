@@ -48,6 +48,11 @@ public class ContentResolver implements URIResolver {
     
     public Source resolve(String href, String base)  {
         try{ 
+        	if( href.startsWith("../")) {
+        		href = href.replace("../","");
+        		base="root"; 
+        	}
+        	LOGGER.info("MSLO: resolving href="+href+", base="+base); 
         	Configuration config = Configuration.getInstance();
             InputSource xmlSource = null;
 	        if(href != null) {
@@ -95,10 +100,12 @@ public class ContentResolver implements URIResolver {
                XMLReader xmlReader = XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
                xmlReader.setEntityResolver(entityResolver);
                SAXSource xmlSaxSource = new SAXSource(xmlReader, xmlSource);
+       LOGGER.info("MSLO: resolving success");
                return xmlSaxSource;
 	        }
 	        LOGGER.severe("- failed");
         }  catch(Exception e) {
+            LOGGER.info("MSLO: resolving exception");
             e.printStackTrace();
         } 
         return null;

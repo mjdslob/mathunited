@@ -22,13 +22,15 @@ import java.net.MalformedURLException;
 public class Component {
     public List<SubComponent> subComponentList;
     String id;
+    public String file;
     public String title;
     public String subTitle;
     public String methodId;
     public String number;
 
-    public Component(String id, String methodId, String title, String subTitle, List<SubComponent> subs){
+    public Component(String id, String file, String methodId, String title, String subTitle, List<SubComponent> subs){
         this.id = id;
+        this.file = file;
         this.subComponentList = subs;
         this.title = title;
         if(subTitle == null) this.subTitle = "";
@@ -68,13 +70,15 @@ public class Component {
         List<SubComponent> subList = new ArrayList<SubComponent>();
         XPathExpression expr = xpath.compile("@id");
         String compId = (String)expr.evaluate(parent, XPathConstants.STRING);
+        expr = xpath.compile("@file");
+        String compFile = (String)expr.evaluate(parent, XPathConstants.STRING);
         expr = xpath.compile("title");
         String comptitle = (String)expr.evaluate(parent, XPathConstants.STRING);
         expr = xpath.compile("subtitle");
         String compSubTitle = (String)expr.evaluate(parent, XPathConstants.STRING);
         expr = xpath.compile("@number");
         String compNumber = (String)expr.evaluate(parent, XPathConstants.STRING);
-        Component comp = new Component(compId, methodId, comptitle, compSubTitle, subList);
+        Component comp = new Component(compId, compFile, methodId, comptitle, compSubTitle, subList);
         comp.number = compNumber;
         expr = xpath.compile("subcomponents/subcomponent");
     	NodeList subsList = (NodeList)expr.evaluate(parent, XPathConstants.NODESET);
@@ -96,7 +100,7 @@ public class Component {
     
     public String getXML() {
         StringBuilder sb = new StringBuilder();
-        sb.append("<component id=\"").append(id).append("\" number=\"").append(number).append("\"><title>").append(title).append("</title>");
+        sb.append("<component id=\"").append(id).append("\" number=\"").append(number).append("\" file=\"").append(file).append("\"><title>").append(title).append("</title>");
         sb.append("<subtitle>").append(subTitle).append("</subtitle><subcomponents>");
         for(SubComponent sc : subComponentList) {
             sb.append("<subcomponent id=\"").append(sc.id).append("\" number=\"").append(sc.number).append("\">");

@@ -11,7 +11,7 @@ abstract class Platform {
     public function prePublish($logger) {return true;}
 
     //Upload a single component
-    public function publishComponent($compFile, $path, $logger) {return true;}
+    public function publishComponentFile($compId, $compRef, $basePath, $logger) {return true;}
     //Upload a single subcomponent
     public function publishSubcomponent($comp, $threadID, $logger) {return true;}
     //Upload components.xml and threads.xml

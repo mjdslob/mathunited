@@ -81,18 +81,33 @@ class Publisher {
                     $result = $this->publishOverview();
                     break;
                     
+                case "publishComponentFile":
+                    if( isset($this->comm['compId']) ) {
+                        $compId = $this->comm['compId'];
+                    } else throw new Exception('No component id given');
+                    if( isset($this->comm['compRef']) ) {
+                        $compRef = $this->comm['compRef'];
+                    } else throw new Exception('No component filename given');
+
+                    $this->publishComponentFile($targetID, $compId, $compRef, $repoID);
+                    $this->logger->trace(LEVEL_INFO, "Finished publishing component file $compId");
+                    break;
+                    
                 case "publishSubcomponent":
-                    if( isset($this->comm['id']) ) {
-                        $subcompId = $this->comm['id'];
+                    if( isset($this->comm['subcompId']) ) {
+                        $subcompId = $this->comm['subcompId'];
                     } else throw new Exception('No subcomponent id given');
                     if( isset($this->comm['compId']) ) {
                         $compId = $this->comm['compId'];
                     } else throw new Exception('No component id given');
-                    if( isset($this->comm['ref']) ) {
-                        $compRef = $this->comm['ref'];
-                    } else throw new Exception('No component ref given');
+                    if( isset($this->comm['compRef']) ) {
+                        $compRef = $this->comm['compRef'];
+                    } else throw new Exception('No component filename given');
+                    if( isset($this->comm['subcompRef']) ) {
+                        $subCompRef = $this->comm['subcompRef'];
+                    } else throw new Exception('No subcomponent filename given');
 
-                    $this->publishComponent($targetID, $subcompId, $compId, $compRef, $repoID);
+                    $this->publishSubcomponent($targetID, $subcompId, $compId, $subCompRef, $compRef, $repoID);
                     $this->logger->trace(LEVEL_INFO, "Finished publishing subcomponent $subcompId");
                     break;
                     
@@ -165,7 +180,21 @@ class Publisher {
         $pf->uploadQTIComponent($comp, "", $this->logger);
     }
 
-    function publishComponent($targetID, $subcompId, $compId, $compRef, $compRepo) {
+    function publishComponentFile($targetID, $compId, $compRef, $compRepo) {
+        //generate an id for this publish
+        $publishId = date(DATE_RFC822);
+        
+        switch($targetID){
+            case "threeships":$pf = new ThreeShipsPlatform($publishId, false); break;
+            case "mathunited":$pf = new GAEPlatform($publishId); break;
+            default:
+                throw new Exception('Unknown target ID');
+                break;
+        }
+        $pf->publishComponentFile($compId, $compRef, $this->contentRoot.$this->repo['basePath'], $compRepo, $this->logger);
+    }
+    
+    function publishSubcomponent($targetID, $subcompId, $compId, $subcompRef, $compRef, $compRepo) {
         //generate an id for this publish
         $publishId = date(DATE_RFC822);
         
@@ -180,10 +209,11 @@ class Publisher {
         $comp = array();
         $comp['method']=$compRepo;
         $comp['compId']=$compId;
-        $comp['id']=$subcompId;
-        $comp['ref']=$compRef;
-        $comp['fname']=$this->contentRoot.$this->repo['basePath'].$compRef;
-        $pf->publishComponent($comp, "", $this->logger);
+        $comp['compRef']=$compRef;
+        $comp['subcompId']=$subcompId;
+        $comp['subcompRef']=$subcompRef;
+        $comp['pathbase']=$this->contentRoot.$this->repo['basePath'];
+        $pf->publishSubcomponent($comp, "", $this->logger);
     }
 
     //execute task. For specific tasks, override executeImpl()
