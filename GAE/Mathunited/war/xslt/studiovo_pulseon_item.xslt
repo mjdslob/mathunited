@@ -242,6 +242,7 @@ indent="yes" encoding="utf-8"/>
         <xsl:apply-templates select="*"/>
     </xsl:if>
 </xsl:template>
+
 <xsl:template match="block" priority="2">
     <xsl:if test="1+count(preceding-sibling::block)=number($block)">
         <div class="content-tab">
@@ -257,6 +258,7 @@ indent="yes" encoding="utf-8"/>
         </div>
     </xsl:if>
 </xsl:template>
+
 <xsl:template match="block/title" mode="content" priority="2"></xsl:template>
 <xsl:template match="include" mode="content">
     <xsl:apply-templates select="document(concat($docbase,@filename))" mode="content"/>
