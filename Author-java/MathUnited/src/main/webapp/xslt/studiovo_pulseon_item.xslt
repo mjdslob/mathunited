@@ -102,7 +102,7 @@ indent="yes" encoding="utf-8"/>
     </xsl:variable>
     <xsl:variable name="lom-set">
         <lom-set>
-            <xsl:copy-of select="document(concat($docbase,'../',$parsed_component/component/@relativePath,'component.xml'))/component/mulom:lom"/>
+            <xsl:copy-of select="document(concat($docbase, '../',$parsed_component/component/@file))/component/mulom:lom"/>
             <xsl:copy-of select="subcomponent/mulom:lom"/>
             <xsl:for-each select="$phase1//mulom:lom">
                 <xsl:copy-of select="."/>
@@ -242,11 +242,21 @@ indent="yes" encoding="utf-8"/>
         <xsl:apply-templates select="*"/>
     </xsl:if>
 </xsl:template>
-<xsl:template match="block">
+
+<xsl:template match="block" priority="2">
     <xsl:if test="1+count(preceding-sibling::block)=number($block)">
         <div class="content-tab">
             <div class="header">
-                <img src="{concat($urlbase, /subcomponent/meta/param[@name='banner-image'])}"/>
+				<img>
+			       <xsl:choose>
+			          <xsl:when test="$host_type='GAE'">
+			             <xsl:attribute name="src"><xsl:value-of select="/subcomponent/meta/param[@name='banner-image']"/></xsl:attribute>
+			          </xsl:when>
+			          <xsl:otherwise>
+			             <xsl:attribute name="src"><xsl:value-of select="concat($urlbase, /subcomponent/meta/param[@name='banner-image']/resource/name)"/></xsl:attribute>
+			          </xsl:otherwise>
+			       </xsl:choose>
+			   </img>
             </div>
             <div class="ribbon">
                 <span class="subcomponent-title"><xsl:value-of select="$subcomponent/title"/></span>
@@ -257,6 +267,7 @@ indent="yes" encoding="utf-8"/>
         </div>
     </xsl:if>
 </xsl:template>
+
 <xsl:template match="block/title" mode="content" priority="2"></xsl:template>
 <xsl:template match="include" mode="content">
     <xsl:apply-templates select="document(concat($docbase,@filename))" mode="content"/>

@@ -102,7 +102,7 @@ indent="yes" encoding="utf-8"/>
     </xsl:variable>
     <xsl:variable name="lom-set">
         <lom-set>
-            <xsl:copy-of select="document(concat('../',$parsed_component/component/@file))/component/mulom:lom"/>
+            <xsl:copy-of select="document(concat($docbase, '../',$parsed_component/component/@file))/component/mulom:lom"/>
             <xsl:copy-of select="subcomponent/mulom:lom"/>
             <xsl:for-each select="$phase1//mulom:lom">
                 <xsl:copy-of select="."/>
@@ -250,10 +250,10 @@ indent="yes" encoding="utf-8"/>
 				<img>
 			       <xsl:choose>
 			          <xsl:when test="$host_type='GAE'">
-			             <xsl:attribute name="src"><xsl:value-of select="subcomponent/meta/param[@name='banner-image']"/></xsl:attribute>
+			             <xsl:attribute name="src"><xsl:value-of select="/subcomponent/meta/param[@name='banner-image']"/></xsl:attribute>
 			          </xsl:when>
 			          <xsl:otherwise>
-			             <xsl:attribute name="src"><xsl:value-of select="concat($urlbase, subcomponent/meta/param[@name='banner-image']/resource/name)"/></xsl:attribute>
+			             <xsl:attribute name="src"><xsl:value-of select="concat($urlbase, /subcomponent/meta/param[@name='banner-image']/resource/name)"/></xsl:attribute>
 			          </xsl:otherwise>
 			       </xsl:choose>
 			   </img>
