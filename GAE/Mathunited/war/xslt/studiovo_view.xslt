@@ -151,7 +151,16 @@ indent="yes" encoding="utf-8"/>
     </div>
     <div id="page-right">
         <div id="header">
-            <img src="{concat($urlbase, subcomponent/meta/param[@name='banner-image']/resource/name)}"/>
+            <img>
+		       <xsl:choose>
+		          <xsl:when test="$host_type='GAE'">
+		             <xsl:attribute name="src"><xsl:value-of select="subcomponent/meta/param[@name='banner-image']"/></xsl:attribute>
+		          </xsl:when>
+		          <xsl:otherwise>
+		             <xsl:attribute name="src"><xsl:value-of select="concat($urlbase, subcomponent/meta/param[@name='banner-image']/resource/name)"/></xsl:attribute>
+		          </xsl:otherwise>
+		       </xsl:choose>
+			</img>
         </div>
         <div id="ribbon">
             <span id="kruimelpad"></span>

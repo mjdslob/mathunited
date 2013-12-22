@@ -247,7 +247,16 @@ indent="yes" encoding="utf-8"/>
     <xsl:if test="1+count(preceding-sibling::block)=number($block)">
         <div class="content-tab">
             <div class="header">
-                <img src="{concat($urlbase, /subcomponent/meta/param[@name='banner-image'])}"/>
+				<img>
+			       <xsl:choose>
+			          <xsl:when test="$host_type='GAE'">
+			             <xsl:attribute name="src"><xsl:value-of select="subcomponent/meta/param[@name='banner-image']"/></xsl:attribute>
+			          </xsl:when>
+			          <xsl:otherwise>
+			             <xsl:attribute name="src"><xsl:value-of select="concat($urlbase, subcomponent/meta/param[@name='banner-image']/resource/name)"/></xsl:attribute>
+			          </xsl:otherwise>
+			       </xsl:choose>
+			   </img>
             </div>
             <div class="ribbon">
                 <span class="subcomponent-title"><xsl:value-of select="$subcomponent/title"/></span>
