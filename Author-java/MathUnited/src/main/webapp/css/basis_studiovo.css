@@ -73,7 +73,7 @@ body {
 }
 #menu-lines {
     position:absolute;
-    top:115px;
+    top:117px;
     left:10px;
     z-index:0;
 }
@@ -104,7 +104,7 @@ body {
     height:30px;
     border-top:1px solid black;
     border-bottom:1px solid black;
-    padding-top:5px;
+    padding-top:4px;
 }
 .subcomponent-title {
     font-size:1.4em;
@@ -126,7 +126,7 @@ body {
     width:180px;
     height:93px;
     margin-left:11px;
-    margin-bottom:26px;
+    margin-bottom:28px;
     position:relative;
 }
 #logo img {
