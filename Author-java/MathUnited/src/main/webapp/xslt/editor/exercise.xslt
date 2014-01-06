@@ -18,16 +18,16 @@ extension-element-prefixes="exsl">
             <div class="menu-button-div">
                 <span class="menu-button">&#x2b24;</span>
             </div>
-        </div>
-        <div tag="itemcontent">
-            <div tag="question">
-                <xsl:call-template name="paragraph-template"/>
+            <div tag="itemcontent">
+                <div tag="question">
+                    <xsl:call-template name="paragraph-template"/>
+                </div>
             </div>
-        </div>
-        <div tag="answer">
-            <div class="answer-button"></div>
-            <div class="answer-content">
-                <xsl:call-template name="paragraph-template"/>
+            <div tag="answer">
+                <div class="answer-button"></div>
+                <div class="answer-content">
+                    <xsl:call-template name="paragraph-template"/>
+                </div>
             </div>
         </div>
     </div>

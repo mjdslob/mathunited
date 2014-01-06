@@ -158,13 +158,13 @@ public class InsertItemServlet extends HttpServlet {
 
             
             int ind = sub.file.lastIndexOf('/');
-            String refbase = config.getContentRoot()+sub.file.substring(0, ind+1);
+            String refbase = config.getContentRoot()+repository.path+"/"+sub.file.substring(0, ind+1);
             Map<String, Repository> map = config.getRepos();
             Repository baseRepo = map.get(repository.baseRepo);
             String altbase = refbase.replace(baseRepo.path, repository.path);
 
             ContentResolver resolver = new ContentResolver(repoId, context);
-            SAXSource subcompSource = resolver.resolve(sub.file, "");
+            SAXSource subcompSource = resolver.resolve(repository.path+"/"+sub.file, "");
 
             Node root = processor.processToDOM(subcompSource, "m4a_insert", parameterMap, resolver);
 
@@ -189,7 +189,7 @@ public class InsertItemServlet extends HttpServlet {
             }
             
             //store master file
-            String fileStr = config.getContentRoot()+sub.file;
+            String fileStr = config.getContentRoot()+repository.path+"/"+sub.file;
             fileStr = fileStr.replace(baseRepo.path, repository.path);
             FileManager.writeToFile(fileStr, root, repository);
             

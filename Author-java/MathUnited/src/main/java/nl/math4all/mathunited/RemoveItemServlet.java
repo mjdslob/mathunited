@@ -162,13 +162,13 @@ public class RemoveItemServlet extends HttpServlet {
 
             
             int ind = sub.file.lastIndexOf('/');
-            String refbase = config.getContentRoot()+sub.file.substring(0, ind+1);
+            String refbase = config.getContentRoot()+repository.path+"/"+sub.file.substring(0, ind+1);
             Map<String, Repository> map = config.getRepos();
             Repository def = map.get(repository.baseRepo);
             String altbase = refbase.replace(def.path, repository.path);
 
             ContentResolver resolver = new ContentResolver(repoId, context);
-            SAXSource subcompSource = resolver.resolve(sub.file, "");
+            SAXSource subcompSource = resolver.resolve(repository.path+"/"+sub.file, "");
 
             Node root = processor.processToDOM(subcompSource, "m4a_remove", parameterMap, resolver);
 
@@ -194,7 +194,7 @@ public class RemoveItemServlet extends HttpServlet {
             }
             
             //store master file
-            String fileStr = config.getContentRoot()+sub.file;
+            String fileStr = config.getContentRoot()+repository.path+"/"+sub.file;
             fileStr = fileStr.replace(def.path, repository.path);
             FileManager.writeToFile(fileStr, root, repository);
             

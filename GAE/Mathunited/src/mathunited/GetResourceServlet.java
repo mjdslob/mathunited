@@ -116,6 +116,7 @@ public class GetResourceServlet extends HttpServlet {
 			   blobstoreService.serve(blobKey, response);
 
     	   } catch (Exception e) {
+    		   LOGGER.severe(e.getMessage());
                e.printStackTrace();
                Writer w = response.getWriter();
                PrintWriter pw = new PrintWriter(w);

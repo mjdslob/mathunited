@@ -201,7 +201,7 @@ function setContextMenu(jqParent) {
         
         var menuid = 'menulist-'+menulistid; menulistid+=1;
         var menulist = $('<div class="contextMenu" id="'+menuid+'"><ul></ul></div>');
-        $('.contextMenu',parent).remove();;
+        $('.contextMenu',parent).remove();
         parent.append(menulist);
         menulist.css('display','none');
         var itemnr = 1;
@@ -212,7 +212,7 @@ function setContextMenu(jqParent) {
             elm.attr('id',id);
             var templateId = elm.attr('template');
             var templateIdValid = (typeof templateId !== 'undefined' && templateId !== false);
-            var templateName = elm.attr('name')
+            var templateName = elm.attr('name');
             switch(elm.attr('type')) {
                 case 'repeat':
                     var min = elm.attr('min'); if(typeof min === 'undefined') min=0;
@@ -418,8 +418,8 @@ function insertActions(jqParent) {
             theme : "modern",
             plugins : "paste,fullscreen, table, link, charmap",
             toolbar: "undo redo | bold italic | numlist bullist outdent indent | link unlink m4a_textref | m4a_keyword m4a_quotation | m4a_image | charmap",
-            moxiemanager_rootpath: compbase,
-            moxiemanager_path: compbase,
+            moxiemanager_rootpath: compbase+'/',
+            moxiemanager_path: compbase+'/',
             relative_urls:false,
         
         //clean HTML. Not XHTML, we rely on TagSoup on the server to convert to XML
