@@ -572,7 +572,14 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="movie" mode="content" priority="2">
     <div class="movie-wrapper">
         <xsl:if test="@optional='true'">
-            <img src="/MathUnited/sources/movie_icon_60.gif" class="studiovo-movie-icon" onclick="javascript:toggleMovie(this)"/>
+            <xsl:choose>
+                <xsl:when test="$host_type='GAE'">
+                    <img src="/sources/movie_icon_60.gif" class="studiovo-movie-icon" onclick="javascript:toggleMovie(this)"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <img src="sources/movie_icon_60.gif" class="studiovo-movie-icon" onclick="javascript:toggleMovie(this)"/>
+                </xsl:otherwise>
+            </xsl:choose>
             <span class="movie-title"><xsl:value-of select="@title"/></span>
         </xsl:if>
         <div>
@@ -597,7 +604,14 @@ indent="yes" encoding="utf-8"/>
                     <video id="{generate-id()}" class="video-js vjs-default-skin" 
                             width="{@width}" height="{@height}"
                             controls="true">
-                            <source src="{concat($urlbase,@href)}" type='video/mp4'/>
+                        <xsl:choose>
+                            <xsl:when test="$host_type='GAE'">
+                                <source src="{@href}" type='video/mp4'/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <source src="{concat($urlbase,@href)}" type='video/mp4'/>
+                            </xsl:otherwise>
+                        </xsl:choose>
                     </video>
                     <div style="clear:both"/>
                 </xsl:otherwise>
@@ -612,7 +626,14 @@ indent="yes" encoding="utf-8"/>
             <a onclick="this.getElementsByTagName('audio')[0].play()">
                 <audio id="{generate-id()}" class="video-js vjs-default-skin"
                         width="{@width}" height="{@height}">
-                    <source src="{concat($urlbase,@href)}" type='audio/mp3'/>
+                    <xsl:choose>
+                        <xsl:when test="$host_type='GAE'">
+                            <source src="{@href}" type='audio/mp3'/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <source src="{concat($urlbase,@href)}" type='audio/mp3'/>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </audio>
                 <xsl:choose>
                     <xsl:when test="$host_type='GAE'">
@@ -629,7 +650,14 @@ indent="yes" encoding="utf-8"/>
                 <audio id="{generate-id()}" class="video-js vjs-default-skin"
                         width="{@width}" height="{@height}"
                         controls="true">
-                    <source src="{concat($urlbase,@href)}" type='audio/mp3'/>
+                    <xsl:choose>
+                        <xsl:when test="$host_type='GAE'">
+                            <source src="{@href}" type='audio/mp3'/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <source src="{concat($urlbase,@href)}" type='audio/mp3'/>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </audio>
             </div>
         </xsl:otherwise>
@@ -644,7 +672,14 @@ indent="yes" encoding="utf-8"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:copy-of select="@*[name()!='src']"/>
-                <xsl:attribute name="src" select="concat($urlbase, @src)"/>
+                <xsl:choose>
+                    <xsl:when test="$host_type='GAE'">
+                        <xsl:attribute name="src" select="@src"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:attribute name="src" select="concat($urlbase, @src)"/>
+                    </xsl:otherwise>
+                </xsl:choose>
             </xsl:otherwise>
         </xsl:choose>
     </iframe>
