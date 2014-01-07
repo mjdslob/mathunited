@@ -1,13 +1,13 @@
 var popupElements = new Array();
 var popupDialogs = new Array();
 
-$(document).ready(function () {
+$(document).ready(function() {
     var TOLX = 20; var TOLY = 10;
     var elm = $('.menu-hierarchy').first();
     elm = $('.menu-item', elm).first();
     SVO_triggerMenuItem(elm);
     $(".exercise-drop-cell").draggable({
-        start: function () {
+        start: function() {
             var org_x = $(this).attr('org_x');
             if (!org_x) {
                 var pos = $(this).offset();
@@ -15,7 +15,7 @@ $(document).ready(function () {
                 $(this).attr('org_y', pos.top);
             }
         },
-        stop: function () {
+        stop: function() {
             var pos = $(this).offset();
             var nr = $(this).attr('nr');
             var parent = $(this).parents('.exercise-item-drop').first();
@@ -134,20 +134,25 @@ function togglePage(elm) {
 function toggleMovie(elm) {
     var parent = $(elm).parents('.movie-wrapper');
     var movie = $('.movie', parent);
+    var index = popupElements.indexOf(elm);
+    if (index == -1) {
+        var player = null;
+        var id = $("video", movie).attr('id');
+        movie.toggleClass('visible');
 
-    var player = null;
-    var id = $("video", movie).attr('id');
-    movie.toggleClass('visible');
-
-    movie.dialog({
-        width: 500,
-        beforeClose: function (event, ui) {
-            $('#' + id)[0].pause();
-        }
-    });
-    //videojs(id, {}, function(){
-    // Player (this) is initialized and ready.
-    //});
+        var dialog = movie.dialog({
+            autoOpen: false,
+            width: 500,
+            beforeClose: function (event, ui) {
+                $('#' + id)[0].pause();
+            }
+        });
+        popupElements.push(elm);
+        popupDialogs.push(dialog);
+        dialog.dialog('open');
+    }
+    else
+        popupDialogs[index].dialog('open');
 }
 function togglePopup(width, elm) {
     var parent = $(elm).parents('.popup-wrapper').first();
