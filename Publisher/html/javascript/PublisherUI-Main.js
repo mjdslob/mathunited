@@ -284,6 +284,7 @@ WM_Manager.prototype.publish = function() {
     var _this = this;
     var subcomp = $('.subcomponent.selected');
     $(subcomp).each(function( index ) {
+    debugger;
         var elm = $(this);
         var compParent = elm.parents('.component-container').first();
         var compElm = $('.component', compParent).first();
