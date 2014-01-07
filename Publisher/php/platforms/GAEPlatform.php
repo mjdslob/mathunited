@@ -223,6 +223,31 @@ class GAEPlatform extends Platform {
 //                throw new Exception("Invalid Geogebra applet: File $ggbfname does not exist in subcomponent $compId.");
             }
         }
+
+        //...movies & audio binaries... added by DdJ, 07-01-2014
+        $resrcs = $doc->xpath("//movie | //audio");
+        foreach($resrcs as $rsrcId){
+            $id = (string)$rsrcId['href'];
+            $id = urldecode($id);
+            $type = "movie";
+            $fileExists = false;
+            if(file_exists($base.$id)) { 
+                $fname = $base.$id;
+                $fileExists = true;
+            } else {
+                $fileExists = false;
+            }
+            if($fileExists){
+                $mimetype = $this->getMIMEtype($fname);
+                $logger->trace(LEVEL_INFO, 'publishing binary (id='.$id.', repo='.$repo.', fname='.$fname);        
+                $getUrl = $this->sendResource($fname, $compId, $id, $repo, $type, $mimetype, $logger);
+                $rsrcId['href'] = $getUrl."&attachment=true"; //put the direct URL in the xml
+            } else {
+                  $logger->trace(LEVEL_ERROR, "Broken resourcelink: File $id does not exist in subcomponent $compId."); 
+//                throw new Exception("Broken resourcelink: File $fname does not exist in subcomponent $compId.");
+            }
+        }
+
         //...other resources...
         $resrcs = $doc->xpath("//resourcelink");
         foreach($resrcs as $rsrcId){

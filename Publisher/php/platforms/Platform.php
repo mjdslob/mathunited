@@ -60,6 +60,12 @@ abstract class Platform {
                 case 'cg3':
                     $mime = 'application/xml';
                     break;
+                case 'mp3':
+                    $mime = 'audio/mpeg'; 
+                    break;
+                case 'mp4':
+                    $mime = 'video/mp4'; 
+                    break;
                 default:
                     $mime = 'application/octet-stream';
                     break;                
