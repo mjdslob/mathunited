@@ -71,8 +71,6 @@ indent="yes" encoding="utf-8"/>
 	   <script type="text/javascript" src="/javascript/MathUnited_studiovo.js"/>
 	   <script type="text/javascript" src="/javascript/jquery.ui.touch-punch.min.js"/>
 	   <script type="text/javascript" src="/javascript/jquery.jplayer.min.js"/>
-	   <script src='videojs.playlist.js'></script>
-	   <link href="videojs.playlist.css" rel="stylesheet"/>
 	   <link rel="stylesheet" href="/css/content.css" type="text/css"/>
 	   <link rel="stylesheet" href="/css/basis_studiovo.css" type="text/css"/>
       </xsl:when>
@@ -84,8 +82,6 @@ indent="yes" encoding="utf-8"/>
 	   <script type="text/javascript" src="javascript/MathUnited_studiovo.js"/>
 	   <script type="text/javascript" src="javascript/jquery.ui.touch-punch.min.js"/>
 	   <script type="text/javascript" src="javascript/jquery.jplayer.min.js"/>
-	   <script src='videojs.playlist.js'></script>
-	   <link href="videojs.playlist.css" rel="stylesheet"/>
 	   <link rel="stylesheet" href="css/content.css" type="text/css"/>
 	   <link rel="stylesheet" href="css/basis_studiovo.css" type="text/css"/>
       </xsl:otherwise>
@@ -277,9 +273,9 @@ indent="yes" encoding="utf-8"/>
         <xsl:apply-templates mode="content"/>
     </div>
 </xsl:template>
-<xsl:template match="block" mode="content">
+<!--xsl:template match="block" mode="content">
     <xsl:apply-templates mode="content"/>
-</xsl:template>
+</xsl:template-->
 <xsl:template match="block/title" mode="content"></xsl:template>
 <xsl:template match="include" mode="content">
     <xsl:apply-templates select="document(concat($docbase,@filename))" mode="content"/>
@@ -603,7 +599,7 @@ indent="yes" encoding="utf-8"/>
                 <xsl:otherwise>
                     <video id="{generate-id()}" class="video-js vjs-default-skin" 
                             width="{@width}" height="{@height}"
-                            controls="true">
+                            controls="true" preload="none">
                         <xsl:choose>
                             <xsl:when test="$host_type='GAE'">
                                 <source src="{@href}" type='video/mp4'/>
@@ -649,7 +645,7 @@ indent="yes" encoding="utf-8"/>
             <div class="movie">
                 <audio id="{generate-id()}" class="video-js vjs-default-skin"
                         width="{@width}" height="{@height}"
-                        controls="true">
+                        controls="true" preload="none">
                     <xsl:choose>
                         <xsl:when test="$host_type='GAE'">
                             <source src="{@href}" type='audio/mp3'/>
