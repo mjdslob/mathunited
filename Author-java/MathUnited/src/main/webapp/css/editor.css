@@ -17,6 +17,37 @@ html, body {
     margin-right:80px;
     float:left;
 }
+.m4a-editor-item-container {
+    margin:20px 0px;
+}
+.m4a-editor-item-title {
+    font-weight:bold;
+    font-size:1.2em;
+    color:rgb(200,0,0);
+}
+.item-label-button {
+    width:12px; height:12px;
+    background-image: url('../sources_ma/opgave_pijl_dicht.png');
+    display:inline-block;
+    position:relative;
+    top:1px;left:3px;
+    clear:right;
+}
+.m4a-editor-item-container.open .item-label-button {
+    background-image: url('../sources_ma/opgave_pijl_open.png');
+}
+.m4a-editor-item-content {
+    display:none;
+}
+.m4a-editor-item-container.open .m4a-editor-item-content {
+    display:block;
+}
+div[tag="metadata"] {
+    display:none;
+}
+div[tag="description"] {
+    display:none;
+}
 
 div[tag="paperfigure"] {
     display:none;
@@ -263,118 +294,4 @@ p:empty {
     min-height:20px;
     border: 1px dashed gray;
     
-}
-/* MENU */
-.menuDiv {
-    font-family:Helvetiva,Arial;
-    width:40px;
-    margin-left:10px;
-    margin-right:10px;
-    float:left;
-    position:relative;
-}
-
-.menuDiv .menuDiv-shadow {
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-    -moz-box-shadow:    -3px 5px 4px 2px #f0f0f0;
-    -webkit-box-shadow: -3px 5px 4px 2px #f0f0f0;
-    box-shadow:         -3px 5px 4px 2px #f0f0f0;
-    position:absolute;
-    left:0px; top:20px;
-    width:137px;
-    height:100%;
-    background-color: rgb(224,232,241); /*#FAF0BE;*/
-}
-.menuDiv-inner {
-    /*border-radius: 10px;*/
-    position:relative;
-    left:0px; top:20px;
-    width:160px;
-    background-color: rgb(224,232,241);
-    color:#666699;
-    font-weight:bold;
-    padding:0px;
-}
-.pageDiv.sizeC .menuDiv-inner {
-    width:220px;
-}
-.menuDiv.mobile .menuDiv-inner{
-    left:0px;
-}
-.menu-item-div {
-    font-weight:bold;
-    color:#666699;
-    position:relative;
-}
-.menu-item-div a {
-    display:block;
-    padding:4px 30px 4px 30px;
-}
-.menu-item-padding {
-    width:160px;
-    height:10px;
-    background-color: rgb(224,232,241);
-}
-.menu-item-div.menu-item-answer {
-    margin-top:10px;
-}
-.menu-item-div.menu-item-answer a {
-    font-style:italic;
-    font-weight:normal;
-}
-
-.menu-item-div a.navigatie {
-    color:#666699;
-}
-.menu-item-div a.navigatie:hover {
-    color:#d21c24;
-}
-/*
-.menu-item-dot {
-    width:14px;
-    height:14px;
-    position:relative;
-    left:-20px;
-    top:6px;
-    background-image: url('../sources_ma/dot-on-red.png');
-}
-*/
-.menu-item-dot-wrapper {
-    width:0px;
-    height:0px;
-}
-.menu-item-div #selected-menu-item{
-    background-color:#d21c24;
-    color:white;
-    text-decoration:none;
-}
-.menu-item-leeg {
-    height:3px;
-/*    background-color:white;*/
-    width:150px;
-}
-.menu-item-div .menu-button-div {
-    padding-left:10px;
-    position:absolute;
-    right:20px; top:3px;
-}
-.menu-button-div {
-    font-weight:normal;
-}
-.menu-button {
-    color:rgb(100,100,150);
-    cursor:pointer;
-    font-size:0.8em;
-}
-.menu-button:hover {
-    color:rgb(150,150,200);
-}
-.menu-nonexistent-item {
-    color:gray;
-    font-style:italic;
-    text-decoration:none;
-    font-weight:normal;
-    display:block;
-    padding:4px 30px 4px 30px;
 }

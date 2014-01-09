@@ -182,6 +182,12 @@ $(document).ready(function() {
         }
     });
 
+    $('.m4a-editor-item-container').each(function() {
+        var par = $(this);
+        $('.m4a-editor-item-title',par).click(function() {
+            par.toggleClass('open');
+        });
+    });
     insertActions($('div.pageDiv'));
     setContextMenu($('div.pageDiv'));
 });
@@ -487,6 +493,7 @@ function submitDocument(repo, comp, subcomp) {
             }
         })
 }
+
 
 function optionalMenuItem(optionId, action, location) {
     var elm = document.getElementById(optionId);

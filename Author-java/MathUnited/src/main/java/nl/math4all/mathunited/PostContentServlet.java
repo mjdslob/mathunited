@@ -185,12 +185,10 @@ public class PostContentServlet extends HttpServlet {
                 }
             }
             //store master file
-            /*
-            String fileStr = config.getContentRoot()+sub.file;
-            fileStr = fileStr.replace(def.path, alt.path);
-            writeToFile(fileStr, root, alt);
-            * 
-            */
+            expression = "/root/subcomponent";
+            Node node = (Node) xpath.evaluate(expression, root, XPathConstants.NODE);
+            String fileStr = config.getContentRoot()+repository.path+"/" + sub.file;
+            FileManager.writeToFile(fileStr, node, repository);
             
             String result = resultXML.replace("{#POSTRESULT}","true").replace("{#MESSAGE}", "success");
             pw.println(result);
