@@ -24,6 +24,7 @@
      }
      var viewURL = [];
      var method = gup('repo');
+     viewURL['test'] = '/MathUnited/view?parent=mathunited.pragma-ade.nl:41080/Publisher/html/auteurstool.html&variant=m4a_editor';
      viewURL['m4a'] = '/MathUnited/view?parent=mathunited.pragma-ade.nl:41080/Publisher/html/publisher-ma.html&variant=m4a_editor';
      viewURL['wm'] = '/MathUnited/view?parent=mathunited.pragma-ade.nl:41080/Publisher/html/publisher-ma.html&variant=wm_editor&item=1';
      var baseFolder = [];
@@ -31,6 +32,7 @@
      baseFolder['wm'] = '/data/content-wm/concept/';
      baseFolder['studiovo'] = '/data/content-studiovo/concept/';
      baseFolder['m4a_en'] = '/data/content-ma/saba/';
+     baseFolder['test'] = '/data/content-ma/test/';
      wm = new WM_Manager({
         methodURL:  baseFolder[method]+'leerlijnen/components.xml',
         threadsURL: baseFolder[method]+'leerlijnen/threads.xml',

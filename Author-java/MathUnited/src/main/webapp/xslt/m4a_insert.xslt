@@ -48,14 +48,15 @@
         <xsl:variable name="this" select="."/>
         <xsl:copy>
             <xsl:choose>
-                <xsl:when test="not(*[name()=$item])">
-                    <xsl:for-each select="$item-list/item-list/*">
+                
+                <xsl:when test="not(*[name()=$item])"> <!-- if the item does not yet exist -->
+                    <xsl:for-each select="$item-list/item-list/*"> <!-- loop over the item list to enforce correct order -->
                         <xsl:variable name="this-item" select="name()"/>
                         <xsl:choose>
-                            <xsl:when test="name()=$item">
+                            <xsl:when test="name()=$item"> <!-- arrived at the item we want to insert -->
                                 <xsl:apply-templates select="." mode="insert"/>
                             </xsl:when>
-                            <xsl:otherwise>
+                            <xsl:otherwise> <!-- if not, just copy the content -->
                                 <xsl:apply-templates select="$this/*[name()=$this-item]"/>
                             </xsl:otherwise>
                         </xsl:choose>
@@ -69,13 +70,17 @@
         </xsl:copy>
     </xsl:template>
     
-    
+    <!-- template to insert a new item to a series of existing siblings -->
     <xsl:template match="*[name()=$item and count(preceding-sibling::*[name()=$item])+1=number($itempos)]">
+        <!-- copy siblings -->
         <xsl:copy>
             <xsl:apply-templates select="@*|node()"/>
         </xsl:copy>
+        <!-- insert new item -->
         <xsl:apply-templates select="." mode="insert"/>
     </xsl:template>
+    
+    <!-- template to insert new item as first of its kind -->
     <xsl:template match="*[name()=$item and count(preceding-sibling::*[name()=$item])=0 and number($itempos)=0]">
         <xsl:apply-templates select="." mode="insert"/>
         <xsl:copy>
