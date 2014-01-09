@@ -102,7 +102,7 @@ indent="yes" encoding="utf-8"/>
     </xsl:variable>
     <xsl:variable name="lom-set">
         <lom-set>
-            <xsl:copy-of select="document(concat($docbase, '../',$parsed_component/component/@file))/component/mulom:lom"/>
+            <xsl:copy-of select="document(concat($docbase, '../../../',$parsed_component/component/@file))/component/mulom:lom"/>
             <xsl:copy-of select="subcomponent/mulom:lom"/>
             <xsl:for-each select="$phase1//mulom:lom">
                 <xsl:copy-of select="."/>

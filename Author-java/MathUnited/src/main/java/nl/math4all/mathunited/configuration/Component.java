@@ -24,11 +24,13 @@ public class Component {
     public String subTitle;
     public String methodId;
     public String number;
+    public String compfile;
 
-    public Component(String id, String methodId, String title, String subTitle, List<SubComponent> subs){
+    public Component(String id, String methodId, String title, String compfile, String subTitle, List<SubComponent> subs){
         this.id = id;
         this.subComponentList = subs;
         this.title = title;
+        this.compfile = compfile;
         if(subTitle == null) this.subTitle = "";
         else  this.subTitle = subTitle;
         this.methodId = methodId;
@@ -68,11 +70,13 @@ public class Component {
         String compId = (String)expr.evaluate(parent, XPathConstants.STRING);
         expr = xpath.compile("title");
         String comptitle = (String)expr.evaluate(parent, XPathConstants.STRING);
+        expr = xpath.compile("@file");
+        String compfile = (String)expr.evaluate(parent, XPathConstants.STRING);
         expr = xpath.compile("subtitle");
         String compSubTitle = (String)expr.evaluate(parent, XPathConstants.STRING);
         expr = xpath.compile("@number");
         String compNumber = (String)expr.evaluate(parent, XPathConstants.STRING);
-        Component comp = new Component(compId, methodId, comptitle, compSubTitle, subList);
+        Component comp = new Component(compId, methodId, comptitle, compfile, compSubTitle, subList);
         comp.number = compNumber;
         expr = xpath.compile("subcomponents/subcomponent");
     	NodeList subsList = (NodeList)expr.evaluate(parent, XPathConstants.NODESET);
@@ -94,7 +98,7 @@ public class Component {
     
     public String getXML() {
         StringBuilder sb = new StringBuilder();
-        sb.append("<component id=\"").append(id).append("\" number=\"").append(number).append("\"><title>").append(title).append("</title>");
+        sb.append("<component id=\"").append(id).append("\" number=\"").append(number).append("\" file=\"").append(compfile).append("\"><title>").append(title).append("</title>");
         sb.append("<subtitle>").append(subTitle).append("</subtitle><subcomponents>");
         for(SubComponent sc : subComponentList) {
             sb.append("<subcomponent id=\"").append(sc.id).append("\" number=\"").append(sc.number).append("\">");

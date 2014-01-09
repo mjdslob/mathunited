@@ -22,7 +22,7 @@ extension-element-prefixes="exsl">
 <xsl:variable name="subcomponent" select="$parsed_component/component/subcomponents/subcomponent[@id=$subcomp]"/>
 <xsl:variable name="variant">studiovo_pulseon</xsl:variable>
 <xsl:variable name="intraLinkPrefix">
-   <xsl:value-of select="concat('view?repo=studiovo&amp;comp=',$comp,'&amp;variant=pulseon_studiovo_item','&amp;subcomp=',$subcomp,'&amp;fragment=')"/>
+   <xsl:value-of select="concat('https://mathunited2012.appspot.com/view?repo=studiovo&amp;comp=',$comp,'&amp;variant=pulseon_studiovo_item','&amp;subcomp=',$subcomp,'&amp;fragment=')"/>
 </xsl:variable>
 <xsl:variable name="overviewRef"><xsl:value-of select="string('/auteur/math4all.html')"/></xsl:variable>
 

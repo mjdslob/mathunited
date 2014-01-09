@@ -162,6 +162,9 @@ public class ViewServlet extends HttpServlet {
             if(sub==null) {
                 throw new Exception("Er bestaat geen subcomponent met id '"+subcomp+"'");
             }
+            
+System.out.println(component.getXML());
+
             // supply path to subcomponent to xslt. Might be needed when resolving other xml-documents
             int ind = sub.file.lastIndexOf('/');
             parameterMap.put("refbase", repository.path+"/"+sub.file.substring(0, ind+1));
