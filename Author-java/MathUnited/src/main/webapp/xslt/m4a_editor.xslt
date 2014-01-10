@@ -219,6 +219,7 @@
             <div class="m4a-editor-item-container">
                 <div class="m4a-editor-item-title">Verkennen<div class="item-label-button"/></div>
                 <div class="m4a-editor-item-content">
+                    <div class="item-container shift-item-anchor"/> <!-- dummy shift-container that marks beginning of 'exercises' section. Should not move -->
                     <xsl:apply-templates mode="editor"/>
                 </div>
                 <div style="clear:both"/>
@@ -240,6 +241,17 @@
         <div tag="{name()}">
             <div class="m4a-editor-item-container">
                 <div class="m4a-editor-item-title">Uitleg<div class="item-label-button"/></div>
+                <div class="m4a-editor-item-content">
+                    <xsl:apply-templates mode="editor"/>
+                </div>
+                <div style="clear:both"/>
+            </div>
+        </div>
+    </xsl:template>
+    <xsl:template match="context">
+        <div tag="{name()}">
+            <div class="m4a-editor-item-container">
+                <div class="m4a-editor-item-title">Context<div class="item-label-button"/></div>
                 <div class="m4a-editor-item-content">
                     <xsl:apply-templates mode="editor"/>
                 </div>
@@ -297,6 +309,17 @@
         <div tag="{name()}">
             <div class="m4a-editor-item-container">
                 <div class="m4a-editor-item-title">Practicum<div class="item-label-button"/></div>
+                <div class="m4a-editor-item-content">
+                    <xsl:apply-templates mode="editor"/>
+                </div>
+                <div style="clear:both"/>
+            </div>
+        </div>
+    </xsl:template>
+    <xsl:template match="test">
+        <div tag="{name()}">
+            <div class="m4a-editor-item-container">
+                <div class="m4a-editor-item-title">Toets<div class="item-label-button"/></div>
                 <div class="m4a-editor-item-content">
                     <xsl:apply-templates mode="editor"/>
                 </div>

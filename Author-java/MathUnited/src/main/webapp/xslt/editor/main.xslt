@@ -43,9 +43,11 @@ extension-element-prefixes="exsl">
 
 <!-- elements with special behaviour -->
 <xsl:template match="include" mode="editor">
-    <div tag="{name()}">
-        <xsl:apply-templates select="@*" mode="editor"/>
-        <xsl:apply-templates select="document(concat($docbase,@filename))" mode="editor"/>
+    <div class="item-container">
+        <div tag="{name()}">
+            <xsl:apply-templates select="@*" mode="editor"/>
+            <xsl:apply-templates select="document(concat($docbase,@filename))" mode="editor"/>
+        </div>
     </div>
 </xsl:template>
 

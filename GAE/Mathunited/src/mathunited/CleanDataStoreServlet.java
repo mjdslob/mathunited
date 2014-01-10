@@ -56,6 +56,8 @@ public class CleanDataStoreServlet extends HttpServlet {
    				removeResource("ggb", k, datastore, blobstore);
    				removeResource("cab", k, datastore, blobstore);
    				removeResource("dox", k, datastore, blobstore);
+   				removeResource("movie", k, datastore, blobstore);
+   				removeResource("audio", k, datastore, blobstore);
 
    				datastore.delete(result.getKey());
    			}   			   

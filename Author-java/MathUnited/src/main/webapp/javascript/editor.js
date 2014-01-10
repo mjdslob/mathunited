@@ -188,9 +188,42 @@ $(document).ready(function() {
             par.toggleClass('open');
         });
     });
+    
+    labelAnchors();
+    $('.item-container').each(function() {
+        var parent = $(this);
+        $('.shift-handle-next',this).click(function() {
+            var _num = 1+parseInt(parent.attr('num'));
+            var nextLoc = $('#item-container-'+_num);
+            if(nextLoc.parents('.item-container').length>0) {
+                nextLoc = nextLoc.parents('.item-container').first();
+            }
+            parent.insertAfter(nextLoc);
+            labelAnchors();
+        });
+        $('.shift-handle-prev',this).click(function() {
+            var _num = -2+parseInt(parent.attr('num'));
+            var nextLoc = $('#item-container-'+_num);
+            if(nextLoc.parents('.item-container').length>0) {
+                nextLoc = nextLoc.parents('.item-container').first();
+            }
+            parent.insertAfter(nextLoc);
+            labelAnchors();
+        });
+        
+    });
     insertActions($('div.pageDiv'));
     setContextMenu($('div.pageDiv'));
 });
+
+function labelAnchors() {
+    var shiftId=0;
+    $('.item-container').each(function(){
+        $(this).attr('id','item-container-'+shiftId);
+        $(this).attr('num',shiftId);
+        shiftId++;
+    });
+}
 
 var paragraph_id_counter = 0;
 var menulistid = 0;

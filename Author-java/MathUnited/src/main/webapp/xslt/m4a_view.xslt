@@ -445,6 +445,10 @@ indent="yes" encoding="utf-8"/>
     </xsl:for-each>
 </xsl:template>
 
+<xsl:template match="context">
+    <h2 class="section-title">Context</h2>
+    <xsl:apply-templates/>
+</xsl:template>
 <xsl:template match="introduction">
     <h2 class="section-title">Inleiding</h2>
     <xsl:apply-templates/>

@@ -19,6 +19,7 @@ roles :
   - editor_m4a
   - editor_concept_alt
   - editor_test
+  - editor_malmberg
   
 repos :
   wm :
@@ -41,7 +42,7 @@ repos :
     defaultVariant: m4a_view_en
   malmberg :
     path: content-ma/malmberg
-    edit_permission: editor_m4a
+    edit_permission: editor_malmberg
     defaultVariant: m4a_view
   test :
     path: content-ma/test

@@ -25,6 +25,25 @@ html, body {
     font-size:1.2em;
     color:rgb(200,0,0);
 }
+.item-container {
+    position:relative;
+}
+.shift-handle-prev {
+    position:absolute;
+    left:-100px;
+    top:-10px;
+    font-size:1.3em;
+}
+.shift-handle-next {
+    position:absolute;
+    left:-100px;
+    top:10px;
+    font-size:1.3em;
+}
+.shift-handle-next:hover, .shift-handle-prev:hover {
+    font-weight:bold;
+    color:red;
+}
 .item-label-button {
     width:12px; height:12px;
     background-image: url('../sources_ma/opgave_pijl_dicht.png');

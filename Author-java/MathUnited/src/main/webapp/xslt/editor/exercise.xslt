@@ -42,19 +42,26 @@ extension-element-prefixes="exsl">
         </div>
     </div>
 </xsl:template>
+<xsl:template match="exercises" mode="editor">
+    <div tag="exercises">
+        <div class="item-container shift-item-anchor"/> <!-- dummy shift-container that marks beginning of 'exercises' section. Should not move -->
+        <xsl:apply-templates mode="editor"/>
+    </div>
+</xsl:template>
 <xsl:template match="exercise" mode="editor">
-    <div tag="exercise">
-        <div>
-            <xsl:attribute name="class">exercise-with-heading open</xsl:attribute>
-            <xsl:apply-templates select="@*" mode="editor"/>
-            <div class="exercise-heading">
-                Opgave <span class="opgave-title-span"><xsl:value-of select="title"/></span> <div class="opgave-label-button"/>
-            </div>
-            <div class="exercise-contents">
-                <xsl:apply-templates mode="editor"/>
+        <div tag="exercise">
+            <div class="exercise-with-heading open">
+                <xsl:apply-templates select="@*" mode="editor"/>
+                <div class="shift-handle-prev">&#8593;</div>  
+                <div class="shift-handle-next">&#8595;</div>  
+                <div class="exercise-heading">
+                  Opgave <span class="opgave-title-span"><xsl:value-of select="title"/></span> <div class="opgave-label-button"/>
+                </div>
+                <div class="exercise-contents">
+                    <xsl:apply-templates mode="editor"/>
+                </div>
             </div>
         </div>
-    </div>
 </xsl:template>
 
 <xsl:template match="single-item" mode="editor">
