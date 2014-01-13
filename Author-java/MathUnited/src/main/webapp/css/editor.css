@@ -214,6 +214,14 @@ div[tag="multi-item"] .menu-button-div {
 div[tag="single-item"] {
     position:relative;
 }
+.menu-button {
+    display:block;
+    width:16px;
+    height:16px;
+    top:4px;
+    position:relative;
+    background-image: url('../sources_ma/gray-button.png');
+}
 div[tag="single-item"] .menu-button-div {
     position:absolute;
     left:-48px; top:-25px;

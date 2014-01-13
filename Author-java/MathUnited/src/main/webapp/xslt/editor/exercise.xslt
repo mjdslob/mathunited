@@ -16,7 +16,7 @@ extension-element-prefixes="exsl">
         <div tag="item" label="" type="open">
             <div class="item-label">a</div>
             <div class="menu-button-div">
-                <span class="menu-button">&#x2b24;</span>
+                <span class="menu-button"></span>
             </div>
             <div tag="itemcontent">
                 <div tag="question">
@@ -68,7 +68,7 @@ extension-element-prefixes="exsl">
     <div class="_editor_context_base">
         <div tag="{name()}">
             <div class="menu-button-div">
-                <span class="menu-button">&#x2b24;</span>
+                <span class="menu-button"></span>
             </div>
             <xsl:apply-templates mode="editor"/>
         </div>
@@ -93,7 +93,7 @@ extension-element-prefixes="exsl">
                 <xsl:apply-templates select="@*" mode="editor"/>
                 <div class="item-label"><xsl:value-of select="@label"/></div>
                 <div class="menu-button-div">
-                    <span class="menu-button">&#x2b24;</span>
+                    <span class="menu-button"></span>
                 </div>
 
                 <xsl:apply-templates mode="copy"/>        
