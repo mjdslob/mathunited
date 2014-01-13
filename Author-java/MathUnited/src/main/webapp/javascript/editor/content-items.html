@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<div id="itemSpec">
+    <div class='itemClass exercise'>
+        <div class="itemType" name="Enkelvoudige vraag (open)">
+            
+             <div class="item-container" type="exercise">
+                <div class="_editor_context_base">
+                   <div class="menu-button-div item-container-menu"><span class="menu-button"></span></div>
+                   <div class="_editor_option" type="action" name="invoegen..." function="insertContentItem"></div>
+                   <div tag="include" filename="__doc-id__.xml">
+                      <div tag="exercise">
+                         <div class="exercise-with-heading open" type="application" id="__doc-id__">
+                            <div class="_editor_option" type="action" name="schuif omhoog" function="shiftItemUp"></div>
+                            <div class="_editor_option" type="action" name="schuif omlaag" function="shiftItemDown"></div>
+                            <div class="exercise-heading">
+                               Opgave <span class="opgave-title-span"></span><div class="opgave-label-button"></div>
+                            </div>
+                            <div class="exercise-contents">
+                               <div tag="single-item">
+                                  <div tag="item" type="open">
+                                     <div tag="itemcontent">
+                                        <div class="_editor_option" type="optional" template="exercise-itemintro-template" name="item intro"></div>
+                                        <div tag="question">
+                                           <p>(vraag)</p>
+                                        </div>
+                                     </div>
+                                     <div tag="answer">
+                                        <div class="answer-button"></div>
+                                        <div class="answer-content">
+                                            <p>(antwoord)</p>
+                                        </div>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+             </div>
+        </div>
+        
+        <div class="itemType" name="Meervoudige vraag (open)">
+
+          <div class="item-container" type="exercise">
+             <div class="_editor_context_base">
+                <div class="menu-button-div item-container-menu"><span class="menu-button"></span></div>
+                <div class="_editor_option" type="action" name="invoegen..." function="insertContentItem"></div>
+                <div tag="include" filename="__doc-id__.xml">
+                   <div tag="exercise">
+                      <div class="exercise-with-heading open">
+                         <div class="_editor_option" type="action" name="schuif omhoog" function="shiftItemUp"></div>
+                         <div class="_editor_option" type="action" name="schuif omlaag" function="shiftItemDown"></div>
+                         <div class="exercise-heading">
+                            Opgave <span class="opgave-title-span"></span><div class="opgave-label-button"></div>
+                         </div>
+                         <div class="exercise-contents">
+                            <div tag="multi-item">
+                               <div tag="intro">
+                                  <p>(intro)</p>
+                               </div>
+                               <div tag="items">
+                                  <div class="_editor_context_base">
+                                     <div class="_editor_option" type="repeat" name="deelvraag" function="repeatExerciseItem">
+                                        <div tag="item" label="a" type="open">
+                                           <div class="item-label">a</div>
+                                           <div class="menu-button-div"><span class="menu-button"></span></div>
+                                           <div tag="itemcontent">
+                                              <div class="_editor_option" type="optional" template="exercise-itemintro-template" name="item intro"></div>
+                                              <div tag="question">
+                                                 <p>(vraag)</p>
+                                              </div>
+                                           </div>
+                                           <div tag="answer">
+                                              <div class="answer-button"></div>
+                                              <div class="answer-content">
+                                                 <p>(antwoord)</p>
+                                              </div>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+
+        </div>    
+    </div>
+</div>

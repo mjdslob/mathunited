@@ -53,8 +53,8 @@ extension-element-prefixes="exsl">
         <div tag="exercise">
             <div class="exercise-with-heading open">
                 <xsl:apply-templates select="@*" mode="editor"/>
-                <div class="shift-handle-prev">&#8593;</div>  
-                <div class="shift-handle-next">&#8595;</div>  
+                <div  class="_editor_option" type="action" name="schuif omhoog" function="shiftItemUp"/>
+                <div  class="_editor_option" type="action" name="schuif omlaag" function="shiftItemDown"/>
                 <div class="exercise-heading">
                   Opgave <span class="opgave-title-span"><xsl:value-of select="title"/></span> <div class="opgave-label-button"/>
                 </div>

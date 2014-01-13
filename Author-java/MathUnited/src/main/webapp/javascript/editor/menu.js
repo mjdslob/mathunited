@@ -1,3 +1,4 @@
+var insertContentItem_typeUrl = 'content-items.html';
 var paragraph_id_counter = 0;
 var menulistid = 0;
 var editoroptionid = 0;
@@ -8,6 +9,7 @@ function setContextMenu(jqParent) {
     //the following default behavior is supported
     // - type="repeat": insert (before), insert (after) and remove
     // - type="optional": add or remove a single item
+    // - type="action": call a function
     // an item is defined through a template (indicated by attribute 'template'=<id>) or
     // by a function name that performs the intended action.
     $('.menu-button',jqParent).each(function(){
@@ -84,7 +86,7 @@ function setContextMenu(jqParent) {
                     }
                     itemnr+=1;
                     break;
-                default:
+                case 'action':
                     $('ul',menulist).append('<li id="item'+itemnr+'" action="'+elm.attr('function')+"('"+id+"')"+'">  '+templateName+'</li>');
                     itemnr+=1;
                     break;
@@ -220,4 +222,103 @@ function repeatExerciseItem(id, action, location) {
         insertActions(newElm);
         setContextMenu(newElm);
     }
+}
+
+function shiftItemUp(id) {
+    var elm = $('#'+id);
+    var parent = elm.parents('.item-container').first();
+    var _num = -2+parseInt(parent.attr('num'));
+    var nextLoc = $('#item-container-'+_num);
+    if(nextLoc.parents('.item-container').length>0) {
+        nextLoc = nextLoc.parents('.item-container').first();
+    }
+    parent.insertAfter(nextLoc);
+    labelAnchors();
+}
+
+function shiftItemDown(id) {
+    var elm = $('#'+id);
+    var parent = elm.parents('.item-container').first();
+    var _num = 1+parseInt(parent.attr('num'));
+    var nextLoc = $('#item-container-'+_num);
+    if(nextLoc.parents('.item-container').length>0) {
+        nextLoc = nextLoc.parents('.item-container').first();
+    }
+    parent.insertAfter(nextLoc);
+    labelAnchors();
+}
+
+function insertContentItem(id) {
+    var elm = $('#'+id);
+    var parent = elm.parents('.item-container').first();
+    var contentType = parent.attr('type');
+    $.get(insertContentItem_typeUrl, '', function(xml) {
+        var itemParent = $('.itemClass.'+contentType,xml);
+        var html='<div>';
+        var num=0;
+        $('.itemType',itemParent).each(function(){
+           html = html+'<div class="item-type" num="'+num+'">'+$(this).attr('name')+'</div>'; 
+           $(this).attr('num',num);
+           num++;
+        });
+        html=html+"</div>";
+        var dlg = $(html);
+        dlg.dialog({
+            resizable: true,
+            width:400,
+            modal: true,
+            buttons: {
+                Cancel: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });    
+        $('.item-type',dlg).click(function() {
+            var cnt = $('.itemType[num="'+$(this).attr('num')+'"]',itemParent);
+            var newElm = $('<div class="item-container"></div>');
+            parent.after(newElm);
+            cnt.children().first().appendTo(newElm);
+            $('div[tag="include"]',newElm).each(function(){
+                debugger;
+                var par = $(this).parents('div[tag="include"]').first();
+                var curid = contentType+'.xml';
+                if(par.length>0) {
+                    var curid = par.attr('filename');
+                }
+                var counter = 1;
+                var newid = curid.replace('.xml','-'+counter+'.xml');
+                var elm = $('div[tag="include"][filename="'+newid+'"]');
+                while(elm.length>0) {
+                    counter++;
+                    newid = curid.replace('.xml','-'+counter+'.xml');
+                    elm = $('div[tag="include"][filename="'+newid+'"]');
+                }
+                $(this).attr('filename', newid);
+            });
+            insertActions(newElm);
+            setContextMenu(newElm);
+            dlg.dialog("close");
+        });
+        
+    });
+}
+
+function removeContentItem(id) {
+    var elm = $('#'+id);
+    var parent = elm.parents('.item-container').first();
+    $( "#dialog-remove-item-confirm" ).dialog({
+        resizable: false,
+        height:140,
+        width:400,
+        modal: true,
+        buttons: {
+            Cancel: function() {
+                $( this ).dialog( "close" );
+            },
+            "verwijderen": function() {
+                parent.remove();
+                $( this ).dialog( "close" );
+            }
+        }
+    });
 }

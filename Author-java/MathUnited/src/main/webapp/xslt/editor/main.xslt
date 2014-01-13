@@ -43,17 +43,19 @@ extension-element-prefixes="exsl">
 
 <!-- elements with special behaviour -->
 <xsl:template match="include" mode="editor">
+    <xsl:variable name="content" select="document(concat($docbase,@filename))"/>
     <div class="item-container">
+        <xsl:attribute name="type"><xsl:value-of select="name($content/*[1])"/></xsl:attribute>
         <div class="_editor_context_base">
-            <div  class="_editor_option" type="optional" name="invoegen..." function="insertContentItem">
-                <div class="menu-button-div item-container-menu">
-                    <span class="menu-button"></span>
-                </div>
+            <div class="menu-button-div item-container-menu">
+                <span class="menu-button"></span>
             </div>
+            <div  class="_editor_option" type="action" name="invoegen..." function="insertContentItem"/>
+            <div  class="_editor_option" type="action" name="verwijderen" function="removeContentItem"/>
         
             <div tag="{name()}">
                 <xsl:apply-templates select="@*" mode="editor"/>
-                <xsl:apply-templates select="document(concat($docbase,@filename))" mode="editor"/>
+                <xsl:apply-templates select="$content" mode="editor"/>
             </div>
         </div>
     </div>
