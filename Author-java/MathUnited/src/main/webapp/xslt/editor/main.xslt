@@ -44,9 +44,17 @@ extension-element-prefixes="exsl">
 <!-- elements with special behaviour -->
 <xsl:template match="include" mode="editor">
     <div class="item-container">
-        <div tag="{name()}">
-            <xsl:apply-templates select="@*" mode="editor"/>
-            <xsl:apply-templates select="document(concat($docbase,@filename))" mode="editor"/>
+        <div class="_editor_context_base">
+            <div  class="_editor_option" type="optional" name="invoegen..." function="insertContentItem">
+                <div class="menu-button-div item-container-menu">
+                    <span class="menu-button"></span>
+                </div>
+            </div>
+        
+            <div tag="{name()}">
+                <xsl:apply-templates select="@*" mode="editor"/>
+                <xsl:apply-templates select="document(concat($docbase,@filename))" mode="editor"/>
+            </div>
         </div>
     </div>
 </xsl:template>

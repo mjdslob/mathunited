@@ -133,8 +133,9 @@
                 </script>
                 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
                 <script type="text/javascript" src="javascript/tinymce/jquery.tinymce.min.js"></script>
-                <script type="text/javascript" src="javascript/editor.js"></script>
-                <script type="text/javascript" src="javascript/contextmenu.js"></script>
+                <script type="text/javascript" src="javascript/editor/editor.js"></script>
+                <script type="text/javascript" src="javascript/editor/menu.js"></script>
+                <script type="text/javascript" src="javascript/editor/contextmenu.js"></script>
                 <script type="text/javascript" src="javascript/MathUnited.js"></script>
                 <script type="text/javascript" src="javascript/MathUnited_m4a.js"></script>
                 <link rel="stylesheet" href="css/content.css" type="text/css"/>

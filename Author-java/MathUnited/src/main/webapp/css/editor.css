@@ -222,6 +222,11 @@ div[tag="single-item"] {
     position:relative;
     background-image: url('../sources_ma/gray-button.png');
 }
+.menu-button-div.item-container-menu {
+    position:absolute;
+    left:-65px;
+}
+
 div[tag="single-item"] .menu-button-div {
     position:absolute;
     left:-48px; top:-25px;

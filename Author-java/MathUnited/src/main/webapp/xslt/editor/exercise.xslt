@@ -48,6 +48,7 @@ extension-element-prefixes="exsl">
         <xsl:apply-templates mode="editor"/>
     </div>
 </xsl:template>
+
 <xsl:template match="exercise" mode="editor">
         <div tag="exercise">
             <div class="exercise-with-heading open">
@@ -65,14 +66,9 @@ extension-element-prefixes="exsl">
 </xsl:template>
 
 <xsl:template match="single-item" mode="editor">
-    <div class="_editor_context_base">
         <div tag="{name()}">
-            <div class="menu-button-div">
-                <span class="menu-button"></span>
-            </div>
             <xsl:apply-templates mode="editor"/>
         </div>
-    </div>
 </xsl:template>
 
 <!-- needed to display label of subitem-->
