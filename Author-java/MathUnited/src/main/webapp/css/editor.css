@@ -20,10 +20,23 @@ html, body {
 .m4a-editor-item-container {
     margin:20px 0px;
 }
+
 .m4a-editor-item-title {
     font-weight:bold;
     font-size:1.2em;
     color:rgb(200,0,0);
+}
+.m4a-editor-item-title.nonexistent {
+    color:rgb(100,100,100);
+    font-weight:normal;
+    font-style:italic;
+    margin:20px 0px;
+}
+.m4a-editor-item.nonexistent {
+    display:none;
+}
+.m4a-editor-item.nonexistent.visible {
+    display:block;
 }
 .item-container {
     position:relative;
@@ -225,6 +238,10 @@ div[tag="single-item"] {
 .menu-button-div.item-container-menu {
     position:absolute;
     left:-65px;
+}
+.menu-button-div.section-button {
+    position:absolute;
+    left:0px;
 }
 
 div[tag="single-item"] .menu-button-div {

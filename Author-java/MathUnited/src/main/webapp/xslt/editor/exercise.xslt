@@ -50,6 +50,7 @@ extension-element-prefixes="exsl">
 </xsl:template>
 
 <xsl:template match="exercise" mode="editor">
+        <div  class="_editor_option" type="action" name="verwijderen" function="removeContentItem"/>
         <div tag="exercise">
             <div class="exercise-with-heading open">
                 <xsl:apply-templates select="@*" mode="editor"/>

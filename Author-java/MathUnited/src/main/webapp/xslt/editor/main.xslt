@@ -45,13 +45,11 @@ extension-element-prefixes="exsl">
 <xsl:template match="include" mode="editor">
     <xsl:variable name="content" select="document(concat($docbase,@filename))"/>
     <div class="item-container">
-        <xsl:attribute name="type"><xsl:value-of select="name($content/*[1])"/></xsl:attribute>
         <div class="_editor_context_base">
             <div class="menu-button-div item-container-menu">
                 <span class="menu-button"></span>
             </div>
-            <div  class="_editor_option" type="action" name="invoegen..." function="insertContentItem"/>
-            <div  class="_editor_option" type="action" name="verwijderen" function="removeContentItem"/>
+            <div  class="_editor_option" type="action"  item="{name($content/*[1])}" name="invoegen..." function="insertContentItem"/>
         
             <div tag="{name()}">
                 <xsl:apply-templates select="@*" mode="editor"/>
@@ -60,7 +58,12 @@ extension-element-prefixes="exsl">
         </div>
     </div>
 </xsl:template>
-
+<xsl:template match="applet[@type='ggb']" mode="editor">
+    <div tag="{name()}">
+        <xsl:apply-templates select="@* | node()" mode="editor"/>
+    </div>
+    <xsl:apply-templates select="." mode="content"/>
+</xsl:template>
 <!-- BLOCKS -->
 <xsl:template match="block" mode="editor">
     <div tag="block">

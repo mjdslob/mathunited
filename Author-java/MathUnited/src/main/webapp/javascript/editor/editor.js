@@ -182,13 +182,6 @@ $(document).ready(function() {
         }
     });
 
-    $('.m4a-editor-item-container').each(function() {
-        var par = $(this);
-        $('.m4a-editor-item-title',par).click(function() {
-            par.toggleClass('open');
-        });
-    });
-    
     labelAnchors();
     $('.item-container').each(function() {
         var parent = $(this);
@@ -228,6 +221,13 @@ function labelAnchors() {
 
 function insertActions(jqParent) {
     var editorDiv = null;
+    $('.m4a-editor-item-container').each(function() {
+        var par = $(this);
+        $('.m4a-editor-item-title',par).unbind("click").click(function() {
+            par.toggleClass('open');
+        });
+    });
+    
     $('p,ul.paragraph,ol.paragraph,img',jqParent).each(function() {
         if($(this).parents('.tiny-editor').length>0) return; //already attached to an editor
         

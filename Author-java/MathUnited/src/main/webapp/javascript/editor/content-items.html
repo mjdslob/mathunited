@@ -1,12 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <div id="itemSpec">
+    <!-- INLEIDING -->
+    <div class='itemClass introduction'>
+       <div class="m4a-editor-item-container">
+          <div class="menu-button-div section-button"><span class="menu-button"></span></div>
+             <div tag="introduction">
+                <div class="m4a-editor-item-title">Inleiding
+                <div class="item-label-button"></div>
+             </div>
+             <div class="m4a-editor-item-content">
+                <div class="item-container shift-item-anchor"></div>
+                <div class="_editor_option" item="exercise" type="action" name="invoegen..." function="insertContentItem"></div>
+             </div>
+          </div>
+       </div>
+    </div>
+
+
+    <!-- VERKENNEN -->
+    <div class='itemClass explore'>
+       <div class="m4a-editor-item-container">
+          <div tag="explore">
+             <div class="menu-button-div section-button"><span class="menu-button"></span></div>
+             <div class="m4a-editor-item-title">Verkennen
+                <div class="item-label-button"></div>
+             </div>
+             <div class="m4a-editor-item-content">
+                <div class="item-container shift-item-anchor"></div>
+                <div class="_editor_option" type="action" name="invoegen..." function="insertContentItem"></div>
+             </div>
+          </div>
+       </div>
+    </div>
+    
+    
+    <!-- EXERCISES -->
     <div class='itemClass exercise'>
         <div class="itemType" name="Enkelvoudige vraag (open)">
             
              <div class="item-container" type="exercise">
                 <div class="_editor_context_base">
                    <div class="menu-button-div item-container-menu"><span class="menu-button"></span></div>
-                   <div class="_editor_option" type="action" name="invoegen..." function="insertContentItem"></div>
+                   <div class="_editor_option" type="action" item="exercise" name="invoegen..." function="insertContentItem"></div>
                    <div tag="include" filename="__doc-id__.xml">
                       <div tag="exercise">
                          <div class="exercise-with-heading open" type="application" id="__doc-id__">
@@ -45,7 +80,7 @@
           <div class="item-container" type="exercise">
              <div class="_editor_context_base">
                 <div class="menu-button-div item-container-menu"><span class="menu-button"></span></div>
-                <div class="_editor_option" type="action" name="invoegen..." function="insertContentItem"></div>
+                <div class="_editor_option" type="action" item="exercise" name="invoegen..." function="insertContentItem"></div>
                 <div tag="include" filename="__doc-id__.xml">
                    <div tag="exercise">
                       <div class="exercise-with-heading open">

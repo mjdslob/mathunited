@@ -250,8 +250,8 @@ function shiftItemDown(id) {
 
 function insertContentItem(id) {
     var elm = $('#'+id);
-    var parent = elm.parents('.item-container').first();
-    var contentType = parent.attr('type');
+    var contentType = elm.attr('item');
+    //var contentType = parent.attr('type');
     $.get(insertContentItem_typeUrl, '', function(xml) {
         var itemParent = $('.itemClass.'+contentType,xml);
         var html='<div>';
@@ -275,11 +275,15 @@ function insertContentItem(id) {
         });    
         $('.item-type',dlg).click(function() {
             var cnt = $('.itemType[num="'+$(this).attr('num')+'"]',itemParent);
-            var newElm = $('<div class="item-container"></div>');
-            parent.after(newElm);
-            cnt.children().first().appendTo(newElm);
+            var parent = elm.parents('.item-container').first();
+            var newElm=cnt.children().first();
+            if(parent.length>0) {
+                parent.after(newElm);
+            } else {
+                parent = elm.parents(".m4a-editor-item-content").first();
+                parent.append(newElm);
+            }
             $('div[tag="include"]',newElm).each(function(){
-                debugger;
                 var par = $(this).parents('div[tag="include"]').first();
                 var curid = contentType+'.xml';
                 if(par.length>0) {
@@ -303,6 +307,7 @@ function insertContentItem(id) {
     });
 }
 
+
 function removeContentItem(id) {
     var elm = $('#'+id);
     var parent = elm.parents('.item-container').first();
@@ -317,8 +322,34 @@ function removeContentItem(id) {
             },
             "verwijderen": function() {
                 parent.remove();
+                labelAnchors();
                 $( this ).dialog( "close" );
             }
         }
     });
+}
+
+
+function optionalContentItem(id, action) {
+    var elm = $('#'+id); //div._editor_option element
+    var contentType = elm.attr('item');
+    if(action=='add'){
+        $.get(insertContentItem_typeUrl, '', function(xml) {
+            var itemParent = $('.itemClass.'+contentType,xml);
+            elm.append(itemParent.children().first());
+            elm.next('.m4a-editor-item.nonexistent').toggleClass('visible');
+            insertActions(elm);
+            setContextMenu(elm);
+            labelAnchors();
+        });
+    }
+    if(action=='remove') {
+        elm.html('');
+        elm.next('.m4a-editor-item.nonexistent').toggleClass('visible');
+        insertActions(elm);
+        setContextMenu(elm);
+        insertActions(elm.next('.m4a-editor-item.nonexistent'));
+        setContextMenu(elm.next('.m4a-editor-item.nonexistent'));
+        labelAnchors();
+    }
 }

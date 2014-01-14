@@ -41,6 +41,7 @@
 
     <xsl:include href="editor/main.xslt"/>
     <xsl:include href="editor/exercise.xslt"/>
+    <xsl:include href="editor/content.xsl"/>
     <xsl:include href="editor/figure.xslt"/>
     <xsl:include href="editor/paragraph.xslt"/>
 
@@ -49,7 +50,7 @@
             <introduction name="Inleiding" optional="true"/>
             <explore name="Verkennen" optional="true"/>
             <explanation name="Uitleg" multiplicity="multiple" min="1" max="3"/>
-            <theory name="Theorie"/>
+            <theory name="Theorie" optional="true"/>
             <examples name="Voorbeeld"/>
             <digest name="Verwerken"/>
             <application name="Toepassen" optional="true"/>
@@ -207,16 +208,122 @@
             <xsl:apply-templates select="metadata" mode="editor"/>
             <xsl:apply-templates select="description" mode="editor"/>
             <div tag="componentcontent">
-                <xsl:apply-templates select="componentcontent/*"/>
+                <xsl:call-template name="display-items-template"/>
             </div>
         </div>
     </xsl:template>
+    
+    <xsl:template name="display-items-template">
+        <xsl:variable name="this" select="componentcontent"/>
+        <xsl:for-each select="$item-list/item-list/*">
+            <xsl:variable name="item" select="."/>
+            <xsl:choose>
+                <xsl:when test="$this/*[name()=$item/name()]">
+                    <!-- item exists -->
+                    <xsl:for-each select="$this/*[name()=$item/name()]">
+                        <div class="_editor_context_base">
+                            <xsl:choose>
+                                <xsl:when test="$item/@multiplicity='multiple'">
+                                    <div class="_editor_option" type="repeat" function="optionalContentItem" item="{name($item)}" name="{$item/@name}">
+                                        <xsl:if test="$item/@min">
+                                            <xsl:attribute name="min">
+                                                <xsl:value-of select="$item/@min"/>
+                                            </xsl:attribute>
+                                        </xsl:if>
+                                        <xsl:if test="$item/@max">
+                                            <xsl:attribute name="max">
+                                                <xsl:value-of select="$item/@max"/>
+                                            </xsl:attribute>
+                                        </xsl:if>
+                                        <div tag="{name()}">
+                                            <div class="menu-button-div section-button">
+                                                <span class="menu-button"></span>
+                                            </div>
+                                            <xsl:apply-templates select="."/>
+                                        </div>
+                                    </div>
+                                </xsl:when>
+                                <xsl:when test="$item/@optional='true'">
+                                    <div class="_editor_option" type="optional" function="optionalContentItem" item="{name($item)}" name="{$item/@name}">
+                                        <div tag="{name()}">
+                                            <div class="menu-button-div section-button">
+                                                <span class="menu-button"></span>
+                                            </div>
+                                            <xsl:apply-templates select="."/>
+                                        </div>
+                                    </div>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:apply-templates select="."/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            <div class="m4a-editor-item nonexistent">
+                                <div class="menu-button-div section-button">
+                                    <span class="menu-button"></span>
+                                </div>
+                                <div class="m4a-editor-item-title nonexistent">
+                                    <xsl:value-of select="$item/@name"/>
+                                </div>
+                            </div>
+                        </div>
+                    </xsl:for-each>
+                </xsl:when>
+                <xsl:when test="$item/name()='examples'">
+                    <xsl:for-each select="$this/theory/examples">
+                        <div class="_editor_context_base">
+                            <div class="_editor_option" type="repeat" function="optionalMenuItem" item="{name($item)}" name="{$item/@name}">
+                                <xsl:if test="$item/@min">
+                                    <xsl:attribute name="min">
+                                        <xsl:value-of select="$item/@min"/>
+                                    </xsl:attribute>
+                                </xsl:if>
+                                <xsl:if test="$item/@max">
+                                    <xsl:attribute name="max">
+                                        <xsl:value-of select="$item/@max"/>
+                                    </xsl:attribute>
+                                </xsl:if>
+                                <div tag="{name()}">
+                                    <div class="menu-button-div section-button">
+                                        <span class="menu-button"></span>
+                                    </div>
+                                    <xsl:apply-templates select="."/>
+                                </div>
+                            </div>
+                            <div class="m4a-editor-item nonexistent">
+                                <div class="menu-button-div section-button">
+                                    <span class="menu-button"></span>
+                                </div>
+                                <div class="m4a-editor-item-title nonexistent">
+                                    <xsl:value-of select="$item/@name"/>
+                                </div>
+                            </div>
+                        </div>
+                    </xsl:for-each>
+                </xsl:when>
+                <xsl:otherwise>
+                    <!-- item does not exist yet -->
+                    <div class="_editor_context_base">
+                        <div class="_editor_option" type="optional" function="optionalContentItem" item="{name($item)}" name="{$item/@name}"/>
+                        <div class="m4a-editor-item nonexistent visible">
+                            <div class="menu-button-div section-button">
+                                <span class="menu-button"></span>
+                            </div>
+                            <div class="m4a-editor-item-title nonexistent">
+                                <xsl:value-of select="$item/@name"/>
+                            </div>
+                        </div>
+                    </div>                                    
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:for-each>
+    </xsl:template>
+
+
     <xsl:template match="include">
         <xsl:apply-templates select="." mode="editor"/>
     </xsl:template>
 
     <xsl:template match="explore">
-        <div tag="explore">
             <div class="m4a-editor-item-container">
                 <div class="m4a-editor-item-title">Verkennen<div class="item-label-button"/></div>
                 <div class="m4a-editor-item-content">
@@ -225,10 +332,8 @@
                 </div>
                 <div style="clear:both"/>
             </div>
-        </div>
     </xsl:template>
     <xsl:template match="introduction">
-        <div tag="{name()}">
             <div class="m4a-editor-item-container">
                 <div class="m4a-editor-item-title">Inleiding<div class="item-label-button"/></div>
                 <div class="m4a-editor-item-content">
@@ -236,10 +341,8 @@
                 </div>
                 <div style="clear:both"/>
             </div>
-        </div>
     </xsl:template>
     <xsl:template match="explanation">
-        <div tag="{name()}">
             <div class="m4a-editor-item-container">
                 <div class="m4a-editor-item-title">Uitleg<div class="item-label-button"/></div>
                 <div class="m4a-editor-item-content">
@@ -247,10 +350,8 @@
                 </div>
                 <div style="clear:both"/>
             </div>
-        </div>
     </xsl:template>
     <xsl:template match="context">
-        <div tag="{name()}">
             <div class="m4a-editor-item-container">
                 <div class="m4a-editor-item-title">Context<div class="item-label-button"/></div>
                 <div class="m4a-editor-item-content">
@@ -258,10 +359,8 @@
                 </div>
                 <div style="clear:both"/>
             </div>
-        </div>
     </xsl:template>
     <xsl:template match="theory">
-        <div tag="{name()}">
             <xsl:if test="include">
                 <div class="m4a-editor-item-container">
                     <div class="m4a-editor-item-title">Theorie<div class="item-label-button"/></div>
@@ -271,10 +370,8 @@
                     <div style="clear:both"/>
                 </div>
             </xsl:if>
-        </div>
     </xsl:template>
     <xsl:template match="theory/exercises">
-        <div tag="{name()}">
             <div class="m4a-editor-item-container">
                 <div class="m4a-editor-item-title">Opgaven<div class="item-label-button"/></div>
                 <div class="m4a-editor-item-content">
@@ -282,10 +379,8 @@
                 </div>
                 <div style="clear:both"/>
             </div>
-        </div>
     </xsl:template>
     <xsl:template match="digest">
-        <div tag="{name()}">
             <div class="m4a-editor-item-container">
                 <div class="m4a-editor-item-title">Verwerken<div class="item-label-button"/></div>
                 <div class="m4a-editor-item-content">
@@ -293,10 +388,8 @@
                 </div>
                 <div style="clear:both"/>
             </div>
-        </div>
     </xsl:template>
     <xsl:template match="application">
-        <div tag="{name()}">
             <div class="m4a-editor-item-container">
                 <div class="m4a-editor-item-title">Toepassing<div class="item-label-button"/></div>
                 <div class="m4a-editor-item-content">
@@ -304,10 +397,8 @@
                 </div>
                 <div style="clear:both"/>
             </div>
-        </div>
     </xsl:template>
     <xsl:template match="extra">
-        <div tag="{name()}">
             <div class="m4a-editor-item-container">
                 <div class="m4a-editor-item-title">Practicum<div class="item-label-button"/></div>
                 <div class="m4a-editor-item-content">
@@ -315,10 +406,8 @@
                 </div>
                 <div style="clear:both"/>
             </div>
-        </div>
     </xsl:template>
     <xsl:template match="test">
-        <div tag="{name()}">
             <div class="m4a-editor-item-container">
                 <div class="m4a-editor-item-title">Toets<div class="item-label-button"/></div>
                 <div class="m4a-editor-item-content">
@@ -326,11 +415,9 @@
                 </div>
                 <div style="clear:both"/>
             </div>
-        </div>
     </xsl:template>
 
     <xsl:template match="examples">
-        <div tag="{name()}">
             <div class="m4a-editor-item-container">
                 <div class="m4a-editor-item-title">
                     <xsl:choose>
@@ -347,7 +434,6 @@
                 </div>
             </div>
             <div style="clear:both"/>
-        </div>
     </xsl:template>
     
     <xsl:template match="examplesolution[not(normalize-space()='')]" mode="editor">
