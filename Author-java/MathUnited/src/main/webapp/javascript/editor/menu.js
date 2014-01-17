@@ -35,9 +35,12 @@ function setContextMenu(jqParent) {
             var elm = $(this);
             var par = elm.parents('._editor_context_base').first();
             if(par.attr('num')!==''+(menulistid-1)) return;
-            var id = 'editor-option-'+editoroptionid;
-            editoroptionid+=1;
-            elm.attr('id',id);
+            var id = elm.attr('id');
+            if(!id) {
+                id = 'editor-option-'+editoroptionid;
+                editoroptionid+=1;
+                elm.attr('id',id);
+            }
             var templateId = elm.attr('template');
             var templateIdValid = (typeof templateId !== 'undefined' && templateId !== false);
             var templateName = elm.attr('name');
@@ -46,25 +49,35 @@ function setContextMenu(jqParent) {
                     var min = elm.attr('min'); if(typeof min === 'undefined') min=0;
                     var max = elm.attr('max'); if(typeof max === 'undefined') max=1000;
                     if(templateIdValid) {
-                        var insertBeforeCmdStr = "repeatItem('"+id+"','"+templateId+"','add', 'before')";
-                        var insertAfterCmdStr = "repeatItem('"+id+"','"+templateId+",'add','after')";
-                        var removeCmdStr = "repeatItem('"+id+"','"+templateId+"','remove')";
                         var num = items.filter('[type="repeat"][template="'+templateId+'"]').length;
+                        if(num==1 && elm.children().length==0){ //fallback to 'optional' because there is no element yet
+                            var cmdstr = "optionalItem('"+id+"','"+templateId+"','add')";
+                        } else {
+                            var insertBeforeCmdStr = "repeatItem('"+id+"','"+templateId+"','add', 'before')";
+                            var insertAfterCmdStr = "repeatItem('"+id+"','"+templateId+",'add','after')";
+                        }
+                        var removeCmdStr = "repeatItem('"+id+"','"+templateId+"','remove')";
                     } else {
                         var funcStr = elm.attr('function');
                         var num = items.filter('[type="repeat"][function="'+funcStr+'"]').length;
-                        var insertBeforeCmdStr = funcStr+"('"+id+"','add','before')";
-                        var insertAfterCmdStr = funcStr+"('"+id+"','add','after')";
+                        if(num==1 && elm.children().length==0) {
+                            var cmdstr = elm.attr('function')+"('"+id+"','add')";
+                        } else{
+                            var insertBeforeCmdStr = funcStr+"('"+id+"','add','before')";
+                            var insertAfterCmdStr = funcStr+"('"+id+"','add','after')";
+                        }
                         var removeCmdStr = funcStr+"('"+id+"','remove')";
                     }
-                    if(num<max){
+                    if(num===1 && elm.children().length==0) {
+                        $('ul',menulist).append('<li id="item'+itemnr+'" action="'+cmdstr+'">+ '+templateName+'</li>');
+                    } else if(num<max && num>0){
                         $('ul',menulist).append('<li id="item'+itemnr+'" action="'+insertBeforeCmdStr+'">+ '+templateName+' (voor)</li>')
                         itemnr+=1;
                         $('ul',menulist).append('<li id="item'+itemnr+'" action="'+insertAfterCmdStr+'">+ '+templateName+' (na)</li>')
                         itemnr+=1;
-                    }
-                    if(num>min) {
-                        $('ul',menulist).append('<li id="item'+itemnr+'" action="'+removeCmdStr+'">- '+templateName+'</li>')
+                        if(num>min) {
+                            $('ul',menulist).append('<li id="item'+itemnr+'" action="'+removeCmdStr+'">- '+templateName+'</li>')
+                        }
                     }
                     itemnr+=1;
                     break;
@@ -298,6 +311,8 @@ function insertContentItem(id) {
                     elm = $('div[tag="include"][filename="'+newid+'"]');
                 }
                 $(this).attr('filename', newid);
+                var id = curid.replace('.xml','');
+                $('#'+id, newElm).attr('id', newid.replace('.xml',''));
             });
             insertActions(newElm);
             setContextMenu(newElm);
@@ -331,9 +346,10 @@ function removeContentItem(id) {
 
 
 function optionalContentItem(id, action) {
+    debugger;
     var elm = $('#'+id); //div._editor_option element
     var contentType = elm.attr('item');
-    if(action=='add'){
+    if(action==='add'){
         $.get(insertContentItem_typeUrl, '', function(xml) {
             var itemParent = $('.itemClass.'+contentType,xml);
             elm.append(itemParent.children().first());
@@ -343,13 +359,28 @@ function optionalContentItem(id, action) {
             labelAnchors();
         });
     }
-    if(action=='remove') {
-        elm.html('');
-        elm.next('.m4a-editor-item.nonexistent').toggleClass('visible');
-        insertActions(elm);
-        setContextMenu(elm);
-        insertActions(elm.next('.m4a-editor-item.nonexistent'));
-        setContextMenu(elm.next('.m4a-editor-item.nonexistent'));
-        labelAnchors();
+    if(action==='remove') {
+        $( "#dialog-remove-item-confirm" ).dialog({
+            resizable: false,
+            height:140,
+            width:400,
+            modal: true,
+            buttons: {
+                Cancel: function() {
+                    $( this ).dialog( "close" );
+                },
+                "verwijderen": function() {
+                    elm.html('');
+                    elm.next('.m4a-editor-item.nonexistent').toggleClass('visible');
+                    insertActions(elm);
+                    setContextMenu(elm);
+                    insertActions(elm.next('.m4a-editor-item.nonexistent'));
+                    setContextMenu(elm.next('.m4a-editor-item.nonexistent'));
+                    labelAnchors();
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+
     }
 }

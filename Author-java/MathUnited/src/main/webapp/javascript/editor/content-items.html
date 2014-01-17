@@ -2,32 +2,171 @@
 <div id="itemSpec">
     <!-- INLEIDING -->
     <div class='itemClass introduction'>
-       <div class="m4a-editor-item-container">
-          <div class="menu-button-div section-button"><span class="menu-button"></span></div>
-             <div tag="introduction">
+          <div tag="introduction">
+             <div class="menu-button-div section-button"><span class="menu-button"></span></div>
+             <div class="m4a-editor-item-container">
                 <div class="m4a-editor-item-title">Inleiding
-                <div class="item-label-button"></div>
-             </div>
-             <div class="m4a-editor-item-content">
-                <div class="item-container shift-item-anchor"></div>
-                <div class="_editor_option" item="exercise" type="action" name="invoegen..." function="insertContentItem"></div>
+                   <div class="item-label-button"></div>
+                </div>
+                <div class="m4a-editor-item-content">
+                    <div class="item-container">
+                       <div class="_editor_context_base">
+                          <div class="menu-button-div item-container-menu"><span class="menu-button"></span></div>
+                          <div class="_editor_option" type="action" item="introduction" name="invoegen..." function="insertContentItem"></div>
+                          <div tag="include" filename="introduction.xml">
+                             <div tag="introduction" id="introduction">
+                                <div class="item-container shift-item-anchor"></div>
+                                <p>(paragraaf)</p>
+                                <div tag="learningaspects">
+                                    <span class="headline"><b>Je leert in dit onderwerp:</b></span>
+                                    <ul class="paragraph-content">
+                                        <li>
+                                           <p>(leerdoel)</p>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div tag="knownaspects">
+                                    <span class="headline"><b>Voorkennis:</b></span>
+                                    <ul class="paragraph-content">
+                                      <li>
+                                         <p>(voorkennis)</p>
+                                      </li>
+                                    </ul>
+                                </div>
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+                </div>
              </div>
           </div>
-       </div>
     </div>
 
 
     <!-- VERKENNEN -->
     <div class='itemClass explore'>
-       <div class="m4a-editor-item-container">
           <div tag="explore">
              <div class="menu-button-div section-button"><span class="menu-button"></span></div>
-             <div class="m4a-editor-item-title">Verkennen
+             <div class="m4a-editor-item-container">
+                <div class="m4a-editor-item-title">Verkennen
+                   <div class="item-label-button"></div>
+                </div>
+                <div class="m4a-editor-item-content">
+                   <div class="item-container shift-item-anchor"></div>
+                   <div class="item-container">
+                      <div class="_editor_context_base">
+                         <div class="menu-button-div item-container-menu"><span class="menu-button"></span></div>
+                         <div class="_editor_option" type="action" item="exercise" name="invoegen..." function="insertContentItem"></div>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+    </div>
+    
+    <!-- practicum -->
+    <div class='itemClass extra'>
+          <div tag="extra">
+             <div class="menu-button-div section-button"><span class="menu-button"></span></div>
+             <div class="m4a-editor-item-container">
+                <div class="m4a-editor-item-title">Practicum
+                   <div class="item-label-button"></div>
+                </div>
+                <div class="m4a-editor-item-content">
+                    <div class="item-container">
+                       <div class="_editor_context_base">
+                          <div class="menu-button-div item-container-menu"><span class="menu-button"></span></div>
+                          <div class="_editor_option" type="action" item="extra" name="invoegen..." function="insertContentItem"></div>
+                          <div tag="include" filename="extra.xml">
+                             <div tag="extra" id="extra">
+                                 <p>...</p>
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+                    <div tag="exercises">
+                       <div class="item-container shift-item-anchor"></div>
+                       <div class="item-container">
+                          <div class="_editor_context_base">
+                             <div class="menu-button-div item-container-menu"><span class="menu-button"></span></div>
+                             <div class="_editor_option" type="action" item="exercise" name="invoegen..." function="insertContentItem"></div>
+                          </div>
+                       </div>
+                    </div>
+                </div>
+             </div>
+          </div>
+    </div>
+    
+    <!-- Verwerken -->
+    <div class='itemClass digest'>
+          <div tag="digest">
+             <div class="menu-button-div section-button"><span class="menu-button"></span></div>
+             <div class="m4a-editor-item-container">
+                <div class="m4a-editor-item-title">Verwerken
+                   <div class="item-label-button"></div>
+                </div>
+                <div class="m4a-editor-item-content">
+                    <div tag="exercises">
+                       <div class="item-container shift-item-anchor"></div>
+                       <div class="item-container">
+                          <div class="_editor_context_base">
+                             <div class="menu-button-div item-container-menu"><span class="menu-button"></span></div>
+                             <div class="_editor_option" type="action" item="exercise" name="invoegen..." function="insertContentItem"></div>
+                          </div>
+                       </div>
+                    </div>
+                </div>
+             </div>
+          </div>
+    </div>
+    
+    <!-- Toepassing -->
+    <div class='itemClass application'>
+          <div tag="application">
+             <div class="menu-button-div section-button"><span class="menu-button"></span></div>
+             <div class="m4a-editor-item-container">
+                <div class="m4a-editor-item-title">Toepassing
+                   <div class="item-label-button"></div>
+                </div>
+                <div class="m4a-editor-item-content">
+                    <div class="item-container">
+                       <div class="_editor_context_base">
+                          <div class="menu-button-div item-container-menu"><span class="menu-button"></span></div>
+                          <div class="_editor_option" type="action" item="application" name="invoegen..." function="insertContentItem"></div>
+                          <div tag="include" filename="application.xml">
+                             <div tag="application" id="application">
+                                 <p>...</p>
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+                    <div tag="exercises">
+                       <div class="item-container shift-item-anchor"></div>
+                       <div class="item-container">
+                          <div class="_editor_context_base">
+                             <div class="menu-button-div item-container-menu"><span class="menu-button"></span></div>
+                             <div class="_editor_option" type="action" item="exercise" name="invoegen..." function="insertContentItem"></div>
+                          </div>
+                       </div>
+                    </div>
+                </div>
+             </div>
+          </div>
+    </div>
+    
+    
+    <!-- Testen -->
+    <div class='itemClass test'>
+       <div class="m4a-editor-item-container">
+          <div tag="test">
+             <div class="menu-button-div section-button"><span class="menu-button"></span></div>
+             <div class="m4a-editor-item-title">Test jezelf
                 <div class="item-label-button"></div>
              </div>
              <div class="m4a-editor-item-content">
                 <div class="item-container shift-item-anchor"></div>
-                <div class="_editor_option" type="action" name="invoegen..." function="insertContentItem"></div>
+                <div class="_editor_option" type="action" item="exercise" name="invoegen..." function="insertContentItem"></div>
              </div>
           </div>
        </div>
@@ -43,6 +182,7 @@
                    <div class="menu-button-div item-container-menu"><span class="menu-button"></span></div>
                    <div class="_editor_option" type="action" item="exercise" name="invoegen..." function="insertContentItem"></div>
                    <div tag="include" filename="__doc-id__.xml">
+                      <div  class="_editor_option" type="action" name="verwijderen" function="removeContentItem"/>
                       <div tag="exercise">
                          <div class="exercise-with-heading open" type="application" id="__doc-id__">
                             <div class="_editor_option" type="action" name="schuif omhoog" function="shiftItemUp"></div>
@@ -82,6 +222,7 @@
                 <div class="menu-button-div item-container-menu"><span class="menu-button"></span></div>
                 <div class="_editor_option" type="action" item="exercise" name="invoegen..." function="insertContentItem"></div>
                 <div tag="include" filename="__doc-id__.xml">
+                   <div  class="_editor_option" type="action" name="verwijderen" function="removeContentItem"/>
                    <div tag="exercise">
                       <div class="exercise-with-heading open">
                          <div class="_editor_option" type="action" name="schuif omhoog" function="shiftItemUp"></div>

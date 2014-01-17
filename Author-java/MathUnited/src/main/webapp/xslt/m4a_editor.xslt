@@ -51,11 +51,10 @@
             <explore name="Verkennen" optional="true"/>
             <explanation name="Uitleg" multiplicity="multiple" min="1" max="3"/>
             <theory name="Theorie" optional="true"/>
-            <examples name="Voorbeeld"/>
             <digest name="Verwerken"/>
             <application name="Toepassen" optional="true"/>
             <extra name="Practicum" multiplicity="multiple"/>
-            <test name="Testen" multiplicity="multiple"/>
+            <test name="Test jezelf" multiplicity="multiple"/>
         </item-list>
     </xsl:variable>
 
@@ -254,41 +253,14 @@
                                     </div>
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <xsl:apply-templates select="."/>
+                                    <div tag="{name()}">
+                                        <div class="menu-button-div section-button">
+                                            <span class="menu-button"></span>
+                                        </div>
+                                        <xsl:apply-templates select="."/>
+                                    </div>
                                 </xsl:otherwise>
                             </xsl:choose>
-                            <div class="m4a-editor-item nonexistent">
-                                <div class="menu-button-div section-button">
-                                    <span class="menu-button"></span>
-                                </div>
-                                <div class="m4a-editor-item-title nonexistent">
-                                    <xsl:value-of select="$item/@name"/>
-                                </div>
-                            </div>
-                        </div>
-                    </xsl:for-each>
-                </xsl:when>
-                <xsl:when test="$item/name()='examples'">
-                    <xsl:for-each select="$this/theory/examples">
-                        <div class="_editor_context_base">
-                            <div class="_editor_option" type="repeat" function="optionalMenuItem" item="{name($item)}" name="{$item/@name}">
-                                <xsl:if test="$item/@min">
-                                    <xsl:attribute name="min">
-                                        <xsl:value-of select="$item/@min"/>
-                                    </xsl:attribute>
-                                </xsl:if>
-                                <xsl:if test="$item/@max">
-                                    <xsl:attribute name="max">
-                                        <xsl:value-of select="$item/@max"/>
-                                    </xsl:attribute>
-                                </xsl:if>
-                                <div tag="{name()}">
-                                    <div class="menu-button-div section-button">
-                                        <span class="menu-button"></span>
-                                    </div>
-                                    <xsl:apply-templates select="."/>
-                                </div>
-                            </div>
                             <div class="m4a-editor-item nonexistent">
                                 <div class="menu-button-div section-button">
                                     <span class="menu-button"></span>
@@ -370,14 +342,32 @@
                     <div style="clear:both"/>
                 </div>
             </xsl:if>
-    </xsl:template>
-    <xsl:template match="theory/exercises">
-            <div class="m4a-editor-item-container">
-                <div class="m4a-editor-item-title">Opgaven<div class="item-label-button"/></div>
-                <div class="m4a-editor-item-content">
-                    <xsl:apply-templates mode="editor"/>
+            <xsl:for-each select="examples">
+                <xsl:variable name="num" select="count(preceding-sibling::examples)+1"/>
+                <div class="_editor_context_base">
+                    <div class="_editor_option" type="repeat" function="optionalMenuItem" item="examples" name="Voorbeeld">
+                        <div class="m4a-editor-item-container">
+                            <div class="m4a-editor-item-title">Voorbeeld <xsl:value-of select="$num"/><div class="item-label-button"/></div>
+                            <div class="m4a-editor-item-content">
+                            <div class="menu-button-div section-button">
+                                <span class="menu-button"></span>
+                            </div>
+                                <div tag="{name()}">
+                                    <xsl:apply-templates mode="editor"/>
+                                </div>
+                                <xsl:apply-templates select="../exercises[position()=$num]" mode="editor"/>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div style="clear:both"/>
+            </xsl:for-each>
+            <div class="m4a-editor-item nonexistent">
+                <div class="menu-button-div section-button">
+                    <span class="menu-button"></span>
+                </div>
+                <div class="m4a-editor-item-title nonexistent">
+                    <xsl:value-of select="Voorbeeld"/>
+                </div>
             </div>
     </xsl:template>
     <xsl:template match="digest">
