@@ -337,7 +337,7 @@
                 <div class="m4a-editor-item-container">
                     <div class="m4a-editor-item-title">Theorie<div class="item-label-button"/></div>
                     <div class="m4a-editor-item-content">
-                        <xsl:apply-templates mode="editor"/>
+                        <xsl:apply-templates select="include" mode="editor"/>
                     </div>
                     <div style="clear:both"/>
                 </div>
