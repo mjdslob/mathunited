@@ -45,6 +45,8 @@ extension-element-prefixes="exsl">
 <xsl:template match="include" mode="editor">
     <xsl:choose>
         <xsl:when test="$option='editor-process-item'">
+            <!--dit is geen document, maar slechts 1 item van xml, gebruikt door de editor om een stukje content
+                in te voegen -->
             <div class="item-container">
                 <div class="_editor_context_base">
                     <div class="menu-button-div item-container-menu">
@@ -66,7 +68,9 @@ extension-element-prefixes="exsl">
                     </div>
                     <div tag="{name()}">
                         <xsl:apply-templates select="@*" mode="editor"/>
-                        <xsl:apply-templates select="$content" mode="editor"/>
+                        <xsl:apply-templates select="$content" mode="editor">
+                            <xsl:with-param name="fname" select="@filename"/>
+                        </xsl:apply-templates>
                     </div>
                 </div>
             </div>

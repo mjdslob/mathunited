@@ -478,6 +478,9 @@ ol {
 }
 .exercise-with-heading {
 }
+.exercise-with-heading[clone] {
+    background-color:rgb(220,220,220);
+}
 .exercise-with-heading .opgave-label-button {
     width:12px; height:12px;
     background-image: url('../sources_ma/opgave_pijl_dicht.png');

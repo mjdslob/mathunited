@@ -239,14 +239,15 @@ function insertActions(jqParent) {
             editorDiv = $('<div class="tiny-editor"><div class="close-paragraph"></div><div class="paragraph-content"></div></div>')
             $(this).before(editorDiv);
             //concatenate editable blocks into one
+            debugger;
             var cnt = $('.paragraph-content',editorDiv);
             var following = $(this).nextUntil(':not(p,ul.paragraph,ol.paragraph,table,img)');
-            var filtered = $('#dummy123');
+            var filtered = $('<div></div>');
             following.each(function(){
                 if($(this).attr('editor')==='false') return false;
-                filtered.add($(this));
+                filtered.append($(this));
             });
-            following = filtered;
+            following = filtered.children();
             $('p,ul.paragraph,ol.paragraph,table,img',$(this)).attr('_done','true');
             $('p,ul.paragraph,ol.paragraph,table,img',following).attr('_done','true');
             cnt.append(this);

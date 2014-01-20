@@ -49,35 +49,56 @@ extension-element-prefixes="exsl">
 </xsl:template>
 
 <xsl:template match="exercise" mode="editor">
-        <div  class="_editor_option" type="action" name="metadata invullen" function="setExerciseMetadata"/>
-        <div  class="_editor_option" type="repeat" name="opgave" function="repeatExercise">
-            <div class="menu-button-div item-container-menu">
-                <span class="menu-button"></span>
-            </div>
+    <xsl:param name="fname"/>
+    <xsl:variable name="isclone" select="metadata/clone/@active='true'"/>
+    <div  class="_editor_option" type="action" name="metadata invullen" function="setExerciseMetadata"/>
+    <xsl:if test="not($isclone)">
+        <div  class="_editor_option" type="action" name="Maak kloonopgave" function="createCloneExercise"/>
+    </xsl:if>
+    <div  class="_editor_option" type="repeat" name="opgave" function="repeatExercise">
+        <div class="menu-button-div item-container-menu">
+            <span class="menu-button"></span>
+        </div>
+        <div class="exercise-container">
+            <xsl:if test="$isclone">
+                <xsl:attribute name="clone">true</xsl:attribute>
+            </xsl:if>
             <div tag="exercise">
                 <xsl:apply-templates select="@*" mode="editor"/>
-                
+
                 <div class="exercise-with-heading open">
                     <xsl:apply-templates select="@*" mode="editor"/>
                     <div  class="_editor_option" type="action" name="schuif omhoog" function="shiftItemUp"/>
                     <div  class="_editor_option" type="action" name="schuif omlaag" function="shiftItemDown"/>
                     <div class="exercise-heading">
-                      Opgave <span class="opgave-title-span"><xsl:value-of select="title"/></span> <div class="opgave-label-button"/>
+                        <xsl:choose>
+                            <xsl:when test="$isclone">
+                                  Kloonopgave <span class="opgave-title-span"><xsl:value-of select="title"/></span> <div class="opgave-label-button"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                  Opgave <span class="opgave-title-span"><xsl:value-of select="title"/></span> <div class="opgave-label-button"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
                     </div>
 
                     <div class="metadata-container">
                         <div tag="metadata">
                             <form>
-                                id : <xsl:value-of select="@id"/><br/>
+                                id : <xsl:value-of select="replace($fname,'.xml','')"/><br/>
                                 <span>Niveau: </span>
                                 <input type="radio" name="level" value="1">1</input>
                                 <input type="radio" name="level" value="2">2</input>
                                 <input type="radio" name="level" value="3">3</input>
                                 <input type="radio" name="level" value="4">4</input>
                                 <input type="radio" name="level" value="5">5</input><br/>
-                                <input type="checkbox" name="kloonopgave" value="clone">Kloonopgave</input>
+                                <xsl:if test="metadata/clone">
+                                    <input type="checkbox" name="kloonopgave" value="clone">Kloonopgave van <xsl:value-of select="metadata/clone"/></input>
+                                </xsl:if>
+                                <div class="close-metadata-button" onclick="javascript:closeMetadata(this)"/>
                             </form>
-                            <xsl:apply-templates select="metadata/*" mode="editor"></xsl:apply-templates>
+                            <div class="metadata-data">
+                                 <xsl:apply-templates select="metadata/*" mode="editor"></xsl:apply-templates>
+                            </div>
                         </div>
                     </div>
                     <div class="exercise-contents">
@@ -85,6 +106,7 @@ extension-element-prefixes="exsl">
                     </div>
                 </div>
             </div>
+        </div>
     </div>
 </xsl:template>
 

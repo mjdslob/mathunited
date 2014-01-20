@@ -565,11 +565,22 @@ indent="yes" encoding="utf-8"/>
                 <xsl:attribute name="class">exercise-with-heading</xsl:attribute>
             </xsl:otherwise>
         </xsl:choose>
+        <xsl:if test="metadata/clone/@active='true'">
+            <xsl:attribute name="clone" select="metadata/clone/text()"/>
+        </xsl:if>
+        
         <div class="exercise-heading">
-            Opgave <xsl:value-of select="$number"/> <span class="opgave-title-span"><xsl:value-of select="title"/></span> <div class="opgave-label-button"/>
+            <xsl:choose>
+                <xsl:when test="metadata/clone/@active='true'">
+                    Kloonopgave <xsl:value-of select="$number"/> <span class="opgave-title-span"><xsl:value-of select="title"/></span> <div class="opgave-label-button"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    Opgave <xsl:value-of select="$number"/> <span class="opgave-title-span"><xsl:value-of select="title"/></span> <div class="opgave-label-button"/>
+                </xsl:otherwise>
+            </xsl:choose>
         </div>
         <div class="exercise-contents">
-            <xsl:apply-templates mode="content">
+            <xsl:apply-templates select="*[name()!='metadata']" mode="content">
                 <xsl:with-param name="options" select="$options"/>
             </xsl:apply-templates>
         </div>
@@ -837,7 +848,10 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="exercise" mode="content">
     <xsl:param name="options"/>
     <div class="exercise">
-        <xsl:apply-templates mode="content">
+        <xsl:if test="metadata/clone/@active='true'">
+            <xsl:attribute name="clone" select="metadata/clone/text()"/>
+        </xsl:if>
+        <xsl:apply-templates select="*[name()!='metadata']" mode="content">
             <xsl:with-param name="options" select="$options"/>
         </xsl:apply-templates>
     </div>
