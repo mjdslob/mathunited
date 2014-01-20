@@ -10,19 +10,23 @@ import java.util.HashMap;
 import javax.xml.transform.Source;
 import org.xml.sax.InputSource;
 import java.util.Properties;
+import javax.xml.transform.sax.SAXSource;
 import nl.math4all.mathunited.resolvers.ContentResolver;
 import nl.math4all.mathunited.configuration.*;
 import nl.math4all.mathunited.configuration.SubComponent;
 import nl.math4all.mathunited.configuration.Component;
 import nl.math4all.mathunited.exceptions.LoginException;
+import static nl.math4all.mathunited.resolvers.ContentResolver.entityResolver;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
 
 //mathunited.pragma-ade.nl/MathUnited/view?variant=basis&comp=m4a/xml/12hv-me0&subcomp=3&item=explore
 // - fixed parameters: variant, comp (component), subcomp (subcomponent).
 // - other parameters are just passed to xslt
 
-public class ViewServlet extends HttpServlet {
+public class ProcessItemServlet extends HttpServlet {
     static final byte[] EOL = {(byte)'\r', (byte)'\n' };
-    private final static Logger LOGGER = Logger.getLogger(ViewServlet.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(ProcessItemServlet.class.getName());
     XSLTbean processor;
     Map<String, Component> componentMap;
     ServletContext context;
@@ -42,7 +46,7 @@ public class ViewServlet extends HttpServlet {
     }
 
     @Override
-    public void doGet (  HttpServletRequest request,
+    public void doPost (  HttpServletRequest request,
                          HttpServletResponse response)
              throws ServletException, IOException {
 
@@ -67,12 +71,19 @@ public class ViewServlet extends HttpServlet {
 
             String comp = parameterMap.get("comp");
             String subcomp = parameterMap.get("subcomp");            
+            String variant = parameterMap.get("variant");    
+            String xmlstr = parameterMap.get("xml");            
+            LOGGER.info("processitem: comp="+comp+", subcomp="+subcomp+", xml="+xmlstr);
             if(comp==null) {
                 throw new Exception("Het verplichte argument 'comp' ontbreekt.");
             }
             
             if(subcomp==null) {
                 throw new Exception("Het verplichte argument 'subcomp' ontbreekt.");
+            }
+            
+            if(variant==null) {
+                throw new Exception("Het verplichte argument 'variant' ontbreekt.");
             }
 
             //find out which repository to use
@@ -87,22 +98,6 @@ public class ViewServlet extends HttpServlet {
                     }
                 }
             }
-            String variant = parameterMap.get("variant");
-            if(repo==null) {
-                //try to get repo from variant (hack to prevent problems with old urls...)
-                if(repo==null){
-                    if(variant!=null){
-                        if(variant.equals("basis_wm") || variant.equals("wm_view")) repo = "wm";
-                        else if(variant.equals("basis") || variant.equals("m4a_view")) repo= "m4a";
-                        else if(variant.equals("basis_studiovo") || variant.equals("studiovo_view")) repo="studiovo";
-                        System.out.println("Setting repo from variant: "+repo);
-                    }
-                } else {
-                    System.out.println("Setting repo from cookie: "+repo);
-                }
-            	if(repo==null)
-            		throw new Exception("Het verplichte argument 'repo' ontbreekt: "+repo);
-            }
             Map<String, Repository> repoMap = config.getRepos();
             Repository repository = repoMap.get(repo);
             if(repository==null) {
@@ -111,13 +106,6 @@ public class ViewServlet extends HttpServlet {
             Repository baserepo = null;
             if(repository.baseRepo!=null) {
                 baserepo = repoMap.get(repository.baseRepo);
-            }
-            //get default variant for this repo or get it from the url
-            if(variant==null) {
-                variant = repository.defaultVariant;
-                if(variant==null || variant.isEmpty()) {
-                    throw new Exception("Geef aan welke layout gebruikt dient te worden");
-                }
             }
             
             //read components. To be moved to init()
@@ -169,11 +157,18 @@ public class ViewServlet extends HttpServlet {
             parameterMap.put("component", component.getXML());
             parameterMap.put("repo-path", repository.path);
             parameterMap.put("baserepo-path", baserepo==null?"":baserepo.path);
+            parameterMap.put("option","editor-process-item");
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             ContentResolver resolver = new ContentResolver(repo, context);
             
-            Source xmlSource = resolver.resolve(repository.path+"/"+sub.file, "");
-            String errStr = processor.process(xmlSource, variant, parameterMap, resolver, byteStream);
+            LOGGER.info("process-item: xml="+xmlstr);
+            XMLReader xmlReader = XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
+            xmlReader.setEntityResolver(ContentResolver.entityResolver);
+            StringReader reader = new StringReader(xmlstr);
+            InputSource xmlSource = new InputSource(reader);
+            SAXSource xmlSaxSource = new SAXSource(xmlReader, xmlSource);
+            
+            String errStr = processor.process(xmlSaxSource, variant, parameterMap, resolver, byteStream);
             response.setContentType("text/html");
             if(errStr.length()>0){
                 PrintWriter writer = response.getWriter();
@@ -209,7 +204,7 @@ public class ViewServlet extends HttpServlet {
     }
     
     @Override
-    public void doPost (  HttpServletRequest request,
+    public void doGet (  HttpServletRequest request,
                          HttpServletResponse response)
              throws ServletException, IOException {
         //get the pdf from the session and return it

@@ -40,6 +40,7 @@ import nl.math4all.mathunited.utils.FileManager;
 // - other parameters are just passed to xslt
 
 public class PostContentServlet extends HttpServlet {
+    private final static Logger LOGGER = Logger.getLogger(PostContentServlet.class.getName());
     private String resultXML = "<post result=\"{#POSTRESULT}\"><message>{#MESSAGE}</message></post>";
     XSLTbean processor;
     Map<String, Component> componentMap;
@@ -49,7 +50,7 @@ public class PostContentServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         try{
             super.init(config);
-            context = getServletContext();
+            LOGGER.setLevel(Level.FINE);
             context = getServletContext();
 
             processor = new XSLTbean(context);
@@ -84,35 +85,42 @@ public class PostContentServlet extends HttpServlet {
                 throw new Exception("Repository is not set.");
             }
             UserSettings usettings = UserManager.isLoggedIn(request,response);
-            
+/*
             //read request parameters
             Map<String, String[]> paramMap = request.getParameterMap();
-            Map<String, String> parameterMap = new HashMap<String, String>();
-            for(Map.Entry<String, String[]> entry : paramMap.entrySet()) {
-                String pname = entry.getKey();
-                String[] pvalArr = entry.getValue();
-                if(pvalArr!=null && pvalArr.length>0) {
-                   parameterMap.put(pname, pvalArr[0]);
-                }
+*/
+            BufferedReader br = request.getReader();
+            String _repo = br.readLine(); //not used
+            String comp = br.readLine();
+            String subcomp = br.readLine();
+            
+            StringBuffer htmlBuffer = new StringBuffer();
+            String sCurrentLine;
+            while ((sCurrentLine = br.readLine()) != null) {
+	         htmlBuffer.append(sCurrentLine);
             }
-            String comp = parameterMap.get("comp");
-            String subcomp = parameterMap.get("subcomp");
-            String html = parameterMap.get("html");
-            parameterMap.put("repo",repoId);
+            String html = htmlBuffer.toString();
+            
             if(comp==null) {
                 throw new Exception("Het verplichte argument 'comp' ontbreekt.");
-            }
+            } 
             if(subcomp==null) {
                 throw new Exception("Het verplichte argument 'subcomp' ontbreekt.");
-            }
+            } else {subcomp=subcomp.trim();}
             if(repoId==null) {
                 throw new Exception("Het verplichte argument 'repo' ontbreekt.");
             }
             if(html==null) {
                 throw new Exception("Het verplichte argument 'html' ontbreekt.");
-            } else {
-                html = URLDecoder.decode(html, "UTF-8");
             }
+
+            Map<String, String> parameterMap = new HashMap<String, String>();
+            parameterMap.put("comp", comp);
+            parameterMap.put("subcomp", subcomp);
+            parameterMap.put("repo", repoId);
+            parameterMap.put("html", html);
+            
+            LOGGER.info("Commit: user="+usettings.mail+", comp="+comp+", subcomp="+subcomp+", repo="+repoId);
             
             Repository repository = config.getRepos().get(repoId);
             if(repository==null) {
@@ -145,16 +153,20 @@ public class PostContentServlet extends HttpServlet {
 
             // find subcomponent, previous and following
             SubComponent sub=null;
+            boolean found = false;
             for(int ii=0; ii<component.subComponentList.size(); ii++ ){
                 sub = component.subComponentList.get(ii);
                 if(sub.id.equals(subcomp)) {
+                    found=true;
                     break;
                 }
             }
-            if(sub==null) {
+            
+            if(!found) {
                 throw new Exception("Er bestaat geen subcomponent met id '"+subcomp+"'");
             }
 
+            LOGGER.fine("found subcomponent "+subcomp+": "+sub.title);
             XMLReader xmlReader = XMLReaderFactory.createXMLReader("org.ccil.cowan.tagsoup.Parser");
             xmlReader.setFeature(org.ccil.cowan.tagsoup.Parser.namespacesFeature, false);
             xmlReader.setEntityResolver(ContentResolver.entityResolver);
@@ -179,8 +191,10 @@ public class PostContentServlet extends HttpServlet {
                     Node attrNode = nodeMap.getNamedItem("filename");
                     if(attrNode!=null) {
                         String fileStr = refbase + attrNode.getNodeValue();
-                        FileManager.writeToFile(fileStr, node.getFirstChild(), repository);
-                        node.removeChild(node.getFirstChild());
+                        if(node.getFirstChild()!=null) {
+                            FileManager.writeToFile(fileStr, node.getFirstChild(), repository);
+                            node.removeChild(node.getFirstChild());
+                        } 
                     }
                 }
             }

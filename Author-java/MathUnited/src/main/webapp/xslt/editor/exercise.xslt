@@ -44,26 +44,48 @@ extension-element-prefixes="exsl">
 </xsl:template>
 <xsl:template match="exercises" mode="editor">
     <div tag="exercises">
-        <div class="item-container shift-item-anchor"/> <!-- dummy shift-container that marks beginning of 'exercises' section. Should not move -->
-        <xsl:apply-templates mode="editor"/>
+            <xsl:apply-templates mode="editor"/>
     </div>
 </xsl:template>
 
 <xsl:template match="exercise" mode="editor">
-        <div  class="_editor_option" type="action" name="verwijderen" function="removeContentItem"/>
-        <div tag="exercise">
-            <div class="exercise-with-heading open">
+        <div  class="_editor_option" type="action" name="metadata invullen" function="setExerciseMetadata"/>
+        <div  class="_editor_option" type="repeat" name="opgave" function="repeatExercise">
+            <div class="menu-button-div item-container-menu">
+                <span class="menu-button"></span>
+            </div>
+            <div tag="exercise">
                 <xsl:apply-templates select="@*" mode="editor"/>
-                <div  class="_editor_option" type="action" name="schuif omhoog" function="shiftItemUp"/>
-                <div  class="_editor_option" type="action" name="schuif omlaag" function="shiftItemDown"/>
-                <div class="exercise-heading">
-                  Opgave <span class="opgave-title-span"><xsl:value-of select="title"/></span> <div class="opgave-label-button"/>
-                </div>
-                <div class="exercise-contents">
-                    <xsl:apply-templates mode="editor"/>
+                
+                <div class="exercise-with-heading open">
+                    <xsl:apply-templates select="@*" mode="editor"/>
+                    <div  class="_editor_option" type="action" name="schuif omhoog" function="shiftItemUp"/>
+                    <div  class="_editor_option" type="action" name="schuif omlaag" function="shiftItemDown"/>
+                    <div class="exercise-heading">
+                      Opgave <span class="opgave-title-span"><xsl:value-of select="title"/></span> <div class="opgave-label-button"/>
+                    </div>
+
+                    <div class="metadata-container">
+                        <div tag="metadata">
+                            <form>
+                                id : <xsl:value-of select="@id"/><br/>
+                                <span>Niveau: </span>
+                                <input type="radio" name="level" value="1">1</input>
+                                <input type="radio" name="level" value="2">2</input>
+                                <input type="radio" name="level" value="3">3</input>
+                                <input type="radio" name="level" value="4">4</input>
+                                <input type="radio" name="level" value="5">5</input><br/>
+                                <input type="checkbox" name="kloonopgave" value="clone">Kloonopgave</input>
+                            </form>
+                            <xsl:apply-templates select="metadata/*" mode="editor"></xsl:apply-templates>
+                        </div>
+                    </div>
+                    <div class="exercise-contents">
+                        <xsl:apply-templates select="*[name()!='metadata']" mode="editor"/>
+                    </div>
                 </div>
             </div>
-        </div>
+    </div>
 </xsl:template>
 
 <xsl:template match="single-item" mode="editor">

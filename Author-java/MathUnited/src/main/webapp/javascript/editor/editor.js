@@ -255,29 +255,32 @@ function insertActions(jqParent) {
     $('*[_done]').removeAttr('_done');
     
     $('.paragraph-content',jqParent).each(function() {
-        $(this).attr('id','p'+paragraph_id_counter);
-        paragraph_id_counter = paragraph_id_counter + 1;
+        var curid = $(this).attr('id');
+        if(!curid) {
+            $(this).attr('id','p'+paragraph_id_counter);
+            paragraph_id_counter = paragraph_id_counter + 1;
+        }
     });
-    $('.close-paragraph',jqParent).click(function() {
+    $('.close-paragraph',jqParent).unbind('click').click(function() {
        $(this).removeClass('active');
        var par = $('.paragraph-content',$(this).parent());
        tinymce.get(par.attr('id')).remove();
 //       tinymce.EditorManager.execCommand('mceRemoveControl',true, par.attr('id'));
        //tinymce.EditorManager.execCommand('mceAddControl',true, editor_id);
     });
-    $('.block-button',jqParent).click(function() {
+    $('.block-button',jqParent).unbind('click').click(function() {
         var par = $(this).parent();
         var cont = $('.block-content',par);
         cont.toggleClass('visible');
         $(this).toggleClass('visible')
     });
-    $('.worksheet-button',jqParent).click(function() {
+    $('.worksheet-button',jqParent).unbind('click').click(function() {
         var par = $(this).parent();
         var cont = $('.worksheet-content',par);
         cont.toggleClass('visible');
         $(this).toggleClass('visible')
     });
-    $('.answer-button',jqParent).click(function() {
+    $('.answer-button',jqParent).unbind('click').click(function() {
         var par = $(this).parent();
         var cont = $('.answer-content',par);
         cont.toggleClass('visible');
@@ -294,9 +297,9 @@ function insertActions(jqParent) {
     compbase = compbase.substr(0,ind);
     var ind = compbase.lastIndexOf('/');
     compbase = compbase.substr(0,ind)+'/images/highres';
-    pars.click(function() {
+    pars.unbind('click').click(function() {
        var parent = $(this).parent();
-       if(parent.hasClass('noneditable')) return true;
+       if( $(this).parents('.noneditable').length > 0) return true;
        $('.close-paragraph',parent).addClass('active');
        $(this).tinymce({
             // Location of TinyMCE script
@@ -370,13 +373,9 @@ function submitDocument(repo, comp, subcomp) {
         }
     }
     var html = $('.pageDiv').first().html();
-    html = encodeURIComponent(html);
-    $.post(commitURL, {
-            repo: repo,
-            comp: comp,
-            subcomp: subcomp,
-            html: html
-        },
+    var str = repo+'\n'+comp+'\n'+subcomp+'\n'+html;
+//    html = encodeURIComponent(html);
+    $.post(commitURL, str,
         function(data) {//on success
             if($('post',data).attr('result')!="true") {
                 var msg = $('post message',data).text();

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<container-specs>
+    <container name="introduction">
+        <container-item name="nieuw item: Inleiding">
+            <introduction id="__subcomp__-in">
+                <include filename="__subcomp__-in.xml">
+                    <introduction id="__subcomp__-in" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:cals = "http://www.someplace.org/cals">
+                        <p>hier komt de inleiding...</p>
+                        <learningaspects>
+                            <aspect>
+                                <p>leerdoel</p>
+                            </aspect>
+                        </learningaspects>
+                        <knownaspects>
+                            <aspect>
+                                <p>voorkennis</p>
+                            </aspect>
+                        </knownaspects>
+                    </introduction>
+                </include>
+            </introduction>
+        </container-item>
+    </container>
+    <container name="extra">
+        <container-item name="nieuw item: Practicum">
+            <extra id="__subcomp__-in">
+                <include filename="__subcomp__-xa__#1__.xml">
+                    <extra id="__subcomp__-xa__#1__" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:cals = "http://www.someplace.org/cals">
+                        <p>...(tekst)...</p>
+                    </extra>
+                </include>
+                <exercises>
+                    <include filename="__subcomp__-ex-__#1__.xml">
+                        <exercise id="__subcomp__-ex-__#1__">
+                            <multi-item>
+                                <intro>
+                                    <p>...introductie...</p>
+                                </intro>
+                                <items>
+                                    <item label="a" type="open">
+                                        <itemcontent>
+                                            <question>
+                                                <p>...opgave...</p>
+                                            </question>
+                                        </itemcontent>
+                                        <answer>
+                                            <p>...antwoord...</p>
+                                        </answer>
+                                    </item>
+                                </items>
+                            </multi-item>
+                        </exercise>
+                    </include>
+                </exercises>
+            </extra>
+        </container-item>
+    </container>
+    <container name="test">
+        <container-item name="nieuw item: Test Jezelf">
+            <test>
+                <exercises>
+                    <include filename="__subcomp__-ex-__#1__.xml">
+                        <exercise id="__subcomp__-ex-__#1__">
+                            <multi-item>
+                                <intro>
+                                    <p>...introductie...</p>
+                                </intro>
+                                <items>
+                                    <item label="a" type="open">
+                                        <itemcontent>
+                                            <question>
+                                                <p>...opgave...</p>
+                                            </question>
+                                        </itemcontent>
+                                        <answer>
+                                            <p>...antwoord...</p>
+                                        </answer>
+                                    </item>
+                                </items>
+                            </multi-item>
+                        </exercise>
+                    </include>
+                </exercises>
+            </test>
+        </container-item>
+    </container>
+    <container name="exercises">
+        <container-item name="Samengestelde opgave">
+            <include filename="__subcomp__-ex-__#1__.xml">
+                <exercise id="__subcomp__-ex-__#1__">
+                    <multi-item>
+                        <intro>
+                            <p>...introductie...</p>
+                        </intro>
+                        <items>
+                            <item label="a" type="open">
+                                <itemcontent>
+                                    <question>
+                                        <p>...opgave...</p>
+                                    </question>
+                                </itemcontent>
+                                <answer>
+                                    <p>...antwoord...</p>
+                                </answer>
+                            </item>
+                        </items>
+                    </multi-item>
+                </exercise>
+            </include>
+        </container-item>
+        <container-item name="Enkelvoudige opgave (open)">
+            <include filename="__subcomp__-ex-__#1__.xml">
+                <exercise id="__subcomp__-ex-__#1__">
+                    <single-item>
+                        <item label="a" type="open">
+                            <itemcontent>
+                                <question>
+                                    <p>...opgave...</p>
+                                </question>
+                            </itemcontent>
+                            <answer>
+                                <p>...antwoord...</p>
+                            </answer>
+                        </item>
+                    </single-item>
+                </exercise>
+            </include>
+        </container-item>
+    </container>
+</container-specs>

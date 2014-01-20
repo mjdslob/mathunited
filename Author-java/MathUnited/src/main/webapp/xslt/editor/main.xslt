@@ -43,20 +43,35 @@ extension-element-prefixes="exsl">
 
 <!-- elements with special behaviour -->
 <xsl:template match="include" mode="editor">
-    <xsl:variable name="content" select="document(concat($docbase,@filename))"/>
-    <div class="item-container">
-        <div class="_editor_context_base">
-            <div class="menu-button-div item-container-menu">
-                <span class="menu-button"></span>
+    <xsl:choose>
+        <xsl:when test="$option='editor-process-item'">
+            <div class="item-container">
+                <div class="_editor_context_base">
+                    <div class="menu-button-div item-container-menu">
+                        <span class="menu-button"></span>
+                    </div>
+                    <div tag="include">
+                        <xsl:apply-templates select="@*" mode="editor"/>
+                        <xsl:apply-templates mode="editor"/>
+                    </div>
+                </div>
             </div>
-            <div  class="_editor_option" type="action"  item="{name($content/*[1])}" name="invoegen..." function="insertContentItem"/>
-        
-            <div tag="{name()}">
-                <xsl:apply-templates select="@*" mode="editor"/>
-                <xsl:apply-templates select="$content" mode="editor"/>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:variable name="content" select="document(concat($docbase,@filename))"/>
+            <div class="item-container">
+                <div class="_editor_context_base">
+                    <div class="menu-button-div item-container-menu">
+                        <span class="menu-button"></span>
+                    </div>
+                    <div tag="{name()}">
+                        <xsl:apply-templates select="@*" mode="editor"/>
+                        <xsl:apply-templates select="$content" mode="editor"/>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+        </xsl:otherwise>
+    </xsl:choose>
 </xsl:template>
 <xsl:template match="applet[@type='ggb']" mode="editor">
     <div tag="{name()}">

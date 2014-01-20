@@ -1,4 +1,5 @@
-var insertContentItem_typeUrl = 'content-items.html';
+var insertContentItem_typeUrl = 'content-items.xml';
+var processItem_url = '/MathUnited/processitem';
 var paragraph_id_counter = 0;
 var menulistid = 0;
 var editoroptionid = 0;
@@ -17,6 +18,7 @@ function setContextMenu(jqParent) {
         
         var parent = $(this).parent('.menu-button-div');
         if(parent.length===0)return;
+        parent.css('display','block');
         var base = $(this).parents('._editor_context_base').first();
         if(base.length==0) return;
         
@@ -34,7 +36,7 @@ function setContextMenu(jqParent) {
         $(items).each(function() {
             var elm = $(this);
             var par = elm.parents('._editor_context_base').first();
-            if(par.attr('num')!==''+(menulistid-1)) return;
+            if(par.attr('num')!==''+(menulistid-1)) return;//belongs to different base
             var id = elm.attr('id');
             if(!id) {
                 id = 'editor-option-'+editoroptionid;
@@ -106,64 +108,68 @@ function setContextMenu(jqParent) {
             }
             
         });
-        
-        //call the jquery contextmenu plugin
-        $(this).contextMenu(menuid, {
-            menuStyle: {
-                width: '150px'
-            },
-            bindings: {
-               'item1': function(t) {
-                   var elm = t; //used in action attribute to reference 'this'
-                   var parent = $(t).parents('.menu-button-div').first();
-                   var item = $('#item1',parent);
-                   eval(item.attr('action'));
+        if(itemnr===1) {
+            //no options found. Don't display the button and the menu
+            parent.css('display','none');
+        } else {
+            //call the jquery contextmenu plugin
+            $(this).contextMenu(menuid, {
+                menuStyle: {
+                    width: '150px'
                 },
-               'item2': function(t) {
-                   var elm = t; //used in action attribute to reference 'this'
-                   var parent = $(t).parents('.menu-button-div').first();
-                   var item = $('#item2',parent);
-                   eval(item.attr('action'));
-                },
-               'item3': function(t) {
-                   var elm = t; //used in action attribute to reference 'this'
-                   var parent = $(t).parents('.menu-button-div').first();
-                   var item = $('#item3',parent);
-                   eval(item.attr('action'));
-                },
-               'item4': function(t) {
-                   var elm = t; //used in action attribute to reference 'this'
-                   var parent = $(t).parents('.menu-button-div').first();
-                   var item = $('#item4',parent);
-                   eval(item.attr('action'));
-                },
-               'item5': function(t) {
-                   var elm = t; //used in action attribute to reference 'this'
-                   var parent = $(t).parents('.menu-button-div').first();
-                   var item = $('#item5',parent);
-                   eval(item.attr('action'));
-                },
-               'item6': function(t) {
-                   var elm = t; //used in action attribute to reference 'this'
-                   var parent = $(t).parents('.menu-button-div').first();
-                   var item = $('#item6',parent);
-                   eval(item.attr('action'));
-                },
-               'item7': function(t) {
-                   var elm = t; //used in action attribute to reference 'this'
-                   var parent = $(t).parents('.menu-button-div').first();
-                   var item = $('#item7',parent);
-                   eval(item.attr('action'));
-                },
-               'item8': function(t) {
-                   var elm = t; //used in action attribute to reference 'this'
-                   var parent = $(t).parents('.menu-button-div').first();
-                   var item = $('#item8',parent);
-                   eval(item.attr('action'));
+                bindings: {
+                   'item1': function(t) {
+                       var elm = t; //used in action attribute to reference 'this'
+                       var parent = $(t).parents('.menu-button-div').first();
+                       var item = $('#item1',parent);
+                       eval(item.attr('action'));
+                    },
+                   'item2': function(t) {
+                       var elm = t; //used in action attribute to reference 'this'
+                       var parent = $(t).parents('.menu-button-div').first();
+                       var item = $('#item2',parent);
+                       eval(item.attr('action'));
+                    },
+                   'item3': function(t) {
+                       var elm = t; //used in action attribute to reference 'this'
+                       var parent = $(t).parents('.menu-button-div').first();
+                       var item = $('#item3',parent);
+                       eval(item.attr('action'));
+                    },
+                   'item4': function(t) {
+                       var elm = t; //used in action attribute to reference 'this'
+                       var parent = $(t).parents('.menu-button-div').first();
+                       var item = $('#item4',parent);
+                       eval(item.attr('action'));
+                    },
+                   'item5': function(t) {
+                       var elm = t; //used in action attribute to reference 'this'
+                       var parent = $(t).parents('.menu-button-div').first();
+                       var item = $('#item5',parent);
+                       eval(item.attr('action'));
+                    },
+                   'item6': function(t) {
+                       var elm = t; //used in action attribute to reference 'this'
+                       var parent = $(t).parents('.menu-button-div').first();
+                       var item = $('#item6',parent);
+                       eval(item.attr('action'));
+                    },
+                   'item7': function(t) {
+                       var elm = t; //used in action attribute to reference 'this'
+                       var parent = $(t).parents('.menu-button-div').first();
+                       var item = $('#item7',parent);
+                       eval(item.attr('action'));
+                    },
+                   'item8': function(t) {
+                       var elm = t; //used in action attribute to reference 'this'
+                       var parent = $(t).parents('.menu-button-div').first();
+                       var item = $('#item8',parent);
+                       eval(item.attr('action'));
+                    }
                 }
-            }
-            
-        });
+
+            });
+        }
     });
 }
 
@@ -262,14 +268,96 @@ function shiftItemDown(id) {
 }
 
 function insertContentItem(id) {
-    var elm = $('#'+id);
+    var elm = $('#'+id); //div._editor_option element
+    var parent = elm.parents('.item-container').first();
     var contentType = elm.attr('item');
-    //var contentType = parent.attr('type');
+    getContentItem(contentType, function(html) {
+        if(parent.length>0) {
+            parent.after( $(html) );
+        } else {
+            parent = elm.parents(".m4a-editor-item-content").first();
+            parent.append( $(html) );
+        }
+    });
+}
+    
+function repeatExercise(id, action, location) {
+    var elm = $('#'+id); //div._editor_option element
+    var base = elm.parents('._editor_context_base').first();
+    var parent = elm.parents('.item-container',base).first();
+    if(parent.hasClass('shift-item-anchor')) {
+        //does not contain an exercise, but is a reference point before any exercises in the containing element
+    }
+    if(action==='add') {
+        var contentType = 'exercises';
+        getContentItem(contentType, function(html) {
+            if(!location) {
+                elm.replaceWith( $(html)); 
+            }
+            else if(location==='before'){
+                base.before( $(html) );
+            } else {
+                base.after( $(html) );
+            }
+            var uberBase = base.parents('._editor_context_base').first();
+            insertActions(uberBase);
+            setContextMenu(uberBase);
+            labelAnchors();
+        });
+    } else {
+        base.remove();
+    }
+}
+
+function setExerciseMetadata(id) {
+    var elm = $('#'+id); //div._editor_option element
+    var base = elm.parents('._editor_context_base').first();
+    var container = $('.metadata-container',base).first().addClass('visible');
+    var tag = $('*[tag="metadata"]',container).first();
+    var level = $('div[tag="level"]',container).attr('value');
+    if(level) {
+        var dum=$('form input[name="level"][value="'+level+'"]', container);
+        if(dum.length>0) dum[0].checked= true;
+    };
+    var isClone = $('div[tag="clone"]',container).attr('active');
+    if(isClone==='true') {
+        var dum=$('form input[name="kloonopgave"]', container);
+        if(dum.length>0) dum[0].checked= true;
+    };
+    
+    $('form input',container).change(function(data) {
+        var form = $(data.target).parents('form').first();
+        var level = null;
+        var isClone = $('input[name="kloonopgave"]',container)[0].checked;
+        $('input[name="level"]',container).each(function() {
+           if(this.checked) level = this.value; 
+        });
+        
+        if(level) {
+            var levelElm = $('div[tag="level"]',tag);
+            if(levelElm.length===0){
+                levelElm = $('<div tag="level"></div>');
+                tag.append(levelElm);
+            }
+            levelElm.attr('value',level);
+        }
+        {
+            var cloneElm = $('div[tag="clone"]',tag);
+            if(cloneElm.length===0) {
+                cloneElm = $('<div tag="clone"></div>');
+                tag.append(cloneElm);
+            }
+            cloneElm.attr('active',isClone);
+        }
+    }); 
+}
+
+function getContentItem(itemtype, callback) {
     $.get(insertContentItem_typeUrl, '', function(xml) {
-        var itemParent = $('.itemClass.'+contentType,xml);
+        var container = $('container[name="'+itemtype+'"]',xml);
         var html='<div>';
         var num=0;
-        $('.itemType',itemParent).each(function(){
+        $('container-item',container).each(function(){
            html = html+'<div class="item-type" num="'+num+'">'+$(this).attr('name')+'</div>'; 
            $(this).attr('num',num);
            num++;
@@ -287,15 +375,39 @@ function insertContentItem(id) {
             }
         });    
         $('.item-type',dlg).click(function() {
-            var cnt = $('.itemType[num="'+$(this).attr('num')+'"]',itemParent);
-            var parent = elm.parents('.item-container').first();
-            var newElm=cnt.children().first();
-            if(parent.length>0) {
-                parent.after(newElm);
-            } else {
-                parent = elm.parents(".m4a-editor-item-content").first();
-                parent.append(newElm);
-            }
+            var cnt = $('container-item[num="'+$(this).attr('num')+'"]',container);
+            var xmlstr = xmlToString(cnt.children().first());
+            var subcomp = $('#meta-data-subcomp').text();
+            $.post(processItem_url, {
+                comp: $('#meta-data-comp').text(),
+                subcomp: subcomp,
+                variant: $('#meta-data-variant').text(),
+                xml:xmlstr
+            }, function(htmlStr) {
+                htmlStr = htmlStr.replace(/__subcomp__/g,subcomp);
+                var cnt = $(htmlStr);
+                $('div[tag="include"]',cnt).each(function(){
+                    var fname = $(this).attr('filename');
+                    var refstr = fname.match(/__#.__/);
+                    if(refstr && refstr.length>0) {
+                        refstr = refstr[0];
+                        var counter=1;
+                        var newid = fname.replace(refstr,counter);
+                        var elm = $('div[tag="include"][filename="'+newid+'"]');
+                        while(elm.length>0) {
+                            counter++;
+                            newid = fname.replace(refstr,counter);
+                            elm = $('div[tag="include"][filename="'+newid+'"]');
+                        }
+                        var patt= new RegExp(refstr,'g');
+                        htmlStr = htmlStr.replace(patt,counter);
+                    }
+                });
+                
+                callback(htmlStr);
+                dlg.dialog("close");
+            });
+/*
             $('div[tag="include"]',newElm).each(function(){
                 var par = $(this).parents('div[tag="include"]').first();
                 var curid = contentType+'.xml';
@@ -317,11 +429,25 @@ function insertContentItem(id) {
             insertActions(newElm);
             setContextMenu(newElm);
             dlg.dialog("close");
+*/            
         });
         
     });
 }
 
+function xmlToString(xmlData) { 
+
+    var xmlString;
+    //IE
+    if (window.ActiveXObject){
+        xmlString = xmlData.xml;
+    }
+    // code for Mozilla, Firefox, Opera, etc.
+    else{
+        xmlString = (new XMLSerializer()).serializeToString(xmlData[0]);
+    }
+    return xmlString;
+}   
 
 function removeContentItem(id) {
     var elm = $('#'+id);
@@ -346,13 +472,11 @@ function removeContentItem(id) {
 
 
 function optionalContentItem(id, action) {
-    debugger;
     var elm = $('#'+id); //div._editor_option element
     var contentType = elm.attr('item');
     if(action==='add'){
-        $.get(insertContentItem_typeUrl, '', function(xml) {
-            var itemParent = $('.itemClass.'+contentType,xml);
-            elm.append(itemParent.children().first());
+        getContentItem(contentType, function(html) {
+            elm.append($(html));
             elm.next('.m4a-editor-item.nonexistent').toggleClass('visible');
             insertActions(elm);
             setContextMenu(elm);
@@ -381,6 +505,5 @@ function optionalContentItem(id, action) {
                 }
             }
         });
-
     }
 }

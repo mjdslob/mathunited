@@ -6,6 +6,10 @@
         <servlet-class>nl.math4all.mathunited.ViewServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>process-item</servlet-name>
+        <servlet-class>nl.math4all.mathunited.ProcessItemServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>postcontent</servlet-name>
         <servlet-class>nl.math4all.mathunited.PostContentServlet</servlet-class>
     </servlet>
@@ -52,6 +56,10 @@
     <servlet-mapping>
         <servlet-name>view</servlet-name>
         <url-pattern>/view</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>process-item</servlet-name>
+        <url-pattern>/processitem</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>postcontent</servlet-name>

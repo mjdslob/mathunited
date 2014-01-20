@@ -6,6 +6,7 @@ xmlns:saxon="http://saxon.sf.net/"
 xmlns:exsl="http://exslt.org/common"
 xmlns:m="http://www.w3.org/1998/Math/MathML"
 xmlns:cals="http://www.someplace.org/cals"
+xmlns:xhtml="http://www.w3.org/1999/xhtml"
 exclude-result-prefixes="saxon"
 extension-element-prefixes="exsl">
 
@@ -21,6 +22,9 @@ extension-element-prefixes="exsl">
 
 <!-- Switch to paragraph mode -->
 <xsl:template match="p | itemize | paperfigure" mode="editor">
+    <xsl:apply-templates select="." mode="paragraph"/>
+</xsl:template>
+<xsl:template match="xhtml:p | xhtml:itemize | xhtml:paperfigure" mode="editor">
     <xsl:apply-templates select="." mode="paragraph"/>
 </xsl:template>
 

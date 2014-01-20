@@ -77,6 +77,16 @@ html, body {
 div[tag="metadata"] {
     display:none;
 }
+div.metadata-container.visible div[tag="metadata"] {
+    display:block;
+}
+div.metadata-container form{
+    background-color:rgb(220,220,220);
+    border:1px solid rgb(150,150,150);
+    border-radius:3px;
+    padding:5px;
+    margin:5px 0px;
+}
 div[tag="description"] {
     display:none;
 }
@@ -239,7 +249,7 @@ div[tag="single-item"] {
     position:absolute;
     left:-65px;
 }
-.menu-button-div.section-button {
+.menu-button-div {
     position:absolute;
     left:0px;
 }
