@@ -101,6 +101,11 @@ img.paperfigure[location='right'] {
 div[tag="am"], div[tag="keyword"], div[tag="text"] {
     display: inline;
 }
+span[tag="author-remark"] {
+    color:blue;
+    font-style: italic;
+    background-color:yellow;
+}
 div[tag="item"] {
     position:relative;
 }

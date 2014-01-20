@@ -36,11 +36,7 @@ $config_repos = array(
         'id'=>'wm-2013-07-19',
         'basePath'=>'content-wm/concept/',
         'paths'=>array(
-            'lj1-hv/',
-            'lj2-h/',
-            'lj2-v/',
-            'lj3-h/',
-            'lj3-v/'
+            ''
             ),
         'index_xsl'=>'../xslt/generate-index-wm.xslt'
     ),

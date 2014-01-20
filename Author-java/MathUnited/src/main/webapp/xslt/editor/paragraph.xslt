@@ -60,6 +60,11 @@ extension-element-prefixes="exsl">
     </span>
 </xsl:template>
 
+<xsl:template match="author-remark" mode="paragraph">
+    <span tag="author-remark">
+        <xsl:apply-templates mode="paragraph"/>
+    </span>
+</xsl:template>
 <xsl:template match="keyword" mode="paragraph">
     <span tag="keyword">
         <xsl:choose>

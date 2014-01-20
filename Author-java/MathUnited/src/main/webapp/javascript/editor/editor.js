@@ -121,6 +121,7 @@ var allowedTags = {
     ul:true,
     li:true,
     p:true,
+    'author-remark':true,
     keyword: function(elm) {
                  var child = $(elm).children(); 
                  if(child.length>1)return false; 
@@ -310,6 +311,7 @@ function insertActions(jqParent) {
                 "m4a_keyword": "../tinymce_plugins/m4a_keyword/plugin.js",
                 "m4a_quotation":"../tinymce_plugins/m4a_quotation/plugin.js",
                 "m4a_textref":"../tinymce_plugins/m4a_textref/plugin.js",
+                "m4a_remark":"../tinymce_plugins/m4a_remark/plugin.js",
                 "m4a_image":"../tinymce_plugins/m4a_image/plugin.js"
             },
             setup: function(ed) {
@@ -327,7 +329,7 @@ function insertActions(jqParent) {
             // General options
             theme : "modern",
             plugins : "paste,fullscreen, table, link, charmap",
-            toolbar: "undo redo | bold italic | numlist bullist outdent indent | link unlink m4a_textref | m4a_keyword m4a_quotation | m4a_image | charmap",
+            toolbar: "undo redo | bold italic | numlist bullist outdent indent | link unlink m4a_textref | m4a_keyword m4a_quotation m4a_remark | m4a_image | charmap",
             moxiemanager_rootpath: compbase+'/',
             moxiemanager_path: compbase+'/',
             relative_urls:false,

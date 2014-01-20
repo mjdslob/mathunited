@@ -139,7 +139,9 @@ extension-element-prefixes="exsl">
 <xsl:template match="keyword" mode="content">
    <span class="keyword"><xsl:value-of select="text"/></span>
 </xsl:template>
-
+<xsl:template match="author-remark" mode="content">
+    <span class="author-remark"><xsl:apply-templates mode="content"/></span>
+</xsl:template>
 <xsl:template match="hyperlink" mode="content">
     <a>
         <xsl:for-each select="@*">
