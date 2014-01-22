@@ -1,0 +1,195 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Publisher</title>
+        <link type="text/css" href="javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="stylesheet" />
+        <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
+        <link rel="stylesheet" href="publisher-ui.css" type="text/css" />
+        <script type="text/javascript" src="javascript/UI.js"></script>
+        <script type="text/javascript" src="javascript/PublisherUI-Main.js"></script>
+        <script type="text/javascript" src="javascript/WM_Method.js"></script>
+        <script type="text/javascript" src="javascript/WM_Module.js"></script>
+        <script type="text/javascript" src="javascript/WM_Thread.js"></script>
+        <script type="text/javascript">
+            var viewURL = [];
+            viewURL['studiovo_kennisbank'] = '/MathUnited/view?parent=localhost/Publisher/html/publisher-studiovo-kennisbank.html&variant=studiovo_kennisbank';
+            viewURL['wm'] = '/MathUnited/view?parent=localhost/Publisher/html/publisher-wm.html&variant=basis_wm&item=1';
+            wm = new WM_Manager({
+                methodURL:  '/data/content-studiovo/kennisbank/leerlijnen/components.xml',
+                threadsURL: '/data/content-studiovo/kennisbank/leerlijnen/threads.xml',
+                repo :'studiovo_kennisbank'
+            });
+            $(document).ready(function() {
+                wm.init();
+                initUI();
+            });
+            
+        </script>
+    </head>
+    <body>
+        <div id="main">
+            <div id="dialog">
+                <form name="loginform" id="login-form" action="" method="post">
+                    <div id="login-message"></div>
+                    <div class="fieldname">Gebruikersnaam</div><input type="text" name="username">
+                    <div class="fieldname">Wachtwoord</div><input type="password" name="password">
+                    <div style="clear:both"></div>
+                    <input id="forgot-password-button" type="button" value="Wachtwoord vergeten" onClick="M4A_forgotPassword(this.form)">
+                    <input id="submit-button" type="button" value="OK" onClick="M4A_login(this.form)">
+                </form>
+            </div>
+            <div id="header">
+            <div id="logo">
+                <div id="logo_text">
+                <!-- class="logo_colour", allows you to change the colour of the text -->
+                <h1><a href="index.html">Math<span
+                class="logo_colour">United</span></a></h1>
+                <h2>Publisher</h2>
+                </div>
+                <div id="account-info">
+                    <div id="info-logged-in">
+                        Geselecteerd archief:
+                        <select id="repo-set" onchange="javascript:M4A_selectRepo()">
+                            <option value="m4a_concept">standaard</option>
+                        </select>
+                        <br/>
+                        <span id="info-username"></span>
+                        <div id="logout-button" class="account-button" onclick="javascript:M4A_logout()">&gt; uitloggen</div>
+                    </div>
+                    <div id="info-not-logged-in" class="visible">
+                        <span>U bent niet ingelogd.</span>
+                        <div id="login-button" class="account-button" onclick="javascript:M4A_showLoginDialog()">&gt; inloggen</div>
+                    </div>
+                </div>
+            </div>
+            <div id="menubar">
+                <ul id="menu">
+                <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
+                <li id="li-tab-home" class="selected"><a href="javascript:setTab('tab-home')">Home</a></li>
+                <li id="li-tab-preview"><a href="javascript:setTab('tab-preview')">Bekijken</a></li>
+<!--                <li id="li-tab-edit"><a href="javascript:setTab('tab-edit')">Bewerken</a></li> -->
+                <li id="li-tab-componenten"><a href="javascript:setTab('tab-componenten')">Publiceer component</a></li>
+                <li id="li-tab-leerlijnen"><a href="javascript:setTab('tab-leerlijnen')">Publiceer leerlijn</a></li>
+                <li id="li-tab-logging"><a href="javascript:setTab('tab-logging')">Log</a></li>
+                </ul>
+            </div>
+            </div>
+            <div id="site_content">
+                <div id="tab-home" class="ui-tab selected">
+                    <div class="sidebar">
+                        <!-- insert your sidebar items here -->
+                        <h3>Informatie</h3>
+                        <h4>Gepubliceerde content</h4>
+                        <p>Ga naar de gepubliceerde content van <a href="http://www.mathunited.nl">MathUnited</a>.</p>
+                    </div>
+                    <div class="content">
+                        <h1>Welkom bij de kennisbank auteurstool voor StudioVO</h1>
+                        <p>Dit tool is bedoeld voor auteurs van StudioVO. De content kan hier worden bekeken en worden gepubliceerd 
+                            naar de verschillende publicatie-kanalen. </p>
+                        <p>Op dit moment kan via deze auteurstool uitsluitend gepubliceerd worden naar de mathunited-website. </p>
+                        <p>Indien u nieuwe componenten heeft aangemaakt, dient u 'Ververs overzichten' te activeren. De auteurstool 
+                           zal dan de beschikbare componenten indexeren.</p>
+                        <div class="button" id="ververs-overzicht-button" style="width:150px">
+                            <a href="/Publisher/php/GenerateIndex.php?repo=studiovo_kennisbank">Ververs overzichten</a>
+                        </div>
+                        <p>De index van beschikbare componenten en leerlijnen dient ook gepubliceerd te worden. Dat doet u via de knop 
+                        'Publiceer overzichten'</p>
+                        <div class="button" id="publish-overview-button-1" style="width:150px">
+                            <a href="javascript:wm.publishOverview('studiovo_kennisbank','publish-overview-button-1');">Publiceer overzichten</a>
+                        </div>
+
+                        <p>Bekijk <a href="http://ontwikkel.scalamedia.nl/Publisher/php/pulseon_content_overview.php?repo=studiovo_kennisbank">hier</a> een overzicht van alle beschikbare content voor import in PulseOn</p>
+
+                    </div>
+                </div>
+                <div id="tab-preview" class="ui-tab">
+                    <div class="sidebar">
+                        <!-- insert your sidebar items here -->
+                        <h3>Leerlijnen</h3>
+                        <div id="preview-leerlijn-chooser">
+                        </div>
+                        <div style="height:100px;"></div>
+                    </div>
+                    <div class="content">
+                        <p>
+                            Bekijk hier het lesmateriaal wanneer u deze aan het bewerken bent.
+                        </p>
+                        <iframe src="publisher-preview-widget.html?thread_id=studiovo-ned-1&repo=studiovo_kennisbank" id="wiskundemenu-iframe" class="wiskundemenu-iframe"></iframe>
+                    </div>
+                </div>
+                <!--
+                <div id="tab-edit" class="ui-tab">
+                    <div class="sidebar">
+                        <h3>Leerlijnen</h3>
+                        <div id="edit-leerlijn-chooser">
+                        </div>
+                        <div style="height:100px;"></div>
+                        <div id="ververs-overzicht-button">
+                            <a href="/Publisher/GenerateIndex.php">Ververs overzichten</a>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <p>
+                            Hier kunt u het lesmateriaal bewerken met de auteurstool. Deze auteurstool is nog experimenteel.
+                        </p>
+                        <iframe src="publisher-edit-widget.html?thread_id=studiovo-ned-1&method_id=ma" id="wiskundemenu-edit-iframe" class="wiskundemenu-iframe"></iframe>
+                    </div>
+                </div>
+        -->
+                <div id="tab-componenten" class="ui-tab">
+                    <div class="sidebar">
+                        <!-- insert your sidebar items here -->
+                        <h3>Informatie</h3>
+                        <h4>Gepubliceerde content</h4>
+                        <p>Ga naar de gepubliceerde content van <a href="http://www.mathunited.nl">MathUnited</a>.</p>
+                        <div style="height:100px;"></div>
+                    </div>
+                    <div class="content">
+                        <p>
+                            Hier kunt u individuele paragrafen ('subcomponenten') van de content publiceren. Selecteer de paragrafen en
+                            klik op knop 'Publiceer'. U kunt de voortgang monitoren onder tab 'Log'.
+                        </p>
+                        <p>
+                            Let op: u mag de browser niet sluiten en uw computer niet afzetten tijdens het publiceren. Indien u
+                            hele leerlijnen wilt publiceren, kunt u dit het beste doen via tab 'Leerlijnen'. In dat geval loopt het
+                            proces zelfstandig op de server en kunt u dus wel uw computer afzetten of de browser sluiten.
+                        </p>
+                        <div id="pub-thread-container"></div>
+                        <div id="publish-button" class="publish-button" style="float:left;margin-right:20px;" onclick="wm.publish()">Publiceer</div>
+                        <div id="uploadQTI-button" class="publish-button" style="float:left;" onclick="wm.uploadQTI()">Upload QTI</div>
+                    </div>
+                </div>
+                <div id="tab-leerlijnen" class="ui-tab">
+                    <div class="sidebar">
+                        <!-- insert your sidebar items here -->
+                        <h3>Informatie</h3>
+                        <h4>Gepubliceerde content</h4>
+                        <p>Ga naar de gepubliceerde content van <a href="http://www.mathunited.nl">MathUnited</a>.</p>
+                        <div style="height:100px;"></div>
+                    </div>
+                    <div class="content">
+                        <p>
+                            Hier kunt u hele leerlijnen ineens publiceren. Wanneer de publicatie is gestart, kunt u de auteurstool verlaten of zelfs de computer afzetten. 
+                            Het proces loopt autonoom op de server. U kunt de voortgang monitoren onder tab 'Log'.
+                        </p>
+                        <p> Let op: u kunt slechts een leerlijn per keer publiceren.</p>
+                            <div id="thread-container-2"></div>
+                            <div id="publish-button-2" class="button" onclick="wm.publishThread()">Publiceer</div>
+                    </div>
+                </div>
+                <div id="tab-logging" class="ui-tab">
+                    <div id="log-contents"></div>
+                    <div id="clear-log-button" class="button" style="float:left;" onclick="javascript:clearLog()">clear</div>
+                    <div id="refresh-log-button" class="button" style="float:left; margin-left:20px;" onclick="javascript:refreshLog(false)">refresh</div>
+                </div>
+            </div>
+            <div id="content_footer"></div>
+            <div id="footer">
+            Copyright &copy; colour_blue | <a href="http://validator.w3.org/check?uri=referer">HTML5</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | <a href="http://www.html5webtemplates.co.uk">design from HTML5webtemplates.co.uk</a>
+            </div>
+        </div>
+        <div style="text-align: center; font-size: 0.75em;">Design downloaded from <a href="http://www.freewebtemplates.com/">free website templates</a>.</div>
+    </body>
+</html>
