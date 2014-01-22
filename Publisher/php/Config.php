@@ -47,6 +47,14 @@ $config_repos = array(
             ''
             ),
         'index_xsl'=>false
+    ),
+    'studiovo_kennisbank' => array(
+        'id'=>'studiovo-kennisbank-2013-12-29',
+        'basePath'=>'content-studiovo/kennisbank/',
+        'paths'=>array(
+            ''
+            ),
+        'index_xsl'=>false
     )
 );
 
