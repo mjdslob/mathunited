@@ -196,8 +196,8 @@ class GAEPlatform extends Platform {
                 } else {
                     $mimetype = "application/octet-stream";
                 }
-                $logger->trace(LEVEL_INFO, 'publishing image (id='.$correctedId.', repo='.$repo.', fname='.$imagefname);        
                 $getUrl = $this->sendResource($imagefname, $compId, $correctedId, $repo, $type, $mimetype, $logger);
+                $logger->trace(LEVEL_INFO, 'published image (id='.$correctedId.', repo='.$repo.', fname='.$imagefname.' <a href="http://mathunited2012.appspot.com'.$getUrl.'">open</a>)'); 
                 $imgId->name = $getUrl; //put the direct URL in the xml
             } else {
                   $logger->trace(LEVEL_ERROR, "Missing image: File $correctedId does not exist in subcomponent $compId."); 
@@ -215,8 +215,8 @@ class GAEPlatform extends Platform {
             $ggbfname = $base.'../geogebra/'.$correctedId;
             if(file_exists($ggbfname)){
                 $mimetype = "application/octet-stream";
-                $logger->trace(LEVEL_INFO, 'publishing Geogebra applet (id='.$correctedId.', repo='.$repo.', fname='.$ggbfname);        
                 $getUrl = $this->sendResource($ggbfname, $compId, $correctedId, $repo, $type, $mimetype, $logger);
+                $logger->trace(LEVEL_INFO, 'publishing Geogebra applet (id='.$correctedId.', repo='.$repo.', fname='.$ggbfname.' <a href="http://mathunited2012.appspot.com'.$getUrl.'">open</a>)');      
                 $ggbId['filename'] = $getUrl; //put the direct URL in the xml
             } else {
                   $logger->trace(LEVEL_ERROR, "Invalid Geogebra applet: File $ggbfname does not exist in subcomponent $compId."); 
@@ -239,8 +239,8 @@ class GAEPlatform extends Platform {
             }
             if($fileExists){
                 $mimetype = $this->getMIMEtype($fname);
-                $logger->trace(LEVEL_INFO, 'publishing binary (id='.$id.', repo='.$repo.', fname='.$fname);        
                 $getUrl = $this->sendResource($fname, $compId, $id, $repo, $type, $mimetype, $logger);
+                $logger->trace(LEVEL_INFO, 'publishing binary (id='.$id.', repo='.$repo.', fname='.$fname.' <a href="http://mathunited2012.appspot.com'.$getUrl.'">open</a>)');      
                 $rsrcId['href'] = $getUrl."&attachment=true"; //put the direct URL in the xml
             } else {
                   $logger->trace(LEVEL_ERROR, "Broken resourcelink: File $id does not exist in subcomponent $compId."); 
@@ -267,8 +267,8 @@ class GAEPlatform extends Platform {
             if($fileExists){
                 $mimetype = $this->getMIMEtype($fname);
                 //$mimetype = "application/octet-stream";
-                $logger->trace(LEVEL_INFO, 'publishing resource (dox) (id='.$id.', repo='.$repo.', fname='.$fname);        
                 $getUrl = $this->sendResource($fname, $compId, $id, $repo, $type, $mimetype, $logger);
+                $logger->trace(LEVEL_INFO, 'publishing resource (dox) (id='.$id.', repo='.$repo.', fname='.$fname.' <a href="http://mathunited2012.appspot.com'.$getUrl.'">open</a>)');       
                 $rsrcId['href'] = $getUrl."&attachment=true"; //put the direct URL in the xml
             } else {
                   $logger->trace(LEVEL_ERROR, "Broken resourcelink: File $id does not exist in subcomponent $compId."); 
