@@ -18,6 +18,7 @@ require_once("Logger.php");
 
 class Publisher {
    var $loglevel = LEVEL_INFO;
+   var $repoID;
    var $logger;
    var $callback;      //not null if dynamic scripting callback is used
    var $comm;          //request data $_POST or $_GET
@@ -28,14 +29,14 @@ class Publisher {
         $clear_busy_file = false; //whether to set the status of Publisher to 'idle' after this call
         $statusFile = 'not_set_yet';
         $this->comm = $_POST;
-        $repoID = 'generic';
+        $this->repoID = 'generic';
         if( isset($this->comm['repo']) ) {
-            $repoID = $this->comm['repo'];
+            $this->repoID = $this->comm['repo'];
         }
 
         include("Config.php");
         $this->contentRoot = $config_contentRoot;
-        $this->logger = new Logger($this->loglevel, $repoID, false);
+        $this->logger = new Logger($this->loglevel, $this->repoID, false);
         try{
 
             if( isset($this->comm['cmd']) ) {
@@ -52,15 +53,15 @@ class Publisher {
 
             $baseURL = false;
             if( isset($this->comm['repo']) ) {
-                $repoID = $this->comm['repo'];
+                $this->repoID = $this->comm['repo'];
             } else throw new Exception('repo attribute is missing');
 
-            $this->repo = $config_repos[$repoID];
+            $this->repo = $config_repos[$this->repoID];
             $baseURL = $this->repo['basePath'];;
             if(!$baseURL) throw new Exception('repo attribute is invalid');
 
             //check if Publisher is not busy already
-            $statusFile = "../logs/status_$repoID.xml";
+            $statusFile = "../logs/status_".$this->repoID.".xml";
             $statusDoc = file_get_contents($statusFile);
             if($statusDoc!==false) {
                 $xml = new SimpleXMLElement($statusDoc);
@@ -89,7 +90,7 @@ class Publisher {
                         $compRef = $this->comm['compRef'];
                     } else throw new Exception('No component filename given');
 
-                    $this->publishComponentFile($targetID, $compId, $compRef, $repoID);
+                    $this->publishComponentFile($targetID, $compId, $compRef, $this->repoID);
                     $this->logger->trace(LEVEL_INFO, "Finished publishing component file $compId");
                     break;
                     
@@ -107,7 +108,7 @@ class Publisher {
                         $subCompRef = $this->comm['subcompRef'];
                     } else throw new Exception('No subcomponent filename given');
 
-                    $this->publishSubcomponent($targetID, $subcompId, $compId, $subCompRef, $compRef, $repoID);
+                    $this->publishSubcomponent($targetID, $subcompId, $compId, $subCompRef, $compRef, $this->repoID);
                     $this->logger->trace(LEVEL_INFO, "Finished publishing subcomponent $subcompId");
                     break;
                     
@@ -130,7 +131,7 @@ class Publisher {
                         $compRef = $this->comm['ref'];
                     } else throw new Exception('No component ref given');
 
-                    $this->uploadQTIComponent($targetID, $subcompId, $compId, $compRef, $repoID);
+                    $this->uploadQTIComponent($targetID, $subcompId, $compId, $compRef, $this->repoID);
                     $this->logger->trace(LEVEL_INFO, "Finished uploading QTI subcomponent $subcompId");
                     break;
             }  
@@ -155,7 +156,7 @@ class Publisher {
         //generate an id for this publish
         $publishId = date(DATE_RFC822);
         $pf = new GAEPlatform($publishId, false);
-        $pf->publishOverview($this->repo, $this->logger);
+        $pf->publishOverview($this->repoID, $this->repo, $this->logger);
         return $result;
     }
 

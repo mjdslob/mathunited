@@ -93,12 +93,17 @@ public class PutTextFileServlet extends HttpServlet {
    			   Text textProp = new Text(text);
    			   entity.setProperty("text", textProp);
    			   entity.setProperty("date", new Date());
-   			   datastore.put(entity);
+   			   Key storedKey = datastore.put(entity);
    			   
    			   if(id.equals("components.xml")) {
    				   Repository.clearCache();
    				   LOGGER.info("Clearing components cache because new components file was uploaded");
    			   }
+
+               Writer w = response.getWriter();
+               PrintWriter pw = new PrintWriter(w);
+               
+               pw.println("info: " + KeyFactory.keyToString(storedKey));
    			   
     	   } catch (Exception e) {
                e.printStackTrace();

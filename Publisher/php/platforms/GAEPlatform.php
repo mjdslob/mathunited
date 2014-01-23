@@ -10,20 +10,20 @@ class GAEPlatform extends Platform {
         $this->publishId = $publishId;
     }
 
-    public function publishOverview($repo, $logger) {
+    public function publishOverview($repoID, $repo, $logger) {
         $path = "/data/".$repo['basePath'].'leerlijnen/';
 
         if(file_exists($path.'components.xml')) {
             $txt = file_get_contents($path.'components.xml');
-            $logger->trace(LEVEL_INFO, 'send components.xml for repo '.$repo['id']);        
+            $logger->trace(LEVEL_INFO, 'send components.xml for repo '.$repoID);        
             $txt = EntityConverter::convert_entities($txt);
-            $error = !$this->sendFile('components.xml', '', $repo['id'], $txt, $logger);
+            $error = !$this->sendFile('components.xml', '', $repoID, $txt, $logger);
         } else throw new Exception("Components file not found: ".$path.'components.xml');
         if(file_exists($path.'threads.xml')) {
             $txt = file_get_contents($path.'threads.xml');
-            $logger->trace(LEVEL_INFO, 'send threads.xml for repo '.$repo['id']);        
+            $logger->trace(LEVEL_INFO, 'send threads.xml for repo '.$repoID);        
             $txt = EntityConverter::convert_entities($txt);
-            $error = !$this->sendFile('threads.xml', '', $repo['id'], $txt, $logger);
+            $error = !$this->sendFile('threads.xml', '', $repoID, $txt, $logger);
         } else throw new Exception("Threads file not found: ".$path.'threads.xml');
     }
     
@@ -156,7 +156,7 @@ class GAEPlatform extends Platform {
         $fields_string = '';
         foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
         rtrim($fields_string,'&');
-        
+            
         $ch = curl_init($this->putTextURL);
  
         curl_setopt($ch, CURLOPT_POST, 1);
@@ -165,7 +165,15 @@ class GAEPlatform extends Platform {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
  
         $response = curl_exec($ch);
-        if($response!=null && strncmp($response, 'error', 5)==0) throw new Exception($response);
+        if($response!=null) {
+            if (strncmp($response, 'error', 5)==0) 
+                throw new Exception($response);
+            else if (strncmp($response, 'info: ', 6)==0) 
+                $logger->trace(LEVEL_INFO, 'TextFile stored ('.$response.')');      
+            else
+                $logger->trace(LEVEL_INFO, 'TextFile transfer response = '.$response);      
+        }
+        
         curl_close($ch);
     }
 
