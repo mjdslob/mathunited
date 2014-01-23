@@ -157,6 +157,13 @@ function allowEditing(par) {
 }
 
 $(document).ready(function() {
+    isDocChanged = false;  
+    window.onbeforeunload = function() {
+      if(isDocChanged){
+         return "Wijzigingen die u niet heeft opgeslagen gaan verloren.";
+      }
+    };
+    
     //check if images exist, if not fallback to backup repository
     var baseRepo = $('#meta-data-baserepo-path').text();
     var repo= $('#meta-data-repo-path').text();
@@ -194,6 +201,7 @@ $(document).ready(function() {
             }
             parent.insertAfter(nextLoc);
             labelAnchors();
+            isDocChanged=true;
         });
         $('.shift-handle-prev',this).click(function() {
             var _num = -2+parseInt(parent.attr('num'));
@@ -203,6 +211,7 @@ $(document).ready(function() {
             }
             parent.insertAfter(nextLoc);
             labelAnchors();
+            isDocChanged=true;
         });
         
     });
@@ -239,7 +248,6 @@ function insertActions(jqParent) {
             editorDiv = $('<div class="tiny-editor"><div class="close-paragraph"></div><div class="paragraph-content"></div></div>')
             $(this).before(editorDiv);
             //concatenate editable blocks into one
-            debugger;
             var cnt = $('.paragraph-content',editorDiv);
             var following = $(this).nextUntil(':not(p,ul.paragraph,ol.paragraph,table,img)');
             var filtered = $('<div></div>');
@@ -250,7 +258,7 @@ function insertActions(jqParent) {
             following = filtered.children();
             $('p,ul.paragraph,ol.paragraph,table,img',$(this)).attr('_done','true');
             $('p,ul.paragraph,ol.paragraph,table,img',following).attr('_done','true');
-            cnt.append(this);
+            cnt.append(this);//move this paragraph into the editor paragraph (p.paragraph-content)
             following.attr('_done','true').appendTo(cnt);
         }
     });
@@ -300,6 +308,7 @@ function insertActions(jqParent) {
     var ind = compbase.lastIndexOf('/');
     compbase = compbase.substr(0,ind)+'/images/highres';
     pars.unbind('click').click(function() {
+       isDocChanged=true;
        var parent = $(this).parent();
        if( $(this).parents('.noneditable').length > 0) return true;
        $('.close-paragraph',parent).addClass('active');
@@ -384,6 +393,7 @@ function submitDocument(repo, comp, subcomp) {
                 var msg = $('post message',data).text();
                 alert('Fout bij opslaan van het document: '+msg);
             } else {
+                isDocChanged = false;
                 alert('Het document is opgeslagen');
             }
         })

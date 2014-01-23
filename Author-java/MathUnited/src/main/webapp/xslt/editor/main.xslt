@@ -124,8 +124,7 @@ extension-element-prefixes="exsl">
 <xsl:template match="learningaspects" mode="editor">
    <div tag="learningaspects">
       <span class="headline"><b>Je leert in dit onderwerp:</b></span>
-      <div class="close-paragraph"></div>
-      <ul class="paragraph-content">
+      <ul class="paragraph">
          <xsl:for-each select="aspect">
              <li><xsl:apply-templates mode="paragraph"/></li>
          </xsl:for-each>
@@ -135,8 +134,7 @@ extension-element-prefixes="exsl">
 <xsl:template match="knownaspects" mode="editor">
  <div tag="knownaspects">
     <span class="headline"><b>Voorkennis:</b></span>
-    <div class="close-paragraph"></div>
-    <ul class="paragraph-content">
+    <ul class="paragraph">
         <xsl:for-each select="aspect">
             <li><xsl:apply-templates mode="paragraph"/></li>
         </xsl:for-each>

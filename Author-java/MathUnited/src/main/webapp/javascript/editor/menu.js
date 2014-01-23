@@ -183,6 +183,7 @@ function optionalItem(id, templateId,action) {
         insertActions(elm);
     }
     var parent = $(elm).parents('._editor_context_base').first();
+    isDocChanged = true;
     setContextMenu(parent);
 }
 
@@ -241,6 +242,7 @@ function repeatExerciseItem(id, action, location) {
         insertActions(newElm);
         setContextMenu(newElm);
     }
+    isDocChanged = true;
 }
 
 function shiftItemUp(id) {
@@ -253,6 +255,7 @@ function shiftItemUp(id) {
     }
     parent.insertAfter(nextLoc);
     labelAnchors();
+    isDocChanged = true;
 }
 
 function shiftItemDown(id) {
@@ -265,6 +268,7 @@ function shiftItemDown(id) {
     }
     parent.insertAfter(nextLoc);
     labelAnchors();
+    isDocChanged = true;
 }
 
 function insertContentItem(id) {
@@ -279,6 +283,7 @@ function insertContentItem(id) {
             parent.append( $(html) );
         }
     });
+    isDocChanged = true;
 }
     
 function repeatExercise(id, action, location) {
@@ -307,8 +312,11 @@ function repeatExercise(id, action, location) {
     } else {
         base.remove();
     }
+    isDocChanged = true;
 }
 
+//show the frame with metadata for an exercise and set the input elements to the correct values.
+//also adds the onchange handler that sets the metadata after the user makes a change.
 function setExerciseMetadata(id) {
     var elm = $('#'+id); //div._editor_option element
     var base = elm.parents('._editor_context_base').first();
@@ -326,6 +334,7 @@ function setExerciseMetadata(id) {
     };
     
     $('form input',container).change(function(data) {
+        isDocChanged = true;
         var form = $(data.target).parents('form').first();
         var level = null;
         var isClone = $('input[name="kloonopgave"]',container)[0].checked;
@@ -354,6 +363,8 @@ function setExerciseMetadata(id) {
 function closeMetadata(elm) {
     $(elm).parents(".metadata-container").first().removeClass('visible');
 }
+
+//opens a dialog containing a list of elements that the user can choose from. 
 function getContentItem(itemtype, callback) {
     $.get(insertContentItem_typeUrl, '', function(xml) {
         var container = $('container[name="'+itemtype+'"]',xml);
@@ -376,6 +387,8 @@ function getContentItem(itemtype, callback) {
                 }
             }
         });    
+        
+        //transform the selected item from xml to html, using the same xslt stylesheet as is used by the editor
         $('.item-type',dlg).click(function() {
             var cnt = $('container-item[num="'+$(this).attr('num')+'"]',container);
             var xmlstr = xmlToString(cnt.children().first());
@@ -386,6 +399,7 @@ function getContentItem(itemtype, callback) {
                 variant: $('#meta-data-variant').text(),
                 xml:xmlstr
             }, function(htmlStr) {
+                debugger;
                 htmlStr = htmlStr.replace(/__subcomp__/g,subcomp);
                 var cnt = $(htmlStr);
                 $('div[tag="include"]',cnt).each(function(){
@@ -443,6 +457,7 @@ function removeContentItem(id) {
             "verwijderen": function() {
                 parent.remove();
                 labelAnchors();
+                isDocChanged = true;
                 $( this ).dialog( "close" );
             }
         }
@@ -460,6 +475,7 @@ function optionalContentItem(id, action) {
             insertActions(elm);
             setContextMenu(elm);
             labelAnchors();
+            isDocChanged = true;
         });
     }
     if(action==='remove') {
@@ -480,6 +496,7 @@ function optionalContentItem(id, action) {
                     insertActions(elm.next('.m4a-editor-item.nonexistent'));
                     setContextMenu(elm.next('.m4a-editor-item.nonexistent'));
                     labelAnchors();
+                    isDocChanged = true;
                     $( this ).dialog( "close" );
                 }
             }
@@ -534,6 +551,7 @@ function createCloneExercise(id) {
             clone.text(id);
         }
     }
+    isDocChanged = true;
     insertActions(cpy);
     setContextMenu(cpy);
     insertActions(base);

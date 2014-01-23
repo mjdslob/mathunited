@@ -381,3 +381,9 @@ p:empty {
     border: 1px dashed gray;
     
 }
+.exercises-insertion-point {
+    border:1px dashed rgb(200,200,200);
+    margin:15px 0px;
+    position:relative;
+    top:12px;
+}

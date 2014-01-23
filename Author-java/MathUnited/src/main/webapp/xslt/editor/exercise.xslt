@@ -44,7 +44,16 @@ extension-element-prefixes="exsl">
 </xsl:template>
 <xsl:template match="exercises" mode="editor">
     <div tag="exercises">
-            <xsl:apply-templates mode="editor"/>
+        <div class="_editor_context_base">
+            <!-- add an extra menu button to insert the first item -->
+            <div class="menu-button-div">
+                <span class="menu-button"></span>
+            </div>
+            <div class="exercises-insertion-point"/>
+            <div  class="_editor_option" type="repeat" name="opgave" function="repeatExercise"/>
+        </div>
+
+        <xsl:apply-templates mode="editor"/>
     </div>
 </xsl:template>
 

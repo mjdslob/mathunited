@@ -7,6 +7,7 @@ public class UserSettings {
     public String password;
     public java.util.List<String> roles;
     public String mail;
+    public String repo;
     public long salt;
     
 }

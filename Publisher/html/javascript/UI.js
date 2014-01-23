@@ -60,7 +60,7 @@ function initUI() {
 function M4A_showLoginDialog() {
     $("#dialog").dialog('open');
 }
-function M4A_getLoginState() {
+function M4A_getLoginState(callback) {
     $.get('/MathUnited/loginstate', {},
             function(data,textstatus) {
                 var result = $('state', data).attr('result');
@@ -70,7 +70,8 @@ function M4A_getLoginState() {
                         $('#info-username').html('Ingelogd als '+name);
                         $('#info-not-logged-in').removeClass('visible');
                         $('#info-logged-in').addClass('visible');
-                        var opts = $('#repo-set option');
+                        //set all valid options for the repository
+                        var opts = $('#repo-set option'); //first remove all current options
                         for(var ii = 1; ii<opts.length; ii++) {
                             $(opts[ii]).remove();
                         }
@@ -82,6 +83,7 @@ function M4A_getLoginState() {
                         $('#repo-set option[value='+repo+']').each(function(){
                             $('#repo-set')[0].value=repo;
                         });
+                        if(callback) callback();
                         M4A_selectRepo()
                     } else {
                         $('#info-not-logged-in').addClass('visible');
@@ -98,8 +100,10 @@ function M4A_logout() {
    $.get('/MathUnited/logout', {},
             function(data,textstatus) {
                 var result = $('logout', data).attr('result');
-                if(result=='true'){
-                    
+                if(result==='true'){
+                    $('#info-not-logged-in').addClass('visible');
+                    $('#info-logged-in').removeClass('visible');
+                    $('#li-tab-edit').addClass('inactive');
                 } else {
                     alert($('message', data).text());
                 }
@@ -122,7 +126,13 @@ function M4A_login(form) {
                    $("#dialog").dialog('close');
                    $('#info-not-logged-in').removeClass('visible');
                    $('#info-logged-in').addClass('visible');
-                   M4A_getLoginState(); //to get available repos
+                   //get available repos
+                   M4A_getLoginState(function() {
+                        var defaultRepo = $('repo',data).text();
+                        if(defaultRepo) {
+                            $('#repo-set')[0].value=defaultRepo;
+                        }                       
+                   }); 
                 } else {
                     $('#login-message').html($('message', data).text());
                 }

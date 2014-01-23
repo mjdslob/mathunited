@@ -97,7 +97,7 @@ extension-element-prefixes="exsl">
 <xsl:template match="text" mode="paragraph">
     <span tag="text"><xsl:apply-templates mode="paragraph"/></span>
 </xsl:template>
-<xsl:template match="p" mode="paragraph">
+<xsl:template match="p | xhtml:p" mode="paragraph">
     <p><xsl:apply-templates mode="paragraph"/></p>
 </xsl:template>
 <xsl:template match="quotation" mode="paragraph">

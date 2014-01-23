@@ -34,15 +34,33 @@ extension-element-prefixes="exsl">
 
 <xsl:template match="xhtml:div[@tag='learningaspects']" priority="2" mode="editor">
     <learningaspects>
-        <xsl:for-each select="xhtml:ul/xhtml:li">
-            <aspect><xsl:apply-templates mode="paragraph"/></aspect>
+        <xsl:for-each select=".//xhtml:div[@class='paragraph-content']/xhtml:ul/xhtml:li">
+            <aspect>
+                <xsl:choose>
+                    <xsl:when test="p | xhtml:p">
+                        <xsl:apply-templates mode="paragraph"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <p><xsl:apply-templates mode="paragraph"/></p>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </aspect>
         </xsl:for-each>
     </learningaspects>
 </xsl:template>
 <xsl:template match="xhtml:div[@tag='knownaspects']"  priority="2" mode="editor">
     <knownaspects>
-        <xsl:for-each select="xhtml:ul/xhtml:li">
-            <aspect><xsl:apply-templates mode="paragraph"/></aspect>
+        <xsl:for-each select=".//xhtml:div[@class='paragraph-content']/xhtml:ul/xhtml:li">
+            <aspect>
+                <xsl:choose>
+                    <xsl:when test="p | xhtml:p">
+                        <xsl:apply-templates mode="paragraph"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <p><xsl:apply-templates mode="paragraph"/></p>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </aspect>
         </xsl:for-each>
     </knownaspects>
 </xsl:template>

@@ -28,6 +28,7 @@ extension-element-prefixes="exsl">
 
 <xsl:template match="text()" mode="editor"><xsl:value-of select="normalize-space()"/></xsl:template>
 
+<!-- do not copy the elements that do not explicitly have the tag attribute -->
 <xsl:template match="*[not(string-length(@tag)>0)]" mode="editor">
      <xsl:apply-templates select="*" mode="editor"/>            
 </xsl:template>
@@ -37,7 +38,7 @@ extension-element-prefixes="exsl">
         <xsl:for-each select="@*[name()!='tag']">
             <xsl:attribute name="{name()}" select="."/>
         </xsl:for-each>
-        <xsl:apply-templates select="node()" mode="editor"/>
+        <xsl:apply-templates mode="editor"/>
     </xsl:element>
 </xsl:template>
 
@@ -46,6 +47,7 @@ extension-element-prefixes="exsl">
         <xsl:apply-templates select=".//xhtml:tr[@tag='cells']" mode="editor"/>
     </stepaligntable>
 </xsl:template>
+
 <xsl:template match="*[@tag='cells']" mode="editor">
     <cells>
         <c1><xsl:apply-templates select="*[@tag='c1']//xhtml:p/node()" mode="paragraph"/></c1>
@@ -54,13 +56,14 @@ extension-element-prefixes="exsl">
     </cells>
     <text><xsl:apply-templates select="*[@tag='text']//xhtml:p/node()" mode="paragraph"/></text>
 </xsl:template>
+
 <xsl:template match="table" mode="editor">
     <xsl:apply-templates select="." mode="paragraph"/>
 </xsl:template>
 
 <!-- PARAGRAPH WIDGET -->
 <!-- PARAGRAPH MODE   -->
-<xsl:template match="xhtml:div[@class='paragraph-content']" priority="2" mode="editor">
+<xsl:template match="div[@class='paragraph-content'] | xhtml:div[@class='paragraph-content']" priority="2" mode="editor">
     <xsl:apply-templates mode="paragraph"/>
 </xsl:template>
 
@@ -105,41 +108,6 @@ extension-element-prefixes="exsl">
         
     </xsl:choose>
 </xsl:template>
-<xsl:template match="*" mode="paragraph">
-    <xsl:choose>
-        <xsl:when test="string-length(@tag)>0">
-            <xsl:element name="{@tag}">
-                <xsl:for-each select="@*[name()!='tag']">
-                    <xsl:attribute name="{name()}" select="."/>
-                </xsl:for-each>
-                <xsl:apply-templates mode="paragraph"/>
-            </xsl:element>
-        </xsl:when>
-        <xsl:when test="name()='p'">
-            <xsl:for-each select="img | xhtml:img">
-                <xsl:apply-templates select="." mode="image"/>
-            </xsl:for-each>
-            <p><xsl:apply-templates mode="paragraph"/></p>
-        </xsl:when>
-        <xsl:when test="name()='img'">
-            <xsl:choose>
-                <xsl:when test="not(parent::p) and not(parent::xhtml:p)">
-                    <xsl:apply-templates select="." mode="image"/>
-                </xsl:when>
-                <xsl:otherwise/>
-            </xsl:choose>
-        </xsl:when>
-        <xsl:when test="name()='span'">
-            <xsl:apply-templates select="node()" mode="paragraph"/>
-        </xsl:when>
-        <xsl:otherwise>
-            <xsl:element name="{name()}"> <!-- dump xhtml namespace -->
-                <xsl:apply-templates select="@*" mode="paragraph"/>
-                <xsl:apply-templates mode="paragraph"/>
-            </xsl:element>
-        </xsl:otherwise>
-    </xsl:choose>
-</xsl:template>
 <xsl:template match="ul | xhtml:ul" mode="paragraph">
     <itemize nr="4" type="packed">
         <xsl:apply-templates select="li | xhtml:li" mode="paragraph"/>
@@ -153,6 +121,39 @@ extension-element-prefixes="exsl">
 <xsl:template match="li | xhtml:li" mode="paragraph">
     <item><xsl:apply-templates mode="paragraph"/></item>
 </xsl:template>
+<xsl:template match="*[string-length(@tag)>0]" mode="paragraph">
+    <xsl:element name="{@tag}">
+        <xsl:for-each select="@*[name()!='tag']">
+            <xsl:attribute name="{name()}" select="."/>
+        </xsl:for-each>
+        <xsl:apply-templates mode="paragraph"/>
+    </xsl:element>
+</xsl:template>
+<xsl:template match="p | xhtml:p" mode="paragraph">
+    <xsl:for-each select="img | xhtml:img">
+        <xsl:apply-templates select="." mode="image"/>
+    </xsl:for-each>
+    <p><xsl:apply-templates mode="paragraph"/></p>
+</xsl:template>
+<xsl:template match="span | xhtml:span" mode="paragraph">
+    <xsl:apply-templates mode="paragraph"/>
+</xsl:template>
+<xsl:template match="img | xhtml:img" mode="paragraph">
+    <xsl:choose>
+        <xsl:when test="not(parent::p) and not(parent::xhtml:p)">
+            <xsl:apply-templates select="." mode="image"/>
+        </xsl:when>
+        <xsl:otherwise/>
+    </xsl:choose>
+</xsl:template>
+
+<xsl:template match="@*[name()!='tag']" mode="paragraph">
+    <xsl:copy/>
+</xsl:template>
+<xsl:template match="text()" mode="paragraph">
+    <xsl:sequence select="replace(., '\s+', ' ', 'm')"/>
+</xsl:template>
+
 
 <xsl:template match="img[@class='paperfigure'] | xhtml:img[@class='paperfigure']" mode="image">
    <xsl:variable name="width" select="number(@width) div $cm2px"/>
@@ -171,13 +172,6 @@ extension-element-prefixes="exsl">
             </resource>
         </content>
     </paperfigure>
-</xsl:template>
-
-<xsl:template match="@*[name()!='tag']" mode="paragraph">
-    <xsl:copy/>
-</xsl:template>
-<xsl:template match="text()" mode="paragraph">
-    <xsl:sequence select="replace(., '\s+', ' ', 'm')"/>
 </xsl:template>
 
 </xsl:stylesheet>

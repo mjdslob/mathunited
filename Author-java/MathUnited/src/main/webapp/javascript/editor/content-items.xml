@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <container-specs>
     <container name="introduction">
-        <container-item name="nieuw item: Inleiding">
+        <container-item name="nieuw item: Inleiding (met leerdoelen)">
             <introduction id="__subcomp__-in">
                 <include filename="__subcomp__-in.xml">
                     <introduction id="__subcomp__-in" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:cals = "http://www.someplace.org/cals">
@@ -16,6 +16,15 @@
                                 <p>voorkennis</p>
                             </aspect>
                         </knownaspects>
+                    </introduction>
+                </include>
+            </introduction>
+        </container-item>
+        <container-item name="nieuw item: Inleiding (kaal)">
+            <introduction id="__subcomp__-in">
+                <include filename="__subcomp__-in.xml">
+                    <introduction id="__subcomp__-in" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:cals = "http://www.someplace.org/cals">
+                        <p>hier komt de inleiding...</p>
                     </introduction>
                 </include>
             </introduction>
@@ -85,6 +94,9 @@
         </container-item>
     </container>
     <container name="exercises">
+        <container-item name="Paragraaf">
+            <p>...</p>
+        </container-item>
         <container-item name="Samengestelde opgave">
             <include filename="__subcomp__-ex-__#1__.xml">
                 <exercise id="__subcomp__-ex-__#1__">

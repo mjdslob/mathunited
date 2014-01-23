@@ -18,7 +18,7 @@ import nl.math4all.mathunited.utils.UserManager;
 // - other parameters are just passed to xslt
 
 public class LoginServlet extends HttpServlet {
-    private String resultXML = "<login result=\"{#LOGINRESULT}\"><message>{#LOGINMESSAGE}</message></login>";
+    private String resultXML = "<login result=\"{#LOGINRESULT}\"><message>{#LOGINMESSAGE}</message><repo>{#DEFAULTREPO}</repo></login>";
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -51,8 +51,11 @@ public class LoginServlet extends HttpServlet {
 
             UserSettings usettings = UserManager.checkCredentials(name, password);
             
-            pw.println(resultXML.replace("{#LOGINRESULT}","true").replace("{#LOGINMESSAGE}", "Login successfull"));
-    
+            if(usettings.repo!=null) {
+                pw.println(resultXML.replace("{#LOGINRESULT}","true").replace("{#LOGINMESSAGE}", "Login successfull").replace("{#DEFAULTREPO}",usettings.repo));
+            } else {
+                pw.println(resultXML.replace("{#LOGINRESULT}","true").replace("{#LOGINMESSAGE}", "Login successfull").replace("{#DEFAULTREPO}",""));
+            }
             Cookie cookie1 = new Cookie("USERID", name);
             Cookie cookie2 = new Cookie("USERAGENT", UserManager.hash(request.getHeader("User-Agent")));
             cookie1.setMaxAge(24*60*60);

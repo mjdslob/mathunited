@@ -54,7 +54,7 @@
             <digest name="Verwerken"/>
             <application name="Toepassen" optional="true"/>
             <extra name="Practicum" multiplicity="multiple"/>
-            <test name="Test jezelf" multiplicity="multiple"/>
+            <test name="Test jezelf" multiplicity="option"/>
         </item-list>
     </xsl:variable>
 
@@ -484,6 +484,9 @@
 
     <xsl:template match="exercise">
         <xsl:apply-templates select="." mode="editor"/>
+    </xsl:template>
+    <xsl:template match="p | xhtml:p">
+        <xsl:apply-templates select="." mode="paragraph"/>
     </xsl:template>
 
 
