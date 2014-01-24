@@ -20,7 +20,9 @@ html, body {
 .m4a-editor-item-container {
     margin:20px 0px;
 }
-
+._editor_context_base {
+    position:relative;
+}
 .m4a-editor-item-title {
     font-weight:bold;
     font-size:1.2em;
@@ -278,12 +280,16 @@ div[tag="single-item"] {
 }
 .menu-button-div {
     position:absolute;
-    left:0px;
+    left:-65px;
 }
 
-div[tag="single-item"] .menu-button-div {
+div[type='open'][tag="single-item"] .menu-button-div {
     position:absolute;
     left:-48px; top:-25px;
+}
+div[tag="alternatives"] .menu-button-div {
+    position:absolute;
+    left:-65px;
 }
 
 .answer-content {
@@ -386,4 +392,19 @@ p:empty {
     margin:15px 0px;
     position:relative;
     top:12px;
+}
+.editor-choice-exercise-label {
+    width:12px;
+    height:12px;
+    float:left;
+    border:1px solid rgb(100,100,100);
+    clear:left;
+    margin-right:10px;
+    float:left;
+    position:relative;
+    top:2px;
+    background-color:red;
+}
+div[tag="alternative"][state="yes"] .editor-choice-exercise-label {
+    background-color:green;
 }

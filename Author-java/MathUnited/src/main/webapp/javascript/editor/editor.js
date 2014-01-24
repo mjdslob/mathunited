@@ -399,3 +399,13 @@ function submitDocument(repo, comp, subcomp) {
         })
 }
 
+function EditorChoiceLabelClick(elm) {
+    var alternative=$(elm).parents('div[tag="alternative"]');
+    var state = alternative.attr('state');
+    if(state==='yes') {
+        alternative.attr('state','no');
+    } else {
+        alternative.attr('state','yes');
+    }
+}
+

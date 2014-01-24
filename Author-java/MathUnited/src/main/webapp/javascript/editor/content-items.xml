@@ -30,6 +30,105 @@
             </introduction>
         </container-item>
     </container>
+    
+    <container name="explore">
+        <container-item name="nieuw item: Verkennen">
+            <explore>
+                <include filename="__subcomp__-e__#1__.xml">
+                    <exercise id="__subcomp__-e__#1__">
+                        <multi-item>
+                            <intro>
+                                <p>...introductie...</p>
+                            </intro>
+                            <items>
+                                <item label="a" type="open">
+                                    <itemcontent>
+                                        <question>
+                                            <p>...opgave...</p>
+                                        </question>
+                                    </itemcontent>
+                                    <answer>
+                                        <p>...antwoord...</p>
+                                    </answer>
+                                </item>
+                            </items>
+                        </multi-item>
+                    </exercise>
+                </include>
+            </explore>
+        </container-item>
+    </container>
+     
+    <container name="explanation">
+        <container-item name="nieuw item: Uitleg">
+            <explanation id="__subcomp__-u__#1__">
+                <include filename="__subcomp__-u__#1__.xml">
+                    <explanation id="__subcomp__-u__#1__" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:cals = "http://www.someplace.org/cals">
+                        <p>...(tekst)...</p>
+                    </explanation>
+                </include>
+                <exercises>
+                    <include filename="__subcomp__-u__#1____#2__.xml">
+                        <exercise id="__subcomp__-u__#1____#2__">
+                            <multi-item>
+                                <intro>
+                                    <p>...introductie...</p>
+                                </intro>
+                                <items>
+                                    <item label="a" type="open">
+                                        <itemcontent>
+                                            <question>
+                                                <p>...opgave...</p>
+                                            </question>
+                                        </itemcontent>
+                                        <answer>
+                                            <p>...antwoord...</p>
+                                        </answer>
+                                    </item>
+                                </items>
+                            </multi-item>
+                        </exercise>
+                    </include>
+                </exercises>
+            </explanation>
+        </container-item>
+    </container>
+
+    <container name="application">
+        <container-item name="nieuw item: Toepassing">
+            <application id="__subcomp__-a__#1__">
+                <include filename="__subcomp__-a__#1__.xml">
+                    <application id="__subcomp__-a__#1__" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:cals = "http://www.someplace.org/cals">
+                        <p>...(tekst)...</p>
+                    </application>
+                </include>
+                <exercises>
+                    <include filename="__subcomp__-a__#1____#2__.xml">
+                        <exercise id="__subcomp__-a__#1____#2__">
+                            <multi-item>
+                                <intro>
+                                    <p>...introductie...</p>
+                                </intro>
+                                <items>
+                                    <item label="a" type="open">
+                                        <itemcontent>
+                                            <question>
+                                                <p>...opgave...</p>
+                                            </question>
+                                        </itemcontent>
+                                        <answer>
+                                            <p>...antwoord...</p>
+                                        </answer>
+                                    </item>
+                                </items>
+                            </multi-item>
+                        </exercise>
+                    </include>
+                </exercises>
+            </application>
+        </container-item>
+    </container>
+        
     <container name="extra">
         <container-item name="nieuw item: Practicum">
             <extra id="__subcomp__-in">
@@ -94,10 +193,12 @@
         </container-item>
     </container>
     <container name="exercises">
+        <!--
         <container-item name="Paragraaf">
             <p>...</p>
         </container-item>
-        <container-item name="Samengestelde opgave">
+        -->
+        <container-item name="Open opgave (samengesteld)">
             <include filename="__subcomp__-ex-__#1__.xml">
                 <exercise id="__subcomp__-ex-__#1__">
                     <multi-item>
@@ -120,7 +221,7 @@
                 </exercise>
             </include>
         </container-item>
-        <container-item name="Enkelvoudige opgave (open)">
+        <container-item name="Open opgave (enkelvoudig)">
             <include filename="__subcomp__-ex-__#1__.xml">
                 <exercise id="__subcomp__-ex-__#1__">
                     <single-item>
@@ -138,5 +239,90 @@
                 </exercise>
             </include>
         </container-item>
+        
+        <container-item name="Meerkeuze opgave (enkelvoudig)">
+            <include filename="__subcomp__-ex-__#1__.xml">
+                <exercise id="__subcomp__-ex-__#1__">
+                    <single-item>
+                        <item type='closed'>
+                            <itemcontent>
+                                 <question>
+                                     <p>...(vraag)...</p>
+                                 </question>
+                            </itemcontent>
+                            <alternatives id='' nx='' ny=''>
+                                 <alternative state='yes'>
+                                     <alternative-content>
+                                         <p>...(optie 1)...</p>
+                                     </alternative-content>
+                                 </alternative>
+                                 <alternative state='no'>
+                                     <alternative-content>
+                                         <p>...(optie 2)...</p>
+                                     </alternative-content>
+                                 </alternative>
+                                 <alternative state='no'>
+                                     <alternative-content>
+                                         <p>...(optie 3)...</p>
+                                     </alternative-content>
+                                 </alternative>
+                            </alternatives>
+                             <explanation>
+                             </explanation>
+                             <feedback>
+                             </feedback>
+                             <teacheranswer>
+                             </teacheranswer>
+                        </item>
+                    </single-item>
+                </exercise>
+            </include>
+        </container-item>
+        
+        <container-item name="Meerkeuze opgave (samengesteld)">
+            <include filename="__subcomp__-ex-__#1__.xml">
+                <exercise id="__subcomp__-ex-__#1__">
+                    <multi-item>
+                        <intro>
+                            <p>...introductie...</p>
+                        </intro>
+                        <items>
+                            <item label="a" type='closed'>
+                                <itemcontent>
+                                     <question>
+                                         <p>...(vraag)...</p>
+                                     </question>
+                                </itemcontent>
+                                <alternatives id='' nx='' ny=''>
+                                     <alternative state='yes'>
+                                         <alternative-content>
+                                             <p>...(optie 1)...</p>
+                                         </alternative-content>
+                                     </alternative>
+                                     <alternative state='no'>
+                                         <alternative-content>
+                                             <p>...(optie 2)...</p>
+                                         </alternative-content>
+                                     </alternative>
+                                     <alternative state='no'>
+                                         <alternative-content>
+                                             <p>...(optie 3)...</p>
+                                         </alternative-content>
+                                     </alternative>
+                                </alternatives>
+                                 <explanation>
+                                 </explanation>
+                                 <feedback>
+                                 </feedback>
+                                 <teacheranswer>
+                                 </teacheranswer>
+                            </item>
+
+                        </items>
+                    </multi-item>
+                </exercise>
+            </include>
+        </container-item>
+        
     </container>
 </container-specs>

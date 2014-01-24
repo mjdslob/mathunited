@@ -33,6 +33,7 @@ extension-element-prefixes="exsl">
      <xsl:apply-templates select="*" mode="editor"/>            
 </xsl:template>
 
+<!-- elements with tag-attribuut: transform to indicated element -->
 <xsl:template match="*[string-length(@tag)>0]" mode="editor">
     <xsl:element name="{@tag}">
         <xsl:for-each select="@*[name()!='tag']">
@@ -42,6 +43,8 @@ extension-element-prefixes="exsl">
     </xsl:element>
 </xsl:template>
 
+
+<!-- Elements that are treated in a nonstandard way -->
 <xsl:template match="*[@tag='stepaligntable']" mode="editor">
     <stepaligntable>
         <xsl:apply-templates select=".//xhtml:tr[@tag='cells']" mode="editor"/>

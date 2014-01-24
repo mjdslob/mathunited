@@ -48,21 +48,23 @@ function setContextMenu(jqParent) {
             var templateName = elm.attr('name');
             switch(elm.attr('type')) {
                 case 'repeat':
+                    var grandparent = base.parents('._editor_context_base').first();
+                    if(grandparent.length==0) grandparent=$('div[tag="componentcontent"]').first();
                     var min = elm.attr('min'); if(typeof min === 'undefined') min=0;
                     var max = elm.attr('max'); if(typeof max === 'undefined') max=1000;
                     if(templateIdValid) {
-                        var num = items.filter('[type="repeat"][template="'+templateId+'"]').length;
-                        if(num==1 && elm.children().length==0){ //fallback to 'optional' because there is no element yet
+                        var num = $('._editor_option[type="repeat"][template="'+templateId+'"]', grandparent).length;
+                        if(num===1 && elm.children().length===0){ //fallback to 'optional' because there is no element yet
                             var cmdstr = "optionalItem('"+id+"','"+templateId+"','add')";
                         } else {
                             var insertBeforeCmdStr = "repeatItem('"+id+"','"+templateId+"','add', 'before')";
-                            var insertAfterCmdStr = "repeatItem('"+id+"','"+templateId+",'add','after')";
+                            var insertAfterCmdStr = "repeatItem('"+id+"','"+templateId+"','add','after')";
                         }
                         var removeCmdStr = "repeatItem('"+id+"','"+templateId+"','remove')";
                     } else {
                         var funcStr = elm.attr('function');
-                        var num = items.filter('[type="repeat"][function="'+funcStr+'"]').length;
-                        if(num==1 && elm.children().length==0) {
+                        var num = $('._editor_option[type="repeat"][function="'+funcStr+'"]', grandparent).length;
+                        if(num===1 && elm.children().length===0) {
                             var cmdstr = elm.attr('function')+"('"+id+"','add')";
                         } else{
                             var insertBeforeCmdStr = funcStr+"('"+id+"','add','before')";
@@ -70,7 +72,7 @@ function setContextMenu(jqParent) {
                         }
                         var removeCmdStr = funcStr+"('"+id+"','remove')";
                     }
-                    if(num===1 && elm.children().length==0) {
+                    if(num===1 && elm.children().length===0) {
                         $('ul',menulist).append('<li id="item'+itemnr+'" action="'+cmdstr+'">+ '+templateName+'</li>');
                     } else if(num<max && num>0){
                         $('ul',menulist).append('<li id="item'+itemnr+'" action="'+insertBeforeCmdStr+'">+ '+templateName+' (voor)</li>')
@@ -186,10 +188,34 @@ function optionalItem(id, templateId,action) {
     isDocChanged = true;
     setContextMenu(parent);
 }
+function repeatItem(id, templateId,action, location) {
+    var elm = document.getElementById(id);
+    var base = $(elm).parents('._editor_context_base').first();
+    if(action==='remove') {
+        $(elm).empty();
+    } else  {
+        var template = $(document.getElementById(templateId)).children('div').clone();
+        if(location==='after') {
+            base.after(template);
+        } else {
+            base.before(template);
+        }
+    }
+    var parent = base.parents('._editor_context_base').first();
+    isDocChanged = true;
+    insertActions(parent);
+    setContextMenu(parent);
+}
 
 //add a single item to a multi-item-exercise
-function repeatExerciseItem(id, action, location) {
+
+function repeatClosedExerciseItem(id, action, location) {
+    repeatExerciseItem(id, action, location, 'exercise-item-closed-template');
+}
+
+function repeatExerciseItem(id, action, location, template) {
     var itemLabels = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+    if(!template) template='exercise-item-open-template';
     var elm = document.getElementById(id);
     if(!elm) {
         alert('program error');
@@ -234,7 +260,7 @@ function repeatExerciseItem(id, action, location) {
             }
         });
 
-        option.append( $('#exercise-item-open-template ').html() );
+        option.append( $('#'+template).html() );
         $('div[tag="item"]',parent).each(function(index,value) {
             $(this).attr('label',itemLabels[index]);
             $('.item-label',this).html(itemLabels[index]);
@@ -399,26 +425,37 @@ function getContentItem(itemtype, callback) {
                 variant: $('#meta-data-variant').text(),
                 xml:xmlstr
             }, function(htmlStr) {
-                debugger;
+                //process ids: __subcomp__ refers to the subcomponent. 
+                //__#?__ referes to a (unique) number. First __#1__ is resolved, then __#2__, etc
                 htmlStr = htmlStr.replace(/__subcomp__/g,subcomp);
-                var cnt = $(htmlStr);
-                $('div[tag="include"]',cnt).each(function(){
-                    var fname = $(this).attr('filename');
-                    var refstr = fname.match(/__#.__/);
-                    if(refstr && refstr.length>0) {
-                        refstr = refstr[0];
-                        var counter=1;
-                        var newid = fname.replace(refstr,counter);
-                        var elm = $('div[tag="include"][filename="'+newid+'"]');
-                        while(elm.length>0) {
-                            counter++;
-                            newid = fname.replace(refstr,counter);
-                            elm = $('div[tag="include"][filename="'+newid+'"]');
+                var idnum = 1;
+                var goOn = true;
+                
+                while(goOn) {
+                    goOn = false;
+                    var cnt = $(htmlStr);
+                    $('div[tag="include"]',cnt).each(function(){
+                        var fname = $(this).attr('filename');
+                        var refstr = fname.match('__#'+idnum+'__');
+                        if(refstr && refstr.length>0) {
+                            refstr = refstr[0];
+                            var counter=1;
+                            var newid = fname.replace(refstr,counter);
+                            //check if this new id is unique. If not, increase counter
+                            var elm = $('div[tag="include"][filename="'+newid+'"]');
+                            while(elm.length>0) {
+                                counter++;
+                                newid = fname.replace(refstr,counter);
+                                elm = $('div[tag="include"][filename="'+newid+'"]');
+                            }
+                            //replace all occurences:
+                            var patt= new RegExp(refstr,'g');
+                            htmlStr = htmlStr.replace(patt,counter);
+                            goOn = true;
                         }
-                        var patt= new RegExp(refstr,'g');
-                        htmlStr = htmlStr.replace(patt,counter);
-                    }
-                });
+                    });
+                    idnum++;
+                }
                 
                 callback(htmlStr);
                 dlg.dialog("close");

@@ -31,6 +31,40 @@ extension-element-prefixes="exsl">
             </div>
         </div>
     </div>
+    <div id="exercise-item-closed-template">
+          <div tag="item" label="" type="closed">
+            <div class="item-label">a</div>
+            <div class="menu-button-div">
+                <span class="menu-button"></span>
+            </div>
+            <div tag="itemcontent">
+                <div class="_editor_option" type="optional" template="exercise-itemintro-template" name="item intro"></div>
+                <div tag="question">
+                   <p>...(vraag)...</p>
+                </div>
+             </div>
+             <div tag="alternatives">
+                <div class="_editor_context_base">
+                   <div class="_editor_option" type="repeat" name="optie" template="repeatAlternative">
+                      <div class="menu-button-div"><span class="menu-button"></span></div>
+                      <div tag="alternative" state="no">
+                         <div class="editor-choice-exercise-label" onclick="javascript:EditorChoiceLabelClick(this)"></div>
+                         <div class="choice-exercise-content">
+                            <div tag="alternative-content">
+                               <p>...(optie)...</p>
+                            </div>
+                         </div>
+                         <div style="clear:both"></div>
+                      </div>
+                   </div>
+                </div>
+             </div>
+             <div style="clear:left"></div>
+             <div tag="explanation"></div>
+             <div tag="feedback"></div>
+             <div tag="teacheranswer"></div>
+          </div>
+    </div>
     <div id="exercise-itemintro-template">
         <div tag="itemintro">
             <xsl:call-template name="paragraph-template"/>
@@ -41,6 +75,24 @@ extension-element-prefixes="exsl">
             <xsl:call-template name="paragraph-template"/>
         </div>
     </div>
+    <div id="repeatAlternative">
+        <div class="_editor_context_base">
+            <div class="_editor_option" type="repeat" name="optie" template="repeatAlternative">
+               <div class="menu-button-div"><span class="menu-button"></span></div>
+               <div tag="alternative" state="no">
+                  <div class="editor-choice-exercise-label" onclick="javascript:EditorChoiceLabelClick(this)"></div>
+                  <div class="choice-exercise-content">
+                     <div tag="alternative-content">
+                        <p>...</p>
+                     </div>
+                  </div>
+                  <div style="clear:both"></div>
+               </div>
+            </div>
+         </div>
+    </div>
+
+
 </xsl:template>
 <xsl:template match="exercises" mode="editor">
     <div tag="exercises">
@@ -138,7 +190,15 @@ extension-element-prefixes="exsl">
 </xsl:template>
 <xsl:template match="div[@tag='item']" mode="insert-label">
     <div class="_editor_context_base">
-        <div  class="_editor_option" type="repeat" name="deelvraag" function="repeatExerciseItem">
+        <div  class="_editor_option" type="repeat" name="deelvraag">
+            <xsl:choose>
+                <xsl:when test="@type='closed'">
+                    <xsl:attribute name="function">repeatClosedExerciseItem</xsl:attribute>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:attribute name="function">repeatExerciseItem</xsl:attribute>
+                </xsl:otherwise>
+            </xsl:choose>
             <xsl:copy>
                 <xsl:apply-templates select="@*" mode="editor"/>
                 <div class="item-label"><xsl:value-of select="@label"/></div>
@@ -196,5 +256,57 @@ extension-element-prefixes="exsl">
         </div>
     </div>
 </xsl:template>
+
+
+<!-- multiple choice item -->
+<xsl:template match="item[@type='closed']" priority="2" mode="editor">
+    <div tag="{name()}">
+        <xsl:apply-templates select="@*" mode="editor"/>
+        <div tag="itemcontent">
+            <div class="_editor_option" type="optional" template="exercise-itemintro-template" name="item intro">
+                <xsl:choose>
+                    <xsl:when test="itemcontent/subintro">
+                        <xsl:apply-templates select="itemcontent/subintro" mode="editor"/>
+                    </xsl:when>
+                    <xsl:when test="itemcontent/itemintro">
+                        <xsl:apply-templates select="itemcontent/itemintro" mode="editor"/>
+                    </xsl:when>
+                    <xsl:when test="itemcontent/intro">
+                        <xsl:apply-templates select="itemcontent/intro" mode="editor"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <!--<div tag="itemintro"><p></p></div> -->               
+                    </xsl:otherwise>
+                </xsl:choose>
+            </div>
+            <xsl:apply-templates select="itemcontent/question" mode="editor"/>
+        </div>
+        <div tag="alternatives">
+            <xsl:for-each select="alternatives/alternative">
+                <div class="_editor_context_base">
+                    <div  class="_editor_option" type="repeat" name="optie" template="repeatAlternative">
+                        <div class="menu-button-div">
+                            <span class="menu-button"></span>
+                        </div>
+
+                        <div tag="alternative">
+                            <xsl:apply-templates select="@*" mode="editor"/>
+                            <div class="editor-choice-exercise-label" onclick="javascript:EditorChoiceLabelClick(this)"/>
+                            <div class="choice-exercise-content">
+                                 <xsl:apply-templates select="alternative-content" mode="editor"/>
+                            </div>
+                            <div style="clear:both"/>
+                        </div>
+                    </div>
+                </div>
+            </xsl:for-each>
+        </div>
+        <div style="clear:left"/>
+        <xsl:apply-templates select="explanation" mode="editor"/>
+        <xsl:apply-templates select="feedback" mode="editor"/>
+        <xsl:apply-templates select="teacheranswer" mode="editor"/>
+    </div>
+</xsl:template>
+
 </xsl:stylesheet>
 
