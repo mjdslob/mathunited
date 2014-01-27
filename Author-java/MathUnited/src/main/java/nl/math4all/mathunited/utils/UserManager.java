@@ -71,6 +71,7 @@ public class UserManager {
             if(usettings==null) {
                 throw new LoginException("Login error: unknown user "+userName);
             }
+            usettings.username = userName;
             if(!userAgent.equals(hash(request.getHeader("User-Agent")))){
                 Cookie cookie = new Cookie("USERID", userName);
                 cookie.setMaxAge(0);

@@ -1,4 +1,5 @@
 var commitURL = '/MathUnited/postcontent';
+var refreshURL = '/MathUnited/refresh-lock';
 
 function onBeforeSetContent(obj) {
     var temp = $('<div>').html(obj.content);
@@ -156,6 +157,20 @@ function allowEditing(par) {
     return allowed;
 }
 
+function refreshLock() {
+    var compbase = $('#meta-data-refbase').text();
+    $.get(refreshURL, {refbase: compbase}, 
+        function(data) {
+            if( $(data).children().first().attr('success')==='true') {
+                setTimeout(refreshLock, 30000);
+            } else {
+                alert('Er is een probleem opgetreden: kan lock op de paragraaf niet verversen.')
+            }
+        }
+    );
+}
+
+
 $(document).ready(function() {
     isDocChanged = false;  
     window.onbeforeunload = function() {
@@ -163,6 +178,14 @@ $(document).ready(function() {
          return "Wijzigingen die u niet heeft opgeslagen gaan verloren.";
       }
     };
+    
+    if($('#locked-message').length>0) {
+        alert($('#locked-message').text().replace(/\s+/g,' '));
+    } else {
+        //start loop to refresh lock
+        setTimeout(refreshLock, 30000);
+    }
+    
     
     //check if images exist, if not fallback to backup repository
     var baseRepo = $('#meta-data-baserepo-path').text();
@@ -240,6 +263,7 @@ function insertActions(jqParent) {
     
     $('p,ul.paragraph,ol.paragraph,img',jqParent).each(function() {
         if($(this).parents('.tiny-editor').length>0) return; //already attached to an editor
+        if($(this).parents('div[tag="componentcontent"]').length==0) return; //not part of editable content
         
         if($(this).attr('_done')) {
             return; //already processed in earlier item of this .each()

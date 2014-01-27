@@ -11,11 +11,71 @@ import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSOutput;
 import org.w3c.dom.ls.LSSerializer;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.zip.*;
+
 /**
  *
  * @author martijnslob
  */
 public class FileManager {
+
+    public static void log(File compFile, String username, File zipFile, Repository repo) throws Exception {
+        String fname = compFile.getAbsolutePath();
+        fname = fname.replace(repo.path, repo.path+"/_history");
+        File logFile = new File(fname+"/log.xml");
+        if(!logFile.exists()) logFile.createNewFile();
+        FileWriter fw = new FileWriter(logFile, true);//append to file
+        BufferedWriter bw = new BufferedWriter(fw);
+        String shortName = zipFile.getAbsolutePath();
+        int ind = shortName.indexOf("_history");
+        shortName = shortName.substring(ind+9);
+        bw.write("<log user='"+username+"'>"+shortName+"</log>\n");
+        bw.close();
+    }
+    /** creates a zip-file containing all xml files (not images or other resources) 
+     *  and stores it in _history/...
+     * @param subcompFolder: folder of the subcomponent
+     * @param repo:
+     * @return The created zip file
+     */
+    public static File backupSubcomponent(File subcompFolder, Repository repo) throws Exception {
+        String fname = subcompFolder.getAbsolutePath();
+        fname = fname.replace(repo.path, repo.path+"/_history");
+        Date date = new Date();
+        SimpleDateFormat ft = new SimpleDateFormat ("yyyy.MM.dd_hh.mm.ss");
+        fname = fname+"/"+subcompFolder.getName()+"_"+ft.format(date)+".zip";
+        File fzip = new File(fname);
+        fzip.getParentFile().mkdirs();
+
+        FileOutputStream fos = new FileOutputStream(fzip);
+        ZipOutputStream zos = new ZipOutputStream(fos);
+        zos.setLevel(9);//level - the compression level (0-9)
+
+        File f2[] = subcompFolder.listFiles();
+        for(File fentry: f2){
+            String nameStr = fentry.getName();
+            int ind = nameStr.lastIndexOf('.');
+            //only add xml files
+            if(ind>0 && nameStr.substring(ind+1).equals("xml") ) {
+                String entryName = fentry.getName();
+                ZipEntry ze= new ZipEntry(entryName);
+                zos.putNextEntry(ze);
+                FileInputStream in = new FileInputStream(fentry);
+                int len;
+                byte buffer[] = new byte[1024];
+                while ((len = in.read(buffer)) > 0) {
+                    zos.write(buffer, 0, len);
+                }
+                in.close();
+                zos.closeEntry();
+            }
+        }
+        zos.close();
+        
+        return fzip;
+    }
     
     public static File createBackup(File file, Repository repo) throws Exception {
         int num = 0;
@@ -23,7 +83,7 @@ public class FileManager {
         int ind = fname.lastIndexOf(".");
         String extStr = fname.substring(ind);
         fname = fname.substring(0,ind);
-        fname = fname.replace(repo.path, repo.path+"/history");
+        fname = fname.replace(repo.path, repo.path+"/_history");
         File f2 = new File(fname);
         f2.getParentFile().mkdirs();
         do {
@@ -107,15 +167,11 @@ System.out.println("Write to file: "+fname);
             newDoc.appendChild(newDoc.importNode(node,true));
             
         }
-        
         LSOutput output = impl.createLSOutput();
         File file = new File(fname);
-        File backupFile = null;
         if(!file.exists()){
             file.getParentFile().mkdirs();
             file.createNewFile();
-        } else {
-            backupFile = createBackup(file, repo);
         }
         if(file.exists()) {
             FileOutputStream fos = new FileOutputStream(file);
@@ -126,10 +182,6 @@ System.out.println("Write to file: "+fname);
             else
                 writer.write(node, output);
             fwriter.close();
-        }
-        if(backupFile!=null && getChecksum(backupFile).equals(getChecksum(file))) {
-            System.out.println("Deleting backup "+backupFile.getName()+" because checksum is equal to original.");
-            backupFile.delete();
         }
     }    
         

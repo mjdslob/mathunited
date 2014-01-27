@@ -1,4 +1,4 @@
-package nl.math4all.mathunited;
+package nl.math4all.mathunited.editor;
 
 import java.io.*;
 import java.net.URLDecoder;
@@ -27,6 +27,7 @@ import org.w3c.dom.DOMError;
 import org.w3c.dom.DOMErrorHandler;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+import nl.math4all.mathunited.XSLTbean;
 import nl.math4all.mathunited.exceptions.LoginException;
 import nl.math4all.mathunited.configuration.*;
 import nl.math4all.mathunited.configuration.SubComponent;
@@ -179,6 +180,11 @@ public class PostContentServlet extends HttpServlet {
             SAXSource xmlSaxSource = new SAXSource(xmlReader, xmlSource);
 
             Node root = processor.processToDOM(xmlSaxSource, "m4a_inverse", parameterMap, resolver);
+
+            File subcompFile = new File(refbase);
+            File zipFile = FileManager.backupSubcomponent(subcompFile, repository);
+            FileManager.log(subcompFile.getParentFile(), usettings.username, zipFile, repository);
+            
             XPath xpath = XPathFactory.newInstance().newXPath();
             String expression = "//include";
             NodeList nodes = (NodeList) xpath.evaluate(expression, root, XPathConstants.NODESET);

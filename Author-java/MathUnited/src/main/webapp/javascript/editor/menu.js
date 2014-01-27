@@ -336,7 +336,20 @@ function repeatExercise(id, action, location) {
             labelAnchors();
         });
     } else {
-        base.remove();
+        $( "#dialog-remove-item-confirm" ).dialog({
+            resizable: false,
+            height:140,
+            width:400,
+            modal: true,
+            buttons: {
+                Cancel: function() {
+                    $( this ).dialog( "close" );
+                },
+                "verwijderen": function() {
+                    base.remove();
+                }
+            }
+        });
     }
     isDocChanged = true;
 }

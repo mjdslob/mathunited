@@ -6,20 +6,20 @@
         <servlet-class>nl.math4all.mathunited.ViewServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>edit</servlet-name>
+        <servlet-class>nl.math4all.mathunited.editor.EditServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>refresh-lock</servlet-name>
+        <servlet-class>nl.math4all.mathunited.editor.RefreshLockServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>process-item</servlet-name>
-        <servlet-class>nl.math4all.mathunited.ProcessItemServlet</servlet-class>
+        <servlet-class>nl.math4all.mathunited.editor.ProcessItemServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>postcontent</servlet-name>
-        <servlet-class>nl.math4all.mathunited.PostContentServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>insertitem</servlet-name>
-        <servlet-class>nl.math4all.mathunited.InsertItemServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>removeitem</servlet-name>
-        <servlet-class>nl.math4all.mathunited.RemoveItemServlet</servlet-class>
+        <servlet-class>nl.math4all.mathunited.editor.PostContentServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>reinit</servlet-name>
@@ -58,20 +58,20 @@
         <url-pattern>/view</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>edit</servlet-name>
+        <url-pattern>/edit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>refresh-lock</servlet-name>
+        <url-pattern>/refresh-lock</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>process-item</servlet-name>
         <url-pattern>/processitem</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>postcontent</servlet-name>
         <url-pattern>/postcontent</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>insertitem</servlet-name>
-        <url-pattern>/insertitem</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>removeitem</servlet-name>
-        <url-pattern>/removeitem</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>reinit</servlet-name>
@@ -105,8 +105,6 @@
         <servlet-name>encodeBase64</servlet-name>
         <url-pattern>/geogebra</url-pattern>
     </servlet-mapping>
-
-    
     <session-config>
         <session-timeout>
             30
@@ -114,5 +112,5 @@
     </session-config>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
-        </welcome-file-list>
-    </web-app>
+    </welcome-file-list>
+</web-app>

@@ -1,4 +1,4 @@
-package nl.math4all.mathunited;
+package nl.math4all.mathunited.editor;
 
 import java.io.*;
 import javax.servlet.*;
@@ -10,23 +10,22 @@ import java.util.HashMap;
 import javax.xml.transform.Source;
 import org.xml.sax.InputSource;
 import java.util.Properties;
-import javax.xml.transform.sax.SAXSource;
+import nl.math4all.mathunited.XSLTbean;
 import nl.math4all.mathunited.resolvers.ContentResolver;
 import nl.math4all.mathunited.configuration.*;
 import nl.math4all.mathunited.configuration.SubComponent;
 import nl.math4all.mathunited.configuration.Component;
 import nl.math4all.mathunited.exceptions.LoginException;
-import static nl.math4all.mathunited.resolvers.ContentResolver.entityResolver;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
+import nl.math4all.mathunited.utils.UserManager;
 
 //mathunited.pragma-ade.nl/MathUnited/view?variant=basis&comp=m4a/xml/12hv-me0&subcomp=3&item=explore
 // - fixed parameters: variant, comp (component), subcomp (subcomponent).
 // - other parameters are just passed to xslt
 
-public class ProcessItemServlet extends HttpServlet {
-    static final byte[] EOL = {(byte)'\r', (byte)'\n' };
-    private final static Logger LOGGER = Logger.getLogger(ProcessItemServlet.class.getName());
+public class EditServlet extends HttpServlet {
+    private static final int MAX_LOCK_DURATION_SECONDS = 60;
+    
+    private final static Logger LOGGER = Logger.getLogger(EditServlet.class.getName());
     XSLTbean processor;
     Map<String, Component> componentMap;
     ServletContext context;
@@ -46,12 +45,14 @@ public class ProcessItemServlet extends HttpServlet {
     }
 
     @Override
-    public void doPost (  HttpServletRequest request,
+    public void doGet (  HttpServletRequest request,
                          HttpServletResponse response)
              throws ServletException, IOException {
 
         try{
             Configuration config = Configuration.getInstance();
+
+            UserSettings usettings = UserManager.isLoggedIn(request,response);
             
             //read request parameters
             Map<String, String[]> paramMap = request.getParameterMap();
@@ -71,19 +72,12 @@ public class ProcessItemServlet extends HttpServlet {
 
             String comp = parameterMap.get("comp");
             String subcomp = parameterMap.get("subcomp");            
-            String variant = parameterMap.get("variant");    
-            String xmlstr = parameterMap.get("xml");            
-            LOGGER.info("processitem: comp="+comp+", subcomp="+subcomp+", xml="+xmlstr);
             if(comp==null) {
                 throw new Exception("Het verplichte argument 'comp' ontbreekt.");
             }
             
             if(subcomp==null) {
                 throw new Exception("Het verplichte argument 'subcomp' ontbreekt.");
-            }
-            
-            if(variant==null) {
-                throw new Exception("Het verplichte argument 'variant' ontbreekt.");
             }
 
             //find out which repository to use
@@ -98,11 +92,19 @@ public class ProcessItemServlet extends HttpServlet {
                     }
                 }
             }
+            if(repo==null) {
+                throw new Exception("Er is geen archief geselecteerd.");
+            }
+            String variant = parameterMap.get("variant");
+            if(variant==null) {
+                throw new Exception("Het verplichte argument 'variant' ontbreekt.");
+            }
             Map<String, Repository> repoMap = config.getRepos();
             Repository repository = repoMap.get(repo);
             if(repository==null) {
                 throw new Exception("Onbekende repository: "+repo);
             }
+            
             Repository baserepo = null;
             if(repository.baseRepo!=null) {
                 baserepo = repoMap.get(repository.baseRepo);
@@ -153,22 +155,21 @@ public class ProcessItemServlet extends HttpServlet {
             
             // supply path to subcomponent to xslt. Might be needed when resolving other xml-documents
             int ind = sub.file.lastIndexOf('/');
-            parameterMap.put("refbase", repository.path+"/"+sub.file.substring(0, ind+1));
+            String refbase = repository.path+"/"+sub.file.substring(0, ind+1);
+            parameterMap.put("refbase", refbase);
             parameterMap.put("component", component.getXML());
             parameterMap.put("repo-path", repository.path);
             parameterMap.put("baserepo-path", baserepo==null?"":baserepo.path);
-            parameterMap.put("option","editor-process-item");
+            String currentOwner = getLock(usettings.username, config.getContentRoot()+refbase);
+            if( currentOwner!=null ) {
+                parameterMap.put("lock_owner", currentOwner);
+            }
+            
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             ContentResolver resolver = new ContentResolver(repo, context);
             
-            LOGGER.info("process-item: xml="+xmlstr);
-            XMLReader xmlReader = XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
-            xmlReader.setEntityResolver(ContentResolver.entityResolver);
-            StringReader reader = new StringReader(xmlstr);
-            InputSource xmlSource = new InputSource(reader);
-            SAXSource xmlSaxSource = new SAXSource(xmlReader, xmlSource);
-            
-            String errStr = processor.process(xmlSaxSource, variant, parameterMap, resolver, byteStream);
+            Source xmlSource = resolver.resolve(repository.path+"/"+sub.file, "");
+            String errStr = processor.process(xmlSource, variant, parameterMap, resolver, byteStream);
             response.setContentType("text/html");
             if(errStr.length()>0){
                 PrintWriter writer = response.getWriter();
@@ -195,6 +196,62 @@ public class ProcessItemServlet extends HttpServlet {
 
     }
 
+    /** Tries to get the lock on this subcomponent. 
+     * @param username
+     * @param refbase
+     * @return null if lock is obtained. If the lock is owned by some other user, the
+     *         username of this current owner is returned.
+     * @throws Exception 
+     */
+    public String getLock(String username, String refbase) throws Exception {
+        //lock file: refbase/lock
+        boolean allowed = true;
+        boolean create = false;
+        String userStr = null;
+        File lockFile = new File(refbase+"lock");
+        LOGGER.info("getLock for user "+username+" and paragraph "+refbase);
+        
+        if(!lockFile.exists()) {
+            LOGGER.info("Creating lock file for "+refbase);
+            create = true;
+        } else {
+            java.util.Date date = new java.util.Date();
+            long modified = lockFile.lastModified();
+            long current = date.getTime();
+            if(current-modified > MAX_LOCK_DURATION_SECONDS*1000) {
+                //steal lock
+                LOGGER.info("Stealing lockfile for "+refbase+" (last modified "+((current-modified)/1000)+" seconds ago");
+                create = true;
+            } else {
+                //check if this is the same user
+                BufferedReader br = new BufferedReader(new FileReader(lockFile));
+                userStr = br.readLine();
+                if(userStr==null || userStr.isEmpty()) {
+                    //invalid lockfile. Probably changed manually.
+                    userStr = null;
+                    create = true;
+                } else {
+                    if(!username.equals(userStr)) {
+                        LOGGER.info("Editing not allowed: lock for "+refbase+" is currenlth owned by "+userStr);
+                        allowed = false;
+                    } else {
+                        LOGGER.info("Refreshing timestamp on lock for "+refbase);
+                        lockFile.setLastModified(current);
+                        userStr=null;
+                    }
+                }
+            }
+        } 
+        
+        if(allowed && create) {
+            BufferedWriter out = new BufferedWriter(new FileWriter(lockFile));
+            out.write(username);
+            out.close();
+        }
+        
+        return userStr;
+    }
+    
     public boolean isMobile(String uaStr) {
         if(uaStr==null) return false;
     	boolean ismobile = false;
@@ -204,7 +261,7 @@ public class ProcessItemServlet extends HttpServlet {
     }
     
     @Override
-    public void doGet (  HttpServletRequest request,
+    public void doPost (  HttpServletRequest request,
                          HttpServletResponse response)
              throws ServletException, IOException {
         //get the pdf from the session and return it

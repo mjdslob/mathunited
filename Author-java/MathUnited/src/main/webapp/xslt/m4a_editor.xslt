@@ -23,6 +23,7 @@
     <xsl:param name="repo-path"/>
     <xsl:param name="baserepo-path"/>
     <xsl:param name="component"/>
+    <xsl:param name="lock_owner"/>
     <xsl:variable name="parsed_component" select="saxon:parse($component)"/>
     <xsl:variable name="subcomponent" select="$parsed_component/component/subcomponents/subcomponent[@id=$subcomp]"/>
     <xsl:param name="refbase"/> <!-- used for includes: base path. Includes final / -->
@@ -206,9 +207,17 @@
                             <xsl:apply-templates select="*"/>
                         </div>
                         <div style="clear:both"/>
+                        <xsl:if test="$lock_owner">
+                            <div id="locked-message">
+                                Het is nu niet mogelijk deze paragraaf te bewerken, omdat deze 
+                                momenteel bewerkt wordt door de auteur met username '<xsl:value-of select="$lock_owner"/>'.
+                            </div>
+                        </xsl:if>
                     </div>
-                    <xsl:variable name="commitfunc">javascript:submitDocument('<xsl:value-of select="$repo"/>','<xsl:value-of select="$comp"/>','<xsl:value-of select="$subcomp"/>')</xsl:variable>
-                    <div class="commit-button" onclick="{$commitfunc}"></div>
+                    <xsl:if test="not(string-length($lock_owner)>0)">
+                        <xsl:variable name="commitfunc">javascript:submitDocument('<xsl:value-of select="$repo"/>','<xsl:value-of select="$comp"/>','<xsl:value-of select="$subcomp"/>')</xsl:variable>
+                        <div class="commit-button" onclick="{$commitfunc}"></div>
+                    </xsl:if>
                 </div>
             </body>
         </html>
