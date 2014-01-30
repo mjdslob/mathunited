@@ -23,9 +23,10 @@ abstract class Platform {
     
     
     function getMIMEType($fname) {
-        $ind = strrchr($fname, '.');
-        if($ind) {
-            $ext = substr($fname, $ind+1);
+	$mime = '';
+	$ext = strrchr($fname, '.');
+	if($ext) {
+            $ext = substr($ext, 1);                
             switch($ext){
                 case 'ppt':
                     $mime = 'application/vnd.ms-powerpoint';
@@ -70,8 +71,8 @@ abstract class Platform {
                     $mime = 'application/octet-stream';
                     break;                
             }
-            
         }
+	return $mime;
     }
 }
 ?>

@@ -246,10 +246,10 @@ class GAEPlatform extends Platform {
                 $fileExists = false;
             }
             if($fileExists){
-                $mimetype = $this->getMIMEtype($fname);
+		$mimetype = $this->getMIMEtype($fname);
                 $getUrl = $this->sendResource($fname, $compId, $id, $repo, $type, $mimetype, $logger);
-                $logger->trace(LEVEL_INFO, 'publishing binary (id='.$id.', repo='.$repo.', fname='.$fname.' <a href="http://mathunited2012.appspot.com'.$getUrl.'">open</a>)');      
-                $rsrcId['href'] = $getUrl."&attachment=true"; //put the direct URL in the xml
+                $logger->trace(LEVEL_INFO, 'publishing binary (id='.$id.', repo='.$repo.', fname='.$fname.', mimetype='.$mimetype.' <a href="http://mathunited2012.appspot.com'.$getUrl.'">open</a>)');      
+                $rsrcId['href'] = trim($getUrl)."&attachment=true"; //put the direct URL in the xml
             } else {
                   $logger->trace(LEVEL_ERROR, "Broken resourcelink: File $id does not exist in subcomponent $compId."); 
 //                throw new Exception("Broken resourcelink: File $fname does not exist in subcomponent $compId.");
@@ -277,7 +277,7 @@ class GAEPlatform extends Platform {
                 //$mimetype = "application/octet-stream";
                 $getUrl = $this->sendResource($fname, $compId, $id, $repo, $type, $mimetype, $logger);
                 $logger->trace(LEVEL_INFO, 'publishing resource (dox) (id='.$id.', repo='.$repo.', fname='.$fname.' <a href="http://mathunited2012.appspot.com'.$getUrl.'">open</a>)');       
-                $rsrcId['href'] = $getUrl."&attachment=true"; //put the direct URL in the xml
+                $rsrcId['href'] = trim($getUrl)."&attachment=true"; //put the direct URL in the xml
             } else {
                   $logger->trace(LEVEL_ERROR, "Broken resourcelink: File $id does not exist in subcomponent $compId."); 
 //                throw new Exception("Broken resourcelink: File $fname does not exist in subcomponent $compId.");
