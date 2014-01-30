@@ -2,9 +2,9 @@
 require_once("Logger.php");
 require_once("EntityConverter.php");
 class GAEPlatform extends Platform {
-    private $putTextURL = "http://dave.mathunited2012.appspot.com/puttextfile";
-    private $resourceGetBlobUrl = "http://dave.mathunited2012.appspot.com/getbloburl";
-    private $getResourceUrl= "http://dave.mathunited2012.appspot.com/getresourceurl";
+    private $putTextURL = "http://mathunited2012.appspot.com/puttextfile";
+    private $resourceGetBlobUrl = "http://mathunited2012.appspot.com/getbloburl";
+    private $getResourceUrl= "http://mathunited2012.appspot.com/getresourceurl";
     
     //constructor 
     public function GAEPlatform($publishId) {
