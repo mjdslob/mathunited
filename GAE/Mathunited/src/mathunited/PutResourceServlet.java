@@ -77,6 +77,12 @@ public class PutResourceServlet extends HttpServlet {
 			   }
 			   repo = java.net.URLDecoder.decode(repo, "UTF-8");
 
+			   String checksum = request.getParameter("checksum");
+			   if(checksum==null){
+	               throw new Exception("Missing checksum identifier for the resource");
+			   }
+			   checksum = java.net.URLDecoder.decode(checksum, "UTF-8");
+
 			   Repository repository = config.getRepos().get(repo);
 	           if(repository==null) {
 	                throw new Exception("Onbekende repository: "+repo);
@@ -133,6 +139,7 @@ public class PutResourceServlet extends HttpServlet {
    	   		   blobEntity.setProperty("url", getUrl);
    	  		   blobEntity.setProperty("date", new Date());
    	  		   blobEntity.setProperty("publishid", publishId);
+   	  		   blobEntity.setProperty("checksum", checksum);
    	  		   datastore.put(blobEntity);
 
    			   pw.println(getUrl);

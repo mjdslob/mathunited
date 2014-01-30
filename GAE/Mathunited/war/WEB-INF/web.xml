@@ -116,6 +116,14 @@
         <servlet-name>storage</servlet-name>
         <url-pattern>/storage</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>getResourceUrl</servlet-name>
+        <servlet-class>mathunited.GetResourceUrlServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>getResourceUrl</servlet-name>
+        <url-pattern>/getresourceurl</url-pattern>
+    </servlet-mapping>
     
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
