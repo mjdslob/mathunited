@@ -32,16 +32,16 @@
      viewURL['malmberg'] = '/MathUnited/view?repo=malmberg&parent=mathunited.pragma-ade.nl:41080%2fPublisher%2fhtml%2fauteurstool.html';
      viewURL['test'] = '/MathUnited/view?repo=test&parent=mathunited.pragma-ade.nl:41080%2fPublisher%2fhtml%2fauteurstool.html';
      var baseFolder = [];
-     baseFolder['m4a'] = '/data/content-ma/concept/';
-     baseFolder['test'] = '/data/content-ma/test/';
-     baseFolder['wm'] = '/data/content-wm/concept/';
-     baseFolder['studiovo'] = '/data/content-studiovo/concept/';
-     baseFolder['studiovo_kennisbank'] = '/data/content-studiovo/kennisbank/';
-     baseFolder['m4a_en'] = '/data/content-ma/saba/';
-     baseFolder['malmberg'] = '/data/content-ma/malmberg/';
+     baseFolder['m4a'] = '/index/math4all/';
+     baseFolder['test'] = '/index/test/';
+     baseFolder['wm'] = '/index/wm/';
+     baseFolder['studiovo'] = '/data/content-studiovo/concept/leerlijnen/';
+     baseFolder['studiovo_kennisbank'] = '/data/content-studiovo/kennisbank/leerlijnen/';
+     baseFolder['m4a_en'] = '/index/saba/';
+     baseFolder['malmberg'] = '/index/malmberg/';
      wm = new WM_Manager({
-        methodURL:  baseFolder[method]+'leerlijnen/components.xml',
-        threadsURL: baseFolder[method]+'leerlijnen/threads.xml',
+        methodURL:  baseFolder[method]+'components.xml',
+        threadsURL: baseFolder[method]+'threads.xml',
         methodId :  false,
         threadId :  gup('thread_id'),
         show_thread_chooser: false,

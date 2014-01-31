@@ -376,7 +376,11 @@ function setExerciseMetadata(id) {
         isDocChanged = true;
         var form = $(data.target).parents('form').first();
         var level = null;
-        var isClone = $('input[name="kloonopgave"]',container)[0].checked;
+        var isClone = false;
+        var cloneElm = $('input[name="kloonopgave"]',container);
+        if(cloneElm.length>0) {
+            isClone = cloneElm[0].checked;
+        }
         $('input[name="level"]',container).each(function() {
            if(this.checked) level = this.value; 
         });

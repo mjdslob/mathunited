@@ -29,15 +29,15 @@
      viewURL['m4a'] = '/MathUnited/edit?parent=mathunited.pragma-ade.nl:41080/Publisher/html/publisher-ma.html&variant=m4a_editor';
      viewURL['wm'] = '/MathUnited/edit?parent=mathunited.pragma-ade.nl:41080/Publisher/html/publisher-ma.html&variant=wm_editor&item=1';
      var baseFolder = [];
-     baseFolder['m4a'] = '/data/content-ma/concept/';
-     baseFolder['wm'] = '/data/content-wm/concept/';
-     baseFolder['studiovo'] = '/data/content-studiovo/concept/';
-     baseFolder['m4a_en'] = '/data/content-ma/saba/';
-     baseFolder['test'] = '/data/content-ma/test/';
-     baseFolder['malmberg'] = '/data/content-ma/malmberg/';
+     baseFolder['m4a'] = '/index/math4all/';
+     baseFolder['wm'] = '/index/wm/';
+     baseFolder['studiovo'] = '/data/content-studiovo/concept/leerlijnen/';
+     baseFolder['m4a_en'] = '/data/content-ma/saba/leerlijnen/';
+     baseFolder['test'] = '/index/test/';
+     baseFolder['malmberg'] = '/index/malmberg/';
      wm = new WM_Manager({
-        methodURL:  baseFolder[method]+'leerlijnen/components.xml',
-        threadsURL: baseFolder[method]+'leerlijnen/threads.xml',
+        methodURL:  baseFolder[method]+'components.xml',
+        threadsURL: baseFolder[method]+'threads.xml',
         methodId :  false,
         threadId :  gup('thread_id'),
         show_thread_chooser: false,

@@ -101,7 +101,7 @@ public class PostContentServlet extends HttpServlet {
 	         htmlBuffer.append(sCurrentLine);
             }
             String html = htmlBuffer.toString();
-            
+            System.out.println(html);
             if(comp==null) {
                 throw new Exception("Het verplichte argument 'comp' ontbreekt.");
             } 
