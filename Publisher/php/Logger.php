@@ -36,19 +36,19 @@ class Logger {
             switch($level) {
                case LEVEL_ERROR: 
                    $logline = '<div class="log-entry error">';
-                   $logline = $logline.date('j-n-Y H:i:s',$_SERVER["REQUEST_TIME"])." ERROR: $msg </div>";
+                   $logline = $logline.date('j-n-Y H:i:s',time())." ERROR: $msg </div>";
                    fwrite($this->fp,$logline); 
                    error_log($logline." ERROR: ".$msg."\n",0);
                    break;
                case LEVEL_INFO:  
                    $logline = '<div class="log-entry info">';
-                   $logline = $logline.date('j-n-Y H:i:s',$_SERVER["REQUEST_TIME"])." INFO: $msg </div>";
+                   $logline = $logline.date('j-n-Y H:i:s',time())." INFO: $msg </div>";
                    fwrite($this->fp,$logline); 
                    error_log($logline." INFO: ".$msg."\n",0);
                    break;
                case LEVEL_TRACE: 
                    $logline = '<div class="log-entry trace">';
-                   $logline = $logline.date('j-n-Y H:i:s',$_SERVER["REQUEST_TIME"])." TRACE: $msg </div>";
+                   $logline = $logline.date('j-n-Y H:i:s',time())." TRACE: $msg </div>";
                    fwrite($this->fp,$logline); 
                    error_log($logline." TRACE: ".$msg."\n",0);
                    break;
