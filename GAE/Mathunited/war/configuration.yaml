@@ -44,6 +44,11 @@ repos :
     path: content-studiovo/concept
     edit_permission: 
     defaultVariant: studiovo_view
+  studiovo_kennisbank :
+    id : studiovo-kennisbank-2013-12-29
+    path: content-studiovo/kennisbank
+    edit_permission: 
+    defaultVariant: studiovo_view
 
 userFile : /data/content-overview/users.yaml
 contentRoot : /data/

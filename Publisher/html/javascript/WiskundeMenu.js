@@ -434,7 +434,7 @@ WM_Manager.prototype.loadThreads = function(args) {
             if(args.threadId) {
                 sel = $(xml).find('thread[id='+args.threadId+']');
                 if(!sel || sel.length==0) {
-                    alert('Geen leerlijnen gevonden die voldoen aan criterium "'+args.threaId+'".');
+                    alert('Geen leerlijnen gevonden die voldoen aan criterium "'+args.threadId+'".');
                 }
             } else {
                 sel = $(xml).find('thread');
