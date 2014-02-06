@@ -1,7 +1,6 @@
 variants : 
   basis_studiovo : {path: /xslt/studiovo_view.xslt}
   studiovo_view : {path: /xslt/studiovo_view.xslt}
-  studiovo_kennisbank : {path: /xslt/studiovo_view.xslt}
   studiovo_pulseon : {path: /xslt/studiovo_pulseon.xslt}
   studiovo_pulseon_item : {path: /xslt/studiovo_pulseon_item.xslt}
   pulseon_studiovo : {path: /xslt/studiovo_pulseon.xslt}
@@ -13,6 +12,10 @@ roles :
 repos :
   studiovo :
     path: content-studiovo/concept
+    edit_permission: 
+    defaultVariant: studiovo_view
+  studiovo_kennisbank :
+    path: content-studiovo/kennisbank
     edit_permission: 
     defaultVariant: studiovo_view
 

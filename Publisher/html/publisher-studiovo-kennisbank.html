@@ -40,41 +40,44 @@
                     <input id="submit-button" type="button" value="OK" onClick="M4A_login(this.form)">
                 </form>
             </div>
-            <div id="header">
-            <div id="logo">
-                <div id="logo_text">
-                <!-- class="logo_colour", allows you to change the colour of the text -->
-                <h1><a href="index.html">Math<span
-                class="logo_colour">United</span></a></h1>
-                <h2>Publisher</h2>
-                </div>
-                <div id="account-info">
-                    <div id="info-logged-in">
-                        Geselecteerd archief:
-                        <select id="repo-set" onchange="javascript:M4A_selectRepo()">
-                            <option value="m4a_concept">standaard</option>
-                        </select>
-                        <br/>
-                        <span id="info-username"></span>
-                        <div id="logout-button" class="account-button" onclick="javascript:M4A_logout()">&gt; uitloggen</div>
+            <div id="header" style="background-color: darkred">
+                <div id="logo" style="background-color: darkred">
+                    <div id="logo_text">
+                        <!-- class="logo_colour", allows you to change the colour of the text -->
+                        <h1>
+                            <a href="index.html">
+                                Studio<span class="logo_colour">VO</span>
+                            </a>
+                        </h1>
+                        <h2>Kennisbank Publisher</h2>
                     </div>
-                    <div id="info-not-logged-in" class="visible">
-                        <span>U bent niet ingelogd.</span>
-                        <div id="login-button" class="account-button" onclick="javascript:M4A_showLoginDialog()">&gt; inloggen</div>
+                    <div id="account-info">
+                        <div id="info-logged-in">
+                            Geselecteerd archief:
+                            <select id="repo-set" onchange="javascript:M4A_selectRepo()">
+                                <option value="m4a_concept">standaard</option>
+                            </select>
+                            <br />
+                            <span id="info-username"></span>
+                            <div id="logout-button" class="account-button" onclick="javascript:M4A_logout()">&gt; uitloggen</div>
+                        </div>
+                        <div id="info-not-logged-in" class="visible">
+                            <span>U bent niet ingelogd.</span>
+                            <div id="login-button" class="account-button" onclick="javascript:M4A_showLoginDialog()">&gt; inloggen</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div id="menubar">
-                <ul id="menu">
-                <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
-                <li id="li-tab-home" class="selected"><a href="javascript:setTab('tab-home')">Home</a></li>
-                <li id="li-tab-preview"><a href="javascript:setTab('tab-preview')">Bekijken</a></li>
-<!--                <li id="li-tab-edit"><a href="javascript:setTab('tab-edit')">Bewerken</a></li> -->
-                <li id="li-tab-componenten"><a href="javascript:setTab('tab-componenten')">Publiceer component</a></li>
-                <li id="li-tab-leerlijnen"><a href="javascript:setTab('tab-leerlijnen')">Publiceer leerlijn</a></li>
-                <li id="li-tab-logging"><a href="javascript:setTab('tab-logging')">Log</a></li>
-                </ul>
-            </div>
+                <div id="menubar">
+                    <ul id="menu">
+                        <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
+                        <li id="li-tab-home" class="selected"><a href="javascript:setTab('tab-home')">Home</a></li>
+                        <li id="li-tab-preview"><a href="javascript:setTab('tab-preview')">Bekijken</a></li>
+                        <!--                <li id="li-tab-edit"><a href="javascript:setTab('tab-edit')">Bewerken</a></li> -->
+                        <li id="li-tab-componenten"><a href="javascript:setTab('tab-componenten')">Publiceer component</a></li>
+                        <li id="li-tab-leerlijnen"><a href="javascript:setTab('tab-leerlijnen')">Publiceer leerlijn</a></li>
+                        <li id="li-tab-logging"><a href="javascript:setTab('tab-logging')">Log</a></li>
+                    </ul>
+                </div>
             </div>
             <div id="site_content">
                 <div id="tab-home" class="ui-tab selected">
