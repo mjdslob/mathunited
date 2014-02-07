@@ -35,6 +35,14 @@ extension-element-prefixes="exsl">
         </xsl:otherwise>
     </xsl:choose>
 </xsl:variable>
+<xsl:variable name="cssfile">
+    <xsl:choose>
+      <xsl:when test="subcomponent/meta/param[@name='css-file']">
+        <xsl:value-of select="subcomponent/meta/param[@name='css-file']"/>
+      </xsl:when>
+      <xsl:otherwise>basis_studiovo.css</xsl:otherwise>
+    </xsl:choose>
+</xsl:variable>
 <xsl:variable name="overviewRef"><xsl:value-of select="string('/auteur/math4all.html')"/></xsl:variable>
 <xsl:variable name="_cross_ref_as_links_" select="true()"/>
 <xsl:variable name="_sheetref_as_links_" select="true()"/>
@@ -64,26 +72,30 @@ indent="yes" encoding="utf-8"/>
    <xsl:choose>
       <!--  subtitle difference in references: leading slash or not -->
       <xsl:when test="$host_type='GAE'">
-	   <link type="text/css" href="/javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
-	   <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
-	   <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
-	   <script type="text/javascript" src="/javascript/MathUnited.js"/>
-	   <script type="text/javascript" src="/javascript/MathUnited_studiovo.js"/>
-	   <script type="text/javascript" src="/javascript/jquery.ui.touch-punch.min.js"/>
-	   <script type="text/javascript" src="/javascript/jquery.jplayer.min.js"/>
-	   <link rel="stylesheet" href="/css/content.css" type="text/css"/>
-	   <link rel="stylesheet" href="/css/basis_studiovo.css" type="text/css"/>
+        <link type="text/css" href="/javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
+        <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
+        <script type="text/javascript" src="/javascript/MathUnited.js"/>
+        <script type="text/javascript" src="/javascript/MathUnited_studiovo.js"/>
+        <script type="text/javascript" src="/javascript/jquery.ui.touch-punch.min.js"/>
+        <script type="text/javascript" src="/javascript/jquery.jplayer.min.js"/>
+        <link rel="stylesheet" href="/css/content.css" type="text/css"/>
+        <link rel="stylesheet" type="text/css">
+	        <xsl:attribute name="href">/css/<xsl:value-of select="$cssfile"/></xsl:attribute>
+        </link>
       </xsl:when>
       <xsl:otherwise>
-       <link type="text/css" href="javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
-       <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
-       <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
-       <script type="text/javascript" src="javascript/MathUnited.js"/>
-       <script type="text/javascript" src="javascript/MathUnited_studiovo.js"/>
-       <script type="text/javascript" src="javascript/jquery.ui.touch-punch.min.js"/>
-       <script type="text/javascript" src="javascript/jquery.jplayer.min.js"/>
-       <link rel="stylesheet" href="css/content.css" type="text/css"/>
-       <link rel="stylesheet" href="css/basis_studiovo.css" type="text/css"/>
+        <link type="text/css" href="javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
+        <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
+        <script type="text/javascript" src="javascript/MathUnited.js"/>
+        <script type="text/javascript" src="javascript/MathUnited_studiovo.js"/>
+        <script type="text/javascript" src="javascript/jquery.ui.touch-punch.min.js"/>
+        <script type="text/javascript" src="javascript/jquery.jplayer.min.js"/>
+        <link rel="stylesheet" href="css/content.css" type="text/css"/>
+	      <link rel="stylesheet" type="text/css">
+	   	    <xsl:attribute name="href">css/<xsl:value-of select="$cssfile"/></xsl:attribute>
+	      </link>
       </xsl:otherwise>
    </xsl:choose>
     

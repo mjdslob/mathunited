@@ -1,0 +1,53 @@
+@import url("basis_studiovo.css");
+
+#logo img
+{
+    display: none;
+}
+
+#logo 
+{
+    background-image: url(../sources_studiovo/enigma-logo.png);
+}
+
+#page-right
+{
+    background-image: url(../sources_studiovo/enigma-right-bg.png);
+    background-repeat: repeat-y;
+}
+
+#menubar
+{
+    background-image: url(../sources_studiovo/enigma-left-bg.png);
+    background-color: transparent;
+}
+
+#header img
+{
+    left: 0;
+}
+
+.menu-item
+{
+    font-size: 9pt;
+    width: 150px;
+    line-height: 11pt;
+    color: #000;
+    padding-top: 2px;
+    height: 28px;
+}
+
+.menu-line
+{
+    border-top-color: #fff;
+}
+
+.subcomponent-title
+{
+    color: #6ea0d1;
+}
+
+#kruimelpad 
+{
+    color: #6ea0d1;
+}
