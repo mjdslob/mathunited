@@ -94,6 +94,82 @@
         </container-item>
     </container>
 
+    <container name="theory">
+        <container-item name="nieuw item: Theorie">
+            <theory id="__subcomp__-th">
+                <include filename="__subcomp__-th.xml">
+                    <theory id="__subcomp__-th" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:cals = "http://www.someplace.org/cals">
+                        <p>hier komt theorie...</p>
+                    </theory>
+                </include>
+                    
+                <examples>
+                    <include filename="__subcomp__-ex1.xml">
+                        <example type='dummy' id='__subcomp__-ex1'>
+                            <examplecontent>
+                                <p>hier komt een voorbeeld...</p>
+                            </examplecontent>
+                        </example>
+                    </include>
+                </examples>
+                <exercises>
+                    <include filename="__subcomp__-ot1.xml">
+                        <exercise id="__subcomp__-ot1">
+                            <multi-item>
+                                <intro>
+                                    <p>...introductie...</p>
+                                </intro>
+                                <items>
+                                    <item label="a" type="open">
+                                        <itemcontent>
+                                            <question>
+                                                <p>...opgave...</p>
+                                            </question>
+                                        </itemcontent>
+                                        <answer>
+                                            <p>...antwoord...</p>
+                                        </answer>
+                                    </item>
+                                </items>
+                            </multi-item>
+                        </exercise>
+                            
+                    </include>
+                </exercises>
+            </theory>
+        </container-item>
+    </container>
+
+    <container name="digest">
+        <container-item name="nieuw item: Verwerken">
+            <digest>
+                <exercises>
+                    <include filename="__subcomp__-op__#1__.xml">
+                        <exercise id="__subcomp__-op__#1__">
+                            <multi-item>
+                                <intro>
+                                    <p>...introductie...</p>
+                                </intro>
+                                <items>
+                                    <item label="a" type="open">
+                                        <itemcontent>
+                                            <question>
+                                                <p>...opgave...</p>
+                                            </question>
+                                        </itemcontent>
+                                        <answer>
+                                            <p>...antwoord...</p>
+                                        </answer>
+                                    </item>
+                                </items>
+                            </multi-item>
+                        </exercise>
+                    </include>
+                </exercises>
+            </digest>
+        </container-item>
+    </container>
+
     <container name="application">
         <container-item name="nieuw item: Toepassing">
             <application id="__subcomp__-a__#1__">
@@ -246,33 +322,33 @@
                     <single-item>
                         <item type='closed'>
                             <itemcontent>
-                                 <question>
-                                     <p>...(vraag)...</p>
-                                 </question>
+                                <question>
+                                    <p>...(vraag)...</p>
+                                </question>
                             </itemcontent>
                             <alternatives id='' nx='' ny=''>
-                                 <alternative state='yes'>
-                                     <alternative-content>
-                                         <p>...(optie 1)...</p>
-                                     </alternative-content>
-                                 </alternative>
-                                 <alternative state='no'>
-                                     <alternative-content>
-                                         <p>...(optie 2)...</p>
-                                     </alternative-content>
-                                 </alternative>
-                                 <alternative state='no'>
-                                     <alternative-content>
-                                         <p>...(optie 3)...</p>
-                                     </alternative-content>
-                                 </alternative>
+                                <alternative state='yes'>
+                                    <alternative-content>
+                                        <p>...(optie 1)...</p>
+                                    </alternative-content>
+                                </alternative>
+                                <alternative state='no'>
+                                    <alternative-content>
+                                        <p>...(optie 2)...</p>
+                                    </alternative-content>
+                                </alternative>
+                                <alternative state='no'>
+                                    <alternative-content>
+                                        <p>...(optie 3)...</p>
+                                    </alternative-content>
+                                </alternative>
                             </alternatives>
-                             <explanation>
-                             </explanation>
-                             <feedback>
-                             </feedback>
-                             <teacheranswer>
-                             </teacheranswer>
+                            <explanation>
+                            </explanation>
+                            <feedback>
+                            </feedback>
+                            <teacheranswer>
+                            </teacheranswer>
                         </item>
                     </single-item>
                 </exercise>
@@ -289,33 +365,33 @@
                         <items>
                             <item label="a" type='closed'>
                                 <itemcontent>
-                                     <question>
-                                         <p>...(vraag)...</p>
-                                     </question>
+                                    <question>
+                                        <p>...(vraag)...</p>
+                                    </question>
                                 </itemcontent>
                                 <alternatives id='' nx='' ny=''>
-                                     <alternative state='yes'>
-                                         <alternative-content>
-                                             <p>...(optie 1)...</p>
-                                         </alternative-content>
-                                     </alternative>
-                                     <alternative state='no'>
-                                         <alternative-content>
-                                             <p>...(optie 2)...</p>
-                                         </alternative-content>
-                                     </alternative>
-                                     <alternative state='no'>
-                                         <alternative-content>
-                                             <p>...(optie 3)...</p>
-                                         </alternative-content>
-                                     </alternative>
+                                    <alternative state='yes'>
+                                        <alternative-content>
+                                            <p>...(optie 1)...</p>
+                                        </alternative-content>
+                                    </alternative>
+                                    <alternative state='no'>
+                                        <alternative-content>
+                                            <p>...(optie 2)...</p>
+                                        </alternative-content>
+                                    </alternative>
+                                    <alternative state='no'>
+                                        <alternative-content>
+                                            <p>...(optie 3)...</p>
+                                        </alternative-content>
+                                    </alternative>
                                 </alternatives>
-                                 <explanation>
-                                 </explanation>
-                                 <feedback>
-                                 </feedback>
-                                 <teacheranswer>
-                                 </teacheranswer>
+                                <explanation>
+                                </explanation>
+                                <feedback>
+                                </feedback>
+                                <teacheranswer>
+                                </teacheranswer>
                             </item>
 
                         </items>

@@ -251,7 +251,9 @@ indent="yes" encoding="utf-8" />
                 <div class="section-container" _base="{subcomponent/@_base}">
                    <xsl:apply-templates select="subcomponent/section"/>
                 </div>
+<!--                
                 <div id="vo-content-logo-container"><img src="sources_wm/vo-content_logo_stercollectie_small.jpg"/></div>
+-->                
             </div>
             <xsl:if test="count(subcomponent//exercise)>0">
                 <div class="menuDiv">
