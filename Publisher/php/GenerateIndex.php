@@ -63,6 +63,9 @@ try{
         foreach($comps as $cc) {
             $this->generateComponentIndex($cc, $repo);
         }
+        
+        $this->commitChanges($comps, $repo);
+        
         echo "<h1>Success</h1></body></html>";
 } catch(Exception $e) {
    echo "<div id='error-div'><h1>Failed</h1><p>A problem occurred while scanning the content. Please resolve this problem and retry.</p></p>".$e->getMessage()."</div></body></html>";
@@ -88,7 +91,7 @@ try{
             $xslt = new XSLTProcessor();
             $xslt->importStylesheet($xsltDoc);
             $xslt->setParameter('', 'refbase', $comp['absolutePath']);
-            $destName = $comp["absolutePath"].'/index.xml';
+            $destName = $comp["absolutePath"].'/index.xml.new';
             if(file_exists($destName)){
                 //add component to existing index file
                 $resultDoc = $xslt->transformToDoc($doc);
@@ -107,11 +110,23 @@ try{
 
     function removeIndexFiles($comps) {
         foreach($comps as $cc) {
-            $indexPath = $cc['absolutePath'].'/index.xml';
+            $indexPath = $cc['absolutePath'].'/index.xml.new';
             if(file_exists($indexPath)){
                 unlink($indexPath);
             }
         }
+    }
+    function commitChanges($comps, $repo) {
+        foreach($comps as $cc) {
+            $indexPath = $cc['absolutePath'].'/index.xml.new';
+            $newName = $cc['absolutePath'].'/index.xml';
+            if(file_exists($indexPath)){
+                rename($indexPath, $newName);
+            }
+        }
+        $fname = $this->config_contentRoot.$repo['basePath'].'leerlijnen/components.xml.new';
+        $fnameNew = $this->config_contentRoot.$repo['basePath'].'leerlijnen/components.xml';
+        rename($fname, $fnameNew);
     }
 
     function createComponentsFile($comps, $repo) {
@@ -126,7 +141,7 @@ try{
             $this->addComponent($cc, $componentsNode, $repo);
         }
         
-        $fname = $this->config_contentRoot.$repo['basePath'].'leerlijnen/components.xml';
+        $fname = $this->config_contentRoot.$repo['basePath'].'leerlijnen/components.xml.new';
         $doc->asXML($fname);
     }
 
