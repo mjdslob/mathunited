@@ -12,14 +12,11 @@
 
 #page-right
 {
-    background-image: url(../sources_studiovo/enigma-right-bg.png);
-    background-repeat: repeat-y;
 }
 
 #menubar
 {
-    background-image: url(../sources_studiovo/enigma-left-bg.png);
-    background-color: transparent;
+    background-color: #6ea0d1;
 }
 
 #header img
