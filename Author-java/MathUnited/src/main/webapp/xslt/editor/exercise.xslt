@@ -152,9 +152,16 @@ extension-element-prefixes="exsl">
                                 <input type="radio" name="level" value="3">3</input>
                                 <input type="radio" name="level" value="4">4</input>
                                 <input type="radio" name="level" value="5">5</input><br/>
-                                <xsl:if test="metadata/clone">
-                                    <input type="checkbox" name="kloonopgave" value="clone">Kloonopgave van <xsl:value-of select="metadata/clone"/></input>
+                                <xsl:if test="string-length(metadata/clone)>0">
+                                    <input type="checkbox" name="kloonopgave" value="clone">Kloonopgave van <xsl:value-of select="metadata/clone"/></input><br/>
                                 </xsl:if>
+                                <input type="checkbox" name="olympiadevraag">olympiadevraag</input><br/>
+                                <input type="checkbox" name="examenvraag">examenvraag</input><br/>
+                                <input type="checkbox" name="wda">wiskunde-denkactiviteit (WDA)</input><br/>
+                                Groepslabels: <input type="text" name="groepslabel" size="30">
+                                    <xsl:for-each select="metadata/group-label/@value"> <xsl:value-of select="."/> </xsl:for-each>
+                                </input>
+                                <br/>
                                 <div class="close-metadata-button" onclick="javascript:closeMetadata(this)"/>
                             </form>
                             <div class="metadata-data">
@@ -235,25 +242,79 @@ extension-element-prefixes="exsl">
             </div>
             <xsl:apply-templates select="itemcontent/question" mode="editor"/>
         </div>
-        <!-- make sure a container is always present for the anser -->
-        <xsl:choose>
-            <xsl:when test="answer">
-                <xsl:apply-templates select="answer" mode="editor"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <div tag="answer"><p></p></div>                
-            </xsl:otherwise>
-        </xsl:choose>
+        <!-- make sure a container is always present for the answer -->
+        <div class="answer-button"></div>
+        <div class="answer-content">
+            <xsl:choose>
+                <xsl:when test="answer">
+                    <div class="answer-heading">Antwoord:</div>
+                    <xsl:apply-templates select="answer" mode="editor"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <div class="answer-heading">Antwoord:</div>
+                    <div tag="answer"><p></p></div>                
+                </xsl:otherwise>
+            </xsl:choose>
+            <xsl:choose>
+                <xsl:when test="explanation">
+                    <div class="answer-heading">Uitleg:</div>
+                    <xsl:apply-templates select="explanation" mode="editor"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <div class="answer-heading">Uitleg:</div>
+                    <div tag="explanation"><p></p></div>                
+                </xsl:otherwise>
+            </xsl:choose>
+            <xsl:choose>
+                <xsl:when test="feedback">
+                    <div class="answer-heading">Hint:</div>
+                    <xsl:apply-templates select="feedback" mode="editor"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <div class="answer-heading">Hint:</div>
+                    <div tag="feedback"><p></p></div>                
+                </xsl:otherwise>
+            </xsl:choose>
+            <xsl:choose>
+                <xsl:when test="teacheranswer">
+                    <div class="answer-heading">Uitleg voor de docent:</div>
+                    <xsl:apply-templates select="teacheranswer" mode="editor"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <div class="answer-heading">Uitleg voor de docent:</div>
+                    <div tag="teacheranswer"><p></p></div>                
+                </xsl:otherwise>
+            </xsl:choose>
+        </div>
     </div>    
 </xsl:template>
 
 <xsl:template match="answer" mode="editor">
     <div tag="answer">
         <xsl:apply-templates select="@*" mode="editor"/>
-        <div class="answer-button"></div>
-        <div class="answer-content">
-            <xsl:apply-templates select="node()" mode="editor"/>
-        </div>
+        <xsl:if test="not(p)"><p/></xsl:if>
+        <xsl:apply-templates select="node()" mode="editor"/>
+    </div>
+</xsl:template>
+<xsl:template match="explanation" mode="editor">
+    <div tag="explanation">
+        <xsl:apply-templates select="@*" mode="editor"/>
+        <xsl:if test="not(p)"><p/></xsl:if>
+        <xsl:apply-templates select="node()" mode="editor"/>
+    </div>
+</xsl:template>
+<xsl:template match="feedback" mode="editor">
+    <div tag="feedback">
+        <xsl:apply-templates select="@*" mode="editor"/>
+        <xsl:if test="not(p)"><p/></xsl:if>
+        <xsl:apply-templates select="node()" mode="editor"/>
+    </div>
+</xsl:template>
+<xsl:template match="teacheranswer" mode="editor">
+    <div tag="teacheranswer">
+        <xsl:apply-templates select="@*" mode="editor"/>
+        <xsl:if test="not(p)"><p/></xsl:if>
+        <xsl:apply-templates select="node()" mode="editor"/>
     </div>
 </xsl:template>
 

@@ -187,10 +187,8 @@
                             <xsl:value-of select="$subcomponent/title"/>
                         </div>
                         <div class="overzichtDiv">
-                            <a>
-                                <xsl:attribute name="href">
-                                    <xsl:value-of select="$overviewRef"/>
-                                </xsl:attribute>Overzicht
+                            <a href="#">
+                                <xsl:attribute name="onclick">javascript:editor_hyperlink('<xsl:value-of select="$overviewRef"/>')</xsl:attribute>Overzicht
                             </a>
                         </div>
                         <div style="clear:both"/>

@@ -72,7 +72,7 @@ function M4A_getLoginState(callback) {
                         $('#info-logged-in').addClass('visible');
                         //set all valid options for the repository
                         var opts = $('#repo-set option'); //first remove all current options
-                        for(var ii = 1; ii<opts.length; ii++) {
+                        for(var ii = 0; ii<opts.length; ii++) {
                             $(opts[ii]).remove();
                         }
                         $('repo',data).each(function() {

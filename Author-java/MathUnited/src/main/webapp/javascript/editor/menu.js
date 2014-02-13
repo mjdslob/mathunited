@@ -362,6 +362,18 @@ function setExerciseMetadata(id) {
     var container = $('.metadata-container',base).first().addClass('visible');
     var tag = $('*[tag="metadata"]',container).first();
     var level = $('div[tag="level"]',container).attr('value');
+    var is_examenvraag = $('div[tag="exercise-type"][value="examen"]',container).length>0;
+    var is_olympiadevraag = $('div[tag="exercise-type"][value="olympiade"]',container).length>0;
+    var is_wdavraag = $('div[tag="exercise-type"][value="wda"]',container).length>0;
+    $('form input[name="examenvraag"]', container)[0].checked = is_examenvraag;
+    $('form input[name="olympiadevraag"]', container)[0].checked = is_olympiadevraag;
+    $('form input[name="wda"]', container)[0].checked = is_wdavraag;
+    var grouplabels='';
+    $('div[tag="group-label"]',container).each(function() {
+       grouplabels += $(this).attr('value')+' '; 
+    });
+    $('form input[name="groepslabel"]', container).val(grouplabels);
+    
     if(level) {
         var dum=$('form input[name="level"][value="'+level+'"]', container);
         if(dum.length>0) dum[0].checked= true;
@@ -371,6 +383,20 @@ function setExerciseMetadata(id) {
         var dum=$('form input[name="kloonopgave"]', container);
         if(dum.length>0) dum[0].checked= true;
     };
+    
+    function addMetadataElm(parent, tag, attr, textContent, doReplace) {
+        var elm = $('div[tag="'+tag+'"]',parent);
+        if(!doReplace || elm.length===0){
+            elm = $('<div tag="'+tag+'"></div>');
+            parent.append(elm);
+        }
+        if(attr) {
+            for(var name in attr) {
+                elm.attr(name, attr[name]);
+            }
+        }
+        if(textContent) elm.text(textContent);
+    }
     
     $('form input',container).change(function(data) {
         isDocChanged = true;
@@ -385,22 +411,33 @@ function setExerciseMetadata(id) {
            if(this.checked) level = this.value; 
         });
         
-        if(level) {
-            var levelElm = $('div[tag="level"]',tag);
-            if(levelElm.length===0){
-                levelElm = $('<div tag="level"></div>');
-                tag.append(levelElm);
-            }
-            levelElm.attr('value',level);
+        $('div[tag="exercise-type"]',tag).remove();
+        var elm = $('input[name="olympiadevraag"]',container);
+        if(elm.length>0 && elm[0].checked) {
+            addMetadataElm(tag,'exercise-type', {value: 'olympiade'},null,false);
         }
-        {
-            var cloneElm = $('div[tag="clone"]',tag);
-            if(cloneElm.length===0) {
-                cloneElm = $('<div tag="clone"></div>');
-                tag.append(cloneElm);
-            }
-            cloneElm.attr('active',isClone);
+        var elm = $('input[name="examenvraag"]',container);
+        if(elm.length>0 && elm[0].checked) {
+            addMetadataElm(tag,'exercise-type', {value: 'examen'},null,false);
         }
+        var elm = $('input[name="wda"]',container);
+        if(elm.length>0 && elm[0].checked) {
+            addMetadataElm(tag,'exercise-type', {value: 'wda'},null,false);
+        }
+        
+        $('div[tag="group-label"]',tag).remove();
+        var label = $('input[name="groepslabel"]',container);
+        if(label.length>0) {
+            var txt = label[0].value;
+            var txt = txt.replace('/\s{2,}/g',' ');
+            var elms = txt.split(' ');
+            for(var ii=0;ii<elms.length;ii++) {
+                if(elms[ii].trim().length>0)
+                   addMetadataElm(tag, 'group-label',{value: elms[ii]}, null, false);
+            }
+        }
+        if(level) addMetadataElm(tag, 'level',{value: level},null,true);
+        addMetadataElm(tag, 'clone',{active: isClone}, null,true);
     }); 
 }
 function closeMetadata(elm) {

@@ -170,7 +170,16 @@ function refreshLock() {
     );
 }
 
-
+function editor_hyperlink(ref) {
+    var goOn = true;
+    var isiPad = navigator.userAgent.match(/iPad/i) != null;
+    if(isiPad && isDocChanged) {
+        goOn = confirm('Wilt u de editor verlaten? Wijzigingen die u niet heeft opgeslagen gaan verloren.');
+    }
+    if(goOn) {
+        window.location.href = ref;
+    }
+}
 $(document).ready(function() {
     isDocChanged = false;  
     window.onbeforeunload = function() {

@@ -164,7 +164,10 @@ div.exercise-contents > div[tag="title"] {
 div.exercise-container[clone="true"] {
     background-color:rgb(220,220,200);
 }
-
+div.answer-heading {
+    font-weight:bold;
+    margin:5px 0px;
+}
 span[tag="textref"] {
     display:inline-block;
     color:red;
@@ -252,7 +255,7 @@ div[tag="worksheet"]{
     cursor:pointer;
 }
 
-div[tag="answer"]{
+div[tag="answer"], div[tag="feedback"], div[tag="item"] div[tag="explanation"], div[tag="teacheranswer"]{
     border-left: 1px dashed rgb(150,0,0);
     position:relative;
     left:-5px;
@@ -313,7 +316,7 @@ div[tag="alternatives"] .menu-button-div {
     width:15px; height:15px;
     position:absolute;
     left:-45px;
-    top:-18px;
+    top:3px;
 }
 .answer-button:hover {
     background-image: url('../sources_ma/kit_uitleg_mo.png');
@@ -322,8 +325,8 @@ div[tag="alternatives"] .menu-button-div {
 
 .answer-button.visible {
     background-image: url('../sources_ma/kit_uitleguit.png');
-    top:0px;
-    left:-30px;
+    top:3px;
+    left:-46px;
 }
 .answer-button.visible:hover {
     background-image: url('../sources_ma/kit_uitleguit_mo.png');
