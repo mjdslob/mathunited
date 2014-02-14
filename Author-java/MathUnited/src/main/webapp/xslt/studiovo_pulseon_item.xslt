@@ -259,7 +259,11 @@ indent="yes" encoding="utf-8"/>
 			   </img>
             </div>
             <div class="ribbon">
+                <div class="left-title">
                 <span class="subcomponent-title"><xsl:value-of select="$subcomponent/title"/></span>
+                |
+                <span class="fragment-title"><xsl:value-of select="title"/></span>
+                </div>
                 <span class="component-title"><xsl:value-of select="$parsed_component/component/title"/></span>
             </div>
 

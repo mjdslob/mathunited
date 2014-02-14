@@ -37,11 +37,11 @@ extension-element-prefixes="exsl">
 <xsl:variable name="overviewRef"><xsl:value-of select="string('/auteur/math4all.html')"/></xsl:variable>
 
 <!--   /////////////////////////////////////////////   -->
-<!--  Specific for GAE (do not copy from auteurssite): -->
+<!--  Specific for auteurssite:                        -->
 <!--   /////////////////////////////////////////////   -->
-<xsl:variable name="host_type">GAE</xsl:variable>
-<xsl:variable name="docbase"></xsl:variable>
-<xsl:variable name="urlbase"><xsl:value-of select="concat('http://mathunited.pragma-ade.nl:41080/data/',$refbase)"/></xsl:variable>
+<xsl:variable name="host_type">auteur</xsl:variable>
+<xsl:variable name="docbase" select="$refbase"></xsl:variable>
+<xsl:variable name="urlbase"><xsl:value-of select="concat('/data/',$refbase)"/></xsl:variable>
 <!--   /////////////////////////////////////////////   -->
 <!--   /////////////////////////////////////////////   -->
 
@@ -102,7 +102,7 @@ indent="yes" encoding="utf-8"/>
     </xsl:variable>
     <xsl:variable name="lom-set">
         <lom-set>
-            <xsl:copy-of select="document(concat($docbase, '../',$parsed_component/component/@file))/component/mulom:lom"/>
+            <xsl:copy-of select="document(concat($docbase, '../../../',$parsed_component/component/@file))/component/mulom:lom"/>
             <xsl:copy-of select="subcomponent/mulom:lom"/>
             <xsl:for-each select="$phase1//mulom:lom">
                 <xsl:copy-of select="."/>
@@ -259,7 +259,11 @@ indent="yes" encoding="utf-8"/>
 			   </img>
             </div>
             <div class="ribbon">
+                <div class="left-title">
                 <span class="subcomponent-title"><xsl:value-of select="$subcomponent/title"/></span>
+                |
+                <span class="fragment-title"><xsl:value-of select="title"/></span>
+                </div>
                 <span class="component-title"><xsl:value-of select="$parsed_component/component/title"/></span>
             </div>
 

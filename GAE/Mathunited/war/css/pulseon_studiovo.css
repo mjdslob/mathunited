@@ -29,7 +29,7 @@ html {
     border-bottom:1px solid black;
     padding-top:5px;
 }
-.subcomponent-title {
+.left-title {
     font-size:1.2em;
     font-weight:bold;
     color:red;
