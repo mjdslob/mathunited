@@ -1,5 +1,6 @@
 var popupElements = new Array();
 var popupDialogs = new Array();
+var popupContent = new Array();
 
 $(document).ready(function () {
     var TOLX = 20; var TOLY = 10;
@@ -154,6 +155,7 @@ function toggleMovie(elm) {
     else
         popupDialogs[index].dialog('open');
 }
+var tempvar = "";
 function togglePopup(width, elm) {
     var parent = $(elm).parents('.popup-wrapper').first();
     var content = $('.popup-content', parent).first();
@@ -168,14 +170,23 @@ function togglePopup(width, elm) {
         var dialog = content.dialog({
             autoOpen: false,
             width: parseFloat(width),
-            position: position
+            position: position,
+            beforeClose: function (event, ui) {
+                // the popup can contain a playing video. We dont want the video (or anything else) to play on when the popup is closed. 
+                // Therefore we have to remove the html in the popup, store it and insert it back into the popup when its reopened again.
+                content.data('storedhtml', content.html());
+                content.empty();
+            }
         });
         popupElements.push(elm);
         popupDialogs.push(dialog);
+        popupContent.push(content);
         dialog.dialog('open');
     }
-    else
+    else {
+        popupContent[index].html(popupContent[index].data('storedhtml'));
         popupDialogs[index].dialog('open');
+    }
 }
 function toggleAssessment(elm, src) {
     var parent = $(elm).parents('.assessment-wrapper').first();

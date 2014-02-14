@@ -1,13 +1,14 @@
 var popupElements = new Array();
 var popupDialogs = new Array();
+var popupContent = new Array();
 
-$(document).ready(function() {
+$(document).ready(function () {
     var TOLX = 20; var TOLY = 10;
     var elm = $('.menu-hierarchy').first();
     elm = $('.menu-item', elm).first();
     SVO_triggerMenuItem(elm);
     $(".exercise-drop-cell").draggable({
-        start: function() {
+        start: function () {
             var org_x = $(this).attr('org_x');
             if (!org_x) {
                 var pos = $(this).offset();
@@ -15,7 +16,7 @@ $(document).ready(function() {
                 $(this).attr('org_y', pos.top);
             }
         },
-        stop: function() {
+        stop: function () {
             var pos = $(this).offset();
             var nr = $(this).attr('nr');
             var parent = $(this).parents('.exercise-item-drop').first();
@@ -154,6 +155,7 @@ function toggleMovie(elm) {
     else
         popupDialogs[index].dialog('open');
 }
+var tempvar = "";
 function togglePopup(width, elm) {
     var parent = $(elm).parents('.popup-wrapper').first();
     var content = $('.popup-content', parent).first();
@@ -168,14 +170,23 @@ function togglePopup(width, elm) {
         var dialog = content.dialog({
             autoOpen: false,
             width: parseFloat(width),
-            position: position
+            position: position,
+            beforeClose: function (event, ui) {
+                // the popup can contain a playing video. We dont want the video (or anything else) to play on when the popup is closed. 
+                // Therefore we have to remove the html in the popup, store it and insert it back into the popup when its reopened again.
+                content.data('storedhtml', content.html());
+                content.empty();
+            }
         });
         popupElements.push(elm);
         popupDialogs.push(dialog);
+        popupContent.push(content);
         dialog.dialog('open');
     }
-    else
+    else {
+        popupContent[index].html(popupContent[index].data('storedhtml'));
         popupDialogs[index].dialog('open');
+    }
 }
 function toggleAssessment(elm, src) {
     var parent = $(elm).parents('.assessment-wrapper').first();
