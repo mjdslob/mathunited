@@ -373,6 +373,8 @@ function setExerciseMetadata(id) {
        grouplabels += $(this).attr('value')+' '; 
     });
     $('form input[name="groepslabel"]', container).val(grouplabels);
+    var parRef = $('div[tag="paragraph-ref"]',container).attr('value');
+    $('form input[name="ref-id"]', container).val(parRef);
     
     if(level) {
         var dum=$('form input[name="level"][value="'+level+'"]', container);
@@ -410,7 +412,6 @@ function setExerciseMetadata(id) {
         $('input[name="level"]',container).each(function() {
            if(this.checked) level = this.value; 
         });
-        
         $('div[tag="exercise-type"]',tag).remove();
         var elm = $('input[name="olympiadevraag"]',container);
         if(elm.length>0 && elm[0].checked) {
@@ -438,6 +439,8 @@ function setExerciseMetadata(id) {
         }
         if(level) addMetadataElm(tag, 'level',{value: level},null,true);
         addMetadataElm(tag, 'clone',{active: isClone}, null,true);
+        var parRef = $('input[name="ref-id"]',container)[0].value;
+        addMetadataElm(tag, 'paragraph-ref',{value: parRef}, null,true);
     }); 
 }
 function closeMetadata(elm) {

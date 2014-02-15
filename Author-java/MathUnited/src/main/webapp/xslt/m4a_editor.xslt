@@ -196,7 +196,10 @@
                     <div class="sectionDiv">
                         <div class="balk">
                             <span class="subcomponent-title">
-                                <xsl:value-of select="$subcomponent/title"/>
+                                <xsl:value-of select="$subcomponent/title"/> 
+                            </span>
+                            <span class="subcomponent-id">
+                                <xsl:value-of select="$subcomponent/@id"/>
                             </span>
                         </div>
                     </div>

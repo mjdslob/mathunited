@@ -160,6 +160,9 @@ extension-element-prefixes="exsl">
                                 <input type="checkbox" name="wda">wiskunde-denkactiviteit (WDA)</input><br/>
                                 Groepslabels: <input type="text" name="groepslabel" size="30">
                                     <xsl:for-each select="metadata/group-label/@value"> <xsl:value-of select="."/> </xsl:for-each>
+                                </input><br/>
+                                Gerelateerde theorie (id van paragraaf):<input type="text" name="ref-id" size="30">
+                                    <xsl:value-of select="metadata/ref-id/@value"/>
                                 </input>
                                 <br/>
                                 <div class="close-metadata-button" onclick="javascript:closeMetadata(this)"/>
