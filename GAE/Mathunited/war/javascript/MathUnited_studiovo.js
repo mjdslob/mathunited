@@ -2,37 +2,167 @@ var popupElements = new Array();
 var popupDialogs = new Array();
 var popupContent = new Array();
 
+function checkExercise(exerciseId) {
+    items = $(".exercise-item[exercise-id='" + exerciseId + "'] .exercise-drop-cell");
+    var cancel = false;
+    items.each(function (index) {
+        if (!$(this).attr("droppable-nr")) {
+            cancel = true;
+        }
+    });
+    if (cancel)
+    {
+        alert("Je hebt nog niet alle antwoorden ingevuld!");
+        return;
+    }
+
+    var allcorrect = true;
+    items.each(function (index) {
+        if ($(this).attr("droppable-nr")) {
+            if ($(this).attr("droppable-nr") == $(this).attr("nr")) {
+                $(this).addClass("correct");
+                $(this).removeClass("wrong");
+            }
+            else {
+                $(this).addClass("wrong");
+                $(this).removeClass("correct");
+                allcorrect = false;
+            }
+        }
+    });
+
+    if (allcorrect)
+        $(".exercise-result-mark[exercise-id='" + exerciseId + "']").show();
+    else
+        $(".exercise-result-mark[exercise-id='" + exerciseId + "']").hide();
+
+}
+
+function checkExerciseComplete(exerciseId, showMark) {
+    items = $(".exercise-item[exercise-id='" + exerciseId + "'] .exercise-drop-cell");
+    var cancel = false;
+    items.each(function (index) {
+        if (!$(this).attr("droppable-nr")) {
+            cancel = true;
+        }
+    });
+    if (cancel) {
+        $(".exercise-result-check[exercise-id='" + exerciseId + "']").hide();
+        $(".exercise-result-mark[exercise-id='" + exerciseId + "']").hide();
+        return;
+    }
+    else if (!showMark)
+        $(".exercise-result-check[exercise-id='" + exerciseId + "']").show();
+
+    var allcorrect = true;
+    items.each(function (index) {
+        if ($(this).attr("droppable-nr")) {
+            if ($(this).attr("droppable-nr") != $(this).attr("nr")) {
+                allcorrect = false;
+            }
+        }
+    });
+
+    if (allcorrect && showMark)
+        $(".exercise-result-mark[exercise-id='" + exerciseId + "']").show();
+    else
+        $(".exercise-result-mark[exercise-id='" + exerciseId + "']").hide();
+}
+
+
 $(document).ready(function () {
     var TOLX = 20; var TOLY = 10;
     var elm = $('.menu-hierarchy').first();
     elm = $('.menu-item', elm).first();
     SVO_triggerMenuItem(elm);
+
     $(".exercise-drop-cell").draggable({
-        start: function () {
-            var org_x = $(this).attr('org_x');
-            if (!org_x) {
-                var pos = $(this).offset();
-                $(this).attr('org_x', pos.left);
-                $(this).attr('org_y', pos.top);
-            }
-        },
-        stop: function () {
-            var pos = $(this).offset();
-            var nr = $(this).attr('nr');
-            var parent = $(this).parents('.exercise-item-drop').first();
-            var pair = $('.drop-item[nr=' + nr + ']', parent);
-            var pos2 = pair.offset();
-            if (Math.abs(pos.left - pos2.left) < TOLX && Math.abs(pos.top - pos2.top) < TOLY) {
-                $(this).offset(pos2);
-            } else {
-                var posOrg = {
-                    left: parseFloat($(this).attr('org_x')),
-                    top: parseFloat($(this).attr('org_y'))
+        start: function(event, ui) {
+            $(this).data("draggable").originalPosition = {
+                top: 0,
+                left: 0
+            };
+        }
+        ,
+        revert: function (event, ui) {
+            var showmark = true;
+            if (!$(this).hasClass('hintmode-drag') && !$(this).hasClass('hintmode-drop') && !$(this).hasClass('hintmode-revert'))
+                showmark = false;
+            checkExerciseComplete($(this).attr("exercise-id"), showmark);
+            return !event;
+        }
+    });
+
+    $(".drop-item").droppable({
+        tolerance: "pointer",
+        drop: function (ev, ui) {
+            if ($(ui.draggable).hasClass('hintmode-drag') || $(ui.draggable).hasClass('hintmode-drop')) {
+                $(ui.draggable).offset($(this).offset());
+                $(ui.draggable).attr("droppable-nr", $(this).attr('nr'));
+                checkExerciseComplete($(ui.draggable).attr("exercise-id"), true);
+                if ($(ui.draggable).attr('nr') == $(this).attr('nr')) {
+                    $(ui.draggable).addClass("correct");
+                    $(ui.draggable).removeClass("wrong");
                 }
-                $(this).offset(posOrg);
+                else {
+                    $(ui.draggable).addClass("wrong");
+                    $(ui.draggable).removeClass("correct");
+                }
+            }
+            else if ($(ui.draggable).hasClass('hintmode-revert')) {
+                if ($(ui.draggable).attr('nr') != $(this).attr('nr')) {
+                    $(ui.draggable).attr("droppable-nr", null);
+                    $(ui.draggable).animate({ 'left': $(ui.draggable).data("draggable").originalPosition.left, 'top': $(ui.draggable).data("draggable").originalPosition.top });
+                    checkExerciseComplete($(ui.draggable).attr("exercise-id"), true);
+                    $(ui.draggable).removeClass("wrong");
+                    $(ui.draggable).removeClass("correct");
+                    $(ui.draggable).removeClass("neutral");
+                    $(this).removeClass("wrong");
+                    $(this).removeClass("correct");
+                    $(this).removeClass("neutral");
+                }
+                else
+                {
+                    $(ui.draggable).offset($(this).offset());
+                    $(ui.draggable).attr("droppable-nr", $(this).attr('nr'));
+                    checkExerciseComplete($(ui.draggable).attr("exercise-id"), true);
+                }
+            }
+            else {
+                $(ui.draggable).offset($(this).offset());
+                $(ui.draggable).attr("droppable-nr", $(this).attr('nr'));
             }
         }
-
+        ,
+        over: function (ev, ui)
+        {
+            if ($(ui.draggable).hasClass('hintmode-drag')) {
+                // hintmode-drag means answer hints are displayed while dragging the element over drop targets
+                if ($(ui.draggable).attr('nr') == $(this).attr('nr')) {
+                    $(this).addClass("correct");
+                    $(this).removeClass("wrong");
+                }
+                else {
+                    $(this).addClass("wrong");
+                    $(this).removeClass("correct");
+                }
+            }
+            else
+            {
+                $(this).addClass("neutral");
+            }
+        }
+        ,
+        out: function (ev, ui)
+        {
+            $(ui.draggable).attr("droppable-nr", null);
+            $(ui.draggable).removeClass("wrong");
+            $(ui.draggable).removeClass("correct");
+            $(ui.draggable).removeClass("neutral");
+            $(this).removeClass("wrong");
+            $(this).removeClass("correct");
+            $(this).removeClass("neutral");
+        }
     });
 
     var player = $(".movie_jplayer").jPlayer({
@@ -182,6 +312,10 @@ function togglePopup(width, elm) {
         popupDialogs.push(dialog);
         popupContent.push(content);
         dialog.dialog('open');
+        // load iframes inside the popup
+        $(content).find('iframe').each(function (index) {
+            $(this).attr("src", $(this).attr("src-orig"));
+        });;
     }
     else {
         popupContent[index].html(popupContent[index].data('storedhtml'));

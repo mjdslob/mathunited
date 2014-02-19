@@ -12,7 +12,12 @@ html {
 body {
    background-color:black;
 }
-
+.clear-fix {
+    clear: both;
+    font-size: 0;
+    height: 0;
+    width: 0;
+}
 .pageDiv {
     width:990px;
     height:600px;
@@ -245,7 +250,7 @@ iframe {
 /* WIDGET: exercise-sequence */
 /*---------------------------*/
 .exercise {
-    width:500px;
+    width:100%;
     /*border:1px solid black;*/
     padding:5px;
     position:relative;
@@ -312,7 +317,9 @@ iframe {
 /* WIDGET: sleepopgave       */
 /*---------------------------*/
 .exercise-drop-text {
-    
+    float: left;
+    width: 500px;
+    line-height: 22px;
 }
 .textentry-item {
     border:1px solid black;
@@ -321,30 +328,83 @@ iframe {
     display:inline-block;
 }
 .exercise-drop-cells {
-    position:absolute;
-    right:-110px;
-    bottom:20px;
-    width:100px;    
+    float: right;
+    width: 142px;    
 }
 .exercise-drop-cell {
-    width:130px;
-    height:20px;
+    width:142px;
     border: 1px solid black;
     margin:10px 0px;
-    padding:0px 5px 0px 5px;
     background-color:rgb(200,200,200);
     font-weight:bold;
     text-align:center;
+    cursor:pointer;
+    color:#fff;
+}
+
+.exercise-drop-cell-inner {
+    padding:0px 5px 0px 5px;
+    height:20px;
+}
+
+.exercise-drop-cell.correct .exercise-drop-cell-inner {
+    background-color: green;
+    box-shadow: 0 0 10px green;
+}
+.exercise-drop-cell.wrong .exercise-drop-cell-inner {
+    background-color: red;
+    box-shadow: 0 0 10px red;
 }
 .drop-item {
     width:140px;
     height:20px;
-    border: 1px solid black;
+    border: 1px solid #888;
     display:inline-block;
-    position:relative;
-    top:5px;
+    vertical-align: middle;
+    margin-top: -1px;
 }
-
+.drop-item.correct {
+    border: 1px solid #000;
+    background-color:green;
+    box-shadow: 0 0 10px green;
+}
+.drop-item.wrong {
+    border: 1px solid #000;
+    background-color:red;
+    box-shadow: 0 0 10px red;
+}
+.drop-item.neutral {
+    border: 1px solid #000;
+    background-color:gray;
+    box-shadow: 0 0 10px gray;
+}
+.exercise-result-check {
+    display:inline-block;
+    background-color: #528CE0;
+    padding:4px 10px;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    margin-right: 0.5em;
+    width: 124px;
+    text-align: center;
+    float: right;
+}
+.exercise-result
+{
+    padding-top: 5px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.exercise-result-mark
+{
+    background-image: url(../sources_studiovo/correct.png);
+    background-repeat: no-repeat;
+    padding-left: 32px;
+    height: 26px;
+    margin-top: 5px;
+}
 /*---------------------------*/
 /* pages                     */
 /*---------------------------*/

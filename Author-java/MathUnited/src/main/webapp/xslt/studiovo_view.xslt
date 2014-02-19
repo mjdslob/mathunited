@@ -24,6 +24,7 @@ extension-element-prefixes="exsl">
 <xsl:variable name="cm2px" select="number(50)"/>
 <xsl:variable name="parsed_component" select="saxon:parse($component)"/>
 <xsl:variable name="subcomponent" select="$parsed_component/component/subcomponents/subcomponent[@id=$subcomp]"/>
+<xsl:variable name="menu_color" select="subcomponent/meta/param[@name='menu-color']"/>
 <xsl:variable name="variant">studiovo_view</xsl:variable>
 <xsl:variable name="intraLinkPrefix">
     <xsl:choose>
@@ -48,7 +49,7 @@ extension-element-prefixes="exsl">
 <xsl:variable name="_sheetref_as_links_" select="true()"/>
 <xsl:variable name="lang">nl</xsl:variable>
 
-<!--   /////////////////////////////////////////////   -->
+  <!--   /////////////////////////////////////////////   -->
 <!--  Specific for auteurssite):                       -->
 <!--   /////////////////////////////////////////////   -->
 <xsl:variable name="host_type">auteur</xsl:variable>
@@ -133,9 +134,9 @@ indent="yes" encoding="utf-8"/>
 <body>
 <div class="pageDiv">
     <div id="menubar">
-        <xsl:if test="subcomponent/meta/param[@name='menu-color']">
+        <xsl:if test="$menu_color">
             <xsl:attribute name="style">
-                background-color:<xsl:value-of select="subcomponent/meta/param[@name='menu-color']"/>;
+                background-color:<xsl:value-of select="$menu_color"/>;
             </xsl:attribute>
         </xsl:if>
         <div id="logo">
@@ -490,7 +491,12 @@ indent="yes" encoding="utf-8"/>
 </xsl:template>
 
 <xsl:template match="item[@type='dragtexttotext']" mode="exercise-item">
-    <div class="exercise-item-drop">
+  <xsl:variable name="hintmode" select="@hintmode" />
+  <xsl:variable name="drag-item-back-color" select="@drag-item-back-color" />
+  <xsl:variable name="drag-item-text-color" select="@drag-item-text-color" />
+  <xsl:variable name="exercise-id" select="generate-id()" />
+  <xsl:attribute name="exercise-id"><xsl:value-of select="$exercise-id" /></xsl:attribute>
+  <div class="exercise-item-drop">
         <xsl:if test="itemcontent/intro">
             <div class="exercise-drop-intro">
                 <xsl:apply-templates select="itemcontent/intro" mode="content"/>
@@ -500,14 +506,36 @@ indent="yes" encoding="utf-8"/>
            <xsl:apply-templates select="itemcontent/question" mode="content"/>
         </div>
         <div class="exercise-drop-cells">
-            <xsl:for-each select="itemcontent/question//drop-item">
+          <div class="exercise-result">
+          <div class="exercise-result-check" onclick="checkExercise('{$exercise-id}')" style="display: none" exercise-id="{$exercise-id}">Controleer</div>
+          <div class="clear-fix"></div>
+          <div class="exercise-result-mark" style="display: none" exercise-id="{$exercise-id}">Alle antwoorden zijn correct!</div>
+          </div>
+          <xsl:for-each select="itemcontent/question//drop-item">
                 <xsl:sort select="."/>
                 <div class="exercise-drop-cell" nr="{count(preceding-sibling::drop-item)+1}">
+                  <xsl:attribute name="exercise-id"><xsl:value-of select="$exercise-id" /></xsl:attribute>
+                  <xsl:if test="$hintmode='drag'"><xsl:attribute name="class">exercise-drop-cell hintmode-drag</xsl:attribute></xsl:if>
+                  <xsl:if test="$hintmode='drop'"><xsl:attribute name="class">exercise-drop-cell hintmode-drop</xsl:attribute></xsl:if>
+                  <xsl:if test="$hintmode='revert'"><xsl:attribute name="class">exercise-drop-cell hintmode-revert</xsl:attribute></xsl:if>
+                  <xsl:attribute name="style">
+                    <xsl:choose>
+                      <xsl:when test="$drag-item-back-color">
+                        background-color: <xsl:value-of select="$drag-item-back-color" />;
+                      </xsl:when>
+                      <xsl:otherwise>
+                        background-color: <xsl:value-of select="$menu_color" />;
+                      </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:if test="$drag-item-text-color">color: <xsl:value-of select="$drag-item-text-color" />;</xsl:if>
+                  </xsl:attribute>
+                  <div class="exercise-drop-cell-inner">
                     <xsl:value-of select="."/>
+                  </div>
                 </div>
             </xsl:for-each>
         </div>
-    </div>
+  </div>
 </xsl:template>
 <xsl:template match="drop-item" mode="content">
     <span class="drop-item" nr="{count(preceding-sibling::drop-item)+1}"></span>
@@ -674,22 +702,29 @@ indent="yes" encoding="utf-8"/>
 
 <xsl:template match="iframe" mode="content" priority="2">
     <iframe>
-        <xsl:choose>
-            <xsl:when test="starts-with(@src,'http://')">
-                <xsl:copy-of select="@*"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:copy-of select="@*[name()!='src']"/>
-                <xsl:choose>
-                    <xsl:when test="$host_type='GAE'">
-                        <xsl:attribute name="src" select="@src"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:attribute name="src" select="concat($urlbase, @src)"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:otherwise>
-        </xsl:choose>
+        <xsl:copy-of select="@*[name()!='src']"/>
+        <xsl:variable name="src">
+            <xsl:choose>
+              <xsl:when test="starts-with(@src,'http://')">
+                <xsl:value-of select="@src"/>
+              </xsl:when>
+              <xsl:when test="$host_type='GAE'">
+                <xsl:value-of select="@src"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="concat($urlbase, @src)"/>
+              </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+      <!-- if the iframe is in a popup, do not show the content immediately (movies could be starting etc, also can improves performance) -->
+      <xsl:choose>
+        <xsl:when test="ancestor::popup">
+          <xsl:attribute name="src-orig"><xsl:value-of select="$src"/></xsl:attribute>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:attribute name="src"><xsl:value-of select="$src"/></xsl:attribute>
+        </xsl:otherwise>
+      </xsl:choose>
     </iframe>
 </xsl:template>
 
