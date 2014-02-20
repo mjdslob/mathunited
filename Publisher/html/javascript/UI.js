@@ -88,13 +88,13 @@ function M4A_getLoginState(callback) {
                     } else {
                         $('#info-not-logged-in').addClass('visible');
                         $('#info-logged-in').removeClass('visible');
-                        if(wm.repo!='wm') $('ul#menu li').addClass('inactive');
+                        if(wm.repo==='malmberg') $('ul#menu li').addClass('inactive');
                     }
                 } else {
-                    if(wm.repo!='wm') $('ul#menu li').addClass('inactive');
+                    if(wm.repo==='malmberg') $('ul#menu li').addClass('inactive');
                 }
             }
-    ).fail(function(){ if(wm.repo!='wm') $('ul#menu li').addClass('inactive');});
+    ).fail(function(){ if(wm.repo==='malmberg') $('ul#menu li').addClass('inactive');});
 }
 function M4A_logout() {
    $.get('/MathUnited/logout', {},
