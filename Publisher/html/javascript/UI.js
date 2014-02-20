@@ -88,13 +88,13 @@ function M4A_getLoginState(callback) {
                     } else {
                         $('#info-not-logged-in').addClass('visible');
                         $('#info-logged-in').removeClass('visible');
-                        $('#li-tab-edit').addClass('inactive');
+                        if(wm.repo!='wm') $('ul#menu li').addClass('inactive');
                     }
                 } else {
-                    $('#li-tab-edit').addClass('inactive');
+                    if(wm.repo!='wm') $('ul#menu li').addClass('inactive');
                 }
             }
-    ).fail(function(){ $('#li-tab-edit').addClass('inactive');});
+    ).fail(function(){ if(wm.repo!='wm') $('ul#menu li').addClass('inactive');});
 }
 function M4A_logout() {
    $.get('/MathUnited/logout', {},
@@ -173,7 +173,8 @@ function M4A_register(form) {
 
 function M4A_selectRepo() {
     var repoStr = $('#repo-set')[0].value;
-    $('#li-tab-edit').removeClass('inactive');
+    $('ul#menu li').removeClass('inactive');
+    //$('#li-tab-edit').removeClass('inactive');
     /*
     if(repoStr=='m4a') {
         //repoStr = 'concept';

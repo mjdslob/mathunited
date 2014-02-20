@@ -44,6 +44,11 @@ try{
         } else {
             throw new Exception('Generate index called without repo identifier');
         }
+        $doTest=false;
+        if( isset($this->comm['test']) ) {
+            $doTest = ($this->comm['test']=='true');
+            echo '<p>Working in test mode, the index is not adapted!</p>';
+        }
 
         $comps = array();
         $repo = $config_repos[$repoId];
@@ -64,7 +69,9 @@ try{
             $this->generateComponentIndex($cc, $repo);
         }
         
-        $this->commitChanges($comps, $repo);
+        if(!$doTest){
+            $this->commitChanges($comps, $repo);
+        }
         
         echo "<h1>Success</h1></body></html>";
 } catch(Exception $e) {
