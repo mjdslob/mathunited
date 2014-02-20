@@ -148,6 +148,10 @@ span[tag='quotation'] {
     color: rgb(0,256,256);
     font-weight: bold;
 }
+span[tag='mark'] {
+    background-color:yellow;
+    color:black;
+}
 
 div[tag="block"]{
     border-left: 1px dashed rgb(150,0,0);

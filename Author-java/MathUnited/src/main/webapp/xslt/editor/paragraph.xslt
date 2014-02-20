@@ -103,6 +103,10 @@ extension-element-prefixes="exsl">
 <xsl:template match="quotation" mode="paragraph">
     <span tag="quotation"><xsl:apply-templates mode="paragraph"/></span>
 </xsl:template>
+<xsl:template match="mark" mode="paragraph">
+    <span tag="mark"><xsl:apply-templates mode="paragraph"/></span>
+</xsl:template>
+
 <xsl:template match="citation" mode="paragraph">
     <span tag="quotation"><xsl:apply-templates mode="paragraph"/></span>
 </xsl:template>

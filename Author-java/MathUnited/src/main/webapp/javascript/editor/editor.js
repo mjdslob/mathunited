@@ -116,6 +116,7 @@ var allowedTags = {
     tr:true,
     td:true,
     quotation:true,
+    mark:true,
     sup:true,
     textref:true,
     ol:true,

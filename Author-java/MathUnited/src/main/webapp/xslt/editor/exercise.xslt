@@ -23,12 +23,25 @@ extension-element-prefixes="exsl">
                     <xsl:call-template name="paragraph-template"/>
                 </div>
             </div>
-            <div tag="answer">
-                <div class="answer-button"></div>
-                <div class="answer-content">
-                    <xsl:call-template name="paragraph-template"/>
-                </div>
-            </div>
+           <div class="answer-button"></div>
+           <div class="answer-content">
+              <div class="answer-heading">Antwoord:</div>
+              <div tag="answer">
+                 <p></p>
+              </div>
+              <div class="answer-heading">Uitwerking:</div>
+              <div tag="explanation">
+                  <p></p>
+              </div>
+              <div class="answer-heading">Hint:</div>
+              <div tag="feedback">
+                  <p></p>
+              </div>
+              <div class="answer-heading">Uitwerking voor de docent:</div>
+              <div tag="teacheranswer">
+                 <p></p>
+              </div>
+           </div>
         </div>
     </div>
     <div id="exercise-item-closed-template">
@@ -260,11 +273,11 @@ extension-element-prefixes="exsl">
             </xsl:choose>
             <xsl:choose>
                 <xsl:when test="explanation">
-                    <div class="answer-heading">Uitleg:</div>
+                    <div class="answer-heading">Uitwerking:</div>
                     <xsl:apply-templates select="explanation" mode="editor"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <div class="answer-heading">Uitleg:</div>
+                    <div class="answer-heading">Uitwerking:</div>
                     <div tag="explanation"><p></p></div>                
                 </xsl:otherwise>
             </xsl:choose>
@@ -280,11 +293,11 @@ extension-element-prefixes="exsl">
             </xsl:choose>
             <xsl:choose>
                 <xsl:when test="teacheranswer">
-                    <div class="answer-heading">Uitleg voor de docent:</div>
+                    <div class="answer-heading">Uitwerking voor de docent:</div>
                     <xsl:apply-templates select="teacheranswer" mode="editor"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <div class="answer-heading">Uitleg voor de docent:</div>
+                    <div class="answer-heading">Uitwerking voor de docent:</div>
                     <div tag="teacheranswer"><p></p></div>                
                 </xsl:otherwise>
             </xsl:choose>

@@ -47,16 +47,29 @@
     <xsl:include href="editor/paragraph.xslt"/>
 
     <xsl:variable name="item-list">
-        <item-list>
-            <introduction name="Inleiding" optional="true"/>
-            <explore name="Verkennen" optional="true"/>
-            <explanation name="Uitleg" multiplicity="multiple" min="1" max="3"/>
-            <theory name="Theorie" optional="true"/>
-            <digest name="Verwerken"/>
-            <application name="Toepassen" optional="true"/>
-            <extra name="Practicum" multiplicity="multiple"/>
-            <test name="Test jezelf" multiplicity="option"/>
-        </item-list>
+        <xsl:choose>
+            <xsl:when test="subcomponent/componentcontent/summary">
+                <item-list>
+                    <summary name="Samenvatten" optional="true"/>
+                    <background name="Achtergronden" optional="true"/>
+                    <test name="Testen" multiplicity="multiple" min="1" max="3"/>
+                    <application name="Toepassen" optional="true"/>
+                    <exam name="Examenopgaven" optional="true"/>
+                </item-list>
+            </xsl:when>
+            <xsl:otherwise>
+                <item-list>
+                    <introduction name="Inleiding" optional="true"/>
+                    <explore name="Verkennen" optional="true"/>
+                    <explanation name="Uitleg" multiplicity="multiple" min="1" max="3"/>
+                    <theory name="Theorie" optional="true"/>
+                    <digest name="Verwerken"/>
+                    <application name="Toepassen" optional="true"/>
+                    <extra name="Practicum" multiplicity="multiple"/>
+                    <test name="Test jezelf" multiplicity="option"/>
+                </item-list>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:variable>
 
     <xsl:variable name="itemInner">
@@ -461,6 +474,53 @@
             </div>
         </div>
     </xsl:template>
+    
+    <xsl:template match="summary">
+        <div tag="{name()}">
+            <div class="menu-button-div section-button">
+                <span class="menu-button"></span>
+            </div>
+            <div class="m4a-editor-item-container">
+                <div class="m4a-editor-item-title">Samenvatten<div class="item-label-button"/></div>
+                <div class="m4a-editor-item-content">
+                    <xsl:apply-templates mode="editor"/>
+                </div>
+                <div style="clear:both"/>
+            </div>
+        </div>
+    </xsl:template>
+    
+    <xsl:template match="background">
+        <div tag="{name()}">
+            <div class="menu-button-div section-button">
+                <span class="menu-button"></span>
+            </div>
+            <div class="m4a-editor-item-container">
+                <div class="m4a-editor-item-title">Achtergronden<div class="item-label-button"/></div>
+                <div class="m4a-editor-item-content">
+                    <xsl:apply-templates mode="editor"/>
+                </div>
+                <div style="clear:both"/>
+            </div>
+        </div>
+    </xsl:template>
+
+        
+    <xsl:template match="exam">
+        <div tag="{name()}">
+            <div class="menu-button-div section-button">
+                <span class="menu-button"></span>
+            </div>
+            <div class="m4a-editor-item-container">
+                <div class="m4a-editor-item-title">Examenopgaven <div class="item-label-button"/></div>
+                <div class="m4a-editor-item-content">
+                    <xsl:apply-templates mode="editor"/>
+                </div>
+                <div style="clear:both"/>
+            </div>
+        </div>
+    </xsl:template>
+
 
     <xsl:template match="examples">
             <div class="m4a-editor-item-container">
