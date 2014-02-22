@@ -2,7 +2,9 @@ var popupElements = new Array();
 var popupDialogs = new Array();
 var popupContent = new Array();
 
-function checkExercise(exerciseId) {
+/* Drag and drop exercises ------------------------------------------------------------------*/
+
+function checkDragExercise(exerciseId) {
     items = $(".exercise-item[exercise-id='" + exerciseId + "'] .exercise-drop-cell");
     var cancel = false;
     items.each(function (index) {
@@ -38,7 +40,7 @@ function checkExercise(exerciseId) {
 
 }
 
-function checkExerciseComplete(exerciseId, showMark) {
+function checkDragExerciseComplete(exerciseId, showMark) {
     items = $(".exercise-item[exercise-id='" + exerciseId + "'] .exercise-drop-cell");
     var cancel = false;
     items.each(function (index) {
@@ -69,12 +71,87 @@ function checkExerciseComplete(exerciseId, showMark) {
         $(".exercise-result-mark[exercise-id='" + exerciseId + "']").hide();
 }
 
+/* Entry exercises --------------------------------------------------------------------------*/
+
+function checkEntryExerciseComplete(exerciseId)
+{
+    var items = $(".exercise-item[exercise-id='" + exerciseId + "'] .entry-item");
+    var cancel = false;
+    items.each(function (index) {
+        if ($(this).val().trim() == "") {
+            cancel = true;
+        }
+    });
+
+    if (cancel) {
+        $(".exercise-result-check[exercise-id='" + exerciseId + "']").hide();
+    }
+    else {
+        $(".exercise-result-check[exercise-id='" + exerciseId + "']").show();
+    }
+}
+
+String.prototype.translate = function (from, to) {
+    var sl = this.length,
+		tl = to.length,
+		xlat = new Array(),
+		str = '';
+
+    if (sl < 1 || tl < 1) return this;
+
+    for (i = 0; i < 256; xlat[i] = i, i++);
+
+    for (i = 0; i < tl; i++) {
+        xlat[from.charCodeAt(i)] = to.charCodeAt(i);
+    }
+
+    for (i = 0; i < sl; i++) {
+        str += String.fromCharCode(xlat[this.charCodeAt(i)]);
+    }
+
+    return str;
+}
+
+function checkEntryExercise(exerciseId)
+{
+    var items = $(".exercise-item[exercise-id='" + exerciseId + "']").find(".entry-item");
+    var allcorrect = true;
+    items.each(function (index) {
+        var entryCorrect = false;
+        var entryItem = $(this);
+        var answers = entryItem.attr("answers").split("|");
+        answers.pop();
+        $.each(answers, function (index, value) {
+            if (entryItem.val().trim().toLowerCase() == value.translate("4250318697qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890").toLowerCase())
+                entryCorrect = true;
+        });
+        if (entryCorrect)
+        {
+            entryItem.addClass("correct");
+            entryItem.removeClass("wrong");
+        }
+        else
+        {
+            allcorrect = false;
+            entryItem.addClass("wrong");
+            entryItem.removeClass("correct");
+        }
+    });
+
+    if (allcorrect)
+        $(".exercise-result-mark[exercise-id='" + exerciseId + "']").show();
+    else
+        $(".exercise-result-mark[exercise-id='" + exerciseId + "']").hide();
+}
+
 
 $(document).ready(function () {
     var TOLX = 20; var TOLY = 10;
     var elm = $('.menu-hierarchy').first();
     elm = $('.menu-item', elm).first();
     SVO_triggerMenuItem(elm);
+
+    /* Drag and drop exercises ------------------------------------------------------------------*/
 
     $(".exercise-drop-cell").draggable({
         start: function(event, ui) {
@@ -88,7 +165,7 @@ $(document).ready(function () {
             var showmark = true;
             if (!$(this).hasClass('hintmode-drag') && !$(this).hasClass('hintmode-drop') && !$(this).hasClass('hintmode-revert'))
                 showmark = false;
-            checkExerciseComplete($(this).attr("exercise-id"), showmark);
+            checkDragExerciseComplete($(this).attr("exercise-id"), showmark);
             return !event;
         }
     });
@@ -99,7 +176,7 @@ $(document).ready(function () {
             if ($(ui.draggable).hasClass('hintmode-drag') || $(ui.draggable).hasClass('hintmode-drop')) {
                 $(ui.draggable).offset($(this).offset());
                 $(ui.draggable).attr("droppable-nr", $(this).attr('nr'));
-                checkExerciseComplete($(ui.draggable).attr("exercise-id"), true);
+                checkDragExerciseComplete($(ui.draggable).attr("exercise-id"), true);
                 if ($(ui.draggable).attr('nr') == $(this).attr('nr')) {
                     $(ui.draggable).addClass("correct");
                     $(ui.draggable).removeClass("wrong");
@@ -113,7 +190,7 @@ $(document).ready(function () {
                 if ($(ui.draggable).attr('nr') != $(this).attr('nr')) {
                     $(ui.draggable).attr("droppable-nr", null);
                     $(ui.draggable).animate({ 'left': $(ui.draggable).data("draggable").originalPosition.left, 'top': $(ui.draggable).data("draggable").originalPosition.top });
-                    checkExerciseComplete($(ui.draggable).attr("exercise-id"), true);
+                    checkDragExerciseComplete($(ui.draggable).attr("exercise-id"), true);
                     $(ui.draggable).removeClass("wrong");
                     $(ui.draggable).removeClass("correct");
                     $(ui.draggable).removeClass("neutral");
@@ -125,7 +202,7 @@ $(document).ready(function () {
                 {
                     $(ui.draggable).offset($(this).offset());
                     $(ui.draggable).attr("droppable-nr", $(this).attr('nr'));
-                    checkExerciseComplete($(ui.draggable).attr("exercise-id"), true);
+                    checkDragExerciseComplete($(ui.draggable).attr("exercise-id"), true);
                 }
             }
             else {
@@ -164,6 +241,16 @@ $(document).ready(function () {
             $(this).removeClass("neutral");
         }
     });
+
+    /* Entry exercises --------------------------------------------------------------------------*/
+
+    $(".entry-item").bind('input', function () {
+        $(this).removeClass("correct");
+        $(this).removeClass("wrong");
+        checkEntryExerciseComplete($(this).attr("exercise-id"));
+    });
+
+    /* Movie stuff ------------------------------------------------------------------------------*/
 
     var player = $(".movie_jplayer").jPlayer({
         ready: function () {

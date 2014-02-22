@@ -24,6 +24,7 @@ extension-element-prefixes="exsl">
 <xsl:variable name="cm2px" select="number(50)"/>
 <xsl:variable name="parsed_component" select="saxon:parse($component)"/>
 <xsl:variable name="subcomponent" select="$parsed_component/component/subcomponents/subcomponent[@id=$subcomp]"/>
+<xsl:variable name="menu_color" select="subcomponent/meta/param[@name='menu-color']"/>
 <xsl:variable name="variant">studiovo_view</xsl:variable>
 <xsl:variable name="intraLinkPrefix">
     <xsl:choose>
@@ -62,8 +63,9 @@ indent="yes" encoding="utf-8"/>
 
 <xsl:include href="calstable.xslt"/>
 <xsl:include href="content.xslt"/>
+<xsl:include href="studiovo_exercises.xslt"/>
 
-<!--   **************** -->
+  <!--   **************** -->
 <!--   START PROCESSING -->
 <!--   **************** -->
 <xsl:template match="/">
@@ -415,132 +417,6 @@ indent="yes" encoding="utf-8"/>
     </div>
 </xsl:template>
 
-<!--  ******************** -->
-<!--   EXERCISES (NON-QTI  -->
-<!--  ******************** -->
-<xsl:template match="exercise">
-    <xsl:param name="menuref"/>
-    <div class="content-tab" id="{concat('tab-',$menuref,'-',position())}">
-        <xsl:apply-templates select="." mode="content"/>
-    </div>
-</xsl:template>
-<xsl:template match="exercise-sequence" mode="content">
-    <div class="exercise-sequence">
-        <xsl:for-each select="*">
-            <xsl:variable name="pos" select="position()"/>
-            <div nr="{position()}">
-                <xsl:choose>
-                    <xsl:when test="$pos=1">
-                        <xsl:attribute name="class">exercise-seq-item selected</xsl:attribute>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:attribute name="class">exercise-seq-item</xsl:attribute>                        
-                    </xsl:otherwise>
-                </xsl:choose>
-                <xsl:apply-templates select="." mode="content"/>
-            </div>
-        </xsl:for-each>
-    </div>
-</xsl:template>
-<xsl:template match="exercise" mode="content">
-    <div class="exercise">
-        <xsl:if test="@width">
-            <xsl:attribute name="style">width:<xsl:value-of select="@width"/>px</xsl:attribute>
-        </xsl:if>
-        <xsl:apply-templates mode="content"/>
-        <div class="exercise-completed">klaar!</div>
-    </div>
-</xsl:template>
-
-<xsl:template match="multi-item" mode="content">
-    <div class="exercise-multi-item">
-        <xsl:apply-templates select="items/item" mode="content"/>
-    </div>
-</xsl:template>
-
-<xsl:template match="item" mode="content">
-    <xsl:variable name="pos" select="position()"/>
-    <div>
-        <xsl:choose>
-            <xsl:when test="$pos=1">
-                <xsl:attribute name="class">exercise-item selected</xsl:attribute>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:attribute name="class">exercise-item</xsl:attribute>                        
-            </xsl:otherwise>
-        </xsl:choose>
-        <xsl:apply-templates select="." mode="exercise-item"/>
-    </div>
-</xsl:template>
-<xsl:template match="item[@type='closed']" mode="exercise-item">
-    <div class="choice-exercise-question">
-        <xsl:apply-templates select="itemcontent/itemintro/*" mode="content"/>
-    </div>
-    <xsl:for-each select="alternatives/alternative">
-        <div class="choice-exercise-option">
-            <xsl:if test="@state='yes'">
-                <xsl:attribute name="state">yes</xsl:attribute>
-            </xsl:if>
-            <div class="choise-exercise-label" onclick="javascript:choiceLabelClick(this)"/>
-            <xsl:apply-templates select="*" mode="content"/>
-        </div>
-    </xsl:for-each>
-    <div style="clear:left"/>
-    <div class="item-completed" onclick="javascript:nextItem(this)"></div>
-</xsl:template>
-
-<xsl:template match="item[@type='dragtexttotext']" mode="exercise-item">
-  <xsl:variable name="hintmode" select="@hintmode" />
-  <xsl:variable name="drag-item-back-color" select="@drag-item-back-color" />
-  <xsl:variable name="drag-item-text-color" select="@drag-item-text-color" />
-  <xsl:variable name="exercise-id" select="generate-id()" />
-  <xsl:attribute name="exercise-id"><xsl:value-of select="$exercise-id" /></xsl:attribute>
-  <div class="exercise-item-drop">
-        <xsl:if test="itemcontent/intro">
-            <div class="exercise-drop-intro">
-                <xsl:apply-templates select="itemcontent/intro" mode="content"/>
-            </div>
-        </xsl:if>
-        <div class="exercise-drop-text">
-           <xsl:apply-templates select="itemcontent/question" mode="content"/>
-        </div>
-        <div class="exercise-drop-cells">
-          <div class="exercise-result">
-          <div class="exercise-result-check" onclick="checkExercise('{$exercise-id}')" style="display: none" exercise-id="{$exercise-id}">Controleer</div>
-          <div class="clear-fix"></div>
-          <div class="exercise-result-mark" style="display: none" exercise-id="{$exercise-id}">Alle antwoorden zijn correct!</div>
-          </div>
-          <xsl:for-each select="itemcontent/question//drop-item">
-                <xsl:sort select="."/>
-                <div class="exercise-drop-cell" nr="{count(preceding-sibling::drop-item)+1}">
-                  <xsl:attribute name="exercise-id"><xsl:value-of select="$exercise-id" /></xsl:attribute>
-                  <xsl:if test="$hintmode='drag'"><xsl:attribute name="class">exercise-drop-cell hintmode-drag</xsl:attribute></xsl:if>
-                  <xsl:if test="$hintmode='drop'"><xsl:attribute name="class">exercise-drop-cell hintmode-drop</xsl:attribute></xsl:if>
-                  <xsl:if test="$hintmode='revert'"><xsl:attribute name="class">exercise-drop-cell hintmode-revert</xsl:attribute></xsl:if>
-                  <xsl:attribute name="style">
-                    <xsl:choose>
-                      <xsl:when test="$drag-item-back-color">
-                        background-color: <xsl:value-of select="$drag-item-back-color" />;
-                      </xsl:when>
-                      <xsl:otherwise>
-                        background-color: <xsl:value-of select="$menu_color" />;
-                      </xsl:otherwise>
-                    </xsl:choose>
-                    <xsl:if test="$drag-item-text-color">color: <xsl:value-of select="$drag-item-text-color" />;</xsl:if>
-                  </xsl:attribute>
-                  <div class="exercise-drop-cell-inner">
-                    <xsl:value-of select="."/>
-                  </div>
-                </div>
-            </xsl:for-each>
-        </div>
-  </div>
-</xsl:template>
-<xsl:template match="drop-item" mode="content">
-    <span class="drop-item" nr="{count(preceding-sibling::drop-item)+1}"></span>
-</xsl:template>
-
-
 <!-- overrule default in content.xslt: images are in folder of xml content -->
 <xsl:template match="resource" mode="content" priority="2">
    <xsl:variable name="width" select="number(substring-before(width,'cm'))*$cm2px"/>
@@ -730,3 +606,4 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="*"/>
 <xsl:template match="*" mode="navigation"/>
 </xsl:stylesheet>
+

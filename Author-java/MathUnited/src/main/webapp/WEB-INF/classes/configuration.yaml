@@ -1,6 +1,7 @@
 variants : 
   basis_studiovo : {path: /xslt/studiovo_view.xslt}
   studiovo_view : {path: /xslt/studiovo_view.xslt}
+  studiovo_test : {path: /xslt/studiovo_test.xslt}
   studiovo_pulseon : {path: /xslt/studiovo_pulseon.xslt}
   studiovo_pulseon_item : {path: /xslt/studiovo_pulseon_item.xslt}
   pulseon_studiovo : {path: /xslt/studiovo_pulseon.xslt}

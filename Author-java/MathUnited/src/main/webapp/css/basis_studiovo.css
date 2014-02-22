@@ -313,20 +313,21 @@ iframe {
 .item-completed.show:active {
     background-image: url('../sources_studiovo/knoppen-hoover_11.png');
 }
+
 /*---------------------------*/
-/* WIDGET: sleepopgave       */
+/* WIDGET: all exercises     */
 /*---------------------------*/
-.exercise-drop-text {
+
+.exercise-text {
     float: left;
     width: 500px;
     line-height: 22px;
 }
-.textentry-item {
-    border:1px solid black;
-    width:130px;
-    height:20px;
-    display:inline-block;
-}
+
+/*---------------------------*/
+/* WIDGET: sleepopgave       */
+/*---------------------------*/
+
 .exercise-drop-cells {
     float: right;
     width: 142px;    
@@ -404,6 +405,29 @@ iframe {
     padding-left: 32px;
     height: 26px;
     margin-top: 5px;
+}
+
+/*---------------------------*/
+/* WIDGET: entryopgave       */
+/*---------------------------*/
+.entry-item {
+    width:140px;
+    height:19px;
+    border: 1px solid #888;
+    display:inline-block;
+    vertical-align: middle;
+    margin-top: 0px;
+}
+
+.entry-item.correct {
+    border: 1px solid #000;
+    background-color:green;
+    box-shadow: 0 0 10px green;
+}
+.entry-item.wrong {
+    border: 1px solid #000;
+    background-color:red;
+    box-shadow: 0 0 10px red;
 }
 /*---------------------------*/
 /* pages                     */
