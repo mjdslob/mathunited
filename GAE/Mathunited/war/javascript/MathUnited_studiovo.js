@@ -83,6 +83,7 @@ function checkEntryExerciseComplete(exerciseId)
         }
     });
 
+    $(".exercise-result-show[exercise-id='" + exerciseId + "']").hide();
     if (cancel) {
         $(".exercise-result-check[exercise-id='" + exerciseId + "']").hide();
     }
@@ -112,7 +113,7 @@ String.prototype.translate = function (from, to) {
     return str;
 }
 
-function checkEntryExercise(exerciseId)
+function checkEntryExercise(exerciseId, casesensitive, showanwsersbutton)
 {
     var items = $(".exercise-item[exercise-id='" + exerciseId + "']").find(".entry-item");
     var allcorrect = true;
@@ -122,7 +123,13 @@ function checkEntryExercise(exerciseId)
         var answers = entryItem.attr("answers").split("|");
         answers.pop();
         $.each(answers, function (index, value) {
-            if (entryItem.val().trim().toLowerCase() == value.translate("4250318697qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890").toLowerCase())
+            var entryVal = entryItem.val().trim();
+            if (!casesensitive)
+                entryVal = entryVal.toLowerCase();
+            var compareVal = value.translate("4250318697qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890");
+            if (!casesensitive)
+                compareVal = compareVal.toLowerCase();
+            if (entryVal == compareVal)
                 entryCorrect = true;
         });
         if (entryCorrect)
@@ -138,10 +145,28 @@ function checkEntryExercise(exerciseId)
         }
     });
 
-    if (allcorrect)
+    if (allcorrect) {
         $(".exercise-result-mark[exercise-id='" + exerciseId + "']").show();
-    else
+        $(".exercise-result-show[exercise-id='" + exerciseId + "']").hide();
+    }
+    else {
         $(".exercise-result-mark[exercise-id='" + exerciseId + "']").hide();
+        if (showanwsersbutton)
+            $(".exercise-result-show[exercise-id='" + exerciseId + "']").show();
+    }
+}
+
+function showEntryExercise(exerciseId) {
+    var items = $(".exercise-item[exercise-id='" + exerciseId + "']").find(".entry-item");
+    items.each(function (index) {
+        var entryItem = $(this);
+        var answers = entryItem.attr("answers").split("|");
+        var compareVal = answers[0].translate("4250318697qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890");
+        entryItem.val(compareVal);
+        entryItem.removeClass("wrong");
+        entryItem.removeClass("correct");
+    });
+    $(".exercise-result-check[exercise-id='" + exerciseId + "']").hide();
 }
 
 

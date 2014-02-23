@@ -146,13 +146,25 @@ extension-element-prefixes="exsl">
   </xsl:template>
 
   <xsl:template match="item[@type='entry']" mode="exercise-item">
+    <xsl:variable name="casesensitive">
+      <xsl:choose>
+        <xsl:when test="not(@casesensitive)">false</xsl:when>
+        <xsl:otherwise><xsl:value-of select="@casesensitive"/></xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="showanwsersbutton">
+      <xsl:choose>
+        <xsl:when test="not(@showanwsersbutton)">false</xsl:when>
+        <xsl:otherwise><xsl:value-of select="@showanwsersbutton"/></xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>    
     <xsl:variable name="exercise-id" select="generate-id()" />
-    <xsl:attribute name="exercise-id">
-      <xsl:value-of select="$exercise-id" />
-    </xsl:attribute>
+    <xsl:attribute name="exercise-id"><xsl:value-of select="$exercise-id" /></xsl:attribute>
     <div class="exercise-item-entry">
       <div class="exercise-result">
-        <div class="exercise-result-check" onclick="checkEntryExercise('{$exercise-id}')" style="display: none" exercise-id="{$exercise-id}">Controleer</div>
+        <div class="exercise-result-check" onclick="checkEntryExercise('{$exercise-id}', {$casesensitive}, {$showanwsersbutton})" style="display: none" exercise-id="{$exercise-id}">Controleer</div>
+        <div class="clear-fix"></div>
+        <div class="exercise-result-show" onclick="showEntryExercise('{$exercise-id}')" style="display: none" exercise-id="{$exercise-id}">Toon antwoorden</div>
         <div class="clear-fix"></div>
         <div class="exercise-result-mark" style="display: none" exercise-id="{$exercise-id}">Alle antwoorden zijn correct!</div>
       </div>
@@ -166,6 +178,7 @@ extension-element-prefixes="exsl">
           <xsl:with-param name="exercise-id" select="$exercise-id"></xsl:with-param>
         </xsl:apply-templates>
       </div>
+      <div class="clear-fix"></div>
     </div>
   </xsl:template>
   <xsl:template match="entry-item" mode="question">

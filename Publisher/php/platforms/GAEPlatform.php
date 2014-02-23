@@ -170,9 +170,9 @@ class GAEPlatform extends Platform {
             if (strncmp($response, 'error', 5)==0) 
                 throw new Exception($response);
             else if (strncmp($response, 'info: ', 6)==0) 
-                $logger->trace(LEVEL_INFO, 'TextFile stored ('.$response.')');      
+                $logger->trace(LEVEL_INFO, 'TextFile '.$id.' stored ('.$response.')');      
             else
-                $logger->trace(LEVEL_INFO, 'TextFile transfer response = '.$response);      
+                $logger->trace(LEVEL_INFO, 'TextFile '.$id.' transfer response = '.$response);      
         }
         
         curl_close($ch);

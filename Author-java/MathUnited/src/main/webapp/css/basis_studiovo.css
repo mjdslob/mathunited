@@ -251,11 +251,8 @@ iframe {
 /*---------------------------*/
 .exercise {
     width:100%;
-    /*border:1px solid black;*/
-    padding:5px;
     position:relative;
-    left:-5px;
-    margin-bottom:5px;
+    margin-bottom:0.5em;
 }
 .exercise-multi-item {
     /*
@@ -387,6 +384,19 @@ iframe {
     font-weight:bold;
     cursor:pointer;
     margin-right: 0.5em;
+    margin-bottom: 0.5em;
+    width: 124px;
+    text-align: center;
+    float: right;
+}
+.exercise-result-show {
+    display:inline-block;
+    background-color: #528CE0;
+    padding:4px 10px;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    margin-right: 0.5em;
     width: 124px;
     text-align: center;
     float: right;
@@ -394,9 +404,7 @@ iframe {
 .exercise-result
 {
     padding-top: 5px;
-    position: absolute;
-    right: 0;
-    top: 0;
+    float: right;
 }
 .exercise-result-mark
 {
