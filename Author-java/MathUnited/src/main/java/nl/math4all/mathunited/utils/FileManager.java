@@ -167,6 +167,7 @@ System.out.println("Write to file: "+fname);
             newDoc.appendChild(newDoc.importNode(node,true));
             
         }
+        
         LSOutput output = impl.createLSOutput();
         File file = new File(fname);
         if(!file.exists()){

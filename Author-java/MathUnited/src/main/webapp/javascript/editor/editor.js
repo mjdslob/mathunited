@@ -96,6 +96,10 @@ function onRemove(editor) {
     parent.innerHTML = resultStr;
         
     MathJax.Hub.Queue(["Typeset",MathJax.Hub,editor.id]);
+    $('script',parent).each(function() { //bugfix: a '<' symbol messes up the xml document
+       var str = this.text.replace('<','&lt;');
+       $(this).text(str);
+    });
     //deal with images
     $('img',parent).each(function() {
         var img = $(this);
@@ -418,6 +422,10 @@ function submitDocument(repo, comp, subcomp) {
             tinymce.get(ed.id).remove();
         }
     }
+    $('script',$('.pageDiv').first()).each(function() { //bugfix: a '<' symbol messes up the xml document
+       var str = this.text.replace('<','&lt;');
+       $(this).text(str);
+    });
     var html = $('.pageDiv').first().html();
     var str = repo+'\n'+comp+'\n'+subcomp+'\n'+html;
 //    html = encodeURIComponent(html);

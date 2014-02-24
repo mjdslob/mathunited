@@ -890,7 +890,7 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="definition" mode="content">
    <div class="definition">
        <a>
-           <xsl:attribute name="href"><xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',@id,'&amp;variant=',$variant,'&amp;item=theory')"/></xsl:attribute>
+           <xsl:attribute name="href"><xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',@id,'&amp;variant=',$variant,$arg_parent,$arg_repo,'&amp;item=theory')"/></xsl:attribute>
            <xsl:apply-templates mode="content"/>
        </a>
    </div>
@@ -906,7 +906,7 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="activity" mode="content">
    <div class="definition">
        <a>
-           <xsl:attribute name="href"><xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',@id,'&amp;variant=',$variant,'&amp;item=theory')"/></xsl:attribute>
+           <xsl:attribute name="href"><xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',@id,'&amp;variant=',$arg_parent,$arg_repo,$variant,'&amp;item=theory')"/></xsl:attribute>
            <xsl:apply-templates mode="content"/>
        </a>
    </div>

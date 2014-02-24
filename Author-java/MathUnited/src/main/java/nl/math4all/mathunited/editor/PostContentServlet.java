@@ -35,6 +35,9 @@ import nl.math4all.mathunited.configuration.Component;
 import nl.math4all.mathunited.resolvers.ContentResolver;
 import nl.math4all.mathunited.utils.UserManager;
 import nl.math4all.mathunited.utils.FileManager;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.*;
+
 
 //mathunited.pragma-ade.nl/MathUnited/view?variant=basis&comp=m4a/xml/12hv-me0&subcomp=3&item=explore
 // - fixed parameters: variant, comp (component), subcomp (subcomponent).
@@ -101,7 +104,6 @@ public class PostContentServlet extends HttpServlet {
 	         htmlBuffer.append(sCurrentLine);
             }
             String html = htmlBuffer.toString();
-            System.out.println(html);
             if(comp==null) {
                 throw new Exception("Het verplichte argument 'comp' ontbreekt.");
             } 
