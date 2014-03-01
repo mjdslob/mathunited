@@ -467,9 +467,17 @@ indent="yes" encoding="utf-8"/>
             <xsl:when test="@width"><xsl:value-of select="@width"/></xsl:when>
             <xsl:otherwise>500</xsl:otherwise>
         </xsl:choose>
-    </xsl:variable> 
-   <div class="popup-wrapper">
-       <span class="popup-label" onclick="{concat('javascript:togglePopup(',$width,', this)')}"><xsl:value-of select="@label"/></span>
+    </xsl:variable>
+    <xsl:variable name="restart">
+      <xsl:choose>
+        <xsl:when test="@restart">
+          <xsl:value-of select="@restart"/>
+        </xsl:when>
+        <xsl:otherwise>false</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+  <div class="popup-wrapper">
+       <span class="popup-label" onclick="{concat('javascript:togglePopup(',$width,',',$restart,', this)')}"><xsl:value-of select="@label"/></span>
        <span class="popup-label-text"><xsl:value-of select="@titel"/></span>
        <div class="popup-content">
            <xsl:attribute name="title">

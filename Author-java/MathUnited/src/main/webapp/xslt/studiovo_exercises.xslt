@@ -15,6 +15,7 @@ extension-element-prefixes="exsl">
       <xsl:apply-templates select="." mode="content"/>
     </div>
   </xsl:template>
+
   <xsl:template match="exercise-sequence" mode="content">
     <div class="exercise-sequence">
       <xsl:for-each select="*">
@@ -33,6 +34,7 @@ extension-element-prefixes="exsl">
       </xsl:for-each>
     </div>
   </xsl:template>
+  
   <xsl:template match="exercise" mode="content">
     <div class="exercise">
       <xsl:if test="@width">
@@ -65,7 +67,13 @@ extension-element-prefixes="exsl">
       <xsl:apply-templates select="." mode="exercise-item"/>
     </div>
   </xsl:template>
+  
   <xsl:template match="item[@type='closed']" mode="exercise-item">
+    <xsl:if test="itemcontent/intro">
+      <div class="exercise-intro">
+        <xsl:apply-templates select="itemcontent/intro" mode="content"/>
+      </div>
+    </xsl:if>
     <div class="choice-exercise-question">
       <xsl:apply-templates select="itemcontent/itemintro/*" mode="content"/>
     </div>
@@ -141,6 +149,7 @@ extension-element-prefixes="exsl">
       </div>
     </div>
   </xsl:template>
+  
   <xsl:template match="drop-item" mode="content">
     <span class="drop-item" nr="{count(preceding-sibling::drop-item)+1}"></span>
   </xsl:template>
@@ -181,6 +190,7 @@ extension-element-prefixes="exsl">
       <div class="clear-fix"></div>
     </div>
   </xsl:template>
+  
   <xsl:template match="entry-item" mode="question">
     <xsl:param name="exercise-id" />
     <input class="entry-item" nr="{count(preceding-sibling::entry-item)+1}" exercise-id="{$exercise-id}">
@@ -193,5 +203,44 @@ extension-element-prefixes="exsl">
     </input>
   </xsl:template>
 
+  <xsl:template match="item[@type='open']" mode="exercise-item">
+    <div class="label">
+      <xsl:value-of select="@label"/>
+    </div>
+    <xsl:if test="itemcontent/intro">
+      <div class="exercise-intro">
+        <xsl:apply-templates select="itemcontent/intro" mode="content"/>
+      </div>
+    </xsl:if>
+    <div class="exercise-item-open">
+      <xsl:apply-templates select="itemcontent/question" mode="content"/>
+    </div>
+  </xsl:template>
+
+
+  <!--  ******************** -->
+  <!--   OPEN ITEM ANSWERS   -->
+  <!--  ******************** -->
+
+  <xsl:template match="answers-section" mode="content">
+    <div class="answers-section">
+      <xsl:apply-templates select="//item[@type='open']" mode="answers" />
+    </div>
+  </xsl:template>
+
+  <xsl:template match="item" mode="answers">
+    <div class="answer">
+      <div class="label">
+        <xsl:value-of select="@label"/>
+      </div>
+      <div class="content">
+        <xsl:apply-templates select="answer" mode="answer" />
+      </div>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="answer" mode="answer">
+    <xsl:apply-templates />
+  </xsl:template>
 
 </xsl:stylesheet>

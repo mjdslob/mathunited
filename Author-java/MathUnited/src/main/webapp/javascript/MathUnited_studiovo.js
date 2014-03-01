@@ -398,7 +398,7 @@ function toggleMovie(elm) {
         popupDialogs[index].dialog('open');
 }
 var tempvar = "";
-function togglePopup(width, elm) {
+function togglePopup(width, restart, elm) {
     var parent = $(elm).parents('.popup-wrapper').first();
     var content = $('.popup-content', parent).first();
     var index = popupElements.indexOf(elm);
@@ -416,8 +416,10 @@ function togglePopup(width, elm) {
             beforeClose: function (event, ui) {
                 // the popup can contain a playing video. We dont want the video (or anything else) to play on when the popup is closed. 
                 // Therefore we have to remove the html in the popup, store it and insert it back into the popup when its reopened again.
-                content.data('storedhtml', content.html());
-                content.empty();
+                if (restart) {
+                    content.data('storedhtml', content.html());
+                    content.empty();
+                }
             }
         });
         popupElements.push(elm);
@@ -430,7 +432,8 @@ function togglePopup(width, elm) {
         });;
     }
     else {
-        popupContent[index].html(popupContent[index].data('storedhtml'));
+        if (restart)
+            popupContent[index].html(popupContent[index].data('storedhtml'));
         popupDialogs[index].dialog('open');
     }
 }

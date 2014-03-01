@@ -260,12 +260,6 @@ iframe {
     padding:15px;
     */
 }
-.exercise-multi-item .exercise-item {
-    display:none;
-}
-.exercise-multi-item .exercise-item.selected {
-    display:block;
-}
 /*---------------------------*/
 /* WIDGET: meerkeuzevraag    */
 /*---------------------------*/
@@ -321,13 +315,28 @@ iframe {
     line-height: 22px;
 }
 
+.exercise-item .label {
+    font-weight: bold;
+}
+
+.answers-section .answer
+{
+    margin-bottom: 1em;
+}
+
+.answers-section .label
+{
+    font-weight: bold;
+}
+
 /*---------------------------*/
 /* WIDGET: sleepopgave       */
 /*---------------------------*/
 
 .exercise-drop-cells {
-    float: right;
+    float: left;
     width: 142px;    
+    margin-left: 80px;
 }
 .exercise-drop-cell {
     width:142px;
@@ -404,7 +413,8 @@ iframe {
 .exercise-result
 {
     padding-top: 5px;
-    float: right;
+    left: 580px;
+    position: absolute; /* if its inline the first answer button will misalign, so lay the result floating "on top" of the rest */
 }
 .exercise-result-mark
 {
