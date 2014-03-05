@@ -40,7 +40,7 @@ try{
         $this->comm = $_GET;
         if( isset($this->comm['repo']) ) {
             $repoId = $this->comm['repo'];
-            $this->logger = new Logger($this->loglevel, $repoId, false);
+            $this->logger = new Logger($this->loglevel, $repoId, true);
         } else {
             throw new Exception('Generate index called without repo identifier');
         }

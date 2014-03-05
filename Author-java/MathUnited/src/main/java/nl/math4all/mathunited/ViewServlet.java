@@ -121,15 +121,7 @@ public class ViewServlet extends HttpServlet {
             }
             
             //read components. To be moved to init()
-            File f = new File(config.contentRoot+repository.path+"/leerlijnen/components.xml");
-            if(!f.exists() && repository.baseRepo!=null && !repository.baseRepo.isEmpty()) {
-                LOGGER.info("Falling back to repo "+repository.baseRepo+" for components file");
-                Repository baseRepo = config.getRepos().get(repository.baseRepo);
-                f = new File(config.contentRoot+baseRepo.path+"/leerlijnen/components.xml");
-            }
-            FileInputStream is = new FileInputStream(f);
-            componentMap = Component.getComponentMap(new InputSource(is));
-            
+            componentMap = repository.readComponentMap();
             Component component = componentMap.get(comp);
             if(component==null) {
                 throw new Exception("Er bestaat geen component met id '"+comp+"'");

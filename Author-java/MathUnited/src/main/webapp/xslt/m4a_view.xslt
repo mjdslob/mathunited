@@ -409,7 +409,7 @@ indent="yes" encoding="utf-8"/>
             <span class="list-section-nr">
                 <a>
                     <xsl:attribute name="href">
-                                <xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',$subcomponents/subcomponent[number(@_nr)=$i]/@id,'&amp;variant=basis',$arg_parent,$arg_repo)"/>
+                        <xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',$subcomponents/subcomponent[number(@_nr)=$i]/@id,'&amp;variant=basis',$arg_parent,$arg_repo)"/>
                     </xsl:attribute>
                     <xsl:value-of select="$i"/>
                 </a>

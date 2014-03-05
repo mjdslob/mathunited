@@ -1,4 +1,4 @@
-WM_CMD_NONE = 0;
+fWM_CMD_NONE = 0;
 WM_CMD_LOAD_METHOD_DATA = 1;
 WM_CMD_LOAD_THREAD_DATA = 2;
 WM_CMD_SHOW_THREADS = 3;
@@ -8,7 +8,7 @@ WM_CMD_PUBLISH_SINGLE_THREAD = 7;
 WM_CMD_SHOW_THREADS2 = 8;
 WM_CMD_UPLOADQTI_SUBCOMPONENT = 9;
 WM_CMD_PUBLISH_COMPONENTFILE = 10;
-
+WM_CMD_LOAD_WORKFLOW_STATUS = 11;
 //spec:
 // - method: url to methods-overview.xml file
 // - threads: url to threads.xml file
@@ -91,6 +91,7 @@ WM_Manager.prototype.continueProcessing = function() {
           alert("Unknown command: "+cmd.code);
    }
 }
+
 
 WM_Manager.prototype.execute = function() {
     if(!this.isExecuting) {

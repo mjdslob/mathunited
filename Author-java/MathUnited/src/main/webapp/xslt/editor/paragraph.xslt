@@ -29,7 +29,7 @@ extension-element-prefixes="exsl">
 </xsl:template>
 
 <!-- DEFAULT -->
-<xsl:template match="*" mode="paragraph">
+<xsl:template match="* | xhtml:*" mode="paragraph">
     <div tag="{name()}">
         <xsl:apply-templates select="@* | node()" mode="paragraph"/>
     </div>

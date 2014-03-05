@@ -13,6 +13,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 import org.w3c.dom.Node;
+import org.w3c.dom.Element;
 import javax.xml.xpath.*;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
@@ -97,6 +98,7 @@ public class PostContentServlet extends HttpServlet {
             String _repo = br.readLine(); //not used
             String comp = br.readLine();
             String subcomp = br.readLine();
+            String status = br.readLine();
             
             StringBuffer htmlBuffer = new StringBuffer();
             String sCurrentLine;
@@ -207,9 +209,11 @@ public class PostContentServlet extends HttpServlet {
             }
             //store master file
             expression = "/root/subcomponent";
-            Node node = (Node) xpath.evaluate(expression, root, XPathConstants.NODE);
+            Element node = (Element) xpath.evaluate(expression, root, XPathConstants.NODE);
+            node.setAttribute("status", status);
             String fileStr = config.getContentRoot()+repository.path+"/" + sub.file;
             FileManager.writeToFile(fileStr, node, repository);
+            WorkflowServlet.updateStatus(repoId, subcomp, fileStr);
             
             String result = resultXML.replace("{#POSTRESULT}","true").replace("{#MESSAGE}", "success");
             pw.println(result);

@@ -415,3 +415,40 @@ p:empty {
 div[tag="alternative"][state="yes"] .editor-choice-exercise-label {
     background-color:green;
 }
+.commit-button {
+    float:left;
+    clear:left;
+    width:64px;
+    height:64px;
+}
+.commit-button p {
+    text-align:center;
+}
+.commit-button-image {
+    width:64px;
+    height:64px;
+    background-image: url('../sources/upload-icon-small.png');
+    margin:6px;
+}
+.commit-button-image:hover {
+    border:1px dashed gray;
+    margin:5px;
+}
+.commit-button-image:active {
+    border:1px dashed gray;
+    position:relative;
+    left:5px;
+    top:5px;
+    margin-right:0px;
+}
+
+#workflow-container {
+    width:200px;
+    float:left;
+    margin-left:100px;
+}
+.footer {
+    background-color: rgb(220,220,220);
+    border-top:1px solid rgb(150,150,150);
+    padding:10px;
+}

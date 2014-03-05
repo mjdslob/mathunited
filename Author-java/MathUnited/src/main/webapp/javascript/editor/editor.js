@@ -72,7 +72,14 @@ function onRemove(editor) {
     $('span[class="textref"]',parent).each(function(){
         $(this).replaceWith($('<span tag="textref" ref="'+$(this).attr('ref')+'">'+$(this).html()+'</div>'));
     });
-    
+    $('table',parent).each(function() {
+       var par = $(this);
+       par.attr('tag','table');
+       $('tbody',par).attr('tag','tbody');
+       $('tr',par).attr('tag','tr');
+       $('th',par).attr('tag','th');
+       $('td',par).attr('tag','td');
+    });
     var txt = parent.innerHTML;
 
     txt = txt.replace(/&lt;m:([a-zA-Z]*)&gt;/g,"<m:$1>");
@@ -275,7 +282,7 @@ function insertActions(jqParent) {
         });
     });
     
-    $('p,ul.paragraph,ol.paragraph,img',jqParent).each(function() {
+    $('p,ul.paragraph,ol.paragraph,table,img',jqParent).each(function() {
         if($(this).parents('.tiny-editor').length>0) return; //already attached to an editor
         if($(this).parents('div[tag="componentcontent"]').length==0) return; //not part of editable content
         
@@ -426,8 +433,10 @@ function submitDocument(repo, comp, subcomp) {
        var str = this.text.replace('<','&lt;');
        $(this).text(str);
     });
+    debugger;
+    var status = $('#workflow-container input:checked').val();
     var html = $('.pageDiv').first().html();
-    var str = repo+'\n'+comp+'\n'+subcomp+'\n'+html;
+    var str = repo+'\n'+comp+'\n'+subcomp+'\n'+status+'\n'+html;
 //    html = encodeURIComponent(html);
     $.post(commitURL, str,
         function(data) {//on success

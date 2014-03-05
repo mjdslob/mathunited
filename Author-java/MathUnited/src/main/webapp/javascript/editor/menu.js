@@ -606,7 +606,9 @@ function createCloneExercise(id) {
     $('div.tiny-editor',parent).each(function() {
         var thisElm = $(this);
         var par = $('p', thisElm);
-        thisElm.replaceWith(par);
+        var dest = $(this).parent();
+        thisElm.children().appendTo(dest);
+        thisElm.remove();
     });
     $('._editor_context_base',parent).removeAttr('num');
     $('.contextMenu',parent).remove();

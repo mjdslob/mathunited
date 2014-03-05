@@ -62,7 +62,7 @@
                     <introduction name="Inleiding" optional="true"/>
                     <explore name="Verkennen" optional="true"/>
                     <explanation name="Uitleg" multiplicity="multiple" min="1" max="3"/>
-                    <theory name="Theorie" optional="true"/>
+                    <theory name="Theorie"/>
                     <digest name="Verwerken"/>
                     <application name="Toepassen" optional="true"/>
                     <extra name="Practicum" multiplicity="multiple"/>
@@ -229,8 +229,46 @@
                         </xsl:if>
                     </div>
                     <xsl:if test="not(string-length($lock_owner)>0)">
+                      <div class="footer">
                         <xsl:variable name="commitfunc">javascript:submitDocument('<xsl:value-of select="$repo"/>','<xsl:value-of select="$comp"/>','<xsl:value-of select="$subcomp"/>')</xsl:variable>
-                        <div class="commit-button" onclick="{$commitfunc}"></div>
+                        <div class="commit-button" onclick="{$commitfunc}">
+                            <div class="commit-button-image"/>
+                            <p>Opslaan</p>
+                        </div>
+                        <div id="workflow-container">
+                            <div class="workflow-item"><input type="radio" name="workflow" value="bewerking">
+                                <xsl:if test="not(/subcomponent/@status) or /subcomponent/@status='bewerking'"><xsl:attribute name="checked" select="checked"/></xsl:if>
+                                </input>
+                                <span>In bewerking</span>
+                            </div>
+                            <div class="workflow-item"><input type="radio" name="workflow" value="auteur_gereed">
+                                <xsl:if test="/subcomponent/@status='auteur_gereed'"><xsl:attribute name="checked" select="checked"/></xsl:if>
+                                </input>
+                                <span>Auteur gereed</span>
+                            </div>
+                            <div class="workflow-item"><input type="radio" name="workflow" value="coauteur_gereed">
+                                <xsl:if test="/subcomponent/@status='coauteur_gereed'"><xsl:attribute name="checked" select="checked"/></xsl:if>
+                                </input>
+                                <span>Co-auteur gereed</span>
+                            </div>
+                            <div class="workflow-item"><input type="radio" name="workflow" value="assets_gereed">
+                                <xsl:if test="/subcomponent/@status='assets_gereed'"><xsl:attribute name="checked" select="checked"/></xsl:if>
+                                </input>
+                                <span>Assets gereed</span>
+                            </div>
+                            <div class="workflow-item"><input type="radio" name="workflow" value="eindredactie_gereed">
+                                <xsl:if test="/subcomponent/@status='eindredactie_gereed'"><xsl:attribute name="checked" select="checked"/></xsl:if>
+                                </input>
+                                <span>Eindredactie gereed</span>
+                            </div>
+                            <div class="workflow-item"><input type="radio" name="workflow" value="productie_gereed">
+                                <xsl:if test="/subcomponent/@status='productie_gereed'"><xsl:attribute name="checked" select="checked"/></xsl:if>
+                                </input>
+                                <span>Klaar voor productie</span>
+                            </div>
+                        </div>
+                        <div style="clear:both"/>
+                      </div>
                     </xsl:if>
                 </div>
             </body>

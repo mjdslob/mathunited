@@ -53,6 +53,10 @@
         <servlet-name>encodeBase64</servlet-name>
         <servlet-class>nl.math4all.mathunited.GeogebraGenerator</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>WorkflowServlet</servlet-name>
+        <servlet-class>nl.math4all.mathunited.editor.WorkflowServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>view</servlet-name>
         <url-pattern>/view</url-pattern>
@@ -104,6 +108,10 @@
     <servlet-mapping>
         <servlet-name>encodeBase64</servlet-name>
         <url-pattern>/geogebra</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>WorkflowServlet</servlet-name>
+        <url-pattern>/workflow</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

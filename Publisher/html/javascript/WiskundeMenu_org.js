@@ -8,13 +8,37 @@ MU_View.prototype.showThread = function(thread) {
     this.removeThreadElements();
     //first create html elements for the content.
     this.createThreadElements(thread);
+    $('#thread-title').html(thread.title);
+    $('#thread-info').html(thread.info);
     //add dynamic behavior
     //--------------------
     this.createWidgets();
 }
 
+MU_View.prototype.selectModule = function(mod) {
+    var elm = $('#mod-'+mod.id);
+    elm.siblings().removeClass('mu-selected');
+    elm.addClass('mu-selected');
+    var innerElm = $('#subcomponent-container-inner');
+    var html = elm.next('div').html();
+    
+    if(wm.view){//position list under node in bolletjesschema
+        $('#subcomponent-container').css('left', ''+(mod.pos.x/wm.view.OVERSAMPLING-5)+'px')
+    }
+    innerElm.html(html);
+/*    
+    innerElm.fadeOut(300, function(){
+        var html = elm.next('div').html();
+        innerElm.html(html);
+        innerElm.fadeIn(300);
+    });
+*/    
+
+}
+
 MU_View.prototype.showThreadMenu = function(threads,selectedId) {
    var parent = $('#choose-thread-container');
+   var _this = this;
    for(var ii=0;ii<threads.length;ii++) {
        var thread = threads[ii];
        var elm = $('<div class="mu-thread-menu-item" thread="'+thread.id+'"/>')
@@ -24,7 +48,6 @@ MU_View.prototype.showThreadMenu = function(threads,selectedId) {
            elm.addClass('mu-thread-item-selected');
        }
        elm.click(function() {
-           wm.showThread($(this).attr('thread'));
            $(this).siblings().removeClass('mu-thread-item-selected');
            $(this).addClass('mu-thread-item-selected');
        });
@@ -43,20 +66,15 @@ MU_View.prototype.removeThreadElements = function() {
 
 MU_View.prototype.createThreadElements = function(thread) {
     var n = thread.modules.length;
-    this.container = $('#thread-info').html( thread.info );
-    this.container = $('#thread-title').html( thread.title );
     var parent = $('<div id="components-container"/>').appendTo($('#component-widget'));
-    var w = $('#component-widget').width();
-    parent.css('display','none').css('width',Math.round(w/2)-1);
     for(var ii=0;ii<n; ii++) {
         var comp = thread.modules[ii];
-        var ref = this.viewURL[comp.method]+comp.file;
+        var ref = this.viewURL+comp.file;
         var elm = $('<div class="header" id="mod-'+comp.id+'">'+comp.name+ '</div>');
-        if(comp.state!='live') elm.addClass('mu-header-inactive');
+        if(comp.publishState!='live') elm.addClass('mu-header-inactive');
         parent.append( elm );
         var contentDiv =  $('<div></div>');
         contentDiv.appendTo(parent);
-        contentDiv.append($('<div class="subcomponent-header"/>').html(comp.name));
         if(comp.method.name=='wm') {
             contentDiv.append($('<ol start=0></ol>'));
         } else {
@@ -67,8 +85,8 @@ MU_View.prototype.createThreadElements = function(thread) {
         for(var jj=0;jj<nsub;jj++) {
              var subc = comp.subcomponents[jj];
              if(comp.publishState=='live'){
-                 var ref=this.viewURL[comp.method.name]+'&comp='+comp.id+'&subcomp='+subc.id;
-                 var elm = $('<li></li>').html(
+                 var ref=this.viewURL+'&comp='+comp.id+'&subcomp='+subc.id;
+                 var elm = $('<li id="li-'+subc.id+'"></li>').html(
                      '<a target="_parent" href="'+ref+'">'+subc.title+'</a>');
              } else {
                  var elm = $('<li class="mu-subcomponent-inactive"></li>').html(subc.title);
@@ -77,8 +95,6 @@ MU_View.prototype.createThreadElements = function(thread) {
 
         }
     }
-    parent.css('display','block');
-//    $('#components-container').accordion();
 }
 
 MU_View.prototype.showLoadIcon = function(parentId) {
@@ -95,18 +111,18 @@ MU_View.prototype.hideLoadIcon = function() {
 }
 
 MU_View.prototype.createWidgets = function() {
+    var _this = this;
     var par = $('#component-widget');
     var w = $('#component-widget').width();
     var sub_cont = $('<div id="subcomponent-container" />')
-            .css('float','left')
-            .css('width',Math.round(w/2)-1)
             .appendTo(par);
     $('#components-container').css('float','left');
     $('#components-container .header')
           .prepend($('<div class="ui-icon ui-icon-triangle-1-e"/>'))
           .click(function() {
-                    $(this).siblings().removeClass('mu-selected');
-                    $(this).addClass('mu-selected');
+                    var id = $(this).attr('id').replace('mod-','');
+                    var mod = wm.modules[id];
+                    wm.selectModule(mod);
               })
           .mouseover(function() {
                     $(this).addClass('mu-active');
@@ -122,16 +138,7 @@ MU_View.prototype.createWidgets = function() {
     $('#components-container').addClass('ui-widget');
     $('#components-container .header')
                  .next('div').addClass('ui-widget-content ui-corner-all ui-helper-hidden');
-    //add functionality
-    $('#components-container .header').click(function() {
-        var _this = this;
-        innerElm.fadeOut(300, function(){
-            var html = $(_this).next('div').html();
-            innerElm.html(html);
-            innerElm.fadeIn(300);
 
-        });
-    })
     $('#component-widget').append(  $('<div/>').css('clear','both') );
 
     $('<div id="components-padding" class="header"></div>')
@@ -205,7 +212,6 @@ function gup( name )
 
 function WM_Link(mod1, mod2) {
     this.state = WM_MODULE_STATE_NORMAL;
-    this.selected = false;
     this.mod1 = mod1;
     this.mod2 = mod2;
 }
@@ -280,6 +286,10 @@ WM_Manager.prototype.continueProcessing = function() {
    }
    var cmd = this.CallStack.pop();
    switch(cmd.code) {
+     case WM_CMD_INIT_CANVAS:
+          this.initCanvas(cmd.args);
+          this.continueProcessing();
+          break;
      case WM_CMD_LOAD_METHOD_DATA:
           this.setMessage('Componentenoverzicht wordt geladen...');
           this.loadMethodData(cmd.args);   //generic: load general info from mathunited
@@ -296,10 +306,6 @@ WM_Manager.prototype.continueProcessing = function() {
           break;
      case WM_CMD_INIT_VIEWS:
           this.initViews();
-          break;
-     case WM_CMD_INIT_CANVAS:
-          this.initCanvas(cmd.args);
-          this.continueProcessing();
           break;
      default:
           alert("Unknown command: "+cmd.code);
@@ -331,10 +337,14 @@ WM_Manager.prototype.initViews = function() {
 
 WM_Manager.prototype.initCanvas = function(filter) {
     try {
-       this.view.setTitle(filter.niveau[0] + ' leerjaar ' + filter.jaar[0])
+       if(filter) {
+           this.view.setTitle(filter.niveau[0] + ' leerjaar ' + filter.jaar[0])
+       } else {
+           this.view.setTitle('');
+       }
        this.view.setModules(this.modules);
        this.view.drawModules();
-       this.selectThread(this.modules[0]);
+       this.selectModule(this.modules[0]);
     } catch(error) {
         //alert('Er is een fout opgetreden');
         var debug = document.getElementById('debug');
@@ -342,26 +352,19 @@ WM_Manager.prototype.initCanvas = function(filter) {
           +'<br/>file: '+error.fileName;
     }
 }
-
-WM_Manager.prototype.setSelectedThread = function(thread) {
-    this.view.threadSelected(thread);
-    this.threadView.showThread(thread);
-}
 WM_Manager.prototype.loadMethodData = function(args) {
     var _this=this;
     this.modules = [];
     $.get(args.url,
           function(xml) {
               var methods = [];
-/*
+
               var sel;
               if(args.methodId) {
                   sel = $(xml).find('method[id='+args.methodId+']');
               } else {
                   sel = $(xml).find('method');
               }
-*/              
-              sel = $(xml).find('method');
 
               sel.each(function(){
                   var method = new WM_Method({
@@ -372,7 +375,8 @@ WM_Manager.prototype.loadMethodData = function(args) {
                   methods.push(method);
 
                   $(this).find('component').each(function(){
-                     var comp_id = $(this).attr('id')
+                     var comp_id = $(this).attr('id');
+                     var path = $(this).attr('basePath')+$(this).attr('relativePath');
                      var comp_name = $(this).children('title').text()
                      var comp_file = $(this).children('file').text()
                      var elm_state = $(this).children('state');
@@ -403,6 +407,7 @@ WM_Manager.prototype.loadMethodData = function(args) {
                          file         : comp_file,
                          publishState : comp_state,
                          method       : method,
+                         path         : path,
                          subcomponents: subcomponents
                      });
                      _this.modules[comp_id]=module; //store with id as key
@@ -429,21 +434,24 @@ WM_Manager.prototype.loadThreads = function(args) {
             if(args.threadId) {
                 sel = $(xml).find('thread[id='+args.threadId+']');
                 if(!sel || sel.length==0) {
-                    alert('Geen leerlijnen gevonden die voldoen aan criterium "'+args.threaId+'".');
+                    alert('Geen leerlijnen gevonden die voldoen aan criterium "'+args.threadId+'".');
                 }
             } else {
-            sel = $(xml).find('thread').filter(function() {
-                    //check if this thread matches the filter
-                    var year = $(this).children('year').text();
-                    var type = $(this).children('schooltype').text();
-                    var ii = 0;
-                    while( ii<years.length && year.indexOf(years[ii])==-1 ) ii++;
-                    if(ii==years.length) return false;
-                    ii=0;
-                    while( ii<types.length && types[ii] != type ) ii++;
-                    if(ii==types.length) return false;
-                    return true;
+                sel = $(xml).find('thread');
+                /*
+                sel = $(xml).find('thread').filter(function() {
+                        //check if this thread matches the filter
+                        var year = $(this).children('year').text();
+                        var type = $(this).children('schooltype').text();
+                        var ii = 0;
+                        while( ii<years.length && year.indexOf(years[ii])==-1 ) ii++;
+                        if(ii==years.length) return false;
+                        ii=0;
+                        while( ii<types.length && types[ii] != type ) ii++;
+                        if(ii==types.length) return false;
+                        return true;
                 });
+                */
                 if(!sel || sel.length==0) {
                     alert('Geen leerlijnen gevonden.');
                 }
@@ -500,27 +508,9 @@ WM_Manager.prototype.loadThreads = function(args) {
 WM_Manager.prototype.hoverModule = function(id,active) {
     if(this.view) this.view.hoverModule(this.modules[id],active);
 }
-
-//search all threads through the supplied segment and keep the one that has most
-//elements already selected
-WM_Manager.prototype.selectThread = function(mod) {
-    if(mod.selected) return;  //already selected, so nothing to do
-    var modThreadArr = mod.threads;
-    var bestScore = -1;
-    var bestThread = null;
-    for(var ii=0;ii<modThreadArr.length;ii++) {
-        var score = 0;
-        var mods = modThreadArr[ii].modules;
-        for(var jj=0;jj<mods.length;jj++) {
-           if(mods[jj] && mods[jj].selected ) score++
-        }
-        if(score>bestScore){
-            bestScore = score;
-            bestThread = modThreadArr[ii];
-        }
-    }
-    this.setSelectedThread(bestThread);
-    this.view.setSelectedTrajectory(bestThread);
+WM_Manager.prototype.selectModule = function(module) {
+    if(this.view)  this.view.selectModule(module);
+    this.threadView.selectModule(module);
 }
 ;
 //a provider delivers content.
@@ -543,6 +533,7 @@ function WM_Module(spec) {
     if(spec.method) this.method = spec.method; else this.method='<no provider>';
     if(spec.subcomponents) this.subcomponents = spec.subcomponents; else this.subcomponents = [];
     if(spec.publishState) this.publishState = spec.publishState;
+    if(spec.path) this.path = spec.path;
     this.selected = false;
     this.threads = [];
     this.pos = {x:0,y:0};
@@ -574,7 +565,7 @@ WM_Module.prototype.addPreLink = function(link) {
 }
 
 WM_Module.prototype.calcPositions = function(base) {
-    this.pos = {x: base.x, y: base.y+ (this.method.displayLine+0.5)*wm.view.LINE_DISTANCE};
+    this.pos = {x: base.x, y: base.y+ 0.5*wm.view.LINE_DISTANCE};
     var endpos = this.pos.x+wm.view.MODULE_DISTANCE+2*wm.view.MODULE_RADIUS;
     for(var ii=0;ii<this.post.length;ii++){
         var modAfter = this.post[ii].other(this);
@@ -606,6 +597,21 @@ WM_Module.prototype.getColor = function(state,selected) {
          return 'rgb(0,0,0)';
     }
 }
+WM_Module.prototype.getTextColor = function(state,selected) {
+    if(state==null) state = this.state;
+    if(selected==null) selected= this.selected;
+
+    switch(state) {
+         case WM_SEGMENT_STATE_NORMAL:
+             if(selected) return wm.view.SEGMENT_TEXT_COLOR_HOVER;
+             else         return wm.view.SEGMENT_TEXT_COLOR_NORMAL;
+             break;
+         case WM_SEGMENT_STATE_HOVER:
+             return wm.view.SEGMENT_TEXT_COLOR_HOVER;
+             break;
+         return 'rgb(0,0,0)';
+    }
+}
 
 
 WM_Module.prototype.draw = function(ctx) {
@@ -618,6 +624,18 @@ WM_Module.prototype.draw = function(ctx) {
      ctx.beginPath();
      ctx.moveTo(this.pos.x+wm.view.MODULE_RADIUS, this.pos.y);
      ctx.arc(this.pos.x, this.pos.y, wm.view.MODULE_RADIUS, 0, 2*Math.PI,true);
+     //draw module title
+     ctx.font = wm.view.MODULE_TEXT_FONT;
+     var ang = wm.view.MODULE_TEXT_ANGLE;
+     var dx = Math.cos(ang)*this.pos.x;
+     var dy = Math.sin(ang)*this.pos.x;
+     ctx.translate(this.pos.x+wm.view.MODULE_RADIUS*1.5, this.pos.y-wm.view.MODULE_RADIUS*1.5)
+     ctx.rotate(ang);
+     ctx.fillStyle = this.getTextColor();
+     ctx.fillText(this.name, 0, 0);
+     ctx.rotate(-ang);
+     ctx.translate(-this.pos.x-wm.view.MODULE_RADIUS*1.5, -this.pos.y+wm.view.MODULE_RADIUS*1.5)
+     
      ctx.stroke();
 }
 WM_Module.prototype.drawPreline = function(ctx) {
@@ -625,7 +643,7 @@ WM_Module.prototype.drawPreline = function(ctx) {
          //highest state prevails: hover over normal
          var link = this.pre[ii];
          var otherMod = link.other(this);
-         ctx.strokeStyle=this.getColor(link.state,link.selected);
+         ctx.strokeStyle=wm.view.SEGMENT_COLOR_NORMAL;
          ctx.beginPath();
          var d = [this.pos.x-otherMod.pos.x,this.pos.y-otherMod.pos.y];
          var scale = 1/Math.sqrt(d[0]*d[0]+d[1]*d[1]);
@@ -695,6 +713,25 @@ Raster.prototype.addItem = function(item,shift) {
             }
         }
     }
+    //add textbox
+    bx+=wm.view.MODULE_RADIUS*1.5/pitch.x;
+    by-=wm.view.MODULE_RADIUS*1.5/pitch.y;
+    var textwidth = wm.view.ctx.measureText(item.name, wm.view.MODULE_TEXT_FONT);
+    textwidth = Math.ceil(textwidth.width*3/pitch.x);//don't know why I need factor 3
+    for(var ii=0;ii<textwidth;ii++) {
+        for(var jj=0;jj<bh;jj++) {
+            var xx = Math.round(bx+Math.cos(wm.view.MODULE_TEXT_ANGLE)*ii-Math.sin(wm.view.MODULE_TEXT_ANGLE)*jj);
+            var yy = Math.round(by+Math.sin(wm.view.MODULE_TEXT_ANGLE)*ii+Math.cos(wm.view.MODULE_TEXT_ANGLE)*jj);
+            if(xx<this.width && xx>=0) {
+                var col = this.pix[xx];
+                if(yy<this.height && yy>=0) {
+                    col[yy] = item;
+                }
+            }
+        }
+    }
+    
+
 }
 Raster.prototype.getItem = function(x,y) {
     x = Math.round(x/pitch.x);
@@ -805,17 +842,30 @@ WM_Thread.prototype.addModule = function(mod) {
     }
 }
 ;function WM_View() {
-    this.LINE_DISTANCE = 40; //will be overruled by $('#canvas').css('height')/wm.providers.length;
-    this.MODULE_DISTANCE = 18;
-    this.MODULE_RADIUS=8;
-    this.MODULE_THICKNESS = 3;
-    this.SEGMENT_COLOR_HOVER = 'rgb(255,0,0)';
-    this.SEGMENT_COLOR_SELECTED = '#8cdb24';//rgb(0,150,0)';
-    this.SEGMENT_COLOR_NORMAL = 'rgb(192,192,192)';
+    this.OVERSAMPLING = 2;//to compensate for bad text quality
+    this.LINE_DISTANCE = 40*this.OVERSAMPLING; 
+    this.MODULE_DISTANCE = 30*this.OVERSAMPLING;
+    this.MODULE_RADIUS=8*this.OVERSAMPLING;
+    this.MODULE_THICKNESS = 3*this.OVERSAMPLING;
+    this.SEGMENT_COLOR_HOVER = '#CC0000';
+    this.SEGMENT_COLOR_SELECTED = '#CC0000';//rgb(0,150,0)';
+    this.SEGMENT_COLOR_NORMAL = '#8cdb24';
+    this.SEGMENT_TEXT_COLOR_NORMAL = '#6060A8';
+    this.SEGMENT_TEXT_COLOR_HOVER = '#CC0000';
     this.MODULE_HOVER_OFFSET = {x:5, y:20};
-    this.CANVAS_MODULE_SHIFT = {x:180, y:0};
+    this.MODULE_TEXT_ANGLE = -Math.PI*.25;
+    this.MODULE_TEXT_FONT = 'bold 28px Helvetica';//including oversampling
+    this.CANVAS_MODULE_SHIFT = {x:30*this.OVERSAMPLING, y:10*this.OVERSAMPLING}; //shift from lower left top of canvas
     this.canvas = document.getElementById('canvas');
 
+    // implement oversampling
+    var c = $(this.canvas);
+    var cw = c.attr('width');
+    var ch = c.attr('height');
+    c.attr('width',2*cw);
+    c.attr('height',2*ch);
+    c.css('width',cw); c.css('height',ch);
+    
     //disable hover effect on touchscreens
     try {
         document.createEvent("TouchEvent");
@@ -831,28 +881,30 @@ WM_Thread.prototype.addModule = function(mod) {
         alert('Uw browser wordt helaas niet ondersteund. U dient eerst uw browser te updaten naar de nieuwste versie.');
         return;
     }
-    //var canvasPos = [this.canvas.offsetLeft,this.canvas.offsetTop];
-    var canvasPos = [0,0];
+    var canvasPos = $(this.canvas).offset();
     var hoveredItem = null;
     var _this = this;
-
-    this.raster = new Raster(this.canvas.offsetWidth-this.CANVAS_MODULE_SHIFT.x,this.canvas.offsetHeight-this.CANVAS_MODULE_SHIFT.y);
-
+    this.raster = new Raster(this.canvas.offsetWidth*this.OVERSAMPLING-this.CANVAS_MODULE_SHIFT.x,this.canvas.offsetHeight*this.OVERSAMPLING-this.CANVAS_MODULE_SHIFT.y);
 
     var getPosition = function(e) {
         e = e || window.event;
         var cursor = {x:0, y:0};
         if (e.pageX || e.pageY) {
-        cursor.x = e.pageX;
-        cursor.y = e.pageY;
+            cursor.x = e.pageX;
+            cursor.y = e.pageY;
         } else {
-        cursor.x = e.clientX + 
-                (document.documentElement.scrollLeft || document.body.scrollLeft) -
-                document.documentElement.clientLeft;
-        cursor.y = e.clientY +
-                (document.documentElement.scrollTop ||  document.body.scrollTop) -
-                document.documentElement.clientTop;
+            cursor.x = e.clientX + 
+                    (document.documentElement.scrollLeft || document.body.scrollLeft) -
+                    document.documentElement.clientLeft;
+            cursor.y = e.clientY +
+                    (document.documentElement.scrollTop ||  document.body.scrollTop) -
+                    document.documentElement.clientTop;
         }
+        
+        cursor.x-=canvasPos.left;
+        cursor.y-=canvasPos.top;
+        cursor.x*=_this.OVERSAMPLING;
+        cursor.y*=_this.OVERSAMPLING;
         return cursor;
     }
 
@@ -862,33 +914,21 @@ WM_Thread.prototype.addModule = function(mod) {
       var x, y;
       // Get the mouse position relative to the canvas element.
       var cursor = getPosition(ev);
-      x = cursor.x; y = cursor.y-22; //don't know why the shift is necessary...
-      /*
-      if (ev.layerX || ev.layerX == 0) { // Firefox
-          x = ev.layerX;
-          y = ev.layerY;
-      } else if (ev.offsetX || ev.offsetX == 0) { // Opera
-          x = ev.offsetX;
-          y = ev.offsetY;
-      } else { //IE
-          x = window.event.clientX;
-          y = window.event.clientY;
-      }
-      */
-      var item = _this.raster.getItem(x-canvasPos[0]-_this.CANVAS_MODULE_SHIFT.x,y-canvasPos[1]-_this.CANVAS_MODULE_SHIFT.y);
+      x = cursor.x; y = cursor.y; 
+      var item = _this.raster.getItem(x-_this.CANVAS_MODULE_SHIFT.x,y-_this.CANVAS_MODULE_SHIFT.y);
       var redrawNeeded = false;
       if(hoveredItem && item!=hoveredItem) {
           hoveredItem.state = WM_SEGMENT_STATE_NORMAL;
-          redrawNeeded = true;
+          //redrawNeeded = true;
           hoveredItem.hoverOff();
           $('#mod-'+hoveredItem.id).removeClass('module-hovered');
       }
       hoveredItem = item;
       if(item!=null) {
-          if (!item.selected) item.hover();
+          //if (!item.selected) item.hover();
           $('#mod-'+item.id).addClass('module-hovered');
           item.state = WM_SEGMENT_STATE_HOVER;
-          redrawNeeded = true;
+          wm.selectModule(item);
       }
 
       if(redrawNeeded) {
@@ -900,23 +940,10 @@ WM_Thread.prototype.addModule = function(mod) {
       var x, y;
       // Get the mouse position relative to the canvas element.
       var cursor = getPosition(ev);
-      x = cursor.x; y = cursor.y-22;
-      /*
-      if (ev.layerX || ev.layerX == 0) { // Firefox
-        x = ev.layerX;
-        y = ev.layerY;
-      } else if (ev.offsetX || ev.offsetX == 0) { // Opera
-        x = ev.offsetX;
-        y = ev.offsetY;
-      } else { //IE
-          x = window.event.clientX;
-          y = window.event.clientY;
-      }
-      */
-      var item = _this.raster.getItem(x-canvasPos[0]-_this.CANVAS_MODULE_SHIFT.x,y-canvasPos[1]-_this.CANVAS_MODULE_SHIFT.y);
+      x = cursor.x; y = cursor.y;
+      var item = _this.raster.getItem(x-_this.CANVAS_MODULE_SHIFT.x,y-_this.CANVAS_MODULE_SHIFT.y);
       if(item!=null) {
-          if(!item.selected) wm.selectThread(item);
-          _this.drawModules();
+          wm.selectModule(item);
       }
     }
     var ev_mouseOut = function(ev) {
@@ -932,29 +959,18 @@ WM_Thread.prototype.addModule = function(mod) {
     this.canvas.addEventListener('mousemove', ev_mousemove, false);
     this.canvas.addEventListener('click', ev_mouseclick, false);
     this.canvas.addEventListener('mouseout', ev_mouseOut, false);
-
 }
-
  
+WM_View.prototype.selectModule = function(mod) {
+    var modId = mod.id;
+    for(var ii=0;ii<this.modules.length; ii++) {
+        this.modules[ii].selected = (this.modules[ii].id==modId);
+    }
+    this.drawModules();
+}
 WM_View.prototype.setModules = function(modules) {
     if(!this.ctx) return;
     if(!modules || modules.length==0) return;
-    //check how many horizontal sections are needed (= number of providers)
-    for(var ii=0;ii<wm.methods.length;ii++) wm.methods[ii].displayLine = -1;
-    var count=0;
-    this.providerTitles = [];
-    for(var ii=0;ii<modules.length;ii++) {
-        var prov = modules[ii].method;
-        if (prov.displayLine==-1) {
-            prov.displayLine=count;;
-            count+=1;
-            this.providerTitles.push(prov.title);
-        }
-    }
-    this.ctx.stroke();
-    this.nrOfLines = count;
-    $('#canvas').attr('height', this.LINE_DISTANCE*count);
-
     this.modules = modules;
     //get root segments (having no preconditions)
     this.roots = [];
@@ -965,7 +981,7 @@ WM_View.prototype.setModules = function(modules) {
     }
     //calc position for each segment
     var shiftx = this.CANVAS_MODULE_SHIFT.x;
-    var shifty = this.CANVAS_MODULE_SHIFT.y;
+    var shifty = this.canvas.height-2*(this.MODULE_RADIUS+this.MODULE_THICKNESS)-this.CANVAS_MODULE_SHIFT.y;
     for(var ii=0;ii<this.roots.length;ii++){
         var base = {x:shiftx, y:shifty};
         this.roots[ii].calcPositions(base);
@@ -975,55 +991,22 @@ WM_View.prototype.setModules = function(modules) {
     for(var ii=0;ii<this.modules.length;ii++){
         this.raster.addItem(this.modules[ii],wm.view.CANVAS_MODULE_SHIFT);
     }
-
 }
 
 WM_View.prototype.drawModules = function(){
     if(!this.ctx) return;
-    this.ctx.fillStyle='rgb(240,240,240)';
-    for(var ii=0;ii<this.nrOfLines;ii++) {
-        this.ctx.fillRect(0,ii*this.LINE_DISTANCE,this.canvas.offsetWidth,this.LINE_DISTANCE*0.95);
-    }
-    this.ctx.fillStyle='rgb(255,255,255)';
-    for(var ii=0;ii<this.nrOfLines;ii++) {
-        this.ctx.fillRect(0,(ii+1)*this.LINE_DISTANCE*0.95,this.canvas.offsetWidth,this.LINE_DISTANCE*0.05);
-    }
+    this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
     this.ctx.lineWidth = this.MODULE_THICKNESS;
     //draw segments
     for(var ii=0;ii<wm.modules.length;ii++) {
         wm.modules[ii].draw(this.ctx, this.raster);
     }
-    this.ctx.fillStyle = 'rgb(100,100,100)';
-    this.ctx.font = 'italic 15px arial,sans-serif';
-    for(var ii=0;ii<this.providerTitles.length;ii++) {
-        this.ctx.beginPath();
-        this.ctx.fillText(this.providerTitles[ii],10,6+(ii+0.5)*this.LINE_DISTANCE,140);
-    }
-    //this.ctx.stroke();
-
 }
 
-WM_View.prototype.setSelectedTrajectory=function(thread) {
-    for(var ii=0;ii<this.modules.length;ii++) this.modules[ii].setSelected(false);
-    var modBefore = null;
-    for(var ii=0;ii<thread.modules.length;ii++) {
-        var mod = thread.modules[ii]
-        mod.selected = true;
-        if(ii>0){
-            for(var kk=0;kk<mod.pre.length;kk++) {
-                var link = mod.pre[kk];
-                if(link.other(mod).id == modBefore.id){
-                    link.selected = true;
-                }
-            }
-        }
-        modBefore = mod;
-    }
-    this.drawModules();
-}
 WM_View.prototype.setTitle = function(title) {
     $('#leerlijn-chooser-titel').html(title);
 }
+
 WM_View.prototype.threadSelected = function(thread) {
     $('#thread-title').html(thread.title);
     $('#thread-info').html(thread.info);

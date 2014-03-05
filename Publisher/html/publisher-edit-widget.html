@@ -35,14 +35,18 @@
      baseFolder['m4a_en'] = '/data/content-ma/saba/leerlijnen/';
      baseFolder['test'] = '/index/test/';
      baseFolder['malmberg'] = '/index/malmberg/';
+     var workflowURL = null;
+     if(method==='malmberg') workflowURL='/MathUnited/workflow?repo=malmberg';
+     
      wm = new WM_Manager({
         methodURL:  baseFolder[method]+'components.xml',
         threadsURL: baseFolder[method]+'threads.xml',
         methodId :  false,
         threadId :  gup('thread_id'),
         show_thread_chooser: false,
-        viewURL  :  viewURL[method]
-     })
+        viewURL  :  viewURL[method],
+        workflowURL : workflowURL
+     });
      wm.init();
   </script>
   <style type="text/css">

@@ -592,18 +592,3 @@ table.wm-default-table td, table.wm-default-table th{
     float:right;
 }
 
-.commit-button {
-    width:128px;
-    height:128px;
-    background-image: url('../sources/upload-icon-small.png');
-}
-.commit-button:hover {
-    border:1px dashed gray;
-}
-.commit-button:active {
-    border:1px dashed gray;
-    position:relative;
-    left:5px;
-    top:5px;
-}
-

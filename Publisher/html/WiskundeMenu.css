@@ -38,6 +38,7 @@ canvas {
 
 #subcomponent-container ol li { 
     display: block;  /* to remove dot after list number */
+    position:relative;
 }
 
 #subcomponent-container ol li:before {  /* to remove dot after list number */
@@ -147,6 +148,36 @@ canvas {
     height:60px;
     padding:5px 10px 5px 10px;
     visibility: hidden;
+}
+
+div.subcomp-status {
+    display: inline-block;
+    position:absolute;
+    top:2px;
+    width:56px;
+    height:12px;
+    right:0;
+}
+div.subcomp-status.unknown {
+    background-image: url('sources/w.png');
+}
+div.subcomp-status.bewerking {
+    background-image: url('sources/w.png');
+}
+div.subcomp-status.auteur_gereed {
+    background-image: url('sources/ww.png');
+}
+div.subcomp-status.coauteur_gereed {
+    background-image: url('sources/www.png');
+}
+div.subcomp-status.assets_gereed {
+    background-image: url('sources/wwww.png');
+}
+div.subcomp-status.eindredactie_gereed {
+    background-image: url('sources/wwwww.png');
+}
+div.subcomp-status.productie_gereed {
+    background-image: url('sources/wwwwww.png');
 }
 
 

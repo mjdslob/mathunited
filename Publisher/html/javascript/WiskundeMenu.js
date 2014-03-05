@@ -86,7 +86,7 @@ MU_View.prototype.createThreadElements = function(thread) {
              var subc = comp.subcomponents[jj];
              if(comp.publishState=='live'){
                  var ref=this.viewURL+'&comp='+comp.id+'&subcomp='+subc.id;
-                 var elm = $('<li></li>').html(
+                 var elm = $('<li id="li-'+subc.id+'"></li>').html(
                      '<a target="_parent" href="'+ref+'">'+subc.title+'</a>');
              } else {
                  var elm = $('<li class="mu-subcomponent-inactive"></li>').html(subc.title);
@@ -143,10 +143,17 @@ MU_View.prototype.createWidgets = function() {
 
     $('<div id="components-padding" class="header"></div>')
         .appendTo($('#components-container'));
+    this.setDefaultModule();
+/*
     //set default
     innerElm.html($('#components-container .header:first-child').next('div').html());
     $('#components-container .header:first-child').addClass('mu-selected');
+*/    
+}
 
+MU_View.prototype.setDefaultModule = function() {
+    $('#subcomponent-container-inner').html($('#components-container .header:first-child').next('div').html());
+    $('#components-container .header:first-child').addClass('mu-selected');
 }
 var currentTabToggle = null;
 
@@ -237,6 +244,8 @@ WM_CMD_LOAD_THREAD_DATA = 2;
 WM_CMD_SHOW_THREAD = 5;
 WM_CMD_INIT_VIEWS = 6;
 WM_CMD_INIT_CANVAS = 7;
+WM_CMD_LOAD_WORKFLOW_DATA = 8;
+
 //spec:
 // - method: url to methods-overview.xml file
 // - threads: url to threads.xml file
@@ -255,9 +264,11 @@ function WM_Manager(spec) {
     this.threadId = spec.threadId;
     this.methodURL = spec.methodURL;
     this.methodId = spec.methodId;
+    this.workflowURL = spec.workflowURL;
 }
 
 WM_Manager.prototype.init = function() {
+    if(this.workflowURL) this.addCommand(new WM_Command(WM_CMD_LOAD_WORKFLOW_DATA, {}));
     if(this.show_thread_chooser){
         this.addCommand(new WM_Command(WM_CMD_INIT_CANVAS, this.filter));
     }
@@ -307,6 +318,9 @@ WM_Manager.prototype.continueProcessing = function() {
      case WM_CMD_INIT_VIEWS:
           this.initViews();
           break;
+     case WM_CMD_LOAD_WORKFLOW_DATA:
+          this.loadWorkflowStatus(cmd.args);
+          break;
      default:
           alert("Unknown command: "+cmd.code);
    }
@@ -322,6 +336,20 @@ WM_Manager.prototype.execute = function() {
 
 WM_Manager.prototype.setMessage = function(msg){
     $('message-box').html(msg);
+}
+
+WM_Manager.prototype.loadWorkflowStatus = function() {
+    var _this = this;
+    $.get(this.workflowURL,
+       function(xml) {
+           $('subcomp',xml).each(function() {
+              var elm = $(this);
+              $('#li-'+this.id).prepend($('<div class="subcomp-status '+elm.attr('status')+'"></div>'));
+           });
+           _this.threadView.setDefaultModule();
+           _this.continueProcessing();
+       }
+    );
 }
 
 WM_Manager.prototype.initViews = function() {
@@ -434,7 +462,7 @@ WM_Manager.prototype.loadThreads = function(args) {
             if(args.threadId) {
                 sel = $(xml).find('thread[id='+args.threadId+']');
                 if(!sel || sel.length==0) {
-                    alert('Geen leerlijnen gevonden die voldoen aan criterium "'+args.threadId+'".');
+                    alert('Geen leerlijnen gevonden die voldoen aan criterium "'+args.threaId+'".');
                 }
             } else {
                 sel = $(xml).find('thread');

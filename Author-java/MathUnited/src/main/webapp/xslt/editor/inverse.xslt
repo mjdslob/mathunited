@@ -60,7 +60,7 @@ extension-element-prefixes="exsl">
     <text><xsl:apply-templates select="*[@tag='text']//xhtml:p/node()" mode="paragraph"/></text>
 </xsl:template>
 
-<xsl:template match="table" mode="editor">
+<xsl:template match="table | xhtml:table" mode="editor">
     <xsl:apply-templates select="." mode="paragraph"/>
 </xsl:template>
 
@@ -121,6 +121,13 @@ extension-element-prefixes="exsl">
         <xsl:apply-templates select="li | xhtml:li" mode="paragraph"/>
     </itemize>
 </xsl:template>
+<!--
+<xsl:template match="table | xhtml:table | tbody | xhtml:tbody | tr | xhtml:tr | td | xhtml:td | th | xhtml:th" mode="paragraph">
+    <xsl:copy>
+        <xsl:apply-templates mode="paragraph"/>
+    </xsl:copy>
+</xsl:template> 
+-->
 <xsl:template match="li | xhtml:li" mode="paragraph">
     <item><xsl:apply-templates mode="paragraph"/></item>
 </xsl:template>
