@@ -555,6 +555,22 @@ indent="yes" encoding="utf-8"/>
         <xsl:apply-templates mode="content"/>
     </a>
 </xsl:template>
+
+<xsl:template match="iframe" mode="content" priority="1">
+    <iframe scrolling="no">
+        <xsl:choose>
+            <xsl:when test="starts-with(@src,'http://')">
+                <xsl:copy-of select="@*[name()!='src']"/>
+                <xsl:attribute name="src" select="replace(@src, 'http://', 'https://')"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:copy-of select="@*[name()!='src']"/>
+                <xsl:attribute name="src" select="concat($urlbase, '../html/', @src)"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </iframe>
+</xsl:template>
+
 <xsl:template match="*"/>
 <xsl:template match="*" mode="navigation"/>
 </xsl:stylesheet>
