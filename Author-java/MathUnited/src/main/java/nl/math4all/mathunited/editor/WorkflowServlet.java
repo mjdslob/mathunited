@@ -29,7 +29,7 @@ import org.xml.sax.InputSource;
  * @author Martijn Slob <m.slob@math4all.nl>
  */
 public class WorkflowServlet extends HttpServlet {
-    private final static Logger LOGGER = Logger.getLogger(PostContentServlet.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(WorkflowServlet.class.getName());
 
     /** map of repo to a (map of subcomp-id to status) */
     private static Map<String, Map<String, String>> statusMap=new HashMap<String, Map<String, String>>();
@@ -38,12 +38,13 @@ public class WorkflowServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         try{
             super.init(config);
-            LOGGER.setLevel(Level.FINE);
+            LOGGER.setLevel(Level.INFO);
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
+    public static void clear() { statusMap.clear(); }
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -56,6 +57,7 @@ public class WorkflowServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         try{
+            LOGGER.fine("Request: WorkflowServlet");
             response.setContentType("application/xml");
             Writer w = response.getWriter();
             PrintWriter pw = new PrintWriter(w);

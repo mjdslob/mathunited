@@ -73,9 +73,8 @@ extension-element-prefixes="exsl">
                 </div>
              </div>
              <div style="clear:left"></div>
-             <div tag="explanation"></div>
-             <div tag="feedback"></div>
-             <div tag="teacheranswer"></div>
+             <div class="answer-heading">Uitwerking:</div>
+             <div tag="explanation"><p></p></div>
           </div>
     </div>
     <div id="exercise-itemintro-template">
@@ -379,9 +378,10 @@ extension-element-prefixes="exsl">
             </xsl:for-each>
         </div>
         <div style="clear:left"/>
-        <xsl:apply-templates select="explanation" mode="editor"/>
-        <xsl:apply-templates select="feedback" mode="editor"/>
-        <xsl:apply-templates select="teacheranswer" mode="editor"/>
+        <xsl:if test="explanation">
+            <div class="answer-heading">Uitwerking:</div>
+            <xsl:apply-templates select="explanation" mode="editor"/>
+        </xsl:if>
     </div>
 </xsl:template>
 

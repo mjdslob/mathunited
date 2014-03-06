@@ -150,13 +150,31 @@ canvas {
     visibility: hidden;
 }
 
-div.subcomp-status {
+div.subcomp-status-wrapper {
+    position:absolute;
+    right:0;
+    display:inline-block;
+    min-width:56px;
+    min-height:12px;
+}
+div.subcomp-status-wrapper div.subcomp-status {
     display: inline-block;
     position:absolute;
     top:2px;
     width:56px;
     height:12px;
     right:0;
+}
+div.subcomp-status-wrapper div.hover-text {
+    display:none;
+    position:absolute;
+    left:-40px; top:-10px;
+    font-style:italic;
+    font-weight:normal;
+    width:100px;
+}
+div.subcomp-status-wrapper:hover div.hover-text {
+    display:block;
 }
 div.subcomp-status.unknown {
     background-image: url('sources/w.png');

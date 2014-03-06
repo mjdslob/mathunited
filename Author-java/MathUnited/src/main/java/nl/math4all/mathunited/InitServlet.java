@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.HashMap;
 import nl.math4all.mathunited.resolvers.ContentResolver;
 import nl.math4all.mathunited.configuration.*;
+import nl.math4all.mathunited.editor.WorkflowServlet;
 
 
 //mathunited.pragma-ade.nl/MathUnited/view?variant=basis&comp=m4a/xml/12hv-me0&subcomp=3&item=explore
@@ -32,6 +33,7 @@ public class InitServlet extends HttpServlet {
             XSLTbean.clearTemplates();
             Configuration.clear();
             Users.clear();
+            WorkflowServlet.clear();
             
             response.setContentType("text/html");
             Writer w = response.getWriter();

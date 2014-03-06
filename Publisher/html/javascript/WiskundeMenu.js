@@ -344,7 +344,18 @@ WM_Manager.prototype.loadWorkflowStatus = function() {
        function(xml) {
            $('subcomp',xml).each(function() {
               var elm = $(this);
-              $('#li-'+this.id).prepend($('<div class="subcomp-status '+elm.attr('status')+'"></div>'));
+              var descr='';
+              switch(elm.attr('status')) {
+                  case 'unknown': descr='In bewerking'; break;
+                  case 'bewerking': descr='In bewerking'; break;
+                  case 'auteur_gereed': descr='Auteur gereed'; break;
+                  case 'coauteur_gereed': descr='Co-auteur gereed'; break;
+                  case 'assets_gereed': descr='Assets gereed'; break;
+                  case 'eindredactie_gereed': descr='Eindredactie gereed'; break;
+                  case 'productie_gereed': descr='Klaar voor productie'; break;
+              }
+              
+              $('#li-'+elm.attr('id')).prepend($('<div class="subcomp-status-wrapper"><div class="hover-text">'+descr+'</div><div class="subcomp-status '+elm.attr('status')+'"></div></div>'));
            });
            _this.threadView.setDefaultModule();
            _this.continueProcessing();
