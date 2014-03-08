@@ -34,18 +34,28 @@ public class FileManager {
         bw.write("<log user='"+username+"'>"+shortName+"</log>\n");
         bw.close();
     }
+    
+    public static boolean backupFolderExists(File subcompFolder, Repository repo) throws Exception {
+        String fname = subcompFolder.getAbsolutePath();
+        fname = fname.replace(repo.path, repo.path+"/_history");
+        return new File(fname).exists();
+    }
     /** creates a zip-file containing all xml files (not images or other resources) 
      *  and stores it in _history/...
      * @param subcompFolder: folder of the subcomponent
      * @param repo:
      * @return The created zip file
      */
-    public static File backupSubcomponent(File subcompFolder, Repository repo) throws Exception {
+    public static File backupSubcomponent(String name, File subcompFolder, Repository repo) throws Exception {
         String fname = subcompFolder.getAbsolutePath();
         fname = fname.replace(repo.path, repo.path+"/_history");
         Date date = new Date();
         SimpleDateFormat ft = new SimpleDateFormat ("yyyy.MM.dd_hh.mm.ss");
-        fname = fname+"/"+subcompFolder.getName()+"_"+ft.format(date)+".zip";
+        if(name==null) {
+            fname = fname+"/"+subcompFolder.getName()+"_"+ft.format(date)+".zip";
+        } else {
+            fname = fname+"/"+subcompFolder.getName()+"_"+name+"_"+ft.format(date)+".zip";
+        }
         File fzip = new File(fname);
         fzip.getParentFile().mkdirs();
 

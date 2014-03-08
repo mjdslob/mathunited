@@ -142,14 +142,7 @@ public class PostContentServlet extends HttpServlet {
             //user has access, continue
 
             //read components. To be moved to init()
-            File f = new File(config.contentRoot+repository.path+"/leerlijnen/components.xml");
-            if(!f.exists() && !repository.baseRepo.isEmpty()) {
-                Repository baseRepo = config.getRepos().get(repository.baseRepo);
-                f = new File(config.contentRoot+baseRepo.path+"/leerlijnen/components.xml");
-            }
-            FileInputStream is = new FileInputStream(f);
-            componentMap = Component.getComponentMap(new InputSource(is));
-            
+            componentMap = repository.readComponentMap();
             Component component = componentMap.get(comp);
             if(component==null) {
                 throw new Exception("Er bestaat geen component met id '"+comp+"'");
@@ -166,11 +159,11 @@ public class PostContentServlet extends HttpServlet {
                 }
             }
             
-            if(!found) {
+            if(sub==null || !found) {
                 throw new Exception("Er bestaat geen subcomponent met id '"+subcomp+"'");
             }
 
-            LOGGER.fine("found subcomponent "+subcomp+": "+sub.title);
+            LOGGER.log(Level.FINE, "found subcomponent {0}: {1}", new Object[]{subcomp, sub.title});
             XMLReader xmlReader = XMLReaderFactory.createXMLReader("org.ccil.cowan.tagsoup.Parser");
             xmlReader.setFeature(org.ccil.cowan.tagsoup.Parser.namespacesFeature, false);
             xmlReader.setEntityResolver(ContentResolver.entityResolver);
@@ -186,8 +179,10 @@ public class PostContentServlet extends HttpServlet {
             Node root = processor.processToDOM(xmlSaxSource, "m4a_inverse", parameterMap, resolver);
 
             File subcompFile = new File(refbase);
-            File zipFile = FileManager.backupSubcomponent(subcompFile, repository);
-            FileManager.log(subcompFile.getParentFile(), usettings.username, zipFile, repository);
+            if(!FileManager.backupFolderExists(subcompFile, repository)) {
+                File zipFile = FileManager.backupSubcomponent("original",subcompFile, repository);
+                FileManager.log(subcompFile.getParentFile(), usettings.username, zipFile, repository);
+            }
             
             XPath xpath = XPathFactory.newInstance().newXPath();
             String expression = "//include";
@@ -214,6 +209,10 @@ public class PostContentServlet extends HttpServlet {
             String fileStr = config.getContentRoot()+repository.path+"/" + sub.file;
             FileManager.writeToFile(fileStr, node, repository);
             WorkflowServlet.updateStatus(repoId, subcomp, fileStr);
+
+            //create backup
+            File zipFile = FileManager.backupSubcomponent(null,subcompFile, repository);
+            FileManager.log(subcompFile.getParentFile(), usettings.username, zipFile, repository);
             
             String result = resultXML.replace("{#POSTRESULT}","true").replace("{#MESSAGE}", "success");
             pw.println(result);

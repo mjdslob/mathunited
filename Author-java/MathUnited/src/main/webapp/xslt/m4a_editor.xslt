@@ -199,6 +199,11 @@
                             <xsl:value-of select="$parsed_component/component/title"/> &gt; 
                             <xsl:value-of select="$subcomponent/title"/>
                         </div>
+                        <div id="show-backups-wrapper">
+                            <a>
+                                <xsl:attribute name="href">javascript:showBackups("<xsl:value-of select="$comp"/>", "<xsl:value-of select="$subcomp"/>")</xsl:attribute>
+                                backups</a>
+                        </div>
                         <div class="overzichtDiv">
                             <a href="#">
                                 <xsl:attribute name="onclick">javascript:editor_hyperlink('<xsl:value-of select="$overviewRef"/>')</xsl:attribute>Overzicht

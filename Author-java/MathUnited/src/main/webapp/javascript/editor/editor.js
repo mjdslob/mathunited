@@ -421,6 +421,7 @@ valid_elements :
 }
 
 function submitDocument(repo, comp, subcomp) {
+    $('<p>Een moment, de paragraaf wordt opgeslagen...</p>').dialog();
     //save all edits in open editors first
     if (typeof tinyMCE !== 'undefined') {
         for (var edId in tinymce.editors){
@@ -445,7 +446,7 @@ function submitDocument(repo, comp, subcomp) {
                 alert('Fout bij opslaan van het document: '+msg);
             } else {
                 isDocChanged = false;
-                alert('Het document is opgeslagen');
+                location.reload();
             }
         })
 }
@@ -460,3 +461,48 @@ function EditorChoiceLabelClick(elm) {
     }
 }
 
+function showBackups(comp, subcomp) {
+    $.get('/MathUnited/backuplist', {comp:comp, subcomp:subcomp}, 
+          function(xml) {
+              xml = $(xml);
+              if(isDocChanged){
+                  var text = '<p style="color:red">Let op: u heeft mogelijk wijzigingen gemaakt die nog niet zijn opgeslagen. Deze wijzigingen verliest u als u een backup terugzet.</p>';
+              } else {
+                  var text = '';
+              }
+              
+              var html = '<div><p style="margin-bottom:10px">Selecteer een backup uit onderstaande tabel. De onderste regel is de versie die u het laatst heeft opgeslagen.</p>'
+                     +text
+                     + '<table class="log-overview"><tr><th>Auteur</th><th>Datum</th><th>Tijd</th></tr>';
+              $('log',xml).each(function() {
+                  var entry = $(this);
+                  var str = entry.text();
+                  if(str.indexOf(subcomp)>0){
+                    str = str.replace(/^[^_]*_/,'');
+                    var date = str.match('20[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9]');
+                    var time = str.match('[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9]\.zip$');
+                    if(time.length>0) time=time[0].replace('.zip','');
+                    html+='<tr class="log-entry" entry="'+entry.text()+'"><td>'+entry.attr('user')+'</td><td>'+date+'</td><td>'+time+'</td></tr>';
+                  }
+              });
+              html+="</table></div>";
+              var dom = $(html);
+              $('.log-entry',dom).click(function(){
+                  var doChange = !isDocChanged;
+                  if(isDocChanged){
+                    doChange=false;
+                    var r=confirm('U heeft wijzigingen gemaakt in uw document. Als u deze backup terugzet, dan gaan die verloren. Weet u zeker dat u de backup wilt terugzetten?');
+                    if(r===true) doChange = true;
+                  }
+                  if(doChange) {
+                      $.get("/MathUnited/restorebackup",
+                      {comp: comp, subcomp: subcomp, entry: encodeURIComponent($(this).attr('entry')) },
+                      function(data) {
+                          isDocChanged = false;
+                          window.location.reload();
+                      });
+                  }
+              });
+              dom.dialog({width:400, height:400, title:'Backup terugplaatsen'});
+          });
+}

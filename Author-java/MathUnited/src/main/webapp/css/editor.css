@@ -8,6 +8,15 @@ html, body {
 .hidden-templates {
     display:none;
 }
+#show-backups-wrapper {
+    float:left;
+}
+
+#show-backups-wrapper a {
+    color:#666699;
+    font-weight:bold;
+}
+
 .contentDiv {
     width:100%;
 }
@@ -451,4 +460,21 @@ div[tag="alternative"][state="yes"] .editor-choice-exercise-label {
     background-color: rgb(220,220,220);
     border-top:1px solid rgb(150,150,150);
     padding:10px;
+}
+
+table.log-overview {
+    height:auto !important;
+}
+table.log-overview {
+}
+.log-entry {
+    margin:2px 0px;
+    padding:2px;
+}
+.log-entry:hover{ 
+    background-color:rgb(100,100,100);
+    color:white;
+}
+.log-entry td {
+    padding:5px 30px;
 }
