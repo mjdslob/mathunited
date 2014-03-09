@@ -116,9 +116,6 @@ div.metadata-container form{
 .close-metadata-button:active {
     background-image: url('../sources_ma/kit_uitleguit_hit.png');
 }
-div[tag="description"] {
-    display:none;
-}
 
 div[tag="paperfigure"] {
     display:none;
@@ -477,4 +474,48 @@ table.log-overview {
 }
 .log-entry td {
     padding:5px 30px;
+}
+
+.objective-remove-button {
+    width:15px;
+    height:15px;
+    background-image:url('../sources/remove.png');
+    float:left;
+    margin-left:10px;
+    position:relative;
+    top:2px;
+}
+
+div[tag='description'] div[tag='label'],
+div[tag='description'] div[tag='domain'],
+div[tag='description'] div[tag='subdomain'],
+div[tag='description'] div[tag='section'],
+div[tag='description'] div[tag='number']
+{ display:none;}
+div[tag='description'] div.m4a-editor-item-title {
+    color:#666699;
+}
+
+div[tag='objective'] {
+    background-color:rgb(220,220,220);
+    margin:2px 0;
+    padding:2px 5px;
+}
+.objective-id {
+    float:left;
+    width:50px;
+    margin-right:1px;
+}
+.objective-description {
+    float:left;
+    width:580px;
+}
+.objective-add-button {
+    width:15px;
+    height:15px;
+    background-image:url('../sources/add.png');
+    float:left;
+    margin-left:15px;
+    position:relative;
+    top:2px;
 }

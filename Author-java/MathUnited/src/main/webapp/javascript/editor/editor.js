@@ -233,7 +233,30 @@ $(document).ready(function() {
             img.attr('HEIGHT',''+h);
         }
     });
-
+    
+    var objelm = $('div[tag="objectives"]').first();
+    
+    function removeObjectiveHandler() {
+        var par = $(this).parents('div[tag="objective"]').first();
+        par.remove();
+    }
+    
+    $('div.objective-add-button',objelm).first().click(function() {
+        var par = $(this).parents('.objective-new-item').first();
+        var id = $('.objective-id input',par).val();
+        var descr = $('.objective-description input',par).val();
+        if(id!==null && descr!==null && id.length>0 && descr.length>0) {
+            var elm = $('<div tag="objective"><div class="objective-id">'+id+'</div>'
+             +'<div class="objective-description">'+descr+'</div>'
+             +'<div class="objective-remove-button"/><div style="clear:both"/></div>');
+            par.before(elm);
+            $('.objective-id input',par).val('');
+            $('.objective-description input',par).val('');
+            $('.objective-remove-button',elm).click(removeObjectiveHandler);
+        }
+    });
+    $('div.objective-remove-button',objelm).click(removeObjectiveHandler);
+    
     labelAnchors();
     $('.item-container').each(function() {
         var parent = $(this);
@@ -434,7 +457,6 @@ function submitDocument(repo, comp, subcomp) {
        var str = this.text.replace('<','&lt;');
        $(this).text(str);
     });
-    debugger;
     var status = $('#workflow-container input:checked').val();
     var html = $('.pageDiv').first().html();
     var str = repo+'\n'+comp+'\n'+subcomp+'\n'+status+'\n'+html;

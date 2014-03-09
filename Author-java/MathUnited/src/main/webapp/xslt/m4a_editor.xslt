@@ -285,7 +285,7 @@
             <xsl:apply-templates select="@*" mode="editor"/>
             <xsl:apply-templates select="metadata" mode="editor"/>
             <xsl:apply-templates select="description" mode="editor"/>
-            <div tag="componentcontent">
+            <div tag="componentcontent"><!--using for-each to set scope, though there can be only one -->
                 <xsl:for-each select="componentcontent">
                     <xsl:call-template name="display-items-template"/>
                 </xsl:for-each>
@@ -356,7 +356,47 @@
         </xsl:for-each>
     </xsl:template>
 
+    <xsl:template match="description" mode="editor">
+        <div tag="{name()}">
+            <div class="menu-button-div section-button">
+                <span class="menu-button"></span>
+            </div>
+            <div class="m4a-editor-item-container">
+                <div class="m4a-editor-item-title">Metadata<div class="item-label-button"/></div>
+                <div class="m4a-editor-item-content">
+                    <xsl:apply-templates mode="editor"/>
+                    <xsl:if test='not(objectives)'>
+                        <xsl:call-template name="objectives-handler"/>
+                    </xsl:if>
+                </div>
+                <div style="clear:both"/>
+            </div>
+        </div>
+    </xsl:template>
 
+    <xsl:template match="objectives" mode="editor">
+        <xsl:call-template name="objectives-handler"/>
+    </xsl:template>
+    
+    <xsl:template name="objectives-handler">
+        <div tag="objectives">
+            <b>Leerdoelen</b>
+            <xsl:for-each select="objective">
+                <div tag="objective">
+                    <div class="objective-id"><xsl:value-of select="@id"/></div>
+                    <div class="objective-description"><xsl:value-of select="text()"/></div>
+                    <div class="objective-remove-button"/>
+                    <div style="clear:both"/>
+                </div>
+            </xsl:for-each>
+            <div class="objective-new-item">
+                <div class="objective-id"><input type="text" size="6"/></div>
+                <div class="objective-description"><input type="text" size="110"/></div>
+                <div class="objective-add-button"/>
+                <div style="clear:both"/>
+            </div>
+        </div>
+    </xsl:template>
     <xsl:template match="include">
         <xsl:apply-templates select="." mode="editor"/>
     </xsl:template>

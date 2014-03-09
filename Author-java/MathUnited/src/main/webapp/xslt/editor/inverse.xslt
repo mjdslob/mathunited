@@ -184,4 +184,17 @@ extension-element-prefixes="exsl">
     </paperfigure>
 </xsl:template>
 
+<xsl:template match="div[@tag='objective']" mode="editor">
+    <objective>
+        <xsl:attribute name="id"><xsl:value-of select="div[@class='objective-id']"/></xsl:attribute>
+        <xsl:value-of select="div[@class='objective-description']"/>
+    </objective>
+</xsl:template>
+<xsl:template match="xhtml:div[@tag='objective']" mode="editor">
+    <objective>
+        <xsl:attribute name="id"><xsl:value-of select="xhtml:div[@class='objective-id']"/></xsl:attribute>
+        <xsl:value-of select="xhtml:div[@class='objective-description']"/>
+    </objective>
+</xsl:template>
+
 </xsl:stylesheet>

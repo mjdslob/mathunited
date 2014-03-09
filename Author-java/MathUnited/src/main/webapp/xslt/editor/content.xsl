@@ -10,7 +10,6 @@ exclude-result-prefixes="saxon"
 extension-element-prefixes="exsl">
 
 <xsl:template match="applet[@type='ggb']" mode="content">
-        <xsl:apply-templates mode="content"/>
         <iframe style="overflow:hidden" _type='ggb'>
             <xsl:if test="@width">
                 <xsl:attribute name="width"><xsl:value-of select="@width"/></xsl:attribute>
