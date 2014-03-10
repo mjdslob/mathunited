@@ -10,11 +10,12 @@ html, body {
 }
 #show-backups-wrapper {
     float:left;
-}
-
-#show-backups-wrapper a {
-    color:#666699;
     font-weight:bold;
+    color:#666699;
+}
+#show-backups-wrapper:hover {
+    color:#CC0000;
+    text-decoration: underline;
 }
 
 .contentDiv {
@@ -421,26 +422,26 @@ p:empty {
 div[tag="alternative"][state="yes"] .editor-choice-exercise-label {
     background-color:green;
 }
-.commit-button {
+#commit-button {
     float:left;
     clear:left;
     width:64px;
     height:64px;
 }
-.commit-button p {
+#commit-button p {
     text-align:center;
 }
-.commit-button-image {
+#commit-button-image {
     width:64px;
     height:64px;
     background-image: url('../sources/upload-icon-small.png');
     margin:6px;
 }
-.commit-button-image:hover {
+#commit-button-image:hover {
     border:1px dashed gray;
     margin:5px;
 }
-.commit-button-image:active {
+#commit-button-image:active {
     border:1px dashed gray;
     position:relative;
     left:5px;

@@ -144,6 +144,7 @@
             <head>
                 <link type="text/css" href="dummy"/>
                 <link type="text/css" href="javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
+                <script data-main="javascript/editor.js" src="javascript/require.js"></script>
                 <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"/>
                 <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"/>
                 <script type="text/x-mathjax-config">
@@ -157,10 +158,6 @@
                     });
                 </script>
                 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
-                <script type="text/javascript" src="javascript/tinymce/jquery.tinymce.min.js"></script>
-                <script type="text/javascript" src="javascript/editor/editor.js"></script>
-                <script type="text/javascript" src="javascript/editor/menu.js"></script>
-                <script type="text/javascript" src="javascript/editor/contextmenu.js"></script>
                 <script type="text/javascript" src="javascript/MathUnited.js"></script>
                 <script type="text/javascript" src="javascript/MathUnited_m4a.js"></script>
                 <link rel="stylesheet" href="css/content.css" type="text/css"/>
@@ -199,14 +196,10 @@
                             <xsl:value-of select="$parsed_component/component/title"/> &gt; 
                             <xsl:value-of select="$subcomponent/title"/>
                         </div>
-                        <div id="show-backups-wrapper">
-                            <a>
-                                <xsl:attribute name="href">javascript:showBackups("<xsl:value-of select="$comp"/>", "<xsl:value-of select="$subcomp"/>")</xsl:attribute>
-                                backups</a>
-                        </div>
+                        <div id="show-backups-wrapper">backups</div>
                         <div class="overzichtDiv">
-                            <a href="#">
-                                <xsl:attribute name="onclick">javascript:editor_hyperlink('<xsl:value-of select="$overviewRef"/>')</xsl:attribute>Overzicht
+                            <a href="{$overviewRef}" class="_warn_if_doc_changed_">
+                                Overzicht
                             </a>
                         </div>
                         <div style="clear:both"/>
@@ -235,9 +228,8 @@
                     </div>
                     <xsl:if test="not(string-length($lock_owner)>0)">
                       <div class="footer">
-                        <xsl:variable name="commitfunc">javascript:submitDocument('<xsl:value-of select="$repo"/>','<xsl:value-of select="$comp"/>','<xsl:value-of select="$subcomp"/>')</xsl:variable>
-                        <div class="commit-button" onclick="{$commitfunc}">
-                            <div class="commit-button-image"/>
+                        <div id="commit-button">
+                            <div id="commit-button-image"/>
                             <p>Opslaan</p>
                         </div>
                         <div id="workflow-container">
@@ -304,7 +296,8 @@
                         <div class="_editor_context_base">
                             <xsl:choose>
                                 <xsl:when test="$item/@multiplicity='multiple'">
-                                    <div class="_editor_option" type="repeat" function="optionalContentItem" item="{name($item)}" name="{$item/@name}">
+                                    <div class="_editor_option" type="repeat" function="actions/OptionalContentItem" name="{$item/@name}">
+                                        <xsl:attribute name="params">{item: '<xsl:value-of select="$item/name()"/>'}</xsl:attribute>
                                         <xsl:if test="$item/@min">
                                             <xsl:attribute name="min">
                                                 <xsl:value-of select="$item/@min"/>
@@ -319,8 +312,9 @@
                                     </div>
                                 </xsl:when>
                                 <xsl:when test="$item/@optional='true'">
-                                    <div class="_editor_option" type="optional" function="optionalContentItem" item="{name($item)}" name="{$item/@name}">
-                                         <xsl:apply-templates select="."/>
+                                    <div class="_editor_option" type="optional" function="actions/OptionalContentItem" name="{$item/@name}">
+                                        <xsl:attribute name="params">{item: '<xsl:value-of select="$item/name()"/>'}</xsl:attribute>
+                                        <xsl:apply-templates select="."/>
                                     </div>
                                 </xsl:when>
                                 <xsl:otherwise>
@@ -341,7 +335,9 @@
                 <xsl:otherwise>
                     <!-- item does not exist yet -->
                     <div class="_editor_context_base">
-                        <div class="_editor_option" type="optional" function="optionalContentItem" item="{name($item)}" name="{$item/@name}"/>
+                        <div class="_editor_option" type="optional" function="actions/OptionalContentItem" name="{$item/@name}">
+                             <xsl:attribute name="params">{item: '<xsl:value-of select="$item/name()"/>'}</xsl:attribute>
+                        </div>
                         <div class="m4a-editor-item nonexistent visible">
                             <div class="menu-button-div section-button">
                                 <span class="menu-button"></span>
@@ -475,7 +471,8 @@
             <xsl:for-each select="examples">
                 <xsl:variable name="num" select="count(preceding-sibling::examples)+1"/>
                 <div class="_editor_context_base">
-                    <div class="_editor_option" type="repeat" function="optionalMenuItem" item="examples" name="Voorbeeld">
+                    <div class="_editor_option" type="repeat" function="actions/OptionalMenuItem" name="Voorbeeld">
+                        <xsl:attribute name="params">{item: 'examples'}</xsl:attribute>
                         <div class="m4a-editor-item-container">
                             <div class="m4a-editor-item-title">Voorbeeld <xsl:value-of select="$num"/><div class="item-label-button"/></div>
                             <div class="m4a-editor-item-content">
