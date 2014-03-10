@@ -115,7 +115,8 @@ extension-element-prefixes="exsl">
         </div>
         <xsl:for-each select="itemcontent/question//drop-item">
           <xsl:sort select="."/>
-          <div class="exercise-drop-cell" nr="{count(preceding-sibling::drop-item)+1}">
+          <div class="exercise-drop-cell">
+            <xsl:attribute name="nr"><xsl:number level="any" /></xsl:attribute>
             <xsl:attribute name="exercise-id">
               <xsl:value-of select="$exercise-id" />
             </xsl:attribute>
@@ -151,7 +152,9 @@ extension-element-prefixes="exsl">
   </xsl:template>
   
   <xsl:template match="drop-item" mode="content">
-    <span class="drop-item" nr="{count(preceding-sibling::drop-item)+1}"></span>
+    <span class="drop-item">
+      <xsl:attribute name="nr"><xsl:number level="any" /></xsl:attribute>
+    </span>
   </xsl:template>
 
   <xsl:template match="item[@type='entry']" mode="exercise-item">
