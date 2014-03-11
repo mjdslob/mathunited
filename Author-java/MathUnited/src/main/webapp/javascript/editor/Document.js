@@ -142,6 +142,7 @@ define(['jquery', 'app/TinyMCE', 'app/ContextMenu'], function($, Editor, Context
        },
        isChanged: function() { return isDocChanged; },
        setChanged:function(b) { isDocChanged = b; },
+       getRoot: function() {return root;},
        isLocked: function() { return $('#locked-message').length>0; },
        labelAnchors: function() {
             var shiftId=0;

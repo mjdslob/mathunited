@@ -18,26 +18,28 @@
 define(['jquery','app/Document'], function($, doc) {
     
     
-    var objelm = $('div[tag="objectives"]').first();
+    var objelm = $('div[tag="description"] div[tag="objectives"]').first();
     
     function removeObjectiveHandler() {
-        var par = $(this).parents('div[tag="objective"]').first();
+        var par = $(this).parents('div[tag="description"] div[tag="objective"]').first();
         par.remove();
     }
     
     $('div.objective-add-button',objelm).first().click(function() {
         var par = $(this).parents('.objective-new-item').first();
-        var id = $('.objective-id input',par).val();
-        var descr = $('.objective-description input',par).val();
-        if(id!==null && descr!==null && id.length>0 && descr.length>0) {
-            var elm = $('<div tag="objective"><div class="objective-id">'+id+'</div>'
-             +'<div class="objective-description">'+descr+'</div>'
+        var num=1;
+        while( $('#obj-'+num).length>0) num++;
+        
+        var id = 'obj-'+num;
+        var descr = $('input',par).val();
+        if(descr!==null && descr.length>0) {
+            var elm = $('<div tag="objective" id="'+id+'">'+descr
              +'<div class="objective-remove-button"/><div style="clear:both"/></div>');
             par.before(elm);
-            $('.objective-id input',par).val('');
-            $('.objective-description input',par).val('');
+            $('input',par).val('');
             $('.objective-remove-button',elm).click(removeObjectiveHandler);
         }
+        doc.setChanged(true);
     });
     $('div.objective-remove-button',objelm).click(removeObjectiveHandler);
     

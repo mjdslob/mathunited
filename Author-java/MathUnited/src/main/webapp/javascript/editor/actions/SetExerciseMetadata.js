@@ -15,17 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['jquery'], function($) {
+define(['jquery'], function($, objSelector) {
     
-    $('.metadata-container .close-metadata-button').each(function() {
-        
-    });
     return {
         action : function(elm, params) {
             var doc = require('app/Document');
             var base = elm.parents('._editor_context_base').first();
             var container = $('.metadata-container',base).first().addClass('visible');
             var tag = $('*[tag="metadata"]',container).first();
+            var objTagContainer = $('div[tag="objectives"]',container);
+            if(objTagContainer.length===0) {
+                objTagContainer = $('<div tag="objectives"></div>');
+                tag.append(objTagContainer);
+            }
             var level = $('div[tag="level"]',container).attr('value');
             var is_examenvraag = $('div[tag="exercise-type"][value="examen"]',container).length>0;
             var is_olympiadevraag = $('div[tag="exercise-type"][value="olympiade"]',container).length>0;
@@ -50,6 +52,23 @@ define(['jquery'], function($) {
                 var dum=$('form input[name="kloonopgave"]', container);
                 if(dum.length>0) dum[0].checked= true;
             };
+            
+            //leerdoelen
+            var objContainer = $('.metadata-obj-selector-container',container);
+            var html='';
+            $('div[tag="description"] div[tag="objective"]').each(function() {
+                var objid = $(this).attr('id');
+                if($('div[tag="objective-ref"][value="'+objid+'"]',objTagContainer).length>0){
+                    html+='<input type="checkbox" name="objective" checked value="'+objid+'">'+$(this).text()+'<br>'; 
+                } else {
+                    html+='<input type="checkbox" name="objective" value="'+objid+'">'+$(this).text()+'<br>'; 
+                }
+            });
+            html = $(html);
+            objContainer.empty();
+            objContainer.append(html);
+
+            //close button
             $('.close-metadata-button').click(function(){
                  $(this).parents(".metadata-container").first().removeClass('visible');
             });
@@ -109,6 +128,11 @@ define(['jquery'], function($) {
                 addMetadataElm(tag, 'clone',{active: isClone}, null,true);
                 var parRef = $('input[name="ref-id"]',container)[0].value;
                 addMetadataElm(tag, 'paragraph-ref',{value: parRef}, null,true);
+                
+                objTagContainer.empty();
+                $('input[name="objective"]:checked').each(function(){ 
+                    addMetadataElm(objTagContainer, 'objective-ref',{value: this.value}, null,false);
+                });
             }); 
         }
     };

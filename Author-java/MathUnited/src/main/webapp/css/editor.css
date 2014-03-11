@@ -86,6 +86,9 @@ html, body {
 .m4a-editor-item-container.open .m4a-editor-item-content {
     display:block;
 }
+div[tag="description"] {
+    position:relative;
+}
 div[tag="metadata"] {
     display:none;
     position:relative;
@@ -483,8 +486,9 @@ table.log-overview {
     background-image:url('../sources/remove.png');
     float:left;
     margin-left:10px;
-    position:relative;
-    top:2px;
+    position:absolute;
+    top:6px;
+    right:13px;
 }
 
 div[tag='description'] div[tag='label'],
@@ -501,15 +505,10 @@ div[tag='objective'] {
     background-color:rgb(220,220,220);
     margin:2px 0;
     padding:2px 5px;
+    position:relative;
 }
-.objective-id {
+div.objective-new-item input {
     float:left;
-    width:50px;
-    margin-right:1px;
-}
-.objective-description {
-    float:left;
-    width:580px;
 }
 .objective-add-button {
     width:15px;

@@ -370,7 +370,7 @@
         </div>
     </xsl:template>
 
-    <xsl:template match="objectives" mode="editor">
+    <xsl:template match="description/objectives" mode="editor">
         <xsl:call-template name="objectives-handler"/>
     </xsl:template>
     
@@ -378,16 +378,14 @@
         <div tag="objectives">
             <b>Leerdoelen</b>
             <xsl:for-each select="objective">
-                <div tag="objective">
-                    <div class="objective-id"><xsl:value-of select="@id"/></div>
-                    <div class="objective-description"><xsl:value-of select="text()"/></div>
+                <div tag="objective" id="{@id}">
+                    <xsl:value-of select="text()"/>
                     <div class="objective-remove-button"/>
                     <div style="clear:both"/>
                 </div>
             </xsl:for-each>
             <div class="objective-new-item">
-                <div class="objective-id"><input type="text" size="6"/></div>
-                <div class="objective-description"><input type="text" size="110"/></div>
+                <input type="text" size="120"/>
                 <div class="objective-add-button"/>
                 <div style="clear:both"/>
             </div>

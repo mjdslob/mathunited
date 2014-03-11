@@ -30,10 +30,6 @@ repos :
     path: content-ma/concept
     edit_permission: editor_m4a
     defaultVariant: m4a_view
-  algebrakit :
-    path: content-ma/algebrakit
-    edit_permission: 
-    defaultVariant: m4a_view
   m4a_concept_alt :
     path: content-ma/concept_alt
     baseRepo : m4a
@@ -48,15 +44,19 @@ repos :
     path: content-ma/malmberg
     edit_permission: editor_malmberg
     defaultVariant: m4a_view
+  algebrakit :
+    path: content-ma/algebrakit
+    edit_permission: 
+    defaultVariant: m4a_view
   test :
     path: content-ma/test
     baseRepo : m4a
     edit_permission: editor_test
     defaultVariant: m4a_view
 
-userFile : /Library/WebServer/Documents/data/content-overview/users.yaml
-contentRoot : /Library/WebServer/Documents/data/
-entitiesFile : /Library/WebServer/Documents/data/content-overview/entities.xml
+userFile : /data/content-overview/users.yaml
+contentRoot : /data/
+entitiesFile : /data/content-overview/entities.xml
 
 mail_host : smtp.xs4all.nl
 mail_smtp_port : 587

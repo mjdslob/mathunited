@@ -162,7 +162,7 @@ extension-element-prefixes="exsl">
                         <div tag="metadata">
                             <form>
                                 id : <xsl:value-of select="replace($fname,'.xml','')"/><br/>
-                                <span>Niveau: </span>
+                                <span><b>Niveau:</b> </span>
                                 <input type="radio" name="level" value="1">1</input>
                                 <input type="radio" name="level" value="2">2</input>
                                 <input type="radio" name="level" value="3">3</input>
@@ -171,15 +171,18 @@ extension-element-prefixes="exsl">
                                 <xsl:if test="string-length(metadata/clone)>0">
                                     <input type="checkbox" name="kloonopgave" value="clone">Kloonopgave van <xsl:value-of select="metadata/clone"/></input><br/>
                                 </xsl:if>
+                                <b>Soort opgave: </b><br/>
                                 <input type="checkbox" name="olympiadevraag">olympiadevraag</input><br/>
                                 <input type="checkbox" name="examenvraag">examenvraag</input><br/>
                                 <input type="checkbox" name="wda">wiskunde-denkactiviteit (WDA)</input><br/>
-                                Groepslabels: <input type="text" name="groepslabel" size="30">
+                                <b>Groepslabels:</b> 
+                                <input type="text" name="groepslabel" size="30">
                                     <xsl:for-each select="metadata/group-label/@value"> <xsl:value-of select="."/> </xsl:for-each>
                                 </input><br/>
-                                Gerelateerde theorie (id van paragraaf):<input type="text" name="ref-id" size="30">
+                                <b>Gerelateerde theorie (id van paragraaf):</b><input type="text" name="ref-id" size="30">
                                     <xsl:value-of select="metadata/ref-id/@value"/>
-                                </input>
+                                </input><br/>
+                                <b>Leerdoelen</b>: <div class="metadata-obj-selector-container"/>
                                 <br/>
                                 <div class="close-metadata-button"/>
                             </form>
