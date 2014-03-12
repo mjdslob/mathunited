@@ -272,7 +272,7 @@ $(document).ready(function () {
     $(".entry-item").bind('input', function () {
         $(this).removeClass("correct");
         $(this).removeClass("wrong");
-        checkEntryExerciseComplete($(this).attr("exercise-id"));
+        checkEntryExerciseComplete($(this).closest(".exercise-item").attr("exercise-id"));
     });
 
     /* Movie stuff ------------------------------------------------------------------------------*/

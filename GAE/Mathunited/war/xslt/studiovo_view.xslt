@@ -103,8 +103,8 @@ indent="yes" encoding="utf-8"/>
     
    <title><xsl:value-of select="$subcomponent/title"/></title>
    
-   <link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet"/>
-   <script src="http://vjs.zencdn.net/c/video.js"></script>	
+   <link href="https://vjs.zencdn.net/c/video-js.css" rel="stylesheet"/>
+   <script src="https://vjs.zencdn.net/c/video.js"></script>	
 
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
@@ -124,7 +124,7 @@ indent="yes" encoding="utf-8"/>
             }
         });
     </script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js">
+    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js">
     </script>
 
 </head>
@@ -512,7 +512,7 @@ indent="yes" encoding="utf-8"/>
             </xsl:choose>
             <xsl:attribute name="style">width:<xsl:value-of select="@width"/>px;height:<xsl:value-of select="@height"/>px;</xsl:attribute>
             <xsl:choose>
-                <xsl:when test="substring(@href,1,18) = 'http://www.youtube' or substring(@href,1,14) = 'http://youtube'">
+                <xsl:when test="substring(@href,1,18) = 'http://www.youtube' or substring(@href,1,14) = 'http://youtube' or substring(@href,1,19) = 'https://www.youtube' or substring(@href,1,15) = 'https://youtube'">
                     <iframe frameborder="0" allowfullscreen="true">
                         <xsl:attribute name="height"><xsl:value-of select="@height"/></xsl:attribute>
                         <xsl:attribute name="width"><xsl:value-of select="@width"/></xsl:attribute>
@@ -588,7 +588,7 @@ indent="yes" encoding="utf-8"/>
         <xsl:copy-of select="@*[name()!='src']"/>
         <xsl:variable name="src">
             <xsl:choose>
-              <xsl:when test="starts-with(@src,'http://')">
+              <xsl:when test="starts-with(@src,'http://') or starts-with(@src,'https://')">
                 <xsl:value-of select="@src"/>
               </xsl:when>
               <xsl:when test="$host_type='GAE'">
@@ -614,4 +614,3 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="*"/>
 <xsl:template match="*" mode="navigation"/>
 </xsl:stylesheet>
-

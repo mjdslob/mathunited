@@ -49,7 +49,7 @@ extension-element-prefixes="exsl">
 
   <xsl:template match="multi-item" mode="content">
     <div class="exercise-multi-item">
-      <xsl:apply-templates select="items/item" mode="content"/>
+      <xsl:apply-templates select="items" mode="content"/>
     </div>
   </xsl:template>
 
@@ -186,17 +186,14 @@ extension-element-prefixes="exsl">
         </div>
       </xsl:if>
       <div class="exercise-text">
-        <xsl:apply-templates select="itemcontent/question" mode="question">
-          <xsl:with-param name="exercise-id" select="$exercise-id"></xsl:with-param>
-        </xsl:apply-templates>
+        <xsl:apply-templates select="itemcontent/question" mode="content"/>
       </div>
       <div class="clear-fix"></div>
     </div>
   </xsl:template>
   
-  <xsl:template match="entry-item" mode="question">
-    <xsl:param name="exercise-id" />
-    <input class="entry-item" nr="{count(preceding-sibling::entry-item)+1}" exercise-id="{$exercise-id}">
+  <xsl:template match="entry-item" mode="content">
+    <input class="entry-item" nr="{count(preceding-sibling::entry-item)+1}">
       <xsl:attribute name="answers">
         <xsl:for-each select='answers/answer'>
           <xsl:value-of select='translate(.,"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890","4250318697qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM")' />
@@ -227,7 +224,9 @@ extension-element-prefixes="exsl">
 
   <xsl:template match="answers-section" mode="content">
     <div class="answers-section">
-      <xsl:apply-templates select="//item[@type='open']" mode="answers" />
+      <xsl:for-each select="//include">
+        <xsl:apply-templates select="document(concat($docbase,@filename))//exercise/multi-item/items" mode="answers" />
+      </xsl:for-each>
     </div>
   </xsl:template>
 
