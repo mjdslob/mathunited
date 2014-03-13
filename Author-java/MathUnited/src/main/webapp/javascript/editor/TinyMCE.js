@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['jquery','tinymce'], function($) {
+define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
     var paragraph_id_counter = 0;
     var instances = {};
 

@@ -142,9 +142,9 @@
     <xsl:template name="main-page">
         <html  xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xhtml="http://www.w3.org/1999/xhtml">
             <head>
-                <link type="text/css" href="dummy"/>
                 <link type="text/css" href="javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
                 <script data-main="javascript/editor.js" src="javascript/require.js"></script>
+<!--                
                 <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"/>
                 <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"/>
                 <script type="text/x-mathjax-config">
@@ -159,7 +159,8 @@
                 </script>
                 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
                 <script type="text/javascript" src="javascript/MathUnited.js"></script>
-                <script type="text/javascript" src="javascript/MathUnited_m4a.js"></script>
+-->                
+<!--                <script type="text/javascript" src="javascript/MathUnited_m4a.js"></script>-->
                 <link rel="stylesheet" href="css/content.css" type="text/css"/>
                 <link rel="stylesheet" href="css/exercises.css" type="text/css"/>
                 <link rel="stylesheet" href="css/M4AStijl2.css" type="text/css"/>
@@ -187,6 +188,10 @@
         
                 </div>
                 <div class="pageDiv">
+                    <div id="startup-msg">
+                        <h1>Aan het opstarten...</h1><p>Als deze melding niet automatisch binnen enkele seconden verdwijnt,
+                        probeer dan opnieuw door deze pagina te verversen (druk F5).</p>
+                    </div>
                     <div class="headingDiv">
                         <div class="headingContentDiv">
                             <img class="logo" src="sources_ma/LogoM4Ainvlak.gif" align="middle"  height="33" border="0"/>
@@ -352,7 +357,7 @@
         </xsl:for-each>
     </xsl:template>
 
-    <xsl:template match="description" mode="editor">
+    <xsl:template match="subcomponent/description" mode="editor">
         <div tag="{name()}">
             <div class="menu-button-div section-button">
                 <span class="menu-button"></span>

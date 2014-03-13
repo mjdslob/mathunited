@@ -1,5 +1,6 @@
 var commitURL = '/MathUnited/postcontent';
 var refreshURL = '/MathUnited/refresh-lock';
+alert('DIT SCRIPT MAG NIET GELADEN WORDEN!');
 
 function onBeforeSetContent(obj) {
     var temp = $('<div>').html(obj.content);

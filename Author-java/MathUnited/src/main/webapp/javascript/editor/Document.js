@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['jquery', 'app/TinyMCE', 'app/ContextMenu'], function($, Editor, ContextMenu) {
+define(['jquery', 'app/TinyMCE', 'app/ContextMenu','jqueryui'], function($, Editor, ContextMenu) {
     var isDocChanged = false;
     var root = null;  //set on init
     

@@ -16,7 +16,7 @@
  */
 
 requirejs.config({
-    urlArgs: "bust=v2", //update this when a modification is made, to prevent caching problems
+//    urlArgs: "bust=v3", //update this when a modification is made, to prevent caching problems
     //By default load any module IDs from js/lib
     baseUrl: '/MathUnited/javascript/lib',
 //    baseUrl: 'js/lib',
@@ -28,31 +28,49 @@ requirejs.config({
     paths: {
         app: '../editor',
         actions: '../editor/actions',
-        jquery: 'jquery-ui-1.10.3/jquery-1.9.1', //change here when using newer version of jquery,
-        jqueryui: 'jquery-ui-1.10.3/ui/minified/jquery-ui.min', //change here when using newer version of jquery,
-        touchpunch: 'jquery.ui.touch-punch.min',
-        tinymce: '../tinymce/jquery.tinymce.min'
+        jquery: 'jquery-1.10.2', //change here when using newer version of jquery,
+        jqueryui: 'jquery-ui-1.10.4.custom.min', //change here when using newer version of jquery,
+//        touchpunch: 'jquery.ui.touch-punch.min',
+        tinymce: '../tinymce/jquery.tinymce.min',
+        mathjax: "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML&amp;delayStartupUntil=configured"
         
     },
     shim: {
         'jqueryui': {
             deps: ['jquery'],
-            export: 'jqueryui'
+            export: '$'
         },
+/*        
         'touchpunch': {
             deps: ['jqueryui'],
             export: 'touchpunch'
         },
+*/        
         'tinymce': {
             deps: [],
             export: 'tinymce'
+        },
+        mathjax: {
+            exports: "MathJax",
+            init: function () {
+              MathJax.Hub.Config({ 
+                    extensions: ["mml2jax.js","asciimath2jax.js"],
+                    config : ["MMLorHTML.js" ],
+                    AsciiMath: {
+                    decimal: ","
+                    },
+                    jax: ["input/MathML","input/AsciiMath"]
+              });
+              MathJax.Hub.Startup.onload();
+              return MathJax;
+            }
         }
     }
 });
 
 // Start the main app logic.
-requirejs(['jquery', 'app/Main','touchpunch'],
-function   ($, Main,touchpunch) {
+requirejs(['jquery', 'app/Main', 'mathjax'],
+function   ($, Main, MathJax) {
     Main.init();
 /*
     try{
