@@ -30,11 +30,13 @@ xmlns:cals="http://www.someplace.org/cals">
     </xsl:choose>
 
     <xsl:variable name="colgroup">
+        <!-- MSlo: removed this, not supported by editor
       <colgroup>
         <xsl:call-template name="generate.colgroup">
           <xsl:with-param name="cols" select="@cols"/>
         </xsl:call-template>
       </colgroup>
+      -->
     </xsl:variable>
 
     <xsl:variable name="table.width">

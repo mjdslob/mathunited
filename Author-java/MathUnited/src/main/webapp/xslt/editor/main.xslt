@@ -12,8 +12,18 @@ extension-element-prefixes="exsl">
 
 
 <xsl:include href="calstable.xslt"/>
-<xsl:template match="cals:table" mode="editor"><xsl:apply-templates select="." mode="content"/></xsl:template>
-<xsl:template match="cals:table" mode="paragraph"><xsl:apply-templates select="." mode="content"/></xsl:template>
+<xsl:template match="cals:table" mode="editor">
+    <xsl:variable name="preptable">
+        <xsl:apply-templates select="." mode="content"/>
+    </xsl:variable>
+    <xsl:apply-templates select="$preptable" mode="editor"/>
+</xsl:template>
+<xsl:template match="cals:table" mode="paragraph">
+    <xsl:variable name="preptable">
+        <xsl:apply-templates select="." mode="content"/>
+    </xsl:variable>
+    <xsl:apply-templates select="$preptable" mode="editor"/>
+</xsl:template>
 
 <!-- DEFAULT -->
 <xsl:template match="*" mode="editor">

@@ -16,7 +16,7 @@
  */
 
 requirejs.config({
-//    urlArgs: "bust=v3", //update this when a modification is made, to prevent caching problems
+    urlArgs: "bust=v4", //update this when a modification is made, to prevent caching problems
     //By default load any module IDs from js/lib
     baseUrl: '/MathUnited/javascript/lib',
 //    baseUrl: 'js/lib',
@@ -71,13 +71,6 @@ requirejs.config({
 // Start the main app logic.
 requirejs(['jquery', 'app/Main', 'mathjax'],
 function   ($, Main, MathJax) {
-    Main.init();
-/*
-    try{
-        Main.init();
-    } catch(err) {
-        alert(err.message);
-    }
-*/    
+   $( function(){Main.init(); } );
 });
 
