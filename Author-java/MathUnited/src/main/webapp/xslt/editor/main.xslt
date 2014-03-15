@@ -11,7 +11,8 @@ exclude-result-prefixes="saxon"
 extension-element-prefixes="exsl">
 
 
-<xsl:include href="calstable.xslt"/>
+<xsl:include href="editor/calstable.xslt"/>
+
 <xsl:template match="cals:table" mode="editor">
     <xsl:variable name="preptable">
         <xsl:apply-templates select="." mode="content"/>

@@ -10,6 +10,8 @@ xmlns:xhtml="http://www.w3.org/1999/xhtml"
 exclude-result-prefixes="saxon"
 extension-element-prefixes="exsl">
 
+<xsl:import href="mathml/to-asciimathml.xslt"/>
+
 <!-- TEMPLATES -->
 <xsl:template name="paragraph-template">
     <div class="tiny-editor">
@@ -54,10 +56,16 @@ extension-element-prefixes="exsl">
    </span>
 </xsl:template>
 <xsl:template match="m:math | math" mode="paragraph">
+    <xsl:variable name="am">
+        <xsl:apply-templates select="." mode="convert-to-asciimathml"/>
+    </xsl:variable>
+    <xsl:apply-templates select="$am" mode="paragraph"/>
+<!--    
     <span class="math-container">
         <span tag="m:math"><xsl:apply-templates mode="paragraph-span"/></span>
         <xsl:apply-templates select="." mode="copy"/>
     </span>
+-->    
 </xsl:template>
 
 <xsl:template match="author-remark" mode="paragraph">

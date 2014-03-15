@@ -107,13 +107,13 @@
     </xsl:template>
     
     <!-- Entry point -->
-    <xsl:template match="@*|node()" mode="mathml-dedicon">
+    <xsl:template match="@*|node()" mode="convert-to-asciimathml">
       <xsl:variable name="prioritized">
         <xsl:copy>
           <xsl:apply-templates select="@*|node()" mode="priority" />
         </xsl:copy>
       </xsl:variable>
-      <xsl:apply-templates select="exsl:node-set($prioritized)/*" mode="convert" />
+      <xsl:apply-templates select="exsl:node-set($prioritized)" mode="convert" />
     </xsl:template>
     
     <xsl:template name="unchanged">
@@ -151,29 +151,31 @@
     </xsl:template>
     
     <xsl:template match="m:math" mode="convert">
-      <xsl:variable name="result">
-        <xsl:apply-templates mode="convert" />
-      </xsl:variable>
-      <xsl:value-of select="normalize-space($result)" />
+        <am>
+            <xsl:variable name="result">
+              <xsl:apply-templates mode="convert" />
+            </xsl:variable>
+            <xsl:value-of select="normalize-space($result)" />
+        </am>
     </xsl:template>
 	
     <xsl:template match="m:mfrac" mode="convert">
         <xsl:apply-templates select="*[1]" mode="write-term">
-            <xsl:with-param name="priority" value="@p"/>
+            <xsl:with-param name="priority" select="@p"/>
         </xsl:apply-templates>
         <xsl:text>/</xsl:text>
         <xsl:apply-templates select="*[2]" mode="write-term">
-            <xsl:with-param name="priority" value="@p"/>
+            <xsl:with-param name="priority" select="@p"/>
         </xsl:apply-templates>
     </xsl:template>
 	
     <xsl:template match="m:msup" mode="convert">
         <xsl:apply-templates select="*[1]" mode="write-term">
-            <xsl:with-param name="priority" value="@p"/>
+            <xsl:with-param name="priority" select="@p"/>
         </xsl:apply-templates>
         <xsl:text>^</xsl:text>
         <xsl:apply-templates select="*[2]" mode="write-term">
-            <xsl:with-param name="priority" value="@p"/>
+            <xsl:with-param name="priority" select="@p"/>
         </xsl:apply-templates>
     </xsl:template>
 	
@@ -189,7 +191,7 @@
     </xsl:template>
     
     <xsl:template match="m:mroot" mode="convert">
-      <xsl:text>root_</xsl:text>
+      <xsl:text>root</xsl:text>
       <xsl:apply-templates select="*[1]" mode="convert" />
       <xsl:text>(</xsl:text>
       <xsl:apply-templates select="*[2]" mode="convert" />
