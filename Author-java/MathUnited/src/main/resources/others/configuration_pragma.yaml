@@ -44,6 +44,8 @@ repos :
     path: content-ma/malmberg
     edit_permission: editor_malmberg
     defaultVariant: m4a_view
+    componentsURL: /index/malmberg/components.xml
+    threadsURL: /index/malmberg/threads.xml
   algebrakit :
     path: content-ma/algebrakit
     edit_permission: 

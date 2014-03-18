@@ -30,6 +30,7 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
         mark:true,
         sup:true,
         textref:true,
+        sheetref:true,
         ol:true,
         ul:true,
         li:true,
@@ -79,6 +80,13 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
             var elm = $('<span class="textref" ref="'+ref+'">'+$(this).text()+'</span>');
             $(this).replaceWith(elm);
         });
+        //replace sheetrefs
+        $('span[tag="sheetref"]',temp).each(function(){
+            var ref=$(this).attr('item');
+            var elm = $('<span class="sheetref" item="'+ref+'">'+$(this).text()+'</span>');
+            $(this).replaceWith(elm);
+        });
+        
         //replaces each am-container span to the ASCIIMathML code (between backquotes)
         var amContainerElm = $('span.am-container',temp);
         amContainerElm.each(function() {
@@ -122,6 +130,9 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
         var parent = document.getElementById(editor.target.id);
         $('span[class="textref"]',parent).each(function(){
             $(this).replaceWith($('<span tag="textref" ref="'+$(this).attr('ref')+'">'+$(this).html()+'</div>'));
+        });
+        $('span[class="sheetref"]',parent).each(function(){
+            $(this).replaceWith($('<span tag="sheetref" item="'+$(this).attr('item')+'">'+$(this).html()+'</div>'));
         });
         $('table',parent).each(function() {
            var par = $(this);
@@ -226,7 +237,7 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
             valid_elements : 
               "@[id|class|style|title|dir<ltr?rtl|lang|xml::lang|onclick|ondblclick|"
               + "onmousedown|onmouseup|onmouseover|onmousemove|onmouseout|onkeypress|"
-              + "onkeydown|onkeyup|tag|ref],"
+              + "onkeydown|onkeyup|tag|ref|item],"
             + "a[rel|rev|charset|hreflang|tabindex|accesskey|type|"
               + "name|href|target|title|class|onfocus|onblur],"
             + "b/strong,i/em,strike,u,"
@@ -271,7 +282,6 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
             }
         },
         editor: function(parent) {
-            var _this = this;
             if(parent.parents('.tiny-editor').length>0) return; //already attached to an editor
             if(parent.parents('div[tag="componentcontent"]').length===0) return; //not part of editable content
             if(parent.attr('_done')) return;

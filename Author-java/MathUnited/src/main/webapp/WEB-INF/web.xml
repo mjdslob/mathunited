@@ -10,6 +10,10 @@
         <servlet-class>nl.math4all.mathunited.editor.EditServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>getcomponentitems</servlet-name>
+        <servlet-class>nl.math4all.mathunited.editor.GetComponentItemsServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>refresh-lock</servlet-name>
         <servlet-class>nl.math4all.mathunited.editor.RefreshLockServlet</servlet-class>
     </servlet>
@@ -128,6 +132,10 @@
     <servlet-mapping>
         <servlet-name>RestoreBackupServlet</servlet-name>
         <url-pattern>/restorebackup</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getcomponentitems</servlet-name>
+        <url-pattern>/getcomponentitems</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

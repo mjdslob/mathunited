@@ -164,7 +164,11 @@ extension-element-prefixes="exsl">
     <xsl:sequence select="replace(., '\s+', ' ', 'm')"/>
 </xsl:template>
 
-
+<xsl:template match="sub | xhtml:sub | sup | xhtml:sup | b | xhtml:b | i|xhtml:i" mode="paragraph">
+    <xsl:element name="{name()}">
+        <xsl:apply-templates select="node()" mode="paragraph"/>
+    </xsl:element>
+</xsl:template>
 <xsl:template match="img[@class='paperfigure'] | xhtml:img[@class='paperfigure']" mode="image">
    <xsl:variable name="width" select="number(@width) div $cm2px"/>
     

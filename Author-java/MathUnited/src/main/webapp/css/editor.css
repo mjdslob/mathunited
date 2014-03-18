@@ -197,6 +197,11 @@ span[tag="textref"] {
     color:red;
     text-decoration: underline;
 }
+span[tag="sheetref"] {
+    display:inline-block;
+    color:red;
+    text-decoration: underline;
+}
 .block-content {
     display:none;
 }
@@ -528,4 +533,74 @@ div.objective-new-item input {
     margin-left:15px;
     position:relative;
     top:2px;
+}
+.select-item-button {
+    display:inline-block;
+    padding:2px 5px;
+    background-color:rgb(50,50,50);
+    color:white;
+}
+.select-item-button:hover {
+    background-color:rgb(100,100,100);    
+}
+.item-selector-thread-title {
+    width:500px;
+    padding:3px 10px;
+    background-color:darkgray;
+    margin:2px 0px;
+    border-radius: 3px;
+}
+.item-selector-thread-title:hover {
+    background-color:rgb(100,80,80);
+    color:white;
+}
+.item-selector-thread-content {
+    display:none;
+}
+.item-selector-thread-content.open {
+    display:block;
+}
+.item-selector-subcomponent-container {
+    display:none;
+}
+.item-selector-subcomponent-container.open {
+    display:block;
+}
+.item-selector-component {
+    padding: 3px 10px;
+    position:relative;
+    left:15px;
+    background-color:rgb(150,150,150);
+    margin:2px 0px;
+    color:white;
+}
+.item-selector-component:hover {
+    background-color: rgb(120,110,110);
+}
+.item-selector-subcomponent {
+    padding: 3px 10px;
+    position:relative;
+    left:25px;
+    font-style:italic;
+}
+.item-selector-subcomponent:hover {
+    border:1px solid darkgray;
+    padding: 2px 9px;   
+}
+.item-selector-item {
+    position:relative;
+    left:50px;
+}
+.item-selector-item:hover {
+    text-decoration: underline;
+}
+.example-answer-content {
+    display:none;    
+}
+.example-answer-content.visible {
+    display:block;    
+}
+.example-answer-button.visible {
+    color:red;
+    font-style:italic;
 }

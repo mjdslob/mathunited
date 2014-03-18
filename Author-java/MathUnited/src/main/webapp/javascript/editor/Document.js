@@ -109,6 +109,7 @@ define(['jquery', 'app/TinyMCE', 'app/ContextMenu','jqueryui'], function($, Edit
         toggleVisibleButton('block', elm);
         toggleVisibleButton('worksheet', elm);
         toggleVisibleButton('answer', elm);
+        toggleVisibleButton('example-answer',elm);
     }
 
     return {

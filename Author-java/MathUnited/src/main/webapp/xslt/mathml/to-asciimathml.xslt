@@ -28,6 +28,9 @@
       <operator priority="20" replacement=":">
         <match>:</match>
       </operator>
+      <operator priority="5" replacement=" &lt; "><!--add spaces to prevent that browser interprets start of tag ('<')-->
+        <match>&lt;</match>
+      </operator>
       <operator priority="100" replacement="=">
         <match>=</match>
       </operator>
@@ -69,17 +72,29 @@
           <xsl:with-param name="nodes" select="exsl:node-set($tmp)/*/@p" />
         </xsl:call-template>
       </xsl:variable>
-      <xsl:call-template name="set-priority">
-        <xsl:with-param name="priority">
-          <xsl:value-of select="$priority" />
-        </xsl:with-param>
-      </xsl:call-template>
+      <xsl:choose>
+          <xsl:when test="$priority>20 and count(*)>1">
+              <!-- combination of terms defaults to multiplication -->
+            <xsl:call-template name="set-priority">
+              <xsl:with-param name="priority">
+                <xsl:value-of select="20" />
+              </xsl:with-param>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:call-template name="set-priority">
+              <xsl:with-param name="priority">
+                <xsl:value-of select="$priority" />
+              </xsl:with-param>
+            </xsl:call-template>
+          </xsl:otherwise>
+      </xsl:choose>
     </xsl:template>
     
     <xsl:template match="m:mfrac" mode="priority">
       <xsl:call-template name="set-priority">
         <xsl:with-param name="priority">
-          <xsl:text>40</xsl:text>
+          <xsl:text>20</xsl:text>
         </xsl:with-param>
       </xsl:call-template>
     </xsl:template>
@@ -126,17 +141,18 @@
           <xsl:apply-templates select="." mode="convert" />
         </xsl:variable>
         <xsl:choose>
-            <xsl:when test="number(@p) &lt; number($priority)">
-               (<xsl:value-of select="normalize-space($temp)" />)
+            <xsl:when test="$priority and @p and number(@p) > number($priority)">
+               <xsl:value-of select="normalize-space($temp)" />
             </xsl:when>
             <xsl:otherwise>
-               <xsl:value-of select="normalize-space($temp)" />
+               (<xsl:value-of select="normalize-space($temp)" />)
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
 
     <xsl:template match="m:mn" mode="convert">
-      <xsl:call-template name="unchanged" />
+        <xsl:call-template name="unchanged" />
+        <xsl:text> </xsl:text>
     </xsl:template>
     
     <xsl:template match="m:mo" mode="convert">
@@ -180,9 +196,9 @@
     </xsl:template>
 	
     <xsl:template match="m:msub" mode="convert">
-      (<xsl:apply-templates select="*[1]" mode="convert" />)
+      <xsl:apply-templates select="*[1]" mode="convert" />
       <xsl:text>_</xsl:text>
-      (<xsl:apply-templates select="*[2]" mode="convert" />)
+      <xsl:apply-templates select="*[2]" mode="convert" />
     </xsl:template>
 	
     <xsl:template match="m:mover" mode="convert">
@@ -190,11 +206,67 @@
       <xsl:apply-templates mode="convert" />
     </xsl:template>
     
+    <xsl:template match="m:mmultiscripts" mode="convert">
+        <xsl:variable name="pos">
+            <xsl:choose>
+                <xsl:when test="m:mprescripts">
+                    <xsl:value-of select="m:mprescripts/position()"/>
+                </xsl:when>
+                <xsl:otherwise>-1</xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="base">
+            <xsl:choose>
+                <xsl:when test="number($pos) > 1">
+                    <xsl:apply-templates select="*[1]" mode="write-term">
+                        <xsl:with-param name="priority" select="30"/>
+                    </xsl:apply-templates>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:text>\ </xsl:text>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+
+        <xsl:if test="count(m:mprescripts/following-sibling::*) > 1">
+            <xsl:text>\ </xsl:text>
+            <xsl:if test="name(*[number($pos)+1])!='m:none'">
+                <xsl:text>_</xsl:text>
+                <xsl:apply-templates select="*[number($pos)+1]" mode="write-term">
+                    <xsl:with-param name="priority" select="30"/>
+                </xsl:apply-templates>
+            </xsl:if>
+            <xsl:if test="name(*[number($pos)+2])!='none'">
+                <xsl:text>^</xsl:text>
+                <xsl:apply-templates select="*[number($pos)+2]" mode="write-term">
+                    <xsl:with-param name="priority" select="30"/>
+                </xsl:apply-templates>
+            </xsl:if>
+        </xsl:if>
+        
+        <xsl:if test="number($pos)>1">
+            <xsl:value-of select="$base"/>
+            <xsl:if test="name(*[2])!='none'">
+                <xsl:text>_</xsl:text>
+                <xsl:apply-templates select="*[2]" mode="write-term">
+                    <xsl:with-param name="priority" select="30"/>
+                </xsl:apply-templates>
+            </xsl:if>
+            <xsl:if test="name(*[3])!='none'">
+                <xsl:text>^</xsl:text>
+                <xsl:apply-templates select="*[3]" mode="write-term">
+                    <xsl:with-param name="priority" select="30"/>
+                </xsl:apply-templates>
+            </xsl:if>
+        </xsl:if>
+        
+    </xsl:template>
+    
     <xsl:template match="m:mroot" mode="convert">
       <xsl:text>root</xsl:text>
-      <xsl:apply-templates select="*[1]" mode="convert" />
-      <xsl:text>(</xsl:text>
       <xsl:apply-templates select="*[2]" mode="convert" />
+      <xsl:text>(</xsl:text>
+      <xsl:apply-templates select="*[1]" mode="convert" />
       <xsl:text>)</xsl:text>
     </xsl:template>
     

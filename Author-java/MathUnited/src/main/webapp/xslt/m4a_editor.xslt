@@ -18,6 +18,8 @@
     <xsl:param name="option"/>
     <xsl:param name="parent"/>  <!-- eg.: mathunited.nl/wiskundemenu/WM_overview.html -->
     <xsl:param name="is_mobile"/>
+    <xsl:param name="componentsURL"/>
+    <xsl:param name="threadsURL"/>
     <xsl:param name="id"/>
     <xsl:param name="repo"/>
     <xsl:param name="repo-path"/>
@@ -144,23 +146,6 @@
             <head>
                 <link type="text/css" href="javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
                 <script data-main="javascript/editor.js" src="javascript/require.js"></script>
-<!--                
-                <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"/>
-                <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"/>
-                <script type="text/x-mathjax-config">
-                    MathJax.Hub.Config({
-                    extensions: ["mml2jax.js","asciimath2jax.js"],
-                    config : ["MMLorHTML.js" ],
-                    AsciiMath: {
-                    decimal: ","
-                    },
-                    jax: ["input/MathML","input/AsciiMath"]
-                    });
-                </script>
-                <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
-                <script type="text/javascript" src="javascript/MathUnited.js"></script>
--->                
-<!--                <script type="text/javascript" src="javascript/MathUnited_m4a.js"></script>-->
                 <link rel="stylesheet" href="css/content.css" type="text/css"/>
                 <link rel="stylesheet" href="css/exercises.css" type="text/css"/>
                 <link rel="stylesheet" href="css/M4AStijl2.css" type="text/css"/>
@@ -178,6 +163,8 @@
                     <span id="meta-data-refbase"><xsl:value-of select="$refbase"/></span>
                     <span id="meta-data-repo-path"><xsl:value-of select="$repo-path"/></span>
                     <span id="meta-data-baserepo-path"><xsl:value-of select="$baserepo-path"/></span>
+                    <span id="meta-components-url"><xsl:value-of select="$componentsURL"/></span>
+                    <span id="meta-threads-url"><xsl:value-of select="$threadsURL"/></span>
                 </div>
                 <div style="display:none">
                     <div id="dialog-remove-item-confirm" title="Item verwijderen?">
@@ -624,15 +611,15 @@
             <div style="clear:both"/>
     </xsl:template>
     
-    <xsl:template match="examplesolution[not(normalize-space()='')]" mode="editor">
-        <div tag="examplesolution" class="m4a-example">
-            <div onclick="javascript:M4A_ShowExampleAnswer(this)" class="example-answer-button">&gt; antwoord</div>
-            <div class="m4a-answer">
-                <xsl:apply-templates mode="editor"/>
-                <div  onclick="javascript:M4A_ShowExampleAnswer(this)" class="answerCloseButton"/>
-            </div>
+    <xsl:template match="examplesolution" mode="editor">
+        <div tag="{name()}">
+            <xsl:if test="count(node())>0">
+                <div class="example-answer-button">&gt; antwoord</div>
+                <div class="example-answer-content">
+                    <xsl:apply-templates mode="editor"/>
+                </div>
+            </xsl:if>
         </div>
-        <div style="clear:both"/>
     </xsl:template>
 
     <xsl:template match="exercise">

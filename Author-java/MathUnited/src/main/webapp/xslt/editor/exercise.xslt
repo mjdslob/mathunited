@@ -181,7 +181,9 @@ extension-element-prefixes="exsl">
                                 </input><br/>
                                 <b>Gerelateerde theorie (id van paragraaf):</b><input type="text" name="ref-id" size="30">
                                     <xsl:value-of select="metadata/ref-id/@value"/>
-                                </input><br/>
+                                </input>
+                                <div class="select-item-button">selecteer</div>
+                                <br/>
                                 <b>Leerdoelen</b>: <div class="metadata-obj-selector-container"/>
                                 <br/>
                                 <div class="close-metadata-button"/>

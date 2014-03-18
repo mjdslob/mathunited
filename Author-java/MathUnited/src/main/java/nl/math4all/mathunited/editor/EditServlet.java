@@ -148,6 +148,8 @@ public class EditServlet extends HttpServlet {
             // supply path to subcomponent to xslt. Might be needed when resolving other xml-documents
             int ind = sub.file.lastIndexOf('/');
             String refbase = repository.path+"/"+sub.file.substring(0, ind+1);
+            parameterMap.put("componentsURL", repository.componentsURL);
+            parameterMap.put("threadsURL", repository.threadsURL);
             parameterMap.put("refbase", refbase);
             parameterMap.put("component", component.getXML());
             parameterMap.put("repo-path", repository.path);
