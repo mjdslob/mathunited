@@ -497,7 +497,7 @@ indent="yes" encoding="utf-8"/>
                 <xsl:otherwise>false</xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <xsl:attribute name="src" select="concat('https://demo.pulseon.nl/qt/player.html?testId=',@src,'&amp;lang=nl-NL&amp;window=',$dowindow)"/>
+        <xsl:attribute name="src" select="concat('https://qt-studiovo.pulseon.nl/qt/player.html?testId=',@src,'&amp;lang=nl-NL&amp;window=',$dowindow)"/>
         <xsl:apply-templates mode="content"/>
     </iframe>
 </xsl:template>

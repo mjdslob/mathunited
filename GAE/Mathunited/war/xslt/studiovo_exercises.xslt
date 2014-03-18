@@ -224,8 +224,13 @@ extension-element-prefixes="exsl">
 
   <xsl:template match="answers-section" mode="content">
     <div class="answers-section">
-      <xsl:for-each select="//include">
-        <xsl:apply-templates select="document(concat($docbase,@filename))//exercise/multi-item/items" mode="answers" />
+      <xsl:for-each select="//block/include">
+        <xsl:if test="count(document(concat($docbase,@filename))//exercise//item[@type='open']) > 0">
+          <div class="answer-header">
+            <xsl:value-of select="../title"/>
+          </div>
+          <xsl:apply-templates select="document(concat($docbase,@filename))//exercise//items" mode="answers" />
+        </xsl:if>
       </xsl:for-each>
     </div>
   </xsl:template>

@@ -167,7 +167,7 @@ h2 {
 .content-tab.selected {
     display:block;
     overflow:auto;
-    height:440px;    
+    height:430px;    
 }
 .figureDiv.right {
     float:right;
@@ -327,6 +327,12 @@ iframe {
 .answers-section .label
 {
     font-weight: bold;
+}
+
+.answers-section .answer-header
+{
+    font-weight: bold;
+    font-size: 110%;
 }
 
 /*---------------------------*/
