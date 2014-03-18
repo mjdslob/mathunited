@@ -124,6 +124,15 @@
         <servlet-name>getResourceUrl</servlet-name>
         <url-pattern>/getresourceurl</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>getSSOMetaData</servlet-name>
+        <servlet-class>mathunited.GetSSOMetaDataServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>getSSOMetaData</servlet-name>
+        <url-pattern>/ssometadata</url-pattern>
+    </servlet-mapping>
     
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
