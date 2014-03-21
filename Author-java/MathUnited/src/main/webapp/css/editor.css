@@ -604,3 +604,9 @@ div.objective-new-item input {
     color:red;
     font-style:italic;
 }
+select.thread-choser, select.component-choser, select.subcomponent-choser, select.item-choser {
+    width:250px;
+}
+.chosen-container {
+    margin:10px 0px;
+}

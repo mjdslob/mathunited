@@ -120,8 +120,9 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
     }
 
     function onGetContent(obj) {
+        debugger;
+        obj.content = obj.content.replace(/`([^\n\r`]*)`/g,"<span class='am-container'><span tag='am'>$1</span>`$1`</span>")
         obj.content = obj.content.replace(/\s+/g,' ');
-        obj.content = obj.content.replace(/`([^`]*)`/g,"<span class='am-container'><span tag='am'>$1</span>`$1`</span>")
         if(obj.content=='') obj.content="<p></p>";
     }
 

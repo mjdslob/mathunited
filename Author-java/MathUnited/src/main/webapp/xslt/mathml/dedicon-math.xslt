@@ -159,21 +159,21 @@
 	
     <xsl:template match="m:mfrac" mode="convert">
         <xsl:apply-templates select="*[1]" mode="write-term">
-            <xsl:with-param name="priority" value="@p"/>
+            <xsl:with-param name="priority" select="@p"/>
         </xsl:apply-templates>
         <xsl:text>/</xsl:text>
         <xsl:apply-templates select="*[2]" mode="write-term">
-            <xsl:with-param name="priority" value="@p"/>
+            <xsl:with-param name="priority" select="@p"/>
         </xsl:apply-templates>
     </xsl:template>
 	
     <xsl:template match="m:msup" mode="convert">
         <xsl:apply-templates select="*[1]" mode="write-term">
-            <xsl:with-param name="priority" value="@p"/>
+            <xsl:with-param name="priority" select="@p"/>
         </xsl:apply-templates>
         <xsl:text>^</xsl:text>
         <xsl:apply-templates select="*[2]" mode="write-term">
-            <xsl:with-param name="priority" value="@p"/>
+            <xsl:with-param name="priority" select="@p"/>
         </xsl:apply-templates>
     </xsl:template>
 	

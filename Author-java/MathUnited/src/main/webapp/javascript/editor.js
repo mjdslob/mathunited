@@ -30,6 +30,7 @@ requirejs.config({
         actions: '../editor/actions',
         jquery: 'jquery-1.10.2', //change here when using newer version of jquery,
         jqueryui: 'jquery-ui-1.10.4.custom.min', //change here when using newer version of jquery,
+        jqueryChosen: 'chosen_v1.1.0/chosen.jquery.min',
 //        touchpunch: 'jquery.ui.touch-punch.min',
         tinymce: '../tinymce/jquery.tinymce.min',
         mathjax: "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML&amp;delayStartupUntil=configured"
@@ -39,6 +40,9 @@ requirejs.config({
         'jqueryui': {
             deps: ['jquery'],
             export: '$'
+        },
+        'jqueryChosen': {
+            deps: ['jquery']
         },
 /*        
         'touchpunch': {

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['jquery','jqueryui'], function($) {
+define(['jquery','jqueryui','jqueryChosen'], function($) {
     var getComponentItemsURL = '/MathUnited/getcomponentitems';
     var isInitialized = false;
     var modules = [];
@@ -125,11 +125,10 @@ define(['jquery','jqueryui'], function($) {
         );
     }
 
-    function writeItemHTML(item) {
+    function addItemOption(item, elm) {
       
-        var inner = '';
         item.children().each(function() {
-            inner += writeItemHTML($(this));
+            addItemOption($(this),elm);
         });
 
         var id = item.attr('id');
@@ -137,71 +136,104 @@ define(['jquery','jqueryui'], function($) {
         function writeItem(name) {
             //id is used through closure
             if(id) 
-                return '<div class="item-selector-item-container"><div class="item-selector-item" id="'+id+'">'+name+'</div>'+inner+'</div>';
+                elm.append($('<option value="'+id+'">'+name+'</option>'));
             else
-                return '<div class="item-selector-item-container"><div class="item-selector-item">'+name+'</div>'+inner+'</div>';
+                elm.append($('<option value="unknown">'+name+'</option>'));
         }
-        var result = '';
         switch(item[0].localName) {
             case 'introduction':
-                result+=writeItem('inleiding');
+                writeItem('inleiding');
                 break;
             case 'explore':
-                result+=writeItem('verkennen');
+                writeItem('verkennen');
                 break;
             case 'explanation-parent':
                 break;
             case 'explanation':
-                result+=writeItem('uitleg');
+                writeItem('uitleg');
                 break;
             case 'exercise':
-                result+=writeItem('opgave');
+                writeItem('opgave');
                 break;
             case 'theory':
-                result+=writeItem('theorie');
+                writeItem('theorie');
                 break;
             case 'digest':
-                result+=writeItem('verwerken');
+                writeItem('verwerken');
                 break;
             case 'application':
-                result+=writeItem('toepassen');
+                writeItem('toepassen');
                 break;
             case 'extra':
-                result+=writeItem('practicum');
+                writeItem('practicum');
                 break;
             case 'test':
-                result+=writeItem('test jezelf');
+                writeItem('test jezelf');
                 break;
         }
-        return result;
     }
-    
-    function showSubcomponentItems(comp, subcomp,parent) {
+        
+    function setItemOptions(comp, subcomp, div) {
+        clearItemOptions(div);
+        var elm = $('.item-choser',div);
         var args = {comp:comp, subcomp: subcomp};
         $.get(getComponentItemsURL, args,
               function(data) {
                   var sc = $('subcomponent#'+subcomp,data);
-                  var itemHTML = '';
-                  sc.children().each( function() {
-                      itemHTML += writeItemHTML($(this));
-                  });
-                  parent.append($(itemHTML));
+                  addItemOption(sc,elm);
+                  elm.trigger('chosen:updated');
               });
+
+    }
+    function clearItemOptions(div) {
+        var elm = $('.item-choser',div);
+        $('option',elm).remove();
+        elm.append($('<option value=""></option>'));
+        elm.trigger('chosen:updated');
+    }
+    function setSubcomponentOptions(compId, div) {
+        clearSubcomponentOptions(div);
+        var elm = $('.subcomponent-choser',div);
+        var mod = modules[compId];
+        for(var jj=0; jj<mod.subcomponents.length;jj++) {
+            var sub=mod.subcomponents[jj];
+            elm.append('<option value="'+sub.id+'">'+sub.title+'</option>');
+        }
+        elm.trigger('chosen:updated');
+    }
+    function clearSubcomponentOptions(div) {
+        var elm = $('.subcomponent-choser',div);
+        $('option',elm).remove();
+        elm.append($('<option value=""></option>'));
+        elm.trigger('chosen:updated');
+        clearItemOptions(div);
+    }
+    function setComponentOptions(threadId, div) {
+        var elm = $('.component-choser',div);
+        clearComponentOptions(div);
+        var th = threads[threadId];
+        for(var jj=0; jj<th.modules.length;jj++) {
+            var mod=th.modules[jj];
+            elm.append('<option value="'+mod.id+'">'+mod.name+'</option>');
+        }
+        elm.trigger('chosen:updated');
+    }
+    function clearComponentOptions(div) {
+        var elm = $('.component-choser',div);
+        $('option',elm).remove();
+        elm.append($('<option value=""></option>'));
+        elm.trigger('chosen:updated');
+        clearSubcomponentOptions(div);
     }
     
-    function showComponents(div) {
+    function setThreadOptions(div) {
+        var elm = $('.thread-choser',div);
         for(var ii=0; ii<threads.length; ii++) {
             var th = threads[ii];
             if(th) {
+                elm.append($('<option value="'+th.id+'">'+th.title+'</option>'));
+/*
                 var threadElm = document.createElement('div');
-                threadElm.className = 'thread-container';
-                threadElm.id = th.id;
-                div.append(threadElm);
-                threadElm.innerHTML = 
-                     '<div class="item-selector-thread-meta">'
-                    +'<div class="item-selector-thread-title">'+th.title+'</div>'
-                    +'</div><div class="item-selector-thread-content">'
-                    +'</div>';
                 var threadContentElm = $('.item-selector-thread-content',$(threadElm));
                 for(var jj=0; jj<th.modules.length;jj++) {
                     var mod=th.modules[jj];
@@ -212,9 +244,12 @@ define(['jquery','jqueryui'], function($) {
                         compElm.append($('<div class="item-selector-subcomponent-container"><div class="item-selector-subcomponent" id="'+subComp.id+'">'+subComp.title+'</div></div>'));
                     }
                 }
+*/                
             }
         }
+        
         //attach event handlers (opening/closing threads)
+/*                        
         $('.item-selector-thread-title',div).click(function() {
             var parent = $(this).parents('.thread-container');
             $('.item-selector-thread-content',parent).toggleClass('open');
@@ -230,6 +265,7 @@ define(['jquery','jqueryui'], function($) {
             var comp = $('.item-selector-component',parent).first().attr('id');
             showSubcomponentItems(comp, subcomp, subcompcont); 
         });
+*/        
     }    
 
     return {
@@ -246,9 +282,32 @@ define(['jquery','jqueryui'], function($) {
         },
         show: function() {
             if(!isInitialized) {alert('Probleem: kan de beschikbare paragrafen niet laden'); return; }
-            var parent = $('<div></div>');
-            showComponents(parent);
-            parent.dialog();
+            var parent = $('<div><select class="thread-choser" data-placeholder="selecteer een leerlijn..."><option value=""></option></select>'
+                    +'<br/><select class="component-choser" data-placeholder="selecteer een hoofdstuk..."></select>'
+                    +'<br/><select class="subcomponent-choser" data-placeholder="selecteer een paragraaf..."></select>'
+                    +'<br/><select class="item-choser" data-placeholder="selecteer een item..."></select>'
+                    +'</div>');
+            $('.contentDiv').prepend(parent);
+            setThreadOptions(parent);
+            parent.dialog({width:300, height:400});
+            $('.thread-choser', parent).chosen()
+                .change(function(data) {
+                    var id = $('.thread-choser option:selected').val();
+                    setComponentOptions(id, parent);
+                });
+            $('.component-choser', parent).chosen()
+                .change(function(data) {
+                    var id = $('.component-choser option:selected').val();
+                    setSubcomponentOptions(id, parent);
+                });
+            $('.subcomponent-choser', parent).chosen()
+                .change(function(data) {
+                    var compid = $('.component-choser option:selected').val();
+                    var subid = $('.subcomponent-choser option:selected').val();
+                    setItemOptions(compid, subid, parent);
+                });
+            $('.item-choser', parent).chosen();
+
         }
     };
 });

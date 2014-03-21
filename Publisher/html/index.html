@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Publisher</title>
+        <link type="text/css" href="javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="stylesheet" />
+        <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
+        <link rel="stylesheet" href="publisher-ui.css" type="text/css" />
+        <script type="text/javascript" src="javascript/UI.js"></script>
+        <script type="text/javascript" src="javascript/PublisherUI-Main.js"></script>
+        <script type="text/javascript" src="javascript/WM_Method.js"></script>
+        <script type="text/javascript" src="javascript/WM_Module.js"></script>
+        <script type="text/javascript" src="javascript/WM_Thread.js"></script>
+        <script type="text/javascript">
+            var viewURL = [];
+            viewURL['malmberg'] = '/MathUnited/view?parent=/Publisher/html/auteurstool.html&repo=malmberg';
+            wm = new WM_Manager({
+                methodURL:  '/index/malmberg/components.xml',
+                threadsURL: '/index/malmberg/threads.xml',
+                repo: 'malmberg'
+            });
+            $(document).ready(function() {
+                wm.init();
+                initUI();
+            });
+            
+        </script>
+    </head>
+    <body>
+        <div id="main">
+            <div id="dialog">
+                <form name="loginform" id="login-form" action="" method="post">
+                    <div id="login-message"></div>
+                    <div class="fieldname">Gebruikersnaam</div><input type="text" name="username">
+                    <div class="fieldname">Wachtwoord</div><input type="password" name="password">
+                    <div style="clear:both"></div>
+                    <input id="forgot-password-button" type="button" value="Wachtwoord vergeten" onClick="M4A_forgotPassword(this.form)">
+                    <input id="submit-button" type="button" value="OK" onClick="M4A_login(this.form)">
+                </form>
+            </div>
+            <div id="header">
+            <div id="logo">
+                <div id="logo_text">
+                <!-- class="logo_colour", allows you to change the colour of the text -->
+                <h1><a href="index.html">Project<span
+                class="logo_colour">X</span></a></h1>
+                <h2>Auteurstool</h2>
+                </div>
+                <div id="account-info">
+                    <div id="info-logged-in">
+                        Geselecteerd archief:
+                        <select id="repo-set" onchange="javascript:M4A_selectRepo()">
+                            <option value="m4a">standaard</option>
+                        </select>
+                        <br/>
+                        <span id="info-username"></span>
+                        <div id="logout-button" class="account-button" onclick="javascript:M4A_logout()">&gt; uitloggen</div>
+                    </div>
+                    <div id="info-not-logged-in" class="visible">
+                        <span>U bent niet ingelogd.</span>
+                        <div id="login-button" class="account-button" onclick="javascript:M4A_showLoginDialog()">&gt; inloggen</div>
+                    </div>
+                </div>
+            </div>
+            <div id="menubar">
+                <ul id="menu">
+                <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
+                <li id="li-tab-home" class="selected"><a href="javascript:setTab('tab-home')">Home</a></li>
+                <li id="li-tab-preview"><a href="javascript:setTab('tab-preview')">Bekijken</a></li>
+                <li id="li-tab-edit"><a href="javascript:setTab('tab-edit')">Bewerken</a></li>
+                <li id="li-tab-logging"><a href="javascript:setTab('tab-logging')">Log</a></li>
+                </ul>
+            </div>
+            </div>
+            <div id="site_content">
+                <div id="tab-home" class="ui-tab selected">
+                    <div class="sidebar">
+                        <!-- insert your sidebar items here -->
+                        <h3>Informatie</h3>
+                        <h4>Gepubliceerde content</h4>
+                        <p>Ga naar de gepubliceerde content van <a href="http://www.mathunited.nl">Project-X</a>.</p>
+                    </div>
+                    <div class="content">
+                        <h1>Welkom bij de auteurstool voor Project-X</h1>
+                        <p>Deze tool is bedoeld voor auteurs die werken aan de nieuwe wiskundemethode van Malmberg op basis van het lesmateriaal van 
+                            Math4all. </p>
+                        <p>U dient eerst in te loggen (rechtsboven in het scherm) voordat u bewerkingen kunt uitvoeren. </p>
+                        <p>De auteurstool is bedoeld om het maken van digitaal lesmateriaal zoveel mogelijk te faciliteren. De  
+                           volgende zaken zijn niet mogelijk via de auteurstool: </p>
+                        <ul>
+                            <li>Aanmaken van leerlijnen</li>
+                            <li>Aanmaken van nieuwe hoofdstukken en paragrafen</li>
+                            <li>...</li>
+                        </ul>
+                        <p>Voor deze zaken, en ingeval van problemen, kunt u zicht wenden tot ....</p>
+                    </div>
+                </div>
+                <div id="tab-preview" class="ui-tab">
+                    <div class="sidebar">
+                        <!-- insert your sidebar items here -->
+                        <h3>Leerlijnen</h3>
+                        <div id="preview-leerlijn-chooser">
+                        </div>
+                        <div style="height:100px;"></div>
+                    </div>
+                    <div class="content">
+                        <p>
+                            Bekijk hier het lesmateriaal wanneer u deze aan het bewerken bent.
+                        </p>
+                        <iframe src="publisher-preview-widget.html?thread_id=ma-havovwo-12&repo=malmberg" id="wiskundemenu-iframe" class="wiskundemenu-iframe"></iframe>
+                    </div>
+                </div>
+                <div id="tab-edit" class="ui-tab">
+                    <div class="sidebar">
+                        <!-- insert your sidebar items here -->
+                        <h3>Leerlijnen</h3>
+                        <div id="edit-leerlijn-chooser">
+                        </div>
+                        <div style="height:100px;"></div>
+                    </div>
+                    <div class="content">
+                        <p>
+                            Hier kunt u het lesmateriaal bewerken met de auteurstool. 
+                        </p>
+                        <iframe src="publisher-edit-widget.html?thread_id=ma-havovwo-12&repo=malmberg" id="wiskundemenu-edit-iframe" class="wiskundemenu-iframe"></iframe>
+                    </div>
+                </div>
+                <div id="tab-logging" class="ui-tab">
+                    <div id="log-contents"></div>
+                    <div id="clear-log-button" class="button" style="float:left;" onclick="javascript:clearLog()">clear</div>
+                    <div id="refresh-log-button" class="button" style="float:left; margin-left:20px;" onclick="javascript:refreshLog(false)">refresh</div>
+                </div>
+            </div>
+            <div id="content_footer"></div>
+            <div id="footer">
+            Copyright &copy; colour_blue | <a href="http://validator.w3.org/check?uri=referer">HTML5</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | <a href="http://www.html5webtemplates.co.uk">design from HTML5webtemplates.co.uk</a>
+            </div>
+        </div>
+        <div style="text-align: center; font-size: 0.75em;">Design downloaded from <a href="http://www.freewebtemplates.com/">free website templates</a>.</div>
+    </body>
+</html>

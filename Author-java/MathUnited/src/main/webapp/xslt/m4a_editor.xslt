@@ -150,6 +150,7 @@
                 <link rel="stylesheet" href="css/exercises.css" type="text/css"/>
                 <link rel="stylesheet" href="css/M4AStijl2.css" type="text/css"/>
                 <link rel="stylesheet" href="css/editor.css" type="text/css"/>
+                <link rel="stylesheet" href="javascript/lib/chosen_v1.1.0/chosen.css"/>
             </head>
             <body>
                 <div class="hidden-templates">
