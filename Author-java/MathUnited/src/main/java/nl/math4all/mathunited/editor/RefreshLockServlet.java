@@ -103,7 +103,7 @@ public class RefreshLockServlet extends HttpServlet {
         File lockFile = new File(refbase+"lock");
         
         if(!lockFile.exists()) {
-            LOGGER.info("Creating lock file for "+refbase);
+            LOGGER.fine("Creating lock file for "+refbase);
             create = true;
         } else {
             java.util.Date date = new java.util.Date();
@@ -111,7 +111,7 @@ public class RefreshLockServlet extends HttpServlet {
             long current = date.getTime();
             if(current-modified > MAX_LOCK_DURATION_SECONDS*1000) {
                 //steal lock
-                LOGGER.info("Stealing lockfile for "+refbase+" (last modified "+((current-modified)/1000)+" seconds ago");
+                LOGGER.fine("Stealing lockfile for "+refbase+" (last modified "+((current-modified)/1000)+" seconds ago");
                 create = true;
             } else {
                 //check if this is the same user

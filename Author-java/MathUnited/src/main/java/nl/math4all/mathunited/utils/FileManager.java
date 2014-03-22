@@ -152,7 +152,6 @@ public class FileManager {
     }
     
     static public void writeToFile(String fname, Node node, Repository repo) throws Exception {        
-System.out.println("Write to file: "+fname);
         DOMImplementationRegistry registry = DOMImplementationRegistry.newInstance();
         DOMImplementationLS impl = (DOMImplementationLS)registry.getDOMImplementation("LS");
         

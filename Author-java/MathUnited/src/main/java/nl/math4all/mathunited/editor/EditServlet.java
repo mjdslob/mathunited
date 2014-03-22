@@ -203,10 +203,10 @@ public class EditServlet extends HttpServlet {
         boolean create = false;
         String userStr = null;
         File lockFile = new File(refbase+"lock");
-        LOGGER.info("getLock for user "+username+" and paragraph "+refbase);
+        LOGGER.fine("getLock for user "+username+" and paragraph "+refbase);
         
         if(!lockFile.exists()) {
-            LOGGER.info("Creating lock file for "+refbase);
+            LOGGER.fine("Creating lock file for "+refbase);
             create = true;
         } else {
             java.util.Date date = new java.util.Date();
@@ -214,7 +214,7 @@ public class EditServlet extends HttpServlet {
             long current = date.getTime();
             if(current-modified > MAX_LOCK_DURATION_SECONDS*1000) {
                 //steal lock
-                LOGGER.info("Stealing lockfile for "+refbase+" (last modified "+((current-modified)/1000)+" seconds ago");
+                LOGGER.fine("Stealing lockfile for "+refbase+" (last modified "+((current-modified)/1000)+" seconds ago");
                 create = true;
             } else {
                 //check if this is the same user
@@ -229,7 +229,7 @@ public class EditServlet extends HttpServlet {
                         LOGGER.info("Editing not allowed: lock for "+refbase+" is currenlth owned by "+userStr);
                         allowed = false;
                     } else {
-                        LOGGER.info("Refreshing timestamp on lock for "+refbase);
+                        LOGGER.fine("Refreshing timestamp on lock for "+refbase);
                         lockFile.setLastModified(current);
                         userStr=null;
                     }

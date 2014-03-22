@@ -90,15 +90,17 @@ public class PostContentServlet extends HttpServlet {
                 throw new Exception("Repository is not set.");
             }
             UserSettings usettings = UserManager.isLoggedIn(request,response);
-/*
-            //read request parameters
-            Map<String, String[]> paramMap = request.getParameterMap();
-*/
-            BufferedReader br = request.getReader();
+            
+            String body = readBody(request);
+            
+            BufferedReader br = new BufferedReader(new StringReader(body));
             String _repo = br.readLine(); //not used
             String comp = br.readLine();
             String subcomp = br.readLine();
             String status = br.readLine();
+            String nItemsStr = br.readLine();
+            int nItems = 0;
+            if(nItemsStr!=null) nItems = Integer.parseInt(nItemsStr);
             
             StringBuffer htmlBuffer = new StringBuffer();
             String sCurrentLine;
@@ -123,8 +125,8 @@ public class PostContentServlet extends HttpServlet {
             parameterMap.put("subcomp", subcomp);
             parameterMap.put("repo", repoId);
             parameterMap.put("html", html);
-            
-            LOGGER.info("Commit: user="+usettings.mail+", comp="+comp+", subcomp="+subcomp+", repo="+repoId);
+                        
+            LOGGER.log(Level.INFO, "Commit: user={0}, comp={1}, subcomp={2}, repo={3}", new Object[]{usettings.mail, comp, subcomp, repoId});
             
             Repository repository = config.getRepos().get(repoId);
             if(repository==null) {
@@ -188,34 +190,41 @@ public class PostContentServlet extends HttpServlet {
             String expression = "//include";
             NodeList nodes = (NodeList) xpath.evaluate(expression, root, XPathConstants.NODESET);
             int n = nodes.getLength();
-            for(int ii=0; ii<n; ii++) {
-                Node node = nodes.item(ii);
-                NamedNodeMap nodeMap = node.getAttributes();
-                if(nodeMap!=null) {
-                    Node attrNode = nodeMap.getNamedItem("filename");
-                    if(attrNode!=null) {
-                        String fileStr = refbase + attrNode.getNodeValue();
-                        if(node.getFirstChild()!=null) {
-                            FileManager.writeToFile(fileStr, node.getFirstChild(), repository);
-                            node.removeChild(node.getFirstChild());
-                        } 
+            if(n!=nItems) {                
+                LOGGER.log(Level.SEVERE, "Number of items does not match. Expected {0}, but found {1}. Not saving the document to prevent loss of content.", new Object[]{nItems, n});
+                saveState(html,comp, subcomp, nItems,n, repository);
+                String result = resultXML.replace("{#POSTRESULT}","false").replace("{#MESSAGE}", "Number of items does not match. Not saving the document to prevent loss of content.");
+                pw.println(result);
+            } else {
+                for(int ii=0; ii<n; ii++) {
+                    Node node = nodes.item(ii);
+                    NamedNodeMap nodeMap = node.getAttributes();
+                    if(nodeMap!=null) {
+                        Node attrNode = nodeMap.getNamedItem("filename");
+                        if(attrNode!=null) {
+                            String fileStr = refbase + attrNode.getNodeValue();
+                            if(node.getFirstChild()!=null) {
+                                FileManager.writeToFile(fileStr, node.getFirstChild(), repository);
+                                node.removeChild(node.getFirstChild());
+                            } 
+                        }
                     }
                 }
-            }
-            //store master file
-            expression = "/root/subcomponent";
-            Element node = (Element) xpath.evaluate(expression, root, XPathConstants.NODE);
-            node.setAttribute("status", status);
-            String fileStr = config.getContentRoot()+repository.path+"/" + sub.file;
-            FileManager.writeToFile(fileStr, node, repository);
-            WorkflowServlet.updateStatus(repoId, subcomp, fileStr);
+                //store master file
+                expression = "/root/subcomponent";
+                Element node = (Element) xpath.evaluate(expression, root, XPathConstants.NODE);
+                node.setAttribute("status", status);
+                String fileStr = config.getContentRoot()+repository.path+"/" + sub.file;
+                FileManager.writeToFile(fileStr, node, repository);
+                WorkflowServlet.updateStatus(repoId, subcomp, fileStr);
 
-            //create backup
-            File zipFile = FileManager.backupSubcomponent(null,subcompFile, repository);
-            FileManager.log(subcompFile.getParentFile(), usettings.username, zipFile, repository);
-            
-            String result = resultXML.replace("{#POSTRESULT}","true").replace("{#MESSAGE}", "success");
-            pw.println(result);
+                //create backup
+                File zipFile = FileManager.backupSubcomponent(null,subcompFile, repository);
+                FileManager.log(subcompFile.getParentFile(), usettings.username, zipFile, repository);
+
+                String result = resultXML.replace("{#POSTRESULT}","true").replace("{#MESSAGE}", "success");
+                pw.println(result);
+            }
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -225,7 +234,19 @@ public class PostContentServlet extends HttpServlet {
         
     }
     
-
+    private void saveState(String html, String comp, String subcomp, int nItems, int n, Repository repo) throws Exception {
+        Configuration config = Configuration.getInstance();
+        File f = new File(config.contentRoot+repo.path+"/debug/"+comp+"/"+subcomp+"/log.txt");
+        f.getParentFile().mkdirs();
+        BufferedWriter out = new BufferedWriter(new FileWriter(f));
+        out.write("\n----------------\n");
+        out.write("nItems in html = "+nItems+", nItems in xml ="+n);
+        out.write("\n----------------\n");
+        out.write(html);
+        out.write("\n----------------\n");
+        out.close();
+    }
+    
     @Override
     public void doGet (  HttpServletRequest request,
                          HttpServletResponse response)
@@ -233,5 +254,24 @@ public class PostContentServlet extends HttpServlet {
 
     }
     
-    
+    private String readBody(HttpServletRequest request) throws Exception {
+        int length = request.getContentLength();
+        BufferedReader br = request.getReader();
+        char[] buffer = new char[4*1024];
+        int numChars;
+        StringBuilder result = new StringBuilder();
+        
+        while( (numChars=br.read(buffer,0,buffer.length)) >=0 ) {
+            result.append(buffer,0,numChars);
+        }
+
+        String str = result.toString();
+        if(str.getBytes().length!=length) {
+            throw new Exception("Number of bytes read does not match contextlength header.");
+        } else {
+            LOGGER.log(Level.FINE, "sanity check passed: number of bytes in body matches contentlength header: {0}", length);
+        }
+        
+        return str;
+    }
 }

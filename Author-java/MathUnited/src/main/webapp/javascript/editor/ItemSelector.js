@@ -270,6 +270,7 @@ define(['jquery','jqueryui','jqueryChosen'], function($) {
 
     return {
         init: function(methodURL, threadURL) {
+            return;
             var _this = this;
             $('.select-item-button').click(function() {
                 _this.show();
@@ -281,6 +282,7 @@ define(['jquery','jqueryui','jqueryChosen'], function($) {
             });
         },
         show: function() {
+            return;
             if(!isInitialized) {alert('Probleem: kan de beschikbare paragrafen niet laden'); return; }
             var parent = $('<div><select class="thread-choser" data-placeholder="selecteer een leerlijn..."><option value=""></option></select>'
                     +'<br/><select class="component-choser" data-placeholder="selecteer een hoofdstuk..."></select>'
