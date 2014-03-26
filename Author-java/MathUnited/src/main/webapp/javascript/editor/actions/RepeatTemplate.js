@@ -22,7 +22,7 @@ define(['jquery'], function($) {
             var templateId = params.template;
             var action = params.cmd;
             var location = params.location;
-            var doc = requires('app/Document');
+            var doc = require('app/Document');
             
             var base = elm.parents('._editor_context_base').first();
             if(action==='remove') {

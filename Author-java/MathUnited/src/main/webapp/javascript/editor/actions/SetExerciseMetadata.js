@@ -18,6 +18,11 @@
 define(['jquery'], function($, objSelector) {
     
     return {
+        removeObjectiveFromDocument: function(id) {
+            $('div[tag="objective-ref"][value="'+id+'"]').remove(); //remove tag (xml)
+            $('.metadata-obj-selector-container input[value="'+id+'"]').nextUntil('input').remove();//remove from gui
+            $('.metadata-obj-selector-container input[value="'+id+'"]').remove();
+        },
         action : function(elm, params) {
             var doc = require('app/Document');
             var base = elm.parents('._editor_context_base').first();
@@ -59,9 +64,9 @@ define(['jquery'], function($, objSelector) {
             $('div[tag="description"] div[tag="objective"]').each(function() {
                 var objid = $(this).attr('id');
                 if($('div[tag="objective-ref"][value="'+objid+'"]',objTagContainer).length>0){
-                    html+='<input type="checkbox" name="objective" checked value="'+objid+'">'+$(this).text()+'<br>'; 
+                    html+='<input type="checkbox" name="objective" checked value="'+objid+'"><span class="objective-ref-text">'+$(this).text()+'</span><br>'; 
                 } else {
-                    html+='<input type="checkbox" name="objective" value="'+objid+'">'+$(this).text()+'<br>'; 
+                    html+='<input type="checkbox" name="objective" value="'+objid+'"><span class="objective-ref-text">'+$(this).text()+'</span><br>'; 
                 }
             });
             html = $(html);

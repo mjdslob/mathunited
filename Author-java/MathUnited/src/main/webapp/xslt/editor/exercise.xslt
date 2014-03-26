@@ -64,7 +64,7 @@ extension-element-prefixes="exsl">
                       <xsl:attribute name="params">{template:'repeatAlternative'}</xsl:attribute>
                       <div class="menu-button-div"><span class="menu-button"></span></div>
                       <div tag="alternative" state="no">
-                         <div class="editor-choice-exercise-label" onclick="javascript:EditorChoiceLabelClick(this)"></div>
+                         <div class="editor-choice-exercise-label"></div>
                          <div class="choice-exercise-content">
                             <div tag="alternative-content">
                                <p>...(optie)...</p>
@@ -96,7 +96,7 @@ extension-element-prefixes="exsl">
                 <xsl:attribute name="params">{template:'repeatAlternative'}</xsl:attribute>
                <div class="menu-button-div"><span class="menu-button"></span></div>
                <div tag="alternative" state="no">
-                  <div class="editor-choice-exercise-label" onclick="javascript:EditorChoiceLabelClick(this)"></div>
+                  <div class="editor-choice-exercise-label"></div>
                   <div class="choice-exercise-content">
                      <div tag="alternative-content">
                         <p>...</p>
@@ -379,7 +379,7 @@ extension-element-prefixes="exsl">
 
                         <div tag="alternative">
                             <xsl:apply-templates select="@*" mode="editor"/>
-                            <div class="editor-choice-exercise-label" onclick="javascript:EditorChoiceLabelClick(this)"/>
+                            <div class="editor-choice-exercise-label"/>
                             <div class="choice-exercise-content">
                                  <xsl:apply-templates select="alternative-content" mode="editor"/>
                             </div>

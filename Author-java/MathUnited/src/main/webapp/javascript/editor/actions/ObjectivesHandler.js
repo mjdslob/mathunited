@@ -22,6 +22,9 @@ define(['jquery','app/Document'], function($, doc) {
     
     function removeObjectiveHandler() {
         var par = $(this).parents('div[tag="description"] div[tag="objective"]').first();
+        var id = par.attr('id');
+        var metaHandler = require('actions/SetExerciseMetadata');
+        metaHandler.removeObjectiveFromDocument(id);
         par.remove();
     }
     

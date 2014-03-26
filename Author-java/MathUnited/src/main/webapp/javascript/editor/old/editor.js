@@ -365,6 +365,10 @@ function insertActions(jqParent) {
         cont.toggleClass('visible');
         $(this).toggleClass('visible')
     });
+    $('.editor-choice-exercise-label',jqParent).unbind('click').click(function() {
+        EditorChoiceLabelClick(this);
+    });
+
     var pars = $('.paragraph-content',jqParent);
     pars.each(function() {
        if(!allowEditing(this)) {

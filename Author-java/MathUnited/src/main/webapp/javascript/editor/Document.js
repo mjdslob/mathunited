@@ -110,6 +110,16 @@ define(['jquery', 'app/TinyMCE', 'app/ContextMenu','jqueryui'], function($, Edit
         toggleVisibleButton('worksheet', elm);
         toggleVisibleButton('answer', elm);
         toggleVisibleButton('example-answer',elm);
+        $('.editor-choice-exercise-label',elm).unbind('click').click(function() {
+            var alternative=$(this).parents('div[tag="alternative"]');
+            var state = alternative.attr('state');
+            if(state==='yes') {
+                alternative.attr('state','no');
+            } else {
+                alternative.attr('state','yes');
+            }
+        });
+        
     }
 
     return {
