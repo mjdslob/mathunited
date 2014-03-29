@@ -59,14 +59,17 @@ define(['jquery'], function($, objSelector) {
             };
             
             //leerdoelen
+            var main = require('app/Main');
             var objContainer = $('.metadata-obj-selector-container',container);
             var html='';
             $('div[tag="description"] div[tag="objective"]').each(function() {
                 var objid = $(this).attr('id');
+                var parid = main.getSubcomp();
+                var compid = main.getComp();
                 if($('div[tag="objective-ref"][value="'+objid+'"]',objTagContainer).length>0){
-                    html+='<input type="checkbox" name="objective" checked value="'+objid+'"><span class="objective-ref-text">'+$(this).text()+'</span><br>'; 
+                    html+='<input type="checkbox" name="objective" checked value="'+objid+'" comp="'+compid+'" subcomp="'+parid+'"><span class="objective-ref-text">'+$(this).text()+'</span><br>'; 
                 } else {
-                    html+='<input type="checkbox" name="objective" value="'+objid+'"><span class="objective-ref-text">'+$(this).text()+'</span><br>'; 
+                    html+='<input type="checkbox" name="objective" value="'+objid+'" comp="'+compid+'" subcomp="'+parid+'"><span class="objective-ref-text">'+$(this).text()+'</span><br>'; 
                 }
             });
             html = $(html);
@@ -136,7 +139,7 @@ define(['jquery'], function($, objSelector) {
                 
                 objTagContainer.empty();
                 $('input[name="objective"]:checked').each(function(){ 
-                    addMetadataElm(objTagContainer, 'objective-ref',{value: this.value}, null,false);
+                    addMetadataElm(objTagContainer, 'objective-ref',{value: this.value, comp: $(this).attr('comp'), subcomp: $(this).attr('subcomp')}, null,false);
                 });
             }); 
         }
