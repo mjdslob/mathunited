@@ -132,44 +132,53 @@ define(['jquery','jqueryui','jqueryChosen'], function($) {
         });
 
         var id = item.attr('id');
-        
+        var nr = item.attr('_nr');
+        if(!nr) {
+            nr='';
+            var disabled = '';
+        } else {
+            if(!id) var disabled = ' disabled '; //numbered item, but no id, there is no unique reference
+        }
         function writeItem(name) {
             //id is used through closure
             if(id) 
-                elm.append($('<option value="'+id+'">'+name+'</option>'));
+                elm.append($('<option value="'+id+'"'+disabled+'>'+name+' '+nr+'</option>'));
             else
-                elm.append($('<option value="unknown">'+name+'</option>'));
+                elm.append($('<option value="unknown"'+disabled+'>'+name+' '+nr+'</option>'));
         }
-        switch(item[0].localName) {
-            case 'introduction':
-                writeItem('inleiding');
-                break;
-            case 'explore':
-                writeItem('verkennen');
-                break;
-            case 'explanation-parent':
-                break;
-            case 'explanation':
-                writeItem('uitleg');
-                break;
-            case 'exercise':
-                writeItem('opgave');
-                break;
-            case 'theory':
-                writeItem('theorie');
-                break;
-            case 'digest':
-                writeItem('verwerken');
-                break;
-            case 'application':
-                writeItem('toepassen');
-                break;
-            case 'extra':
-                writeItem('practicum');
-                break;
-            case 'test':
-                writeItem('test jezelf');
-                break;
+
+        if(item.length>0){
+            switch(item[0].localName) {
+                case 'introduction':
+                    writeItem('inleiding');
+                    break;
+                case 'explore':
+                    writeItem('verkennen');
+                    break;
+                case 'explanation-parent':
+                    break;
+                case 'explanation':
+                    writeItem('uitleg');
+                    break;
+                case 'exercise':
+                    writeItem('opgave');
+                    break;
+                case 'theory':
+                    writeItem('theorie');
+                    break;
+                case 'digest':
+                    writeItem('verwerken');
+                    break;
+                case 'application':
+                    writeItem('toepassen');
+                    break;
+                case 'extra':
+                    writeItem('practicum');
+                    break;
+                case 'test':
+                    writeItem('test jezelf');
+                    break;
+            }
         }
     }
         
@@ -232,62 +241,32 @@ define(['jquery','jqueryui','jqueryChosen'], function($) {
             var th = threads[ii];
             if(th) {
                 elm.append($('<option value="'+th.id+'">'+th.title+'</option>'));
-/*
-                var threadElm = document.createElement('div');
-                var threadContentElm = $('.item-selector-thread-content',$(threadElm));
-                for(var jj=0; jj<th.modules.length;jj++) {
-                    var mod=th.modules[jj];
-                    var compElm = $('<div class="item-selector-component-container"><div class="item-selector-component" id="'+mod.id+'">'+mod.name+'</div></div>');
-                    threadContentElm.append(compElm);
-                    for(var kk=0; kk<mod.subcomponents.length;kk++) {
-                        var subComp = mod.subcomponents[kk];
-                        compElm.append($('<div class="item-selector-subcomponent-container"><div class="item-selector-subcomponent" id="'+subComp.id+'">'+subComp.title+'</div></div>'));
-                    }
-                }
-*/                
             }
         }
         
-        //attach event handlers (opening/closing threads)
-/*                        
-        $('.item-selector-thread-title',div).click(function() {
-            var parent = $(this).parents('.thread-container');
-            $('.item-selector-thread-content',parent).toggleClass('open');
-        });
-        $('.item-selector-component',div).click(function() {
-            var parent = $(this).parents('.item-selector-component-container');
-            $('.item-selector-subcomponent-container',parent).toggleClass('open');
-        });
-        $('.item-selector-subcomponent',div).click(function() {
-            var subcomp = $(this).attr('id');
-            var subcompcont = $(this).parent();
-            var parent = $(this).parents('.item-selector-component-container').first();
-            var comp = $('.item-selector-component',parent).first().attr('id');
-            showSubcomponentItems(comp, subcomp, subcompcont); 
-        });
-*/        
-    }    
+     }    
 
+     var selectedThread = {id: null, name: null};
+     var selectedComponent = {id: null, name: null};
+     var selectedSubcomponent = {id: null, name: null};
+     var selectedItem = {id: null, name: null};
+     
     return {
         init: function(methodURL, threadURL) {
-            return;
             var _this = this;
-            $('.select-item-button').click(function() {
-                _this.show();
-            });
             loadMethodData(methodURL, function() {
                 loadThreads(threadURL, function() {
                    isInitialized = true; 
                 });
             });
         },
-        show: function() {
-            return;
+        show: function(callback_ok) {
             if(!isInitialized) {alert('Probleem: kan de beschikbare paragrafen niet laden'); return; }
             var parent = $('<div><select class="thread-choser" data-placeholder="selecteer een leerlijn..."><option value=""></option></select>'
                     +'<br/><select class="component-choser" data-placeholder="selecteer een hoofdstuk..."></select>'
                     +'<br/><select class="subcomponent-choser" data-placeholder="selecteer een paragraaf..."></select>'
                     +'<br/><select class="item-choser" data-placeholder="selecteer een item..."></select>'
+                    +'<div class="choser-button-container"><div class="choser-button choser-cancel">annuleren</div><div class="choser-button choser-ok">OK</div></div>'
                     +'</div>');
             $('.contentDiv').prepend(parent);
             setThreadOptions(parent);
@@ -295,20 +274,36 @@ define(['jquery','jqueryui','jqueryChosen'], function($) {
             $('.thread-choser', parent).chosen()
                 .change(function(data) {
                     var id = $('.thread-choser option:selected').val();
+                    selectedThread.id = id;
+                    selectedThread.name = $('.thread-choser option:selected').text();
                     setComponentOptions(id, parent);
                 });
             $('.component-choser', parent).chosen()
                 .change(function(data) {
                     var id = $('.component-choser option:selected').val();
+                    selectedComponent.id = id;
+                    selectedComponent.name = $('.component-choser option:selected').text();
                     setSubcomponentOptions(id, parent);
                 });
             $('.subcomponent-choser', parent).chosen()
                 .change(function(data) {
-                    var compid = $('.component-choser option:selected').val();
                     var subid = $('.subcomponent-choser option:selected').val();
-                    setItemOptions(compid, subid, parent);
+                    selectedSubcomponent.id = subid;
+                    selectedSubcomponent.name = $('.subcomponent-choser option:selected').text();
+                    setItemOptions(selectedComponent.id, subid, parent);
                 });
-            $('.item-choser', parent).chosen();
+            $('.item-choser', parent).chosen().change(function(data) {
+                    selectedItem.id = $('.item-choser option:selected').val();
+                    selectedItem.name = $('.item-choser option:selected').text();
+            });
+            $('.choser-ok',parent).click(function() {
+                    var result={thread:selectedThread, component: selectedComponent, subcomponent: selectedSubcomponent, item: selectedItem};
+                    callback_ok(result);
+                    parent.dialog('close');
+            });
+            $('.choser-cancel',parent).click(function() {
+                    parent.dialog('close');
+            });
 
         }
     };
