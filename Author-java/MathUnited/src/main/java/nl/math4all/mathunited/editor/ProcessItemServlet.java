@@ -110,10 +110,10 @@ public class ProcessItemServlet extends HttpServlet {
             }
             
             //read components. To be moved to init()
-            File f = new File(config.contentRoot+repository.path+"/leerlijnen/components.xml");
+            File f = new File(config.contentRoot+repository.getPath()+"/leerlijnen/components.xml");
             if(!f.exists() && !repository.baseRepo.isEmpty()) {
                 Repository baseRepo = config.getRepos().get(repository.baseRepo);
-                f = new File(config.contentRoot+baseRepo.path+"/leerlijnen/components.xml");
+                f = new File(config.contentRoot+baseRepo.getPath()+"/leerlijnen/components.xml");
             }
             FileInputStream is = new FileInputStream(f);
             componentMap = Component.getComponentMap(new InputSource(is));
@@ -154,10 +154,10 @@ public class ProcessItemServlet extends HttpServlet {
             
             // supply path to subcomponent to xslt. Might be needed when resolving other xml-documents
             int ind = sub.file.lastIndexOf('/');
-            parameterMap.put("refbase", repository.path+"/"+sub.file.substring(0, ind+1));
+            parameterMap.put("refbase", repository.getPath()+"/"+sub.file.substring(0, ind+1));
             parameterMap.put("component", component.getXML());
-            parameterMap.put("repo-path", repository.path);
-            parameterMap.put("baserepo-path", baserepo==null?"":baserepo.path);
+            parameterMap.put("repo-path", repository.getPath());
+            parameterMap.put("baserepo-path", baserepo==null?"":baserepo.getPath());
             parameterMap.put("option","editor-process-item");
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             ContentResolver resolver = new ContentResolver(repo, context);

@@ -135,7 +135,7 @@ public class WorkflowServlet extends HttpServlet {
 
     private String readSubcomponentStatus(SubComponent sub,  Repository repository, Configuration config) throws IOException{
         String result = "unknown";
-        String path = config.contentRoot+repository.path+"/"+sub.file;
+        String path = config.contentRoot+repository.getPath()+"/"+sub.file;
 
         return extractStatus(path);
     }

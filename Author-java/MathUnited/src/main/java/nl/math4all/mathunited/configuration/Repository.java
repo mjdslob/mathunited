@@ -10,7 +10,7 @@ import org.xml.sax.InputSource;
  * @author martijnslob
  */
 public class Repository {
-    public String path;
+    private String path;
     public String edit_permission;
     public String defaultVariant;
     public String baseRepo;
@@ -19,16 +19,30 @@ public class Repository {
     
     public Map<String, Component> readComponentMap() throws Exception {
         Configuration config = Configuration.getInstance();
-        File f = new File(config.contentRoot+this.path+"/leerlijnen/components.xml");
+        File f = new File(config.contentRoot+this.getPath()+"/leerlijnen/components.xml");
         if(!f.exists() && this.baseRepo!=null && !this.baseRepo.isEmpty()) {
             Repository baseRepo = config.getRepos().get(this.baseRepo);
-            f = new File(config.contentRoot+baseRepo.path+"/leerlijnen/components.xml");
+            f = new File(config.contentRoot+baseRepo.getPath()+"/leerlijnen/components.xml");
         }
         FileInputStream is = new FileInputStream(f);
         Map<String, Component> componentMap = Component.getComponentMap(new InputSource(is));
         is.close();
 
         return componentMap;
+    }
+
+    /**
+     * @return the path
+     */
+    public String getPath() {
+        return path;
+    }
+
+    /**
+     * @param path the path to set
+     */
+    public void setPath(String path) {
+        this.path = (path==null?"":path);
     }
 }
 

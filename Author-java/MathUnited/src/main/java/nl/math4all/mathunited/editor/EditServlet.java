@@ -147,13 +147,13 @@ public class EditServlet extends HttpServlet {
             
             // supply path to subcomponent to xslt. Might be needed when resolving other xml-documents
             int ind = sub.file.lastIndexOf('/');
-            String refbase = repository.path+"/"+sub.file.substring(0, ind+1);
+            String refbase = repository.getPath()+"/"+sub.file.substring(0, ind+1);
             parameterMap.put("componentsURL", repository.componentsURL);
             parameterMap.put("threadsURL", repository.threadsURL);
             parameterMap.put("refbase", refbase);
             parameterMap.put("component", component.getXML());
-            parameterMap.put("repo-path", repository.path);
-            parameterMap.put("baserepo-path", baserepo==null?"":baserepo.path);
+            parameterMap.put("repo-path", repository.getPath());
+            parameterMap.put("baserepo-path", baserepo==null?"":baserepo.getPath());
             String currentOwner = getLock(usettings.username, config.getContentRoot()+refbase);
             if( currentOwner!=null ) {
                 parameterMap.put("lock_owner", currentOwner);
@@ -162,7 +162,7 @@ public class EditServlet extends HttpServlet {
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             ContentResolver resolver = new ContentResolver(repo, context);
             
-            Source xmlSource = resolver.resolve(repository.path+"/"+sub.file, "");
+            Source xmlSource = resolver.resolve(repository.getPath()+"/"+sub.file, "");
             String errStr = processor.process(xmlSource, variant, parameterMap, resolver, byteStream);
             response.setContentType("text/html");
             if(errStr.length()>0){

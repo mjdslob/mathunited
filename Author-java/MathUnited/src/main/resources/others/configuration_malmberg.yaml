@@ -22,7 +22,7 @@ repos :
     edit_permission: editor_test
     defaultVariant: m4a_view
 
-userFile : /data/users_malmberg.yaml
+userFile : /data/users.yaml
 contentRoot : /data/
 entitiesFile : /data/entities.xml
 

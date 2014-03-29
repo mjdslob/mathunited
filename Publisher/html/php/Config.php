@@ -17,9 +17,9 @@ $config_repos = array(
     ),
     'malmberg' => array(
         'id'=>'malmberg-2013-07-19',
-        'basePath'=>'content-ma/malmberg/',
+        'basePath'=>'',
         'paths'=>array(
-            'hv/'
+            ''
             ),
         'index_xsl'=>'../xslt/generate-index-ma.xslt'
     ),

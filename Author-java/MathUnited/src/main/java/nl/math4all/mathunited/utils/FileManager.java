@@ -23,7 +23,7 @@ public class FileManager {
 
     public static void log(File compFile, String username, File zipFile, Repository repo) throws Exception {
         String fname = compFile.getAbsolutePath();
-        fname = fname.replace(repo.path, repo.path+"/_history");
+        fname = fname.replace(repo.getPath(),repo.getPath()+"/_history");
         File logFile = new File(fname+"/log.xml");
         if(!logFile.exists()) logFile.createNewFile();
         FileWriter fw = new FileWriter(logFile, true);//append to file
@@ -37,7 +37,7 @@ public class FileManager {
     
     public static boolean backupFolderExists(File subcompFolder, Repository repo) throws Exception {
         String fname = subcompFolder.getAbsolutePath();
-        fname = fname.replace(repo.path, repo.path+"/_history");
+        fname = fname.replace(repo.getPath(),repo.getPath()+"/_history");
         return new File(fname).exists();
     }
     /** creates a zip-file containing all xml files (not images or other resources) 
@@ -48,7 +48,7 @@ public class FileManager {
      */
     public static File backupSubcomponent(String name, File subcompFolder, Repository repo) throws Exception {
         String fname = subcompFolder.getAbsolutePath();
-        fname = fname.replace(repo.path, repo.path+"/_history");
+        fname = fname.replace(repo.getPath(),repo.getPath()+"/_history");
         Date date = new Date();
         SimpleDateFormat ft = new SimpleDateFormat ("yyyy.MM.dd_hh.mm.ss");
         if(name==null) {
@@ -93,7 +93,7 @@ public class FileManager {
         int ind = fname.lastIndexOf(".");
         String extStr = fname.substring(ind);
         fname = fname.substring(0,ind);
-        fname = fname.replace(repo.path, repo.path+"/_history");
+        fname = fname.replace(repo.getPath(),repo.getPath()+"/_history");
         File f2 = new File(fname);
         f2.getParentFile().mkdirs();
         do {

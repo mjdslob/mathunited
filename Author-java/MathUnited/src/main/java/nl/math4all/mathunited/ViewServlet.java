@@ -158,14 +158,16 @@ public class ViewServlet extends HttpServlet {
             
             // supply path to subcomponent to xslt. Might be needed when resolving other xml-documents
             int ind = sub.file.lastIndexOf('/');
-            parameterMap.put("refbase", repository.path+"/"+sub.file.substring(0, ind+1));
+            String repoPath = repository.getPath();
+            if(repoPath.length()>0) repoPath=repoPath+"/";
+            parameterMap.put("refbase", repoPath+sub.file.substring(0, ind+1));
             parameterMap.put("component", component.getXML());
-            parameterMap.put("repo-path", repository.path);
-            parameterMap.put("baserepo-path", baserepo==null?"":baserepo.path);
+            parameterMap.put("repo-path", repository.getPath());
+            parameterMap.put("baserepo-path", baserepo==null?"":baserepo.getPath());
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             ContentResolver resolver = new ContentResolver(repo, context);
             
-            Source xmlSource = resolver.resolve(repository.path+"/"+sub.file, "");
+            Source xmlSource = resolver.resolve(repository.getPath()+"/"+sub.file, "");
             String errStr = processor.process(xmlSource, variant, parameterMap, resolver, byteStream);
             response.setContentType("text/html");
             if(errStr.length()>0){

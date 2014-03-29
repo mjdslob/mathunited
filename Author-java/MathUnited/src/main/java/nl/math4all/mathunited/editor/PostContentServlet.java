@@ -171,7 +171,7 @@ public class PostContentServlet extends HttpServlet {
             xmlReader.setEntityResolver(ContentResolver.entityResolver);
             
             int ind = sub.file.lastIndexOf('/');
-            String refbase = config.getContentRoot()+repository.path+"/"+sub.file.substring(0, ind+1);
+            String refbase = config.getContentRoot()+repository.getPath()+"/"+sub.file.substring(0, ind+1);
 
             ContentResolver resolver = new ContentResolver(repoId, context);
             StringReader strReader = new StringReader(html);
@@ -214,7 +214,7 @@ public class PostContentServlet extends HttpServlet {
                 expression = "/root/subcomponent";
                 Element node = (Element) xpath.evaluate(expression, root, XPathConstants.NODE);
                 node.setAttribute("status", status);
-                String fileStr = config.getContentRoot()+repository.path+"/" + sub.file;
+                String fileStr = config.getContentRoot()+repository.getPath()+"/" + sub.file;
                 FileManager.writeToFile(fileStr, node, repository);
                 WorkflowServlet.updateStatus(repoId, subcomp, fileStr);
 
@@ -236,7 +236,7 @@ public class PostContentServlet extends HttpServlet {
     
     private void saveState(String html, String comp, String subcomp, int nItems, int n, Repository repo) throws Exception {
         Configuration config = Configuration.getInstance();
-        File f = new File(config.contentRoot+repo.path+"/debug/"+comp+"/"+subcomp+"/log.txt");
+        File f = new File(config.contentRoot+repo.getPath()+"/debug/"+comp+"/"+subcomp+"/log.txt");
         f.getParentFile().mkdirs();
         BufferedWriter out = new BufferedWriter(new FileWriter(f));
         out.write("\n----------------\n");

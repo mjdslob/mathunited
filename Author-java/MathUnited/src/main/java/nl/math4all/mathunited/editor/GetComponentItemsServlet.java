@@ -94,7 +94,7 @@ public class GetComponentItemsServlet extends HttpServlet {
             }
 
             int ind = component.compfile.lastIndexOf('/');
-            String indexfname = config.getContentRoot()+repository.path+"/"+component.compfile.substring(0, ind+1)+"index.xml";
+            String indexfname = config.getContentRoot()+repository.getPath()+"/"+component.compfile.substring(0, ind+1)+"index.xml";
             File findex = new File(indexfname);
             if(findex.exists()) {
                 response.setContentType("application/xml");

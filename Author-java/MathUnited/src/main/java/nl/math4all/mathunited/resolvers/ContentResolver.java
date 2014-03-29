@@ -64,7 +64,7 @@ public class ContentResolver implements URIResolver{
                     File f = new File(config.getContentRoot() + href);
                     if(!f.exists() && baseRepository!=null) {
                         //if file does not exist, use from default repo
-                        String hrefBase = href.replace(repository.path,baseRepository.path);
+                        String hrefBase = href.replace(repository.getPath(), baseRepository.getPath());
                         System.out.println("Falling back to default repository for "+hrefBase+": using "+href);
                         f = new File(config.getContentRoot() + hrefBase);
                     }

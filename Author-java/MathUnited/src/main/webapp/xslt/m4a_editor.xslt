@@ -116,7 +116,7 @@
                 <xsl:value-of select="concat('http://',$parent)"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="string('/wiskundemenu/WM_overview.html?tab=TabLeerlijn')"/>
+                <xsl:value-of select="string('/')"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:variable>

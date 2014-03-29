@@ -109,7 +109,7 @@ public class GetBackupListServlet extends HttpServlet {
             }
             
             int ind = sub.file.lastIndexOf('/');
-            String backupbase = config.getContentRoot()+repository.path+"/_history/"+sub.file.substring(0, ind+1);
+            String backupbase = config.getContentRoot()+repository.getPath()+"/_history/"+sub.file.substring(0, ind+1);
             File logFile = new File(backupbase+"../log.xml");
 
             response.setContentType("application/xml");

@@ -39,6 +39,7 @@ public class Configuration {
             //JavaBeanLoader<Configuration> configLoader = new JavaBeanLoader<Configuration>(Configuration.class);
             InputStream is = Configuration.class.getResourceAsStream("/configuration.yaml");
             instance = (Configuration)yaml.load(is);
+            
         }
         return instance;
     }
