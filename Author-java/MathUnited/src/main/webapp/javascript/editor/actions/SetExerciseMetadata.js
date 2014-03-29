@@ -58,6 +58,14 @@ define(['jquery'], function($, objSelector) {
                 if(dum.length>0) dum[0].checked= true;
             };
             
+            //gerelateerde theorie
+            $('.select-item-button',container).click(function() {
+                var itemSelector = require('app/ItemSelector');
+                itemSelector.show(function(result) {
+                    var ref=result.component.id+' >> '+result.subcomponent.id+' >> '+result.item.name;
+                    $('.related-theory',container).text(ref);
+                });
+            });
             //leerdoelen
             var main = require('app/Main');
             var objContainer = $('.metadata-obj-selector-container',container);

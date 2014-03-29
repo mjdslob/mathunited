@@ -63,9 +63,9 @@ try{
             $comps = array_merge($comps, $cc);
         }
         $this->createComponentsFile($comps, $repo);
-
         $this->removeIndexFiles($comps);
         foreach($comps as $cc) {
+            $this->addIdToItem($cc, $repo);
             $this->generateComponentIndex($cc, $repo);
         }
         
@@ -86,6 +86,44 @@ try{
         die("not implemented");
     }
 
+    function addIdToItem($comp,$repo) {
+        //read subcomponent main file
+        $base = $comp['fullname'];
+        $ind = strrpos($base, '/');
+        $base = substr($base, 0, $ind+1);
+        $txt = file_get_contents($comp['fullname']);
+        $txt = EntityConverter::convert_entities($txt);
+        $doc = new SimpleXMLElement(html_entity_decode($txt, ENT_QUOTES, "utf-8"));
+        $subDoc = $doc->subcomponents;
+        for($kk=0; $kk<count($subDoc->subcomponent);$kk++) {
+             $s = $subDoc->subcomponent[$kk];
+             $fname = $s->file;
+             $txt = file_get_contents($base.$fname);
+             $txt = EntityConverter::convert_entities($txt);
+             $doc = new SimpleXMLElement(html_entity_decode($txt, ENT_QUOTES, "utf-8"));
+             $ind = strrpos($fname, '/');
+             $subbase = substr($fname, 0, $ind+1);
+             $subbase = $base.$subbase.'/';
+             //get all includes
+             $inclist = $doc->xpath("//include");
+             foreach($inclist as $inc) {
+                 $itemname = $inc['filename'];
+                 $itemtxt = file_get_contents($subbase.$itemname);
+                 $itemtxt = EntityConverter::convert_entities($itemtxt);
+                 try{
+                    $itemdoc = new SimpleXMLElement(html_entity_decode($itemtxt, ENT_QUOTES, "utf-8"));
+                    if(!$itemdoc['id']) {
+                        $this->logger->trace(LEVEL_INFO, "Item $itemname does not contain an id");
+                 }
+                 }catch(Exception $e) {
+                     $this->logger->trace(LEVEL_ERROR, "while scanning $itemname: ".$e->getMessage());
+                 }
+             } 
+        }
+        
+        
+    }
+    
     //create overview of numbered items
     function generateComponentIndex($comp,$repo) {
         $this->logger->trace(LEVEL_INFO, "Create index file for ".$comp['fullname']);

@@ -78,7 +78,7 @@ class GAEPlatform extends Platform {
 
         if($indexDoc!=null) {
             $elm = $indexDoc->xpath("//component[@id='$compId']/subcomponent[@id='$subcompId']");
-            if(count($elm>0)) {
+            if(count($elm)>0) {
                 $indexBase = $elm[0];
                 $indexBase = (string)$indexBase['_base'];
                 $doc->addAttribute('_base',$indexBase);

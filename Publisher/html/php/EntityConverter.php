@@ -1327,7 +1327,9 @@ class EntityConverter {
 "radic"=>"&#8730;",
 "int"=>"&#8747;",
 "infin"=>"&#8734;",
-"sum"=>"&#8721;"    
+"sum"=>"&#8721;",
+"UnderBar"=>"&#x0005F;",
+"bottom"=>"&#8869;"
 
                             );
     if(isset($table[$matches[1]])) {

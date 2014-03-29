@@ -141,6 +141,9 @@ extension-element-prefixes="exsl">
                 <xsl:attribute name="clone">true</xsl:attribute>
             </xsl:if>
             <div tag="exercise">
+                <xsl:if test="not(@id)">
+                    <xsl:attribute name='id' select="replace($fname,'.xml','')"/>
+                </xsl:if>
                 <xsl:apply-templates select="@*" mode="editor"/>
 
                 <div class="exercise-with-heading open">
@@ -179,9 +182,8 @@ extension-element-prefixes="exsl">
                                 <input type="text" name="groepslabel" size="30">
                                     <xsl:for-each select="metadata/group-label/@value"> <xsl:value-of select="."/> </xsl:for-each>
                                 </input><br/>
-                                <b>Gerelateerde theorie (id van paragraaf):</b><input type="text" name="ref-id" size="30">
-                                    <xsl:value-of select="metadata/ref-id/@value"/>
-                                </input>
+                                <b>Gerelateerde theorie (id van paragraaf):</b><span class="related-theory"/>
+   <xsl:value-of select="metadata/ref-id/@value"/>
                                 <div class="select-item-button">selecteer</div>
                                 <br/>
                                 <b>Leerdoelen</b>: <div class="metadata-obj-selector-container"/>
