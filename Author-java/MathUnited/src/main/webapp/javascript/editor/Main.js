@@ -93,7 +93,6 @@ define(['jquery', 'app/Document','actions/ObjectivesHandler', 'app/ItemSelector'
         },
         submit: function() {
             $('<p>Een moment, de paragraaf wordt opgeslagen...</p>').dialog();
-
             //save all edits in open editors first
             doc.prepareForSubmit();
             

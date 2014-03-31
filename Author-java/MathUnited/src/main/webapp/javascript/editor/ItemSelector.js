@@ -125,6 +125,17 @@ define(['jquery','jqueryui','jqueryChosen'], function($) {
         );
     }
 
+    var itemNameMap = {
+        introduction: 'inleiding',
+        explore: 'verkennen',
+        explanation: 'uitleg',
+        exercise: 'opgave',
+        theory: 'theorie',
+        digest: 'verwerken',
+        extra: 'practicum',
+        test: 'test jezelf'
+    };
+    
     function addItemOption(item, elm) {
       
         item.children().each(function() {
@@ -133,56 +144,38 @@ define(['jquery','jqueryui','jqueryChosen'], function($) {
 
         var id = item.attr('id');
         var nr = item.attr('_nr');
-        if(!nr) {
-            nr='';
-            var disabled = '';
-        } else {
-            if(!id) var disabled = ' disabled '; //numbered item, but no id, there is no unique reference
-        }
+        if(!nr) nr='';
         function writeItem(name) {
             //id is used through closure
             if(id) 
-                elm.append($('<option value="'+id+'"'+disabled+'>'+name+' '+nr+'</option>'));
+                elm.append($('<option value="'+id+'">'+name+' '+nr+'</option>'));
             else
-                elm.append($('<option value="unknown"'+disabled+'>'+name+' '+nr+'</option>'));
+                elm.append($('<option value="unknown" disabled>'+name+' '+nr+'</option>'));
         }
 
         if(item.length>0){
-            switch(item[0].localName) {
-                case 'introduction':
-                    writeItem('inleiding');
-                    break;
-                case 'explore':
-                    writeItem('verkennen');
-                    break;
-                case 'explanation-parent':
-                    break;
-                case 'explanation':
-                    writeItem('uitleg');
-                    break;
-                case 'exercise':
-                    writeItem('opgave');
-                    break;
-                case 'theory':
-                    writeItem('theorie');
-                    break;
-                case 'digest':
-                    writeItem('verwerken');
-                    break;
-                case 'application':
-                    writeItem('toepassen');
-                    break;
-                case 'extra':
-                    writeItem('practicum');
-                    break;
-                case 'test':
-                    writeItem('test jezelf');
-                    break;
+            var name = itemNameMap[ item[0].localName ];
+            if(name) {
+                writeItem(name);
             }
         }
     }
-        
-    function setItemOptions(comp, subcomp, div) {
+
+    //find informative name for this item. Callback is only called if a name is found
+    function getItemName(compid, subcompid, itemid, callback) {
+        var args = {comp:compid, subcomp: subcompid};
+        $.get(getComponentItemsURL, args,
+              function(data) {
+                  var sc = $('subcomponent#'+subcompid,data);
+                  var item = $('#'+itemid,sc).first();
+                  if(item.length>0) {
+                      var name = itemNameMap[ item[0].localName ];
+                      if(name) callback({id: itemid, name: name});
+                  }
+              });
+    }
+    
+    function setItemOptions(comp, subcomp, div, callback) {
         clearItemOptions(div);
         var elm = $('.item-choser',div);
         var args = {comp:comp, subcomp: subcomp};
@@ -191,6 +184,7 @@ define(['jquery','jqueryui','jqueryChosen'], function($) {
                   var sc = $('subcomponent#'+subcomp,data);
                   addItemOption(sc,elm);
                   elm.trigger('chosen:updated');
+                  if(callback) callback();
               });
 
     }
@@ -260,7 +254,7 @@ define(['jquery','jqueryui','jqueryChosen'], function($) {
                 });
             });
         },
-        show: function(callback_ok) {
+        show: function(current, callback_ok) {
             if(!isInitialized) {alert('Probleem: kan de beschikbare paragrafen niet laden'); return; }
             var parent = $('<div><select class="thread-choser" data-placeholder="selecteer een leerlijn..."><option value=""></option></select>'
                     +'<br/><select class="component-choser" data-placeholder="selecteer een hoofdstuk..."></select>'
@@ -270,31 +264,68 @@ define(['jquery','jqueryui','jqueryChosen'], function($) {
                     +'</div>');
             $('.contentDiv').prepend(parent);
             setThreadOptions(parent);
+
+            if(current) {
+                var _this = this;
+                this.getSelectedElements(current, function(spec) {
+                    if(current.threadid) {
+                        $('.thread-choser option[value="'+current.threadid+'"]',parent).attr('selected', 'selected');
+                        $('.thread-choser',parent).trigger('chosen:updated');
+                        selectedThread.id = current.threadid;
+                        selectedThread.name = spec.thread.name;
+                        setComponentOptions(current.threadid, parent);
+                    }
+                    if(current.compid) {
+                        $('.component-choser option[value="'+current.compid+'"]',parent).attr('selected', 'selected');
+                        $('.component-choser',parent).trigger('chosen:updated');
+                        selectedComponent.id = current.compid;
+                        selectedComponent.name = spec.component.name;
+                        setSubcomponentOptions(current.compid, parent);
+                    }
+                    if(current.subcompid) {
+                        $('.subcomponent-choser option[value="'+current.subcompid+'"]',parent).attr('selected', 'selected');
+                        $('.subcomponent-choser',parent).trigger('chosen:updated');
+                        selectedSubcomponent.id = current.subcompid;
+                        selectedSubcomponent.name = spec.subcomponent.name;
+                        setItemOptions(selectedComponent.id, current.subcompid, parent, function() {
+                            if(current.itemid) {
+                                $('.item-choser option[value="'+current.itemid+'"]',parent).attr('selected', 'selected');
+                                $('.item-choser',parent).trigger('chosen:updated');
+                                selectedItem.id = current.itemid;
+                                selectedItem.name = spec.item.name;
+                            }
+                        });
+                    }
+                });
+            }
+            
+            
+            
             parent.dialog({width:300, height:400});
             $('.thread-choser', parent).chosen()
                 .change(function(data) {
-                    var id = $('.thread-choser option:selected').val();
+                    var id = $('.thread-choser option:selected', parent).val();
                     selectedThread.id = id;
-                    selectedThread.name = $('.thread-choser option:selected').text();
+                    selectedThread.name = $('.thread-choser option:selected', parent).text();
                     setComponentOptions(id, parent);
                 });
             $('.component-choser', parent).chosen()
                 .change(function(data) {
-                    var id = $('.component-choser option:selected').val();
+                    var id = $('.component-choser option:selected', parent).val();
                     selectedComponent.id = id;
-                    selectedComponent.name = $('.component-choser option:selected').text();
+                    selectedComponent.name = $('.component-choser option:selected', parent).text();
                     setSubcomponentOptions(id, parent);
                 });
             $('.subcomponent-choser', parent).chosen()
                 .change(function(data) {
-                    var subid = $('.subcomponent-choser option:selected').val();
+                    var subid = $('.subcomponent-choser option:selected', parent).val();
                     selectedSubcomponent.id = subid;
-                    selectedSubcomponent.name = $('.subcomponent-choser option:selected').text();
+                    selectedSubcomponent.name = $('.subcomponent-choser option:selected', parent).text();
                     setItemOptions(selectedComponent.id, subid, parent);
                 });
             $('.item-choser', parent).chosen().change(function(data) {
-                    selectedItem.id = $('.item-choser option:selected').val();
-                    selectedItem.name = $('.item-choser option:selected').text();
+                    selectedItem.id = $('.item-choser option:selected', parent).val();
+                    selectedItem.name = $('.item-choser option:selected', parent).text();
             });
             $('.choser-ok',parent).click(function() {
                     var result={thread:selectedThread, component: selectedComponent, subcomponent: selectedSubcomponent, item: selectedItem};
@@ -304,7 +335,33 @@ define(['jquery','jqueryui','jqueryChosen'], function($) {
             $('.choser-cancel',parent).click(function() {
                     parent.dialog('close');
             });
-
+        },
+        getSelectedElements : function(spec, callback) {
+            var result = {};
+            if(spec.threadid) {
+                result.thread= {id:spec.threadid, name: threads[spec.threadid].title};
+            }
+            if(spec.compid) {
+                var comp = modules[spec.compid];
+                if(comp) {
+                    result.component = {id:spec.compid, name: comp.name};
+                }
+                var ii; var sub=null;
+                for(ii=0; ii<comp.subcomponents.length; ii++) {
+                    if(comp.subcomponents[ii].id === spec.subcompid) {
+                        sub = comp.subcomponents[ii];
+                        break;
+                    }
+                }
+                if(sub) {
+                    result.subcomponent = {id: sub.id, name: sub.title}; 
+                    getItemName(spec.compid, spec.subcompid, spec.itemid, function(item){
+                        result.item = item;
+                        callback(result);
+                    });
+                }
+            }
         }
+        
     };
 });

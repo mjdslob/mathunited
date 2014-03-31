@@ -55,7 +55,7 @@ public class PostContentServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         try{
             super.init(config);
-            LOGGER.setLevel(Level.FINE);
+            LOGGER.setLevel(Level.INFO);
             context = getServletContext();
 
             processor = new XSLTbean(context);
@@ -171,7 +171,8 @@ public class PostContentServlet extends HttpServlet {
             xmlReader.setEntityResolver(ContentResolver.entityResolver);
             
             int ind = sub.file.lastIndexOf('/');
-            String refbase = config.getContentRoot()+repository.getPath()+"/"+sub.file.substring(0, ind+1);
+            String subFolder = sub.file.substring(0, ind);
+            String refbase = config.getContentRoot()+repository.getPath()+"/"+subFolder+"/";
 
             ContentResolver resolver = new ContentResolver(repoId, context);
             StringReader strReader = new StringReader(html);
@@ -181,9 +182,10 @@ public class PostContentServlet extends HttpServlet {
             Node root = processor.processToDOM(xmlSaxSource, "m4a_inverse", parameterMap, resolver);
 
             File subcompFile = new File(refbase);
-            if(!FileManager.backupFolderExists(subcompFile, repository)) {
-                File zipFile = FileManager.backupSubcomponent("original",subcompFile, repository);
-                FileManager.log(subcompFile.getParentFile(), usettings.username, zipFile, repository);
+            if(!FileManager.backupFolderExists(subFolder, repository)) {
+                LOGGER.log(Level.FINE, "Creating initial backup: subFolder={0}", new Object[]{subFolder});
+                File zipFile = FileManager.backupSubcomponent("original",subFolder, repository);
+                FileManager.log(subFolder, usettings.username, zipFile, repository);
             }
             
             XPath xpath = XPathFactory.newInstance().newXPath();
@@ -219,8 +221,8 @@ public class PostContentServlet extends HttpServlet {
                 WorkflowServlet.updateStatus(repoId, subcomp, fileStr);
 
                 //create backup
-                File zipFile = FileManager.backupSubcomponent(null,subcompFile, repository);
-                FileManager.log(subcompFile.getParentFile(), usettings.username, zipFile, repository);
+                File zipFile = FileManager.backupSubcomponent(null,subFolder, repository);
+                FileManager.log(subFolder, usettings.username, zipFile, repository);
 
                 String result = resultXML.replace("{#POSTRESULT}","true").replace("{#MESSAGE}", "success");
                 pw.println(result);

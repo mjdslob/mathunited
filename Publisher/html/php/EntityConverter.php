@@ -13,7 +13,7 @@ class EntityConverter {
     * desired behaviour when producing XML. */
     public static function convert_entity($matches) {
     static $table = array(
-'lt'=>'&#60;',
+'lt'=>' &lt; ', //note the spaces to prevent interpretation as tag
 'gt'=>'&#62;',
 'amp'=>'&#38;',
 'nbsp'=>'&#160;',
