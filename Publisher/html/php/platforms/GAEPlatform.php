@@ -2,19 +2,21 @@
 require_once("Logger.php");
 require_once("EntityConverter.php");
 class GAEPlatform extends Platform {
-    private $putTextURL = "http://mathunited2012.appspot.com/puttextfile";
-    private $resourceGetBlobUrl = "http://mathunited2012.appspot.com/getbloburl";
-    private $getResourceUrl= "http://mathunited2012.appspot.com/getresourceurl";
+    private $putTextURL = "http://dave.mathunited2012.appspot.com/puttextfile";
+    private $putResultXmlURL = "http://dave.mathunited2012.appspot.com/putxmlfile";
+    private $resourceGetBlobUrl = "http://dave.mathunited2012.appspot.com/getbloburl";
+    private $getResourceUrl= "http://dave.mathunited2012.appspot.com/getresourceurl";
     
     //constructor 
     public function GAEPlatform($publishId) {
         $this->publishId = $publishId;
     }
 
-    public function publishOverview($repoID, $repo, $logger) {
+    public function publishOverview($repoID, $repo, $logger, $base) {
         $path = "/data/".$repo['basePath'].'leerlijnen/';
 
         if(file_exists($path.'components.xml')) {
+            $logger->trace(LEVEL_INFO, 'load cpmponents.xml file from '.$path.'components.xml');
             $txt = file_get_contents($path.'components.xml');
             $logger->trace(LEVEL_INFO, 'send components.xml for repo '.$repoID);        
             $txt = EntityConverter::convert_entities($txt);
@@ -25,6 +27,19 @@ class GAEPlatform extends Platform {
             $logger->trace(LEVEL_INFO, 'send threads.xml for repo '.$repoID);        
             $txt = EntityConverter::convert_entities($txt);
             $error = !$this->sendFile('threads.xml', '', $repoID, $txt, $logger);
+            
+            $threadsDoc = new SimpleXMLElement($txt);
+            $elms = $threadsDoc->xpath("//threads/thread");
+            foreach($elms as $elm) {
+                $resultXmlNode = $elm->xpath("result-xml");
+                if (count($resultXmlNode) > 0) {
+                    $xmlFile = $base.$resultXmlNode[0];
+                    $xmlContents = file_get_contents($xmlFile);
+                    if($xmlContents===false) throw new Exception("Xml file $xmlFile does not exist");
+                    $this->sendXmlFile($elm["id"], $repoID, $xmlContents, $logger, "result-structure");
+                }
+            }
+            
         } else throw new Exception("Threads file not found: ".$path.'threads.xml');
     }
     
@@ -173,6 +188,46 @@ class GAEPlatform extends Platform {
                 $logger->trace(LEVEL_INFO, 'TextFile '.$id.' stored ('.$response.')');      
             else
                 $logger->trace(LEVEL_INFO, 'TextFile '.$id.' transfer response = '.$response);      
+        }
+        
+        curl_close($ch);
+    }
+
+    private function sendXmlFile($id, $repo, $text, $logger, $type) {
+        $srcItems = array('+','%');
+        $rplcItems = array('&#43;','&#37;');
+        $text = str_replace($srcItems,$rplcItems,$text);
+        //remove entities reference, as entities will be dealt with in the publisher already
+        $ii_start = strpos($text, "<!DOCTYPE");
+        $ii_end = strpos($text, ">", $ii_start);
+        $text = substr_replace($text, '', $ii_start, $ii_end-$ii_start+1);
+
+        $fields = array(
+            'id'=>rawurlencode($type . "/" . $id),
+            'text'=>rawurlencode($text),
+            'repo'=>$repo
+        );
+
+        //url-ify the data for the POST
+        $fields_string = '';
+        foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+        rtrim($fields_string,'&');
+            
+        $ch = curl_init($this->putResultXmlURL);
+ 
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POST,count($fields));
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$fields_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+ 
+        $response = curl_exec($ch);
+        if($response!=null) {
+            if (strncmp($response, 'error', 5)==0) 
+                throw new Exception($response);
+            else if (strncmp($response, 'info: ', 6)==0) 
+                $logger->trace(LEVEL_INFO, 'XmlFile '.$id.' stored ('.$response.')');      
+            else
+                $logger->trace(LEVEL_INFO, 'XmlFile '.$id.' transfer response = '.$response);      
         }
         
         curl_close($ch);

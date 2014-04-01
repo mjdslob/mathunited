@@ -80,6 +80,7 @@ class Publisher {
             switch($cmd) {
                 case "publishOverview":
                     $result = $this->publishOverview();
+                    $this->logger->trace(LEVEL_INFO, "Finished publishing overview");
                     break;
                     
                 case "publishComponentFile":
@@ -156,7 +157,7 @@ class Publisher {
         //generate an id for this publish
         $publishId = date(DATE_RFC822);
         $pf = new GAEPlatform($publishId, false);
-        $pf->publishOverview($this->repoID, $this->repo, $this->logger);
+        $pf->publishOverview($this->repoID, $this->repo, $this->logger,  $this->contentRoot.$this->repo['basePath']);
         return $result;
     }
 

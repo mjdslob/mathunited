@@ -37,6 +37,14 @@
         <url-pattern>/MathUnited/view_s</url-pattern>
     </servlet-mapping>
      <servlet>
+        <servlet-name>viewresult</servlet-name>
+        <servlet-class>mathunited.ViewResultServlet</servlet-class>
+    </servlet>
+     <servlet-mapping>
+        <servlet-name>viewresult</servlet-name>
+        <url-pattern>/viewresult</url-pattern>
+    </servlet-mapping>
+     <servlet>
         <servlet-name>getbloburl</servlet-name>
         <servlet-class>mathunited.GetBlobURLServlet</servlet-class>
     </servlet>
@@ -67,6 +75,14 @@
      <servlet-mapping>
         <servlet-name>puttextfile</servlet-name>
         <url-pattern>/puttextfile</url-pattern>
+    </servlet-mapping>
+     <servlet>
+        <servlet-name>putxmlfile</servlet-name>
+        <servlet-class>mathunited.PutXmlFileServlet</servlet-class>
+    </servlet>
+     <servlet-mapping>
+        <servlet-name>putxmlfile</servlet-name>
+        <url-pattern>/putxmlfile</url-pattern>
     </servlet-mapping>
      <servlet>
         <servlet-name>gettextfile</servlet-name>
