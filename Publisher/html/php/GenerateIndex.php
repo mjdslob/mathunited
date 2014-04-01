@@ -3,7 +3,7 @@
 // - components.xml to contain all components and subcomponents. Used for WiskundeMenu
 // - for each component, a file index.xml, containing all numbered items
 
-define('MAX_TIME_LIMIT',60);
+define('MAX_TIME_LIMIT',600);
 define('TEMP_OVERVIEW_FILE', '../tmp/comps-assembled.xml');
 require_once("Logger.php");
 require_once("EntityConverter.php");
@@ -65,7 +65,7 @@ try{
         $this->createComponentsFile($comps, $repo);
         $this->removeIndexFiles($comps);
         foreach($comps as $cc) {
-            $this->addIdToItem($cc, $repo);
+            //$this->addIdToItem($cc, $repo);
             $this->generateComponentIndex($cc, $repo);
         }
         
@@ -93,32 +93,34 @@ try{
         $base = substr($base, 0, $ind+1);
         $txt = file_get_contents($comp['fullname']);
         $txt = EntityConverter::convert_entities($txt);
-        $doc = new SimpleXMLElement(html_entity_decode($txt, ENT_QUOTES, "utf-8"));
+        $doc = new SimpleXMLElement($txt);
         $subDoc = $doc->subcomponents;
         for($kk=0; $kk<count($subDoc->subcomponent);$kk++) {
              $s = $subDoc->subcomponent[$kk];
              $fname = $s->file;
              $txt = file_get_contents($base.$fname);
              $txt = EntityConverter::convert_entities($txt);
-             $doc = new SimpleXMLElement(html_entity_decode($txt, ENT_QUOTES, "utf-8"));
+             $doc = new SimpleXMLElement($txt);
              $ind = strrpos($fname, '/');
              $subbase = substr($fname, 0, $ind+1);
-             $subbase = $base.$subbase.'/';
+             $subbase = $base.$subbase;
              //get all includes
              $inclist = $doc->xpath("//include");
              foreach($inclist as $inc) {
                  $itemname = $inc['filename'];
                  $itemtxt = file_get_contents($subbase.$itemname);
-                 $itemtxt = EntityConverter::convert_entities($itemtxt);
-                 try{
-                    $itemdoc = new SimpleXMLElement(html_entity_decode($itemtxt, ENT_QUOTES, "utf-8"));
-                    if(!$itemdoc['id']) {
-                        $this->logger->trace(LEVEL_INFO, "Item $itemname does not contain an id");
+                 $itemtxtconv = EntityConverter::convert_entities($itemtxt);
+                 $itemdoc = simplexml_load_string($itemtxtconv);
+                 if(!$itemdoc['id']) {
+                    $this->logger->trace(LEVEL_INFO, "Item $itemname does not contain an id. Fixing it.");
+                    //add id to text
+                    $rootname = $itemdoc->getName();
+                    $id = str_replace('.xml','',$itemname);
+                    $num = 1;
+                    $itemtxt = str_replace('<'.$rootname, '<'.$rootname.' id="'.$id.'"', $itemtxt, $num );
+                    file_put_contents($subbase.$itemname, $itemtxt);
                  }
-                 }catch(Exception $e) {
-                     $this->logger->trace(LEVEL_ERROR, "while scanning $itemname: ".$e->getMessage());
-                 }
-             } 
+             }
         }
         
         

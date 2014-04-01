@@ -2,12 +2,6 @@ variants :
   basis : {path: /xslt/m4a_view.xslt}
   m4a_view : {path: /xslt/m4a_view.xslt}
   m4a_editor : {path: /xslt/m4a_editor.xslt}
-<<<<<<< HEAD
-=======
-  m4a_test : {path: /xslt/m4a_test.xslt}
-  m4a_insert : {path: /xslt/m4a_insert.xslt}
-  m4a_remove : {path: /xslt/m4a_remove.xslt}
->>>>>>> FETCH_HEAD
   m4a_inverse : {path: /xslt/m4a_inverse.xslt}
 
 roles :
@@ -16,57 +10,21 @@ roles :
   - editor_malmberg
   
 repos :
-<<<<<<< HEAD
-=======
-  wm :
-    path: content-wm/concept
-    edit_permission: 
-    defaultVariant: wm_view
-  m4a :
-    path: content-ma/concept
-    edit_permission: editor_m4a
-    defaultVariant: m4a_view
-  algebrakit :
-    path: content-ma/algebrakit
-    edit_permission: 
-    defaultVariant: m4a_view
-  m4a_concept_alt :
-    path: content-ma/concept_alt
-    baseRepo : m4a
-    edit_permission: editor_concept_alt
-    defaultVariant: m4a_view
-  m4a_en :
-    path: content-ma/saba
-    baseRepo : m4a
-    edit_permission: editor_saba
-    defaultVariant: m4a_view_en
->>>>>>> FETCH_HEAD
   malmberg :
     path: 
     edit_permission: editor_malmberg
     defaultVariant: m4a_view
-<<<<<<< HEAD
     componentsURL: /data/leerlijnen/components.xml
     threadsURL: /data/leerlijnen/threads.xml
-=======
-    componentsURL: /data/content-ma/malmberg/leerlijnen/components.xml
-    threadsURL: /data/content-ma/malmberg/leerlijnen/threads.xml
->>>>>>> FETCH_HEAD
   test :
     path: content-ma/test
     baseRepo : m4a
     edit_permission: editor_test
     defaultVariant: m4a_view
 
-<<<<<<< HEAD
 userFile : /data/users_malmberg.yaml
 contentRoot : /data/
 entitiesFile : /data/entities.xml
-=======
-userFile : /Library/WebServer/Documents/data/content-overview/users.yaml
-contentRoot : /Library/WebServer/Documents/data/
-entitiesFile : /Library/WebServer/Documents/data/content-overview/entities.xml
->>>>>>> FETCH_HEAD
 
 mail_host : smtp.xs4all.nl
 mail_smtp_port : 587

@@ -5,7 +5,7 @@ import java.nio.channels.FileChannel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import nl.math4all.mathunited.configuration.Repository;
+import nl.math4all.mathunited.configuration.*;
 import org.w3c.dom.*;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import org.w3c.dom.ls.DOMImplementationLS;
@@ -13,18 +13,50 @@ import org.w3c.dom.ls.LSOutput;
 import org.w3c.dom.ls.LSSerializer;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.*;
+import nl.math4all.mathunited.editor.PostContentServlet;
+//import javax.security.auth.login.Configuration;
 
 /**
  *
  * @author martijnslob
  */
 public class FileManager {
+    private final static Logger LOGGER = Logger.getLogger(FileManager.class.getName());
+    static {
+        LOGGER.setLevel(Level.INFO);
+    }
 
-    public static void log(File compFile, String username, File zipFile, Repository repo) throws Exception {
-        String fname = compFile.getAbsolutePath();
-        fname = fname.replace(repo.getPath(),repo.getPath()+"/_history");
-        File logFile = new File(fname+"/log.xml");
+    private static File getBackupFolder(String subFolder, Repository repo) {
+        Configuration config = Configuration.getInstance();
+        String fname = config.getContentRoot();
+        String repoPath = repo.getPath();
+        if(repoPath.isEmpty()) {
+            fname = fname+"_history/";
+        } else {
+            fname = fname+repoPath+"/_history/";
+        }
+        fname = fname + subFolder;
+        LOGGER.log(Level.FINE, "getBackupFolder: subFolder={0}, result={1}", new Object[]{subFolder, fname});
+        return new File(fname);
+    }
+    private static File getSubcompFolder(String subFolder, Repository repo) {
+        Configuration config = Configuration.getInstance();
+        String fname = config.getContentRoot();
+        String repoPath = repo.getPath();
+        if(!repoPath.isEmpty()) {
+            fname = fname+repoPath+"/";
+        }
+        fname = fname + subFolder;
+        LOGGER.log(Level.FINE, "getSubcompFolder: subFolder={0}, result={1}", new Object[]{subFolder, fname});
+        return new File(fname);
+    }
+    
+    public static void log(String subFolder, String username, File zipFile, Repository repo) throws Exception {
+        File compFile = getBackupFolder(subFolder, repo).getParentFile();
+        File logFile = new File(compFile, "log.xml");
         if(!logFile.exists()) logFile.createNewFile();
         FileWriter fw = new FileWriter(logFile, true);//append to file
         BufferedWriter bw = new BufferedWriter(fw);
@@ -35,10 +67,9 @@ public class FileManager {
         bw.close();
     }
     
-    public static boolean backupFolderExists(File subcompFolder, Repository repo) throws Exception {
-        String fname = subcompFolder.getAbsolutePath();
-        fname = fname.replace(repo.getPath(),repo.getPath()+"/_history");
-        return new File(fname).exists();
+    public static boolean backupFolderExists(String subFolder, Repository repo) throws Exception {
+        File subcompFolder = getBackupFolder(subFolder, repo);
+        return subcompFolder.exists();
     }
     /** creates a zip-file containing all xml files (not images or other resources) 
      *  and stores it in _history/...
@@ -46,17 +77,20 @@ public class FileManager {
      * @param repo:
      * @return The created zip file
      */
-    public static File backupSubcomponent(String name, File subcompFolder, Repository repo) throws Exception {
-        String fname = subcompFolder.getAbsolutePath();
-        fname = fname.replace(repo.getPath(),repo.getPath()+"/_history");
+    public static File backupSubcomponent(String name, String subFolder, Repository repo) throws Exception {
+        File backupFolder = getBackupFolder(subFolder, repo);
+        File subcompFolder = getSubcompFolder(subFolder, repo);
         Date date = new Date();
         SimpleDateFormat ft = new SimpleDateFormat ("yyyy.MM.dd_hh.mm.ss");
+        int index = subFolder.lastIndexOf("/");
+        String fname = subFolder.substring(index+1);
         if(name==null) {
-            fname = fname+"/"+subcompFolder.getName()+"_"+ft.format(date)+".zip";
+            fname = fname+"_"+ft.format(date)+".zip";
         } else {
-            fname = fname+"/"+subcompFolder.getName()+"_"+name+"_"+ft.format(date)+".zip";
+            fname = fname+"_"+name+"_"+ft.format(date)+".zip";
         }
-        File fzip = new File(fname);
+        File fzip = new File(backupFolder, fname);
+        LOGGER.log(Level.FINE, "Creating log file {0}", new Object[]{fzip.getAbsoluteFile()});
         fzip.getParentFile().mkdirs();
 
         FileOutputStream fos = new FileOutputStream(fzip);
@@ -87,24 +121,6 @@ public class FileManager {
         return fzip;
     }
     
-    public static File createBackup(File file, Repository repo) throws Exception {
-        int num = 0;
-        String fname = file.getAbsolutePath();
-        int ind = fname.lastIndexOf(".");
-        String extStr = fname.substring(ind);
-        fname = fname.substring(0,ind);
-        fname = fname.replace(repo.getPath(),repo.getPath()+"/_history");
-        File f2 = new File(fname);
-        f2.getParentFile().mkdirs();
-        do {
-            num++;
-            String backupName = fname+"_"+num+extStr;
-            f2 = new File(backupName);
-        } while(f2.exists());
-        copyFile(file, f2);
-        return f2;
-    }
-
     public static void copyFile(File sourceFile, File destFile) throws IOException {
         if(!destFile.exists()) {
             destFile.createNewFile();

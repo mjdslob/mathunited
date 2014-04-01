@@ -16,6 +16,41 @@
  */
 
 define(['jquery'], function($, objSelector) {
+    var container = null; //contains metadata elements, both visual representation and xml-tags
+    
+    function setReferences() {
+        //gerelateerde theorie
+        //var parRef = $('div[tag="paragraph-ref"]',container).attr('value');
+        //$('form input[name="ref-id"]', container).val(parRef);
+        var ref = $('div[tag="paragraph-ref"]', container);
+        if(ref.length>0) {
+            var threadid = ref.attr('thread');
+            var compid = ref.attr('comp');
+            var subid = ref.attr('subcomp');
+            var itemid = ref.attr('item');
+            var itemSelector = require('app/ItemSelector');
+            itemSelector.getSelectedElements({threadid: threadid, compid: compid, subcompid:subid, itemid:itemid}, function(result) {
+                var descr=result.thread.name+' >> '+result.component.name+' >> '+result.subcomponent.name+' >> '+result.item.name;
+                $('.related-theory',container).text(descr);
+            });
+        }
+        $('.select-item-button',container).click(function() {
+            var itemSelector = require('app/ItemSelector');
+            var current = null;
+            if(compid) current={threadid: threadid, compid:compid, subcompid:subid, itemid:itemid};
+            itemSelector.show(current,function(result) {
+                var ref=result.thread.name+' >> '+result.component.name+' >> '+result.subcomponent.name+' >> '+result.item.name;
+                $('.related-theory',container).text(ref);
+                $('div[tag="paragraph-ref"]',container).remove();
+                $('<div tag="paragraph-ref"></div>').appendTo($('.metadata-data',container))
+                        .attr('thread',result.thread.id)
+                        .attr('comp',result.component.id)
+                        .attr('subcomp',result.subcomponent.id)
+                        .attr('item', result.item.id);
+            });
+        });
+        
+    }
     
     return {
         removeObjectiveFromDocument: function(id) {
@@ -26,7 +61,7 @@ define(['jquery'], function($, objSelector) {
         action : function(elm, params) {
             var doc = require('app/Document');
             var base = elm.parents('._editor_context_base').first();
-            var container = $('.metadata-container',base).first().addClass('visible');
+            container = $('.metadata-container',base).first().addClass('visible');
             var tag = $('*[tag="metadata"]',container).first();
             var objTagContainer = $('div[tag="objectives"]',container);
             if(objTagContainer.length===0) {
@@ -45,8 +80,6 @@ define(['jquery'], function($, objSelector) {
                grouplabels += $(this).attr('value')+' '; 
             });
             $('form input[name="groepslabel"]', container).val(grouplabels);
-            var parRef = $('div[tag="paragraph-ref"]',container).attr('value');
-            $('form input[name="ref-id"]', container).val(parRef);
 
             if(level) {
                 var dum=$('form input[name="level"][value="'+level+'"]', container);
@@ -58,14 +91,7 @@ define(['jquery'], function($, objSelector) {
                 if(dum.length>0) dum[0].checked= true;
             };
             
-            //gerelateerde theorie
-            $('.select-item-button',container).click(function() {
-                var itemSelector = require('app/ItemSelector');
-                itemSelector.show(function(result) {
-                    var ref=result.component.id+' >> '+result.subcomponent.id+' >> '+result.item.name;
-                    $('.related-theory',container).text(ref);
-                });
-            });
+            setReferences();
             //leerdoelen
             var main = require('app/Main');
             var objContainer = $('.metadata-obj-selector-container',container);
@@ -142,8 +168,6 @@ define(['jquery'], function($, objSelector) {
                 }
                 if(level) addMetadataElm(tag, 'level',{value: level},null,true);
                 addMetadataElm(tag, 'clone',{active: isClone}, null,true);
-                var parRef = $('input[name="ref-id"]',container)[0].value;
-                addMetadataElm(tag, 'paragraph-ref',{value: parRef}, null,true);
                 
                 objTagContainer.empty();
                 $('input[name="objective"]:checked').each(function(){ 

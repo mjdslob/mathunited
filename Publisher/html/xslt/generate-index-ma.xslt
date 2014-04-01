@@ -33,7 +33,7 @@
     </xsl:apply-templates>
 </xsl:template>
 
-<xsl:template match="explore | introduction | theory | digest | application | extra |test | summary | exam | examples" mode="collect">
+<xsl:template match="examples" mode="collect">
     <xsl:param name="path"/>
     <xsl:element name="{name()}">
         <xsl:apply-templates  mode="collect">
@@ -60,7 +60,7 @@
     </xsl:apply-templates>
 </xsl:template>
 
-<xsl:template match="exercise | example | application | explanation" mode="included">
+<xsl:template match="explore | introduction | theory | digest | application | extra |test | summary | exam | exercise | example | application | explanation" mode="included">
     <xsl:variable name="id" select="@id"/>
     <xsl:element name="{name()}">
         <xsl:attribute name="id"><xsl:value-of select="$id"/></xsl:attribute>
@@ -81,86 +81,94 @@
     
 </xsl:template>
 
--->
+    -->
 
-<xsl:template match="subcomponent" mode="numbering">
-    <xsl:copy>
-        <xsl:attribute name="_nr"><xsl:value-of select="1+count(preceding-sibling::subcomponent)"/></xsl:attribute>
-        <xsl:copy-of select="@*"/>
-        <xsl:apply-templates mode="numbering">
-            <xsl:with-param name="exbase" select="count(preceding::exercise)"/>
-            <xsl:with-param name="examplebase">
-                <xsl:choose>
-                    <xsl:when test="count(./theory/examples/example)>1">
-                        <xsl:value-of select="count(preceding::example)"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="number(-1)"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:with-param>
-            <xsl:with-param name="explanationbase">
-                <xsl:choose>
-                    <xsl:when test="count(./explanation-parent/explanation)>1">
-                        <xsl:value-of select="count(preceding::explanation)"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="number(-1)"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:with-param>
-        </xsl:apply-templates>
-    </xsl:copy>
-</xsl:template>
-<xsl:template match="exercise" mode="numbering">
-    <xsl:param name="exbase"/>
-    <xsl:param name="examplebase"/>
-    <xsl:param name="explanationbase"/>
-    <xsl:copy>
-        <xsl:attribute name="_nr"><xsl:value-of select="1+count(preceding::exercise)-$exbase"/></xsl:attribute>
-        <xsl:copy-of select="@*"/>
-        <xsl:apply-templates mode="numbering"/>
-    </xsl:copy>
-</xsl:template>
-<xsl:template match="example" mode="numbering">
-    <xsl:param name="exbase"/>
-    <xsl:param name="examplebase"/>
-    <xsl:param name="explanationbase"/>
-    <xsl:copy>
-        <xsl:if test="$examplebase >= 0">
-            <xsl:attribute name="_nr"><xsl:value-of select="1+count(preceding::example)-$examplebase"/></xsl:attribute>
-        </xsl:if>
-        <xsl:copy-of select="@*"/>
-        <xsl:apply-templates mode="numbering"/>
-    </xsl:copy>
-</xsl:template>
-<xsl:template match="explanation" mode="numbering">
-    <xsl:param name="exbase"/>
-    <xsl:param name="examplebase"/>
-    <xsl:param name="explanationbase"/>
-    <xsl:copy>
-        <xsl:if test="$explanationbase >= 0">
-            <xsl:attribute name="_nr"><xsl:value-of select="1+count(preceding::explanation)-$explanationbase"/></xsl:attribute>
-        </xsl:if>
-        <xsl:copy-of select="@*"/>
-        <xsl:apply-templates mode="numbering">
-            <xsl:with-param name="exbase" select="$exbase"/>
-            <xsl:with-param name="examplebase" select="$examplebase"/>
-            <xsl:with-param name="explanationbase" select="$explanationbase"/>
-        </xsl:apply-templates>
-    </xsl:copy>
-</xsl:template>
-<xsl:template match="@*|node()" mode="numbering" >
-    <xsl:param name="exbase"/>
-    <xsl:param name="examplebase"/>
-    <xsl:param name="explanationbase"/>
-    <xsl:copy>
-        <xsl:apply-templates select="@*|node()" mode="numbering">
-            <xsl:with-param name="exbase" select="$exbase"/>
-            <xsl:with-param name="examplebase" select="$examplebase"/>
-            <xsl:with-param name="explanationbase" select="$explanationbase"/>
-        </xsl:apply-templates>
-    </xsl:copy>
-</xsl:template>
+    <xsl:template match="subcomponent" mode="numbering">
+        <xsl:copy>
+            <xsl:attribute name="_nr">
+                <xsl:value-of select="1+count(preceding-sibling::subcomponent)"/>
+            </xsl:attribute>
+            <xsl:copy-of select="@*"/>
+            <xsl:apply-templates mode="numbering">
+                <xsl:with-param name="exbase" select="count(preceding::exercise)"/>
+                <xsl:with-param name="examplebase">
+                    <xsl:choose>
+                        <xsl:when test="count(./theory/examples/example)>1">
+                            <xsl:value-of select="count(preceding::example)"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="number(-1)"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:with-param>
+                <xsl:with-param name="explanationbase">
+                    <xsl:choose>
+                        <xsl:when test="count(./explanation-parent/explanation)>1">
+                            <xsl:value-of select="count(preceding::explanation)"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="number(-1)"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:with-param>
+            </xsl:apply-templates>
+        </xsl:copy>
+    </xsl:template>
+    <xsl:template match="exercise" mode="numbering">
+        <xsl:param name="exbase"/>
+        <xsl:param name="examplebase"/>
+        <xsl:param name="explanationbase"/>
+        <xsl:copy>
+            <xsl:attribute name="_nr">
+                <xsl:value-of select="1+count(preceding::exercise)-$exbase"/>
+            </xsl:attribute>
+            <xsl:copy-of select="@*"/>
+            <xsl:apply-templates mode="numbering"/>
+        </xsl:copy>
+    </xsl:template>
+    <xsl:template match="example" mode="numbering">
+        <xsl:param name="exbase"/>
+        <xsl:param name="examplebase"/>
+        <xsl:param name="explanationbase"/>
+        <xsl:copy>
+            <xsl:if test="$examplebase >= 0">
+                <xsl:attribute name="_nr">
+                    <xsl:value-of select="1+count(preceding::example)-$examplebase"/>
+                </xsl:attribute>
+            </xsl:if>
+            <xsl:copy-of select="@*"/>
+            <xsl:apply-templates mode="numbering"/>
+        </xsl:copy>
+    </xsl:template>
+    <xsl:template match="explanation" mode="numbering">
+        <xsl:param name="exbase"/>
+        <xsl:param name="examplebase"/>
+        <xsl:param name="explanationbase"/>
+        <xsl:copy>
+            <xsl:if test="$explanationbase >= 0">
+                <xsl:attribute name="_nr">
+                    <xsl:value-of select="1+count(preceding::explanation)-$explanationbase"/>
+                </xsl:attribute>
+            </xsl:if>
+            <xsl:copy-of select="@*"/>
+            <xsl:apply-templates mode="numbering">
+                <xsl:with-param name="exbase" select="$exbase"/>
+                <xsl:with-param name="examplebase" select="$examplebase"/>
+                <xsl:with-param name="explanationbase" select="$explanationbase"/>
+            </xsl:apply-templates>
+        </xsl:copy>
+    </xsl:template>
+    <xsl:template match="@*|node()" mode="numbering" >
+        <xsl:param name="exbase"/>
+        <xsl:param name="examplebase"/>
+        <xsl:param name="explanationbase"/>
+        <xsl:copy>
+            <xsl:apply-templates select="@*|node()" mode="numbering">
+                <xsl:with-param name="exbase" select="$exbase"/>
+                <xsl:with-param name="examplebase" select="$examplebase"/>
+                <xsl:with-param name="explanationbase" select="$explanationbase"/>
+            </xsl:apply-templates>
+        </xsl:copy>
+    </xsl:template>
 
 </xsl:stylesheet>
