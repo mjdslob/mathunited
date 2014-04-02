@@ -85,7 +85,7 @@ MU_View.prototype.createThreadElements = function(thread) {
         for(var jj=0;jj<nsub;jj++) {
              var subc = comp.subcomponents[jj];
              if(comp.publishState=='live'){
-                 var ref=this.viewURL+'&comp='+comp.id+'&subcomp='+subc.id;
+                 var ref=this.viewURL+'&comp='+comp.id+'&subcomp='+subc.id+'&thread='+thread.id;
                  var elm = $('<li id="li-'+subc.id+'"></li>').html(
                      '<a target="_parent" href="'+ref+'">'+subc.title+'</a>');
              } else {

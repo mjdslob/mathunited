@@ -16,6 +16,7 @@ extension-element-prefixes="exsl">
 <xsl:param name="subcomp"/> <!-- id of subcomponent, eg hv-me11 -->
 <xsl:param name="option"/>
 <xsl:param name="parent"/>  <!-- eg.: mathunited.nl/wiskundemenu/WM_overview.html -->
+<xsl:param name="thread"/>
 <xsl:param name="is_mobile"/>
 <xsl:param name="id"/>
 <xsl:param name="component"/>
@@ -86,7 +87,7 @@ extension-element-prefixes="exsl">
 </xsl:variable>
 <xsl:variable name="arg_parent">
     <xsl:choose>
-        <xsl:when test="$parent">&amp;parent=<xsl:value-of select="$parent"/></xsl:when>
+        <xsl:when test="$parent">&amp;parent=<xsl:value-of select="$parent"/>&amp;thread=<xsl:value-of select="$thread"/></xsl:when>
         <xsl:otherwise></xsl:otherwise>
     </xsl:choose>
 </xsl:variable>
@@ -102,7 +103,7 @@ extension-element-prefixes="exsl">
 <xsl:variable name="overviewRef">
     <xsl:choose>
        <xsl:when test="$parent">
-	    <xsl:value-of select="concat('http://',replace($parent,'\^','&amp;'))"/>
+	    <xsl:value-of select="concat('http://',$parent,'&amp;thread=',$thread)"/>
        </xsl:when>
        <xsl:otherwise>
 	    <xsl:value-of select="string('/')"/>

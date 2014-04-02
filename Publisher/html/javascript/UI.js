@@ -11,7 +11,32 @@ $(document).ready(function(){
     });
     M4A_getLoginState();
     refreshLog(true);
+    var tab = m4a_gup('tab');
+    if(tab) setTab(tab);
+    var thread = m4a_gup('thread');
+    if(thread) wm.thread= thread;
+    $('iframe').each(function() {
+       var src = $(this).attr('link');
+       if(src) {
+           src = src.replace('{THREAD_ID}',wm.thread);
+           $(this).attr('src',src);
+       }
+    });
 });
+
+function m4a_gup( name )
+{
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var href = window.location.href.replace('%20',' ');
+  var regexS = "[\\?&]"+name+"=([^&#]*)";
+  var regex = new RegExp( regexS );
+  var results = regex.exec( href );
+  if( results == null )
+    return "";
+  else
+    return results[1];
+}
+
 function confirmExit()   {
     if(isBusyPublishing){
         return "Als u het scherm sluit onderbreekt u de publicatie. Wilt u het scherm toch sluiten?";
@@ -43,7 +68,8 @@ function clearLog() {
     });
 }
 function chooseThread(name,elm) {
-    var parent = $(elm).parents('.ui-tab').first();
+//    var parent = $(elm).parents('.ui-tab').first();
+    var parent = $('.ui-tab.selected');
     var frame = $('iframe',parent).first();
 
     frame[0].src = name;

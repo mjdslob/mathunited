@@ -86,7 +86,7 @@ define(['jquery','jqueryui','jqueryChosen'], function($) {
                 var sel;
                 sel = $(xml).find('thread');
                 if(!sel || sel.length===0) {
-                     alert('Geen leerlijnen gevonden.');
+                     //alert('Geen leerlijnen gevonden.');
                 }
                 sel.each(function(){
                     var threadId = $(this).attr('id');

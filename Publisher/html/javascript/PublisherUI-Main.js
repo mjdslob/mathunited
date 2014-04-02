@@ -18,6 +18,7 @@ function WM_Manager(spec) {
     this.threadsURL = spec.threadsURL;
     this.methodURL = spec.methodURL;
     this.repo = spec.repo;
+    this.thread = spec.thread;
     this.publishURL = '/Publisher/php/Publisher.php';
     this.target = 'mathunited';
 }

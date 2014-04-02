@@ -16,6 +16,7 @@
     <xsl:param name="comp"/>    <!-- id of component. Not needed as complete xml of component is given in $component-->
     <xsl:param name="subcomp"/> <!-- id of subcomponent, eg hv-me11 -->
     <xsl:param name="option"/>
+    <xsl:param name="thread"/>
     <xsl:param name="parent"/>  <!-- eg.: mathunited.nl/wiskundemenu/WM_overview.html -->
     <xsl:param name="is_mobile"/>
     <xsl:param name="componentsURL"/>
@@ -39,6 +40,20 @@
         <xsl:value-of select="concat('../data/',$refbase)"/>
     </xsl:variable>
     <xsl:variable name="indexDoc" select="document(concat($refbase,'../index.xml'))"/>
+    <xsl:template match="subcomponent" mode="numbering">
+        <xsl:copy>
+            <xsl:apply-templates select="@*" mode="numbering"/>
+            <internal-meta>
+                <subcomponents>
+                    <xsl:for-each select="$indexDoc/index/component[@id=$comp]/subcomponent">
+                        <subcomponent id="{@id}" _nr="{@_nr}"/>
+                    </xsl:for-each>
+                </subcomponents>
+            </internal-meta>
+            <xsl:apply-templates mode="numbering"/>
+        </xsl:copy>
+    </xsl:template>
+    
 <!--   /////////////////////////////////////////////   -->
 <!--   /////////////////////////////////////////////   -->
 
@@ -103,17 +118,17 @@
     </xsl:variable>
     <xsl:variable name="arg_parent">
         <xsl:choose>
-            <xsl:when test="$parent">&amp;parent=<xsl:value-of select="$parent"/></xsl:when>
+            <xsl:when test="$parent">&amp;parent=<xsl:value-of select="$parent"/>&amp;thread=<xsl:value-of select="$thread"/></xsl:when>
             <xsl:otherwise></xsl:otherwise>
         </xsl:choose>
     </xsl:variable>
     <xsl:variable name="intraLinkPrefix">
-        <xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',$subcomp,'&amp;variant=',$variant,$arg_option,$arg_parent,$arg_repo,'&amp;item=')"/>
+        <xsl:value-of select="concat('edit?comp=',$comp,'&amp;subcomp=',$subcomp,'&amp;variant=',$variant,$arg_option,$arg_parent,$arg_repo,'&amp;item=')"/>
     </xsl:variable>
     <xsl:variable name="overviewRef">
         <xsl:choose>
             <xsl:when test="$parent">
-                <xsl:value-of select="concat('http://',$parent)"/>
+                <xsl:value-of select="concat('http://',$parent,'&amp;thread=',$thread)"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="string('/')"/>
@@ -132,6 +147,19 @@
 <!--   START PROCESSING -->
 <!--   **************** -->
     <xsl:template match="/">
+        <xsl:variable name="xml">
+            <xsl:apply-templates mode="numbering"/>
+        </xsl:variable>
+        <xsl:apply-templates select="$xml" mode="process"/>
+    </xsl:template>
+
+    <xsl:template match="@*|node()" mode="numbering">
+        <xsl:copy>
+            <xsl:apply-templates select="@*|node()" mode="numbering"/>
+        </xsl:copy>
+    </xsl:template>
+        
+    <xsl:template match="/" mode="process">
         <xsl:choose>
             <xsl:when test="$option='editor-process-item'">
                 <xsl:apply-templates/>
@@ -199,6 +227,12 @@
                     </div>
                     <div class="sectionDiv">
                         <div class="balk">
+                            <xsl:call-template name="list-section-nrs">
+                                <xsl:with-param name="i"><xsl:value-of select="number(1)"/></xsl:with-param>
+                                <xsl:with-param name="count"><xsl:value-of select="count($parsed_component/component/subcomponents/subcomponent)"/></xsl:with-param>
+                                <xsl:with-param name="highlight"><xsl:value-of select="1+count($subcomponent/preceding-sibling::subcomponent)"/></xsl:with-param>
+                                <xsl:with-param name="subcomponents" select="subcomponent/internal-meta/subcomponents"/>
+                            </xsl:call-template>
                             <span class="subcomponent-title">
                                 <xsl:value-of select="$subcomponent/title"/> 
                             </span>
@@ -264,6 +298,39 @@
             </body>
         </html>
     </xsl:template>
+
+    <xsl:template name="list-section-nrs">
+        <xsl:param name="i"/>
+        <xsl:param name="count"/>
+        <xsl:param name="highlight"/>
+        <xsl:param name="subcomponents"/>
+        <xsl:choose>
+            <xsl:when test="number($i) = number($highlight)">
+                <span class="list-section-nr highlight"><xsl:value-of select="$i"/></span>
+            </xsl:when>
+            <xsl:otherwise>
+                <span class="list-section-nr">
+                    <a class="_warn_if_doc_changed_">
+                        <xsl:attribute name="href">
+                            <xsl:value-of select="concat('edit?comp=',$comp,'&amp;subcomp=',$subcomponents/subcomponent[number(@_nr)=$i]/@id,'&amp;variant=',$variant,$arg_parent,$arg_repo,'&amp;thread=',$thread)"/>
+                        </xsl:attribute>
+                        <xsl:value-of select="$i"/>
+                    </a>
+                </span>
+            </xsl:otherwise>
+        </xsl:choose>
+
+        <xsl:if test="number($count) > number($i)">
+            <xsl:call-template name="list-section-nrs">
+               <xsl:with-param name="i"><xsl:value-of select="$i+1"/></xsl:with-param>
+               <xsl:with-param name="count"><xsl:value-of select="$count"/></xsl:with-param>
+               <xsl:with-param name="highlight"><xsl:value-of select="$highlight"/></xsl:with-param>
+               <xsl:with-param name="subcomponents" select="$subcomponents"/>
+            </xsl:call-template>
+        </xsl:if>
+    </xsl:template>
+
+
 
     <xsl:template match="subcomponent">
         <div tag="subcomponent">

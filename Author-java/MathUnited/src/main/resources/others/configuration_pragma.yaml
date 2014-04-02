@@ -55,6 +55,8 @@ repos :
     baseRepo : m4a
     edit_permission: editor_test
     defaultVariant: m4a_view
+    componentsURL: /index/test/components.xml
+    threadsURL: /index/test/threads.xml
 
 userFile : /data/content-overview/users.yaml
 contentRoot : /data/
