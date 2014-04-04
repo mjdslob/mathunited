@@ -16,7 +16,7 @@
  */
 
 requirejs.config({
-    urlArgs: "bust=v9", //update this when a modification is made, to prevent caching problems
+    urlArgs: "bust=v10", //update this when a modification is made, to prevent caching problems
     //By default load any module IDs from js/lib
     baseUrl: '/MathUnited/javascript/lib',
 //    baseUrl: 'js/lib',
@@ -28,6 +28,7 @@ requirejs.config({
     paths: {
         app: '../editor',
         actions: '../editor/actions',
+        algebrakit: '../editor/algebrakit',
         jquery: 'jquery-1.10.2', //change here when using newer version of jquery,
         jqueryui: 'jquery-ui-1.10.4.custom.min', //change here when using newer version of jquery,
         jqueryChosen: 'chosen_v1.1.0/chosen.jquery.min',

@@ -14,22 +14,22 @@ repos :
     path: 
     edit_permission: editor_malmberg
     defaultVariant: m4a_view
-    componentsURL: /data/leerlijnen/components.xml
-    threadsURL: /data/leerlijnen/threads.xml
+    componentsURL: /opt/sw/mathplus/data/leerlijnen/components.xml
+    threadsURL: /opt/sw/mathplus/data/leerlijnen/threads.xml
   test :
     path: content-ma/test
     baseRepo : m4a
     edit_permission: editor_test
     defaultVariant: m4a_view
 
-userFile : /data/users.yaml
-contentRoot : /data/
-entitiesFile : /data/entities.xml
+userFile : /opt/sw/mathplus/data/users_malmberg.yaml
+contentRoot : /opt/sw/mathplus/data/
+entitiesFile : /opt/sw/mathplus/data/entities.xml
 
-mail_host : smtp.xs4all.nl
-mail_smtp_port : 587
-mail_username : gaj2
-mail_password : mjd1602S
+mail_host : localhost
+mail_smtp_port : 25
+mail_username :  
+mail_password :  
 admin_mail : m.slob@math4all.nl
 
  

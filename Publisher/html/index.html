@@ -18,7 +18,8 @@
             wm = new WM_Manager({
                 methodURL:  '/leerlijnen/components.xml',
                 threadsURL: '/leerlijnen/threads.xml',
-                repo: 'malmberg'
+                repo: 'malmberg',
+                thread: 'ma-havovwo-12'
             });
             $(document).ready(function() {
                 wm.init();
@@ -108,7 +109,7 @@
                         <p>
                             Bekijk hier het lesmateriaal wanneer u deze aan het bewerken bent.
                         </p>
-                        <iframe src="publisher-preview-widget.html?thread_id=ma-havovwo-12&repo=malmberg" id="wiskundemenu-iframe" class="wiskundemenu-iframe"></iframe>
+                        <iframe link="publisher-preview-widget.html?thread_id={THREAD_ID}&repo=malmberg" id="wiskundemenu-iframe" class="wiskundemenu-iframe"></iframe>
                     </div>
                 </div>
                 <div id="tab-edit" class="ui-tab">
@@ -123,7 +124,7 @@
                         <p>
                             Hier kunt u het lesmateriaal bewerken met de auteurstool. 
                         </p>
-                        <iframe src="publisher-edit-widget.html?thread_id=ma-havovwo-12&repo=malmberg" id="wiskundemenu-edit-iframe" class="wiskundemenu-iframe"></iframe>
+                        <iframe link="publisher-edit-widget.html?thread_id={THREAD_ID}&repo=malmberg" id="wiskundemenu-edit-iframe" class="wiskundemenu-iframe"></iframe>
                     </div>
                 </div>
                 <div id="tab-logging" class="ui-tab">

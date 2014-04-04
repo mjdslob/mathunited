@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['jquery', 'app/TinyMCE', 'app/ContextMenu','jqueryui'], function($, Editor, ContextMenu) {
+define(['jquery', 'app/TinyMCE', 'app/ContextMenu', 'algebrakit/Widget','jqueryui'], function($, Editor, ContextMenu, akitWidget) {
     var isDocChanged = false;
     var root = null;  //set on init
     
@@ -118,6 +118,10 @@ define(['jquery', 'app/TinyMCE', 'app/ContextMenu','jqueryui'], function($, Edit
             } else {
                 alternative.attr('state','yes');
             }
+        });
+        var taset = $('div[tag="teacheranswer"]');
+        taset.append('<div class="akit-widget">W</div>').click(function() {
+            akitWidget.show($(this));
         });
         
     }

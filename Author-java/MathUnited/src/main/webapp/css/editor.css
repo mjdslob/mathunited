@@ -631,3 +631,24 @@ select.thread-choser, select.component-choser, select.subcomponent-choser, selec
 .choser-cancel {
     left:15px;
 }
+.akit-button-container .akit-button {
+    background-color:rgb(200,200,200);
+    color:darkslategray;
+    font-weight:bold;
+    width:100px;
+    padding:2px 5px;
+    margin-left:10px;
+    text-align:center;
+    position:absolute;
+    bottom:5px;
+}
+.akit-button-container .akit-button:hover {
+    background-color:rgb(100,100,100);
+    color:white;
+}
+.akit-ok {
+    left:145px;
+}
+.akit-cancel {
+    left:15px;
+}

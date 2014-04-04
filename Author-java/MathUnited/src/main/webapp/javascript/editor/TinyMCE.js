@@ -120,7 +120,6 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
     }
 
     function onGetContent(obj) {
-        debugger;
         obj.content = obj.content.replace(/`([^\n\r`]*)`/g,"<span class='am-container'><span tag='am'>$1</span>`$1`</span>")
         obj.content = obj.content.replace(/\s+/g,' ');
         if(obj.content==='') obj.content="<p></p>";
@@ -207,7 +206,7 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
             script_url : 'javascript/tinymce/tinymce.jquery.js',
             content_css : "javascript/tinymce/content.css",
             external_plugins: {
-                "moxiemanager": "/Publisher/moxiemanager/plugin.js",
+                "moxiemanager": "/moxiemanager/plugin.js",
                 "m4a_keyword": "../tinymce_plugins/m4a_keyword/plugin.js",
                 "m4a_quotation":"../tinymce_plugins/m4a_quotation/plugin.js",
                 "m4a_textref":"../tinymce_plugins/m4a_textref/plugin.js",

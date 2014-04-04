@@ -46,20 +46,20 @@ repos :
     edit_permission: editor_saba
     defaultVariant: m4a_view_en
   malmberg :
-    path: content-ma/malmberg
+    path: 
     edit_permission: editor_malmberg
     defaultVariant: m4a_view
-    componentsURL: /data/content-ma/malmberg/leerlijnen/components.xml
-    threadsURL: /data/content-ma/malmberg/leerlijnen/threads.xml
+    componentsURL: /data/leerlijnen/components.xml
+    threadsURL: /data/leerlijnen/threads.xml
   test :
     path: content-ma/test
     baseRepo : m4a
     edit_permission: editor_test
     defaultVariant: m4a_view
 
-userFile : /Library/WebServer/Documents/data/content-overview/users.yaml
+userFile : /Library/WebServer/Documents/data/users_malmberg.yaml
 contentRoot : /Library/WebServer/Documents/data/
-entitiesFile : /Library/WebServer/Documents/data/content-overview/entities.xml
+entitiesFile : /Library/WebServer/Documents/data/entities.xml
 
 mail_host : smtp.xs4all.nl
 mail_smtp_port : 587

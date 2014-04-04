@@ -26,6 +26,7 @@
        <xsl:apply-templates mode="collect"/>
    </subcomponent>
 </xsl:template>
+
 <xsl:template match="subcomponent/file" mode="collect">
     <xsl:variable name="path" select="concat($refbase, substring-before(.,'/'),'/')"/>
     <xsl:apply-templates select="document(concat($refbase,.))/subcomponent/*" mode="collect">
@@ -33,6 +34,14 @@
     </xsl:apply-templates>
 </xsl:template>
 
+<xsl:template match="theory" mode="collect">
+    <xsl:param name="path"/>
+    <xsl:element name="{name()}">
+        <xsl:apply-templates  mode="collect">
+            <xsl:with-param name="path" select="$path"/>
+        </xsl:apply-templates>
+    </xsl:element>
+</xsl:template>
 <xsl:template match="examples" mode="collect">
     <xsl:param name="path"/>
     <xsl:element name="{name()}">
@@ -60,7 +69,7 @@
     </xsl:apply-templates>
 </xsl:template>
 
-<xsl:template match="explore | introduction | theory | digest | application | extra |test | summary | exam | exercise | example | application | explanation" mode="included">
+<xsl:template match="explore | introduction | digest | application | extra |test | summary | exam | exercise | example | application | explanation" mode="included">
     <xsl:variable name="id" select="@id"/>
     <xsl:element name="{name()}">
         <xsl:attribute name="id"><xsl:value-of select="$id"/></xsl:attribute>
