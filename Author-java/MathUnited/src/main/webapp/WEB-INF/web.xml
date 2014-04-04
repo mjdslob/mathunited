@@ -26,6 +26,10 @@
         <servlet-class>nl.math4all.mathunited.editor.PostContentServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>getxml</servlet-name>
+        <servlet-class>nl.math4all.mathunited.editor.GetXMLServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>reinit</servlet-name>
         <servlet-class>nl.math4all.mathunited.InitServlet</servlet-class>
     </servlet>
@@ -84,6 +88,10 @@
     <servlet-mapping>
         <servlet-name>process-item</servlet-name>
         <url-pattern>/processitem</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getxml</servlet-name>
+        <url-pattern>/getxml</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>postcontent</servlet-name>

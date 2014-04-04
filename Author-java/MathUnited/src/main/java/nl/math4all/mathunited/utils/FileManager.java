@@ -211,4 +211,20 @@ public class FileManager {
         }
     }    
         
+    static public String serializeXML(Node node) throws Exception {
+        DOMImplementationRegistry registry = DOMImplementationRegistry.newInstance();
+        DOMImplementationLS impl = (DOMImplementationLS)registry.getDOMImplementation("LS");
+        LSSerializer writer = impl.createLSSerializer();
+        DOMConfiguration config = writer.getDomConfig();
+        config.setParameter("format-pretty-print", true);
+        config.setParameter("error-handler", new DOMErrorHandler(){
+           public boolean handleError(DOMError error) {
+               System.out.println(error.getMessage());
+               return true;
+           }
+        });
+
+        String result = writer.writeToString(node);
+        return result;
+    }
 }

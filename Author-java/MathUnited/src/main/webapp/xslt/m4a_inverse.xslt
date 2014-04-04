@@ -25,9 +25,12 @@ extension-element-prefixes="exsl">
     <xsl:processing-instruction name="context-directive"><xsl:text>job ctxfile ../m4all-leertaak.ctx</xsl:text></xsl:processing-instruction> 
 <root>
     <xsl:variable name="pass1">
-        <xsl:apply-templates mode="editor"/>
+        <xsl:apply-templates mode="editor-prepare"/>
     </xsl:variable>
-    <xsl:apply-templates select="$pass1" mode="cleanup"/>
+    <xsl:variable name="pass2">
+        <xsl:apply-templates select="$pass1" mode="editor"/>
+    </xsl:variable>
+    <xsl:apply-templates select="$pass2" mode="cleanup"/>
 </root>
 </xsl:template>
 

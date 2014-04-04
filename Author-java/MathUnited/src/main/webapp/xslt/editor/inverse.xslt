@@ -9,6 +9,17 @@ xmlns:xhtml="http://www.w3.org/1999/xhtml"
 exclude-result-prefixes="saxon cals"
 extension-element-prefixes="exsl">
 
+<xsl:template match="xhtml:*" mode="editor-prepare">
+    <xsl:element name="{name()}">
+        <xsl:apply-templates select="@* | node()" mode="editor-prepare"/>
+    </xsl:element>
+</xsl:template>
+<xsl:template match="node() | @*" mode="editor-prepare">
+    <xsl:copy>
+        <xsl:apply-templates select="@* | node()" mode="editor-prepare"/>
+    </xsl:copy>
+</xsl:template>
+    
 <!-- cleanup: remove empty paragraph nodes -->
 <xsl:template match="itemintro[not(p) or not(p/text())]" mode="cleanup"/>    
 <xsl:template match="p[not(count(*)>0 or text())]" mode="cleanup"/>    
@@ -60,30 +71,30 @@ extension-element-prefixes="exsl">
     <text><xsl:apply-templates select="*[@tag='text']//xhtml:p/node()" mode="paragraph"/></text>
 </xsl:template>
 
-<xsl:template match="table | xhtml:table" mode="editor">
+<xsl:template match="table" mode="editor">
     <xsl:apply-templates select="." mode="paragraph"/>
 </xsl:template>
 
 <!-- PARAGRAPH WIDGET -->
 <!-- PARAGRAPH MODE   -->
-<xsl:template match="div[@class='paragraph-content'] | xhtml:div[@class='paragraph-content']" priority="2" mode="editor">
+<xsl:template match="div[@class='paragraph-content']" priority="2" mode="editor">
     <xsl:apply-templates mode="paragraph"/>
 </xsl:template>
 
 <!-- ASCIIMathML: -->
-<xsl:template match="xhtml:span[@class='MathJax_Preview'] | span[@class='MathJax_Preview']" mode="paragraph"/>
-<xsl:template match="xhtml:span[@class='MathJax'] | span[@class='MathJax']" mode="paragraph"/>
-<xsl:template match="xhtml:span[@class='math-container'] | span[@class='math-container']" mode="paragraph">
+<xsl:template match="span[@class='MathJax_Preview']" mode="paragraph"/>
+<xsl:template match="span[@class='MathJax']" mode="paragraph"/>
+<xsl:template match="span[@class='math-container']" mode="paragraph">
     <xsl:apply-templates mode="editor"/>
 </xsl:template>
-<xsl:template match="xhtml:script | script" mode="paragraph"/>
-<xsl:template match="xhtml:span[@class='am-container'] | span[@class='am-container']" mode="paragraph">
+<xsl:template match="script" mode="paragraph"/>
+<xsl:template match="span[@class='am-container']" mode="paragraph">
     <xsl:apply-templates mode="paragraph"/>
 </xsl:template>
 <!-- end of ASCIIMathML: -->
 
 
-<xsl:template match="a | xhtml:a" mode="paragraph">
+<xsl:template match="a" mode="paragraph">
     <xsl:choose>
         <xsl:when test="class='dox'">
             <resourcelink>
@@ -111,14 +122,14 @@ extension-element-prefixes="exsl">
         
     </xsl:choose>
 </xsl:template>
-<xsl:template match="ul | xhtml:ul" mode="paragraph">
+<xsl:template match="ul" mode="paragraph">
     <itemize nr="4" type="packed">
-        <xsl:apply-templates select="li | xhtml:li" mode="paragraph"/>
+        <xsl:apply-templates select="li" mode="paragraph"/>
     </itemize>
 </xsl:template>
-<xsl:template match="ol | xhtml:ol" mode="paragraph">
+<xsl:template match="ol" mode="paragraph">
     <itemize>
-        <xsl:apply-templates select="li | xhtml:li" mode="paragraph"/>
+        <xsl:apply-templates select="li" mode="paragraph"/>
     </itemize>
 </xsl:template>
 <!--
@@ -128,7 +139,7 @@ extension-element-prefixes="exsl">
     </xsl:copy>
 </xsl:template> 
 -->
-<xsl:template match="li | xhtml:li" mode="paragraph">
+<xsl:template match="li" mode="paragraph">
     <item><xsl:apply-templates mode="paragraph"/></item>
 </xsl:template>
 <xsl:template match="*[string-length(@tag)>0]" mode="paragraph">
@@ -139,18 +150,18 @@ extension-element-prefixes="exsl">
         <xsl:apply-templates mode="paragraph"/>
     </xsl:element>
 </xsl:template>
-<xsl:template match="p | xhtml:p" mode="paragraph">
-    <xsl:for-each select="img | xhtml:img">
+<xsl:template match="p" mode="paragraph">
+    <xsl:for-each select="img">
         <xsl:apply-templates select="." mode="image"/>
     </xsl:for-each>
     <p><xsl:apply-templates mode="paragraph"/></p>
 </xsl:template>
-<xsl:template match="span | xhtml:span" mode="paragraph">
+<xsl:template match="span" mode="paragraph">
     <xsl:apply-templates mode="paragraph"/>
 </xsl:template>
-<xsl:template match="img | xhtml:img" mode="paragraph">
+<xsl:template match="img" mode="paragraph">
     <xsl:choose>
-        <xsl:when test="not(parent::p) and not(parent::xhtml:p)">
+        <xsl:when test="not(parent::p)">
             <xsl:apply-templates select="." mode="image"/>
         </xsl:when>
         <xsl:otherwise/>
@@ -164,12 +175,12 @@ extension-element-prefixes="exsl">
     <xsl:sequence select="replace(., '\s+', ' ', 'm')"/>
 </xsl:template>
 
-<xsl:template match="sub | xhtml:sub | sup | xhtml:sup | b | xhtml:b | i|xhtml:i" mode="paragraph">
+<xsl:template match="sub | sup | b | i" mode="paragraph">
     <xsl:element name="{name()}">
         <xsl:apply-templates select="node()" mode="paragraph"/>
     </xsl:element>
 </xsl:template>
-<xsl:template match="img[@class='paperfigure'] | xhtml:img[@class='paperfigure']" mode="image">
+<xsl:template match="img[@class='paperfigure']" mode="image">
    <xsl:variable name="width" select="number(@width) div $cm2px"/>
     
     <paperfigure type='c' label='*' id='*'>

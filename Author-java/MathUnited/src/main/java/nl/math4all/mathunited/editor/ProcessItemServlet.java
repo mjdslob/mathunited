@@ -26,7 +26,6 @@ import org.xml.sax.helpers.XMLReaderFactory;
 // - other parameters are just passed to xslt
 
 public class ProcessItemServlet extends HttpServlet {
-    static final byte[] EOL = {(byte)'\r', (byte)'\n' };
     private final static Logger LOGGER = Logger.getLogger(ProcessItemServlet.class.getName());
     XSLTbean processor;
     Map<String, Component> componentMap;
@@ -38,7 +37,7 @@ public class ProcessItemServlet extends HttpServlet {
         try{
             super.init(config);
             context = getServletContext();
-            LOGGER.setLevel(Level.INFO);
+            LOGGER.setLevel(Level.FINE);
             processor = new XSLTbean(context);
         } catch(Exception e) {
             e.printStackTrace();

@@ -51,11 +51,24 @@ extension-element-prefixes="exsl">
     </xsl:copy>
 </xsl:template>
 
+<xsl:template match="xhtml:*" mode="remove-xhtml">
+    <xsl:element name="{name()}">
+        <xsl:apply-templates select="@* | node()" mode="remove-xhtml"/>
+    </xsl:element>
+</xsl:template>
+<xsl:template match="node() | @*" mode="remove-xhtml">
+    <xsl:copy>
+        <xsl:apply-templates select="@* | node()" mode="remove-xhtml"/>
+    </xsl:copy>
+</xsl:template>
 
 <!-- elements with special behaviour -->
 <xsl:template match="include" mode="editor">
     <xsl:choose>
         <xsl:when test="$option='editor-process-item'">
+            <xsl:variable name="pass1">
+                <xsl:apply-templates mode="remove-xhtml"/>
+            </xsl:variable>
             <!--dit is geen document, maar slechts 1 item van xml, gebruikt door de editor om een stukje content
                 in te voegen -->
             <div class="item-container">
@@ -65,7 +78,9 @@ extension-element-prefixes="exsl">
                     </div>
                     <div tag="include">
                         <xsl:apply-templates select="@*" mode="editor"/>
-                        <xsl:apply-templates mode="editor"/>
+                        <xsl:apply-templates select="$pass1" mode="editor">
+                            <xsl:with-param name="fname" select="@filename"/>
+                        </xsl:apply-templates>
                     </div>
                 </div>
             </div>

@@ -18,6 +18,7 @@
 define(['jquery'], function($) {
     var insertContentItem_typeUrl = 'content-items.xml';
     var processItem_url = '/MathUnited/processitem';
+    var getXML_url = '/MathUnited/getxml';
 
     function xmlToString(xmlData) { 
 
@@ -107,6 +108,30 @@ define(['jquery'], function($) {
                 });
 
             });
+        },
+        getXML: function(html, callback) {
+            $.post(getXML_url, {
+                html:html.innerHTML
+            }, function(xml) {
+                callback(xml);
+            });            
+        },
+        convertXML: function(xml, callback) { 
+            var xmlstr = xmlToString(xml);
+            $.post(processItem_url, {
+                comp: $('#meta-data-comp').text(),
+                subcomp: $('#meta-data-subcomp').text(),
+                variant: $('#meta-data-variant').text(),
+                xml:xmlstr
+            }, function(htmlStr) {
+                var html = $(htmlStr);
+                for(var ii=0; ii<html.length; ii++) {
+                    if(html[ii].nodeType===1) {
+                        callback( $(html[ii]) );
+                        break;
+                    }
+                }
+            });            
         }
         
     };

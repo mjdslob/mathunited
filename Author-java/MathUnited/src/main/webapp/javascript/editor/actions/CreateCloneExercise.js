@@ -35,43 +35,37 @@ define(['jquery'], function($) {
             $('._editor_context_base',parent).removeAttr('num');
             $('.contextMenu',parent).remove();
             $('._editor_option').removeAttr('id');
-            var cpy = parent.clone();
-            var container = $('<div class="exercise-container" clone="true"></div>');
-            container.append(cpy);
-            parent.after(container);
-            //change id's
-            var idelm = $('div[tag="include"]',cpy).first();
+            var idelm = $('div[tag="include"]',parent).first();
             var id = idelm.attr('filename').replace('.xml','');
-            var counter=1;
-            var newid = id+'-clone-'+counter;
-            var dum = $('div[tag="include"][filename="'+newid+'"]');
-            if(dum.length>0) {
-                counter++;
-                newid = id+'-clone-'+counter;
-                dum = $('div[tag="include"][filename="'+newid+'"]');
-            }
-
-            idelm.attr('filename', newid+'.xml');
-            var exelm = $('div[tag="exercise"]',cpy).first();
-            exelm.attr('id', newid);
-            //add/change metadata to indicate this is a clone
-            var meta = $('div[tag="metadata"]',cpy);
-            if(meta.length===0) {
-                meta = $('<div tag="metadata"><div tag="clone" active="true">'+id+'</div></div>')
-                exelm.prepend(meta);
-            } else {
-                var clone = $('div[tag="clone"]',meta);
-                if(clone.length===0) {
-                    clone = $('<div tag="clone" active="true">'+id+'</div>');
-                    meta.prepend(clone);
-                } else {
-                    clone.attr('active','true');
-                    clone.text(id);
+            
+            var generator = require('app/DOMgenerator');
+            generator.getXML(parent[0], function(xml) {
+                xml = $(xml);
+                //make the necessary adjustments to the xml to make this a clone exercise
+                //create a unique id
+                var counter=1;
+                var newid = id+'-clone-'+counter;
+                var dum = $('div[tag="include"][filename="'+newid+'"]');
+                while(dum.length>0) {
+                    counter++;
+                    newid = id+'-clone-'+counter;
+                    dum = $('div[tag="include"][filename="'+newid+'"]');
                 }
-            }
-            doc.setChanged(true);
-            doc.reinit(cpy);
-            doc.reinit(base);
+                $('include',xml).first().attr('filename', newid+'.xml');
+                $('exercise',xml).first().attr('id', newid);
+                if($('metadata',xml).length===0) xml.append('<metadata/>');
+                $('metadata clone',xml).remove();
+                $('metadata',xml).prepend($('<clone active="true">'+id+'</clone>'));
+
+                generator.convertXML(xml, function(elm) {
+                    parent.after(elm);
+                    doc.setChanged(true);
+                    doc.reinit(elm);
+                    doc.reinit(base);
+                });
+            });
+
+//            var container = $('<div class="exercise-container" clone="true"></div>');
         }
     };
 });
