@@ -19,8 +19,7 @@ define(['jquery'], function($) {
    return {
        parse: function(xml,parent, thisStepId, nextStepId) {
             this.parent = parent;
-            if(xml.nodeType==9) xml = xml.childNodes[0]
-            xml.normalize();
+            if(xml.nodeType===9) xml = xml.childNodes[0]
             //take care of highlighting of subexpressions
             if(nextStepId > 0 || thisStepId>0) this.highlight(xml,thisStepId, nextStepId);
             //embed the xml into the html page, by first converting it to string

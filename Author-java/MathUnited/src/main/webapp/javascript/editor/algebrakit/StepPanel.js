@@ -17,416 +17,282 @@
 
 define(['jquery','algebrakit/Parser'], function($, AKITParser) {
 
-////object: StepPanel
-//step: java object containing AlgebraKIT result
-//parent: the div to contain this step. This div should be added to the document
-//parentStep: StepPanel object that contains this step (used for afterstep processing)
-function StepPanel(step, parent, parentStepPanel, nextStep) {
-   DTDSTRING = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd">';
-   //state variables
-   this.subStepsCreated = false;
-   this.afterStepsCreated = false;
-   this.explanationExpanded = false;
-   this.afterStepsExpanded = false;
-   this.containsExplanation = false;
-   this.containsAfterSteps = false;
+    var OBJECT = {
+        AKIT_ParseStepXML : function(step) {
+            var _this = this;
+            var level = step.attr('level');
+            if(!level) level = -1;
+            var visible = (step.attr('visible')!=='false');
+            var id = step.attr('id');
+            if(!id) id = -1;
 
-   this.parentStepPanel = parentStepPanel;
-   this.parent = parent;//document.createElement("div");
-   //this.parent.className = 'stepPanel';
-   this.step   = step;
+            var outExp = step.children('outExp');
+            var shortDescr = step.children('shortDescr');
+            var stepList =[];
+            step.children('stepList').children('step').each(function(){
+                stepList.push( _this.AKIT_ParseStepXML($(this)) );
+            });
+            var afterList = [];
+            step.children('afterList').children('step').each(function(){
+                afterList.push( _this.AKIT_ParseStepXML($(this)) );
+            });
+            var text = step.children('text');
+            var name = null;
 
-   // a step consists of two containers: one for this step and one for after steps.
-   // Only one of these can be visible at the same time
-   this.stepContainer = document.createElement('div');
-   this.stepContainer.className = 'stepContainer';
-   this.parent.appendChild(this.stepContainer);
+            step = {
+                id:id,
+                shortDescr: shortDescr,
+                renderedOutExpression: outExp,
+                stepList: stepList,
+                afterStepList: afterList,
+                text:text,
+                visible: visible,
+                level:level,
+                name:name
+            };
+            return step;
+        },
+        StepPanel : function(step, jq_parent, parentStepPanel, nextStep) {
+            //replace the contents of parent with the HTMLstring. Mathematical expressions
+            //are also rendered.
+            //NOTE: parent must be in the document and will be cleared.
+            function toDOM(jq_html, jq_parent, thisStepId, nextStepId) {
+                AKITParser.parse(jq_html[0], jq_parent[0], thisStepId, nextStepId);
+            }
 
-
-   this.titleDiv = null;
-   if(step.shortDescr) {
-      this.titleDiv = document.createElement('div');
-      this.titleDiv.className = 'shortDescr';
-      this.stepContainer.appendChild(this.titleDiv);
-      toDOM(step.shortDescr,this.titleDiv);
-   }
-   this.subDiv = null;
-   this.nChilds = 0;
-   if(step.stepList && step.stepList.length>0) {
-      //add an empty div as placeholder for expansion
-      this.nChilds = step.stepList.length;
-      this.subDiv = document.createElement('div');
-      this.subDiv.className = 'subSteps';
-      this.subDiv.style.display = 'none';
-      this.containsExplanation = true;
-      this.stepContainer.appendChild(this.subDiv);
-   }
-   var outContainer = document.createElement('div');
-   outContainer.className = 'outContainer';
-   this.stepContainer.appendChild(outContainer);
-   var outExpression = this.getRenderedOutExpression(step);
-   this.outDiv = document.createElement('div');
-   this.outDiv.className = 'outExpression';
-   outContainer.appendChild(this.outDiv);
-   this.buttonContainer = document.createElement('div');
-   this.buttonContainer.className = 'buttonContainer';
-   outContainer.appendChild(this.buttonContainer);
-   var endElm = document.createElement('div');
-   endElm.className = 'StepPanelFooterDiv';
-   this.stepContainer.appendChild(endElm);
-
-   //check if lower level steps are present
-   this.afterDivContainer = null;
-   if(step.afterStepList && step.afterStepList.length>0) {
-      this.containsAfterSteps = true;
-      this.afterDivContainer = document.createElement('div');
-      this.afterDivContainer.className = 'afterStepsContainer';
-      this.parent.appendChild(this.afterDivContainer);
-      this.afterDivContainer.style.display = 'none';
-      this.afterDivMain = document.createElement('div');
-      this.afterDivMain.className = 'afterStepMain';
-      this.afterDivContainer.appendChild(this.afterDivMain);
-      this.afterDivSteps = document.createElement('div');
-      this.afterDivSteps.className = 'afterSteps';
-      this.afterDivContainer.appendChild(this.afterDivSteps);
-   }
-
-   if(outExpression) {  //do this last due to problem with IE and MathPlayer in
-                        //combination with Java 5.0
-      if(nextStep){
-         toDOM(outExpression, this.outDiv, step.id, nextStep.id);
-      } else {
-         toDOM(outExpression, this.outDiv, step.id,-1);
-
-      }
-   }
-
-   //add buttons
-   if(this.outDiv.offsetHeight > this.buttonContainer.offsetHeight)
-      this.buttonContainer.style.height = this.outDiv.offsetHeight+"px";
-   this.createButtons();
-}
-
-StepPanel.prototype.createButtons = function() {
-   if(this.outDiv) {
-     var thisStepPanel = this;
-     this.explainButton = document.createElement('div');
-     this.explainButton.className = 'ExplainButton';
-     this.explainButton.onclick = function(){thisStepPanel.showExplanation();};
-     this.explainButton.onmouseover = function(){this.className = 'ExplainButtonHover';};
-     this.explainButton.onmouseout = function(){this.className = 'ExplainButton';};
-     this.explainButton.onmousedown = function(){this.className = 'ExplainButtonDown';};
-     this.explainButton.onmouseup = function(){this.className = 'ExplainButtonHover';};
-     this.collapseButton = document.createElement('div');
-     this.collapseButton.className = 'CollapseButton';
-     this.collapseButton.style.display='none';  //hide the collapse button
-     this.collapseButton.onclick = function(){thisStepPanel.collapseExplanation();};
-     this.collapseButton.onmouseover = function(){this.className = 'CollapseButtonHover';};
-     this.collapseButton.onmouseout = function(){this.className = 'CollapseButton';};
-     this.collapseButton.onmousedown = function(){this.className = 'CollapseButtonDown';};
-     this.collapseButton.onmouseup = function(){this.className = 'CollapseButtonHover';};
-     this.collapseInnerButton = document.createElement('div');
-     this.collapseInnerButton.className = 'CollapseInnerButton';
-     this.collapseInnerButton.style.display='none';  //hide the collapse button
-     this.collapseInnerButton.onmouseover = function(){this.className = 'CollapseInnerButtonHover';};
-     this.collapseInnerButton.onmouseout = function(){this.className = 'CollapseInnerButton';};
-     this.collapseInnerButton.onmousedown = function(){this.className = 'CollapseInnerButtonDown';};
-     this.collapseInnerButton.onmouseup = function(){this.className = 'CollapseInnerButtonHover';};
-     this.collapseInnerButton.onclick = function(){thisStepPanel.collapseAfterSteps();};
-     this.expandButton = document.createElement('div');
-     this.expandButton.className = 'ExpandButton';
-     this.expandButton.onmouseover = function(){this.className = 'ExpandButtonHover';};
-     this.expandButton.onmouseout = function(){this.className = 'ExpandButton';};
-     this.expandButton.onmousedown = function(){this.className = 'ExpandButtonDown';};
-     this.expandButton.onmouseup = function(){this.className = 'ExpandButtonHover';};
-     this.expandButton.onclick = function(){thisStepPanel.showAfterSteps();};
-     this.buttonContainer.appendChild(this.explainButton);
-     this.buttonContainer.appendChild(this.collapseButton);
-     this.buttonContainer.appendChild(this.collapseInnerButton);
-     this.buttonContainer.appendChild(this.expandButton);
-
-     this.updateButtons();  //determine which buttons to show or hide
-   }
-};
-StepPanel.prototype.createSubElements = function() {
-   if(!this.containsExplanation) return;
-    this.subDiv.style.display = 'block';
-    if(this.subStepsCreated) return;
-    var explanationHTML = '';
-    var nprocs=0;
-    var procArray = new Array();
-    for(var ii=0;ii<this.nChilds;ii++) {
-      var child = this.step.stepList[ii];
-      if(child.text) {
-         explanationHTML=explanationHTML+AKITParser.convert2HTML(child.text);
-      } else {
-         //create placeholder for this step
-         explanationHTML=explanationHTML+'<div class="subProcStep"></div>';
-         procArray[nprocs] = child;
-         nprocs++;
-      }
-    }
-    AKITParser.parseFromHTML(explanationHTML,this.subDiv);
-//   doesn't work in IE:
-//    var elms = this.subDiv.getElementsByClassName('subProcStep');
-    var elms = new Array();
-    for(var ii=0; ii<this.subDiv.childNodes.length;ii++) {
-       var ee = this.subDiv.childNodes[ii];
-       if(ee.nodeType===1 &&  ee.className === 'subProcStep'){
-           elms.push(ee);
-       }
-    }
-    for(var ii=0;ii<elms.length-1;ii++) {
-        new StepPanel(procArray[ii],elms[ii],null, procArray[ii+1]);
-    }
-    if(elms.length>0) new StepPanel(procArray[ii],elms[ii]);
-
-    this.subStepsCreated = true;
-    this.isExpanded = true;
-    this.isExplanationVisible = false;
-}
-
-//returns the div that contains the visual representation of this object
-StepPanel.prototype.getElement = function() {
-   return this.parent;
-};
-
-StepPanel.prototype.showExplanation = function() {
-   if(!this.subStepsCreated) {
-       this.createSubElements();
-   }
-   if(!this.explanationExpanded) {
-      this.subDiv.style.display = 'block';
-      this.explanationExpanded = true;
-   }
-   this.updateButtons();
-};
-
-StepPanel.prototype.showAfterSteps = function() {
-   if(!this.containsAfterSteps) return;
-   var afterList;
-   if(!this.afterStepsCreated) {
-     afterList = this.zoomIn(this.step); //get afterList from WKProcStep
-     new StepPanel(afterList[0],this.afterDivMain, this);
-
-     var nchilds = afterList.length;
-     for(var ii=1;ii<nchilds;ii++) {
-        new StepPanel(afterList[ii],this.afterDivSteps, null);
-     }
-     this.afterStepsCreated = true;
-   }
-   this.afterStepsExpanded = true;
-   this.stepContainer.style.display = 'none';
-   this.afterDivContainer.style.display = 'block';
-   //
-   this.updateButtons();
-};
-
-StepPanel.prototype.collapseAfterSteps = function(){
-   if(this.parentStepPanel) {
-       this.parentStepPanel.afterDivContainer.style.display='none';
-       this.parentStepPanel.stepContainer.style.display='block';
-       this.parentStepPanel.afterStepsExpanded = false;
-       this.parentStepPanel.updateButtons();
-       return;
-   }
-};
-
-StepPanel.prototype.collapseExplanation = function(){
-   if(this.explanationExpanded) {
-      this.subDiv.style.display = 'none';
-      this.explanationExpanded = false;
-      this.updateButtons();
-      return;
-   }
-
-};
-
-//shows or hides buttons, depending on the flags in this object
-StepPanel.prototype.updateButtons = function() {
-   this.collapseButton.style.display='none';
-   this.collapseInnerButton.style.display='none';
-   this.explainButton.style.display='none';
-   this.expandButton.style.display='none';
-   if(this.containsExplanation) {
-       if(this.explanationExpanded) {
-          this.collapseButton.style.display='block';
-       }
-       else
-          this.explainButton.style.display='block';
-   }
-   if(this.containsAfterSteps) {
-      if(this.afterStepsExpanded) {
-          this.collapseInnerButton.style.display='block';
-      } else {
-          this.expandButton.style.display='block';
-      }
-   }
-   if(this.parentStepPanel) {
-      this.collapseInnerButton.style.display='block';
-   }
-};
-
-StepPanel.prototype.zoomIn = function(step) {
-    var result = new Array();
-    var maxlevel = 0;
-    //find procedure in afterStepList with highest level.
-    for(var ii=0;ii<step.afterStepList.length;ii++) {
-        var ps = step.afterStepList[ii];
-        if(ps.level>maxlevel) maxlevel = ps.level;
-    }
-    var afterStepList = step.afterStepList;
-    var current = {
-                   shortDescr:step.shortDescr,
-                   renderedOutExpression: step.renderedOutExpression,
-                   stepList: step.stepList,
-                   level: step.level,
-                   visible: step.visible,
-                   parent: step,
-                   afterStepList: null
-                  };
-    for(ii=0;ii<afterStepList.length;ii++) {
-        ps = afterStepList[ii];
-        if(ps.level<maxlevel) {
-            this.addAfterStep(current,ps);
-        } else {
-            result.push(current);
-            current = {
-                           shortDescr:ps.shortDescr,
-                           renderedOutExpression: ps.renderedOutExpression,
-                           stepList: ps.stepList,
-                           level: ps.level,
-                           visible: ps.visible,
-                           parent: step,
-                           afterStepList: ps.afterStepList
-                          };
-        }
-    }
-    result.push(current);
-
-    return result;
-};
-
-StepPanel.prototype.addAfterStep = function(thisStep, step) {
-    var renderedOutExpression = null;
-    if(step.visible) {
-        if((step.level===-1)||(thisStep.level===-1))
-            return false;
-        if(thisStep.level<=step.level)
-            return false;
-    }
-    //this step will be added to the afterStepList of this procedure or
-    //of the last procedure in this afterStepList
-    if(!thisStep.afterStepList) {
-        thisStep.afterStepList = new Array();
-    }
-
-    var added=false;
-    if(thisStep.afterStepList.length>0) {
-        var last = thisStep.afterStepList[thisStep.afterStepList.length-1];
-        added = this.addAfterStep(last,step);
-    }
-    if(!added) {
-        thisStep.afterStepList.push(step);
-        renderedOutExpression = step.renderedOutExpression;
-    }
-
-    return renderedOutExpression;
-
-};
-
-StepPanel.prototype.getRenderedOutExpression = function(step) {
-    if(step.afterStepList&& step.afterStepList.length>0) {
-        var last = step.afterStepList[step.afterStepList.length-1];
-        return this.getRenderedOutExpression(last);
-    }
-    return step.renderedOutExpression;
-};
-
-//replace the contents of parent with the HTMLstring. Mathematical expressions
-//are also rendered.
-//NOTE: parent must be in the document and will be cleared.
-function toDOM(HTMLstring, parent, thisStepId, nextStepId) {
-    AKITParser.parse(HTMLstring, parent, thisStepId, nextStepId);
-}
-
-
-function AKIT_ParseStepXML(stepElm) {
-    var step = null;
-    var outExp = null;
-    var ind = 0;
-
-    var elm = stepElm.attributes;
-    var att = elm.getNamedItem("level");
-    var level = -1;
-    if(att) {
-        level = att.value;
-    }
-    var visible = true;
-    att = elm.getNamedItem('visible');
-    if(att) {
-        visible = (att.value!='false');
-    }
-    var id = -1;
-    att = elm.getNamedItem('id');
-    if(att) {
-        id = att.value;
-    }
-    var outExp = null;
-    var shortDescr = null;
-    var stepList = null;
-    var afterList = null;
-    var text = null;
-    var name = null;
-
-    while(ind<stepElm.childNodes.length){
-        elm = stepElm.childNodes[ind];
-        if(elm.nodeType!==1) {
-            ind++;
-            continue;
-        }
-        switch(elm.nodeName) {
-            case "outExp":
-                outExp = elm;
-                break;
-            case "shortDescr":
-                shortDescr = elm;
-                break;
-            case "name":
-                name = elm;
-                break;
-            case "stepList":
-                stepList = [];
-                for(var ii=0;ii<elm.childNodes.length;ii++) {
-                    if(elm.childNodes[ii].nodeType===1) stepList.push( AKIT_ParseStepXML(elm.childNodes[ii]));
+            function getRenderedOutExpression(step) {
+                if(step.afterStepList&& step.afterStepList.length>0) {
+                    var last = step.afterStepList[step.afterStepList.length-1];
+                    return getRenderedOutExpression(last);
                 }
-                break;
-            case "afterList":
-                afterList = [];
-                for(var ii=0;ii<elm.childNodes.length;ii++) {
-                    if(elm.childNodes[ii].nodeType===1) afterList.push( AKIT_ParseStepXML(elm.childNodes[ii]));
+                return step.renderedOutExpression;
+            }
+
+            // a step consists of two containers: one for this step and one for after steps.
+            // Only one of these can be visible at the same time
+            var stepContainer = $(
+                '<div class="stepContainer">'
+               +'  <div class="shortDescr"/>'
+               +'  <div class="subSteps"/>'
+               +'  <div class="outContainer">'
+               +'    <div class="outExpression"/>'
+               +'    <div class="buttonContainer">'
+               +'       <div class="ExplainButton"/>'
+               +'       <div class="CollapseButton"/>'
+               +'       <div class="CollapseInnerButton"/>'
+               +'       <div class="ExpandButton"/>'
+               +'    </div>'
+               +'  </div>'
+               +'  <div class="StepPanelFooterDiv"/>'
+               +'</div>'
+                ).appendTo(jq_parent);
+
+            if(step.shortDescr.length>0) {
+              $('<div class="shortDescr"/>').prependTo(stepContainer);
+              toDOM(step.shortDescr,$('.shortDescr', stepContainer));
+            } 
+
+            var outExpression = getRenderedOutExpression(step);
+            if(outExpression) { 
+                var nextId = (nextStep?nextStep.id:-1);
+                toDOM(outExpression, $('.outExpression',stepContainer), step.id, nextId);
+            }
+
+            var containsAfterSteps = false;
+            if(step.afterStepList && step.afterStepList.length>0) {
+                containsAfterSteps = true;
+                var afterDivContainer = $(
+                    '<div class="afterStepsContainer">'
+                  + '  <div class="afterStepMain"/>'
+                  + '  <div class="afterSteps"/>'
+                  + '</div>'
+                ).appendTo(jq_parent);
+            }
+
+
+
+            var object = {
+                subStepsCreated     : false,
+                afterStepsCreated   : false,
+                explanationExpanded : false,
+                afterStepsExpanded  : false,
+                containsExplanation : (step.stepList && step.stepList.length>0),
+                containsAfterSteps  : containsAfterSteps,
+                parentStepPanel     : parentStepPanel,
+                parent              : jq_parent,
+                step                : step,
+                getRenderedOutExpression : getRenderedOutExpression,
+                showExplanation     : function() {
+                    if(!object.subStepsCreated) this.createSubElements();
+                    $('.subSteps:first', stepContainer).addClass('visible');
+                    this.updateButtons();
+                },
+                collapseExplanation : function() {
+                    $('.subSteps:first',stepContainer).removeClass('visible');
+                    this.updateButtons();
+                },
+                collapseAfterSteps  : function() {
+                    afterDivContainer.removeClass('visible');
+                    stepContainer.css('display','block');
+                    this.updateButtons();
+                },
+                showAfterSteps      : function() {
+                    if(!this.containsAfterSteps) return;
+                    var afterList;
+                    if(!this.afterStepsCreated) {
+                        afterList = this.zoomIn(); //get afterList from WKProcStep
+                        
+                        new OBJECT.StepPanel(afterList[0],$('.afterStepMain:first', afterDivContainer), this);
+
+                        var nchilds = afterList.length;
+                        for(var ii=1;ii<nchilds;ii++) {
+                           new OBJECT.StepPanel(afterList[ii],$('.afterSteps:first', afterDivContainer), null);
+                        }
+                        this.afterStepsCreated = true;
+                    }
+                    this.afterStepsExpanded = true;
+                    stepContainer.css('display','none');
+                    afterDivContainer.addClass('visible');
+                    this.updateButtons();
+                },
+                //shows or hides buttons, depending on the flags in this object
+                updateButtons       : function() {
+                    var outContainer = stepContainer.children('.outContainer');
+                    $('.buttonContainer div', outContainer).css('display','none');
+                    if(this.containsExplanation) {
+                        if($('.subSteps:first',stepContainer).hasClass('visible')) {
+                           $('.CollapseButton', outContainer).css('display','block');
+                        } else {
+                           $('.ExplainButton', outContainer).css('display','block');
+                        }
+                    }
+                    if(this.containsAfterSteps) {
+                        if(afterDivContainer.hasClass('visible')) {
+                           $('.CollapseInnerButton', outContainer).css('display','block');
+                        } else {
+                           $('.ExpandButton', outContainer).css('display','block');
+                        }
+                    }
+                    if(this.parentStepPanel) {
+                       $('.CollapseInnerButton', outContainer).css('display','block');
+                    }
+                },
+                createSubElements   : function() {
+                    if(!this.containsExplanation) return;
+                    if(this.subStepsCreated) return;
+                    var explanationHTML = '';
+                    var nprocs=0;
+                    var procArray = new Array();
+                    for(var ii=0;ii<this.step.stepList.length;ii++) {
+                       var child = this.step.stepList[ii];
+                       if(child.text.length>0) {
+                          explanationHTML=explanationHTML+AKITParser.convert2HTML(child.text[0]);
+                       } else {
+                          //create placeholder for this step
+                          explanationHTML=explanationHTML+'<div class="subProcStep"></div>';
+                          procArray[nprocs] = child;
+                          nprocs++;
+                       }
+                    }
+                    var subDiv = $('.subSteps:first',stepContainer);
+                    AKITParser.parseFromHTML(explanationHTML,subDiv[0]);
+                    var ii=0;
+                    
+                    subDiv.children('.subProcStep').each(function(){
+                        var next = null;
+                        if(ii<procArray.length-1) next = procArray[ii+1];
+                        new OBJECT.StepPanel(procArray[ii],$(this),null, next);
+                        ii++;
+                    });
+
+                    this.subStepsCreated = true;
+                },
+                zoomIn : function() {
+                    var result = new Array();
+                    var maxlevel = 0;
+                    //find procedure in afterStepList with highest level.
+                    for(var ii=0;ii<this.step.afterStepList.length;ii++) {
+                        var ps = this.step.afterStepList[ii];
+                        if(ps.level>maxlevel) maxlevel = ps.level;
+                    }
+                    var afterStepList = this.step.afterStepList;
+                    var current = {
+                                   shortDescr:this.step.shortDescr,
+                                   renderedOutExpression: this.step.renderedOutExpression,
+                                   stepList: this.step.stepList,
+                                   level: this.step.level,
+                                   visible: this.step.visible,
+                                   parent: this.step,
+                                   afterStepList: null
+                                  };
+                    for(ii=0;ii<afterStepList.length;ii++) {
+                        ps = afterStepList[ii];
+                        if(ps.level<maxlevel) {
+                            this.addAfterStep(current,ps);
+                        } else {
+                            result.push(current);
+                            current = {
+                                           shortDescr:ps.shortDescr,
+                                           renderedOutExpression: ps.renderedOutExpression,
+                                           stepList: ps.stepList,
+                                           level: ps.level,
+                                           visible: ps.visible,
+                                           parent: step,
+                                           afterStepList: ps.afterStepList
+                                      };
+                        }
+                    }
+                    result.push(current);
+                    return result;
+                },
+                addAfterStep : function(thisStep, step) {
+                    var renderedOutExpression = null;
+                    if(step.visible) {
+                        if((step.level===-1)||(thisStep.level===-1))
+                            return false;
+                        if(thisStep.level<=step.level)
+                            return false;
+                    }
+                    //this step will be added to the afterStepList of this procedure or
+                    //of the last procedure in this afterStepList
+                    if(!thisStep.afterStepList) {
+                        thisStep.afterStepList = new Array();
+                    }
+
+                    var added=false;
+                    if(thisStep.afterStepList.length>0) {
+                        var last = thisStep.afterStepList[thisStep.afterStepList.length-1];
+                        added = this.addAfterStep(last,step);
+                    }
+                    if(!added) {
+                        thisStep.afterStepList.push(step);
+                        renderedOutExpression = step.renderedOutExpression;
+                    }
+
+                    return renderedOutExpression;
                 }
-                break;
-            case "text":
-                text = elm;
-                break;
+
+            };
+
+            //create buttons;
+            $('.ExplainButton',stepContainer).click(function() {
+                object.showExplanation();
+            });
+            $('.CollapseButton',stepContainer).click(function() {
+                object.collapseExplanation();
+            });
+            $('.CollapseInnerButton',stepContainer).click(function() {
+                debugger;
+                if(parentStepPanel) parentStepPanel.collapseAfterSteps();
+            });
+            $('.ExpandButton',stepContainer).click(function() {
+                object.showAfterSteps();
+            });
+            object.updateButtons();
+            return object;
 
         }
-        ind++;
-    }
-    step = {
-        id:id,
-        shortDescr: shortDescr,
-        renderedOutExpression: outExp,
-        stepList: stepList,
-        afterStepList: afterList,
-        text:text,
-        visible: visible,
-        level:level,
-        name:name
     };
-    return step;
-};
-
-return (StepPanel);
+    return OBJECT;
 });
+    

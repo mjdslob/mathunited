@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['algebrakit/Engine', 'jquery','jqueryui','jqueryChosen'], function(engine, $) {
-
+define(['algebrakit/Engine', 'algebrakit/StepPanel', 'jquery','jqueryui','jqueryChosen'], function(engine, StepPanel, $) {
+    $('head').append('<link rel="stylesheet" href="css/StepPanel.css" type="text/css" />');
     var dialog_html = 
             '<div class="akit-container">'
            +'  <select class="audience-choser" data-placeholder="selecteer de doelgroep...">'
@@ -44,9 +44,13 @@ define(['algebrakit/Engine', 'jquery','jqueryui','jqueryChosen'], function(engin
             });
             $('.akit-input-wrapper input').change(function() {
                var exp=$(this).val(); 
-               debugger;
                engine.solve(exp, 'vwo-b', function(data) {
+                   var solution = $.parseXML(data.result);
+                   solution.normalize();
                    debugger;
+                   var step = StepPanel.AKIT_ParseStepXML( $('step', solution).first() );
+                   $('.akit-derivation', dialog).empty();
+                   new StepPanel.StepPanel(step, $('.akit-derivation', dialog) );
                });
             });
         }  

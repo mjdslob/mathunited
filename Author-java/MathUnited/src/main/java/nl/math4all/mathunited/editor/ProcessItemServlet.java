@@ -37,7 +37,7 @@ public class ProcessItemServlet extends HttpServlet {
         try{
             super.init(config);
             context = getServletContext();
-            LOGGER.setLevel(Level.FINE);
+            LOGGER.setLevel(Level.INFO);
             processor = new XSLTbean(context);
         } catch(Exception e) {
             e.printStackTrace();

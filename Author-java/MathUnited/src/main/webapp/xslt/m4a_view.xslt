@@ -102,8 +102,11 @@ extension-element-prefixes="exsl">
 </xsl:variable>
 <xsl:variable name="overviewRef">
     <xsl:choose>
-       <xsl:when test="$parent">
+       <xsl:when test="$parent and contains($parent, '?')">
 	    <xsl:value-of select="concat('http://',$parent,'&amp;thread=',$thread)"/>
+       </xsl:when>
+       <xsl:when test="$parent">
+	    <xsl:value-of select="concat('http://',$parent,'?thread=',$thread)"/>
        </xsl:when>
        <xsl:otherwise>
 	    <xsl:value-of select="string('/')"/>
