@@ -108,6 +108,7 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
                $(this).replaceWith('&lt;'+name+'&gt;'+html+'&lt;/'+name+'&gt;'); 
             });
         }
+
         mathContainerElm.each(function() {
             $('.MathJax',$(this)).remove();
             $('script',$(this)).remove();
@@ -211,7 +212,8 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
                 "m4a_quotation":"../tinymce_plugins/m4a_quotation/plugin.js",
                 "m4a_textref":"../tinymce_plugins/m4a_textref/plugin.js",
                 "m4a_remark":"../tinymce_plugins/m4a_remark/plugin.js",
-                "m4a_image":"../tinymce_plugins/m4a_image/plugin.js"
+                "m4a_image":"../tinymce_plugins/m4a_image/plugin.js",
+                "m4a_akit":"../tinymce_plugins/m4a_akit/plugin.js"
             },
             setup: function(ed) {
                 ed.on('BeforeSetContent', function(e) {
@@ -228,7 +230,7 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
             // General options
             theme : "modern",
             plugins : "paste,fullscreen, table, link, charmap",
-            toolbar: "undo redo | bold italic | numlist bullist outdent indent | link unlink m4a_textref | m4a_keyword m4a_quotation m4a_remark | m4a_image | charmap",
+            toolbar: "undo redo | bold italic | numlist bullist outdent indent | link unlink m4a_textref | m4a_keyword m4a_quotation m4a_remark | m4a_image m4a_akit | charmap",
             moxiemanager_rootpath: imagebase+'/',
             moxiemanager_path: imagebase+'/',
             relative_urls:false,

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['jquery','algebrakit/Parser','algebrakit/MMLtoAM','mathjax'], function($, AKITParser,transformer,MathJax) {
+define(['jquery','algebrakit/Parser'], function($, AKITParser) {
 
     var OBJECT = {
         AKIT_ParseStepXML : function(step) {
@@ -28,13 +28,10 @@ define(['jquery','algebrakit/Parser','algebrakit/MMLtoAM','mathjax'], function($
 
             var outExp = step.children('outExp').children();
             var shortDescr = step.children('shortDescr').children();
-            var heading = step.children('heading').children();
             var stepList =[];
-            var stepListElm = step.children('stepList').first();
-            stepListElm.children('step').each(function(){
+            step.children('stepList').children('step').each(function(){
                 stepList.push( _this.AKIT_ParseStepXML($(this)) );
             });
-            var stepListType = stepListElm.attr('type');
             var afterList = [];
             step.children('afterList').children('step').each(function(){
                 afterList.push( _this.AKIT_ParseStepXML($(this)) );
@@ -45,10 +42,8 @@ define(['jquery','algebrakit/Parser','algebrakit/MMLtoAM','mathjax'], function($
             step = {
                 id:id,
                 shortDescr: shortDescr,
-                heading: heading,
                 renderedOutExpression: outExp,
                 stepList: stepList,
-                stepListType: stepListType,
                 afterStepList: afterList,
                 text:text,
                 visible: visible,
@@ -77,11 +72,10 @@ define(['jquery','algebrakit/Parser','algebrakit/MMLtoAM','mathjax'], function($
             // Only one of these can be visible at the same time
             var stepContainer = $(
                 '<div class="stepContainer">'
-               +'  <div class="akit-heading"/>'
+               +'  <div class="shortDescr"/>'
                +'  <div class="subSteps"/>'
                +'  <div class="outContainer">'
                +'    <div class="outExpression"/>'
-               +'    <div class="akit-inline-short-descr"/>'
                +'    <div class="buttonContainer">'
                +'       <div class="ExplainButton"/>'
                +'       <div class="CollapseButton"/>'
@@ -92,19 +86,12 @@ define(['jquery','algebrakit/Parser','algebrakit/MMLtoAM','mathjax'], function($
                +'  <div class="StepPanelFooterDiv"/>'
                +'</div>'
                 ).appendTo(jq_parent);
-            if(stepContainer.parent('.subProcStep').attr('pos')!=='0') stepContainer.addClass('hide-head-shortdescr');
-            stepContainer.addClass('substeps-'+step.stepListType);
-            
-            if(step.shortDescr && step.shortDescr.length>0) {
-              toDOM(step.shortDescr,$('.akit-inline-short-descr', stepContainer.children('.outContainer')));
+
+            if(step.shortDescr.length>0) {
+              $('<div class="shortDescr"/>').prependTo(stepContainer);
+              toDOM(step.shortDescr,$('.shortDescr', stepContainer));
             } 
 
-            if(step.heading && step.heading.length>0) {
-              toDOM(step.heading,stepContainer.children('.akit-heading').first());
-            } else {
-                stepContainer.children('.akit-heading').first().remove();
-            }
-            
             var outExpression = getRenderedOutExpression(step);
             if(outExpression) { 
                 var nextId = (nextStep?nextStep.id:-1);
@@ -112,7 +99,6 @@ define(['jquery','algebrakit/Parser','algebrakit/MMLtoAM','mathjax'], function($
             }
 
             var containsAfterSteps = false;
-/*            
             if(step.afterStepList && step.afterStepList.length>0) {
                 containsAfterSteps = true;
                 var afterDivContainer = $(
@@ -122,7 +108,9 @@ define(['jquery','algebrakit/Parser','algebrakit/MMLtoAM','mathjax'], function($
                   + '</div>'
                 ).appendTo(jq_parent);
             }
-*/
+
+
+
             var object = {
                 subStepsCreated     : false,
                 afterStepsCreated   : false,
@@ -131,27 +119,21 @@ define(['jquery','algebrakit/Parser','algebrakit/MMLtoAM','mathjax'], function($
                 containsExplanation : (step.stepList && step.stepList.length>0),
                 containsAfterSteps  : containsAfterSteps,
                 parentStepPanel     : parentStepPanel,
-                stepContainer       : stepContainer,
                 parent              : jq_parent,
                 step                : step,
-                childs              : [], //child StepPanel objects
                 getRenderedOutExpression : getRenderedOutExpression,
                 showExplanation     : function() {
                     if(!object.subStepsCreated) this.createSubElements();
-                    stepContainer.addClass('expanded');
-                    this.explanationExpanded = true;
-                    stepContainer.parent('.subProcStep').prev().children('.stepContainer').addClass('hide-inline-shortdescr');
+                    $('.subSteps:first', stepContainer).addClass('visible');
                     this.updateButtons();
                 },
                 collapseExplanation : function() {
-                    stepContainer.removeClass('expanded');
-                    this.explanationExpanded = false;
+                    $('.subSteps:first',stepContainer).removeClass('visible');
                     this.updateButtons();
-                    stepContainer.parent('.subProcStep').prev().children('.stepContainer').removeClass('hide-inline-shortdescr');
                 },
                 collapseAfterSteps  : function() {
+                    afterDivContainer.removeClass('visible');
                     stepContainer.css('display','block');
-//                    stepContainer.removeClass('visible');
                     this.updateButtons();
                 },
                 showAfterSteps      : function() {
@@ -170,6 +152,7 @@ define(['jquery','algebrakit/Parser','algebrakit/MMLtoAM','mathjax'], function($
                     }
                     this.afterStepsExpanded = true;
                     stepContainer.css('display','none');
+                    afterDivContainer.addClass('visible');
                     this.updateButtons();
                 },
                 //shows or hides buttons, depending on the flags in this object
@@ -177,21 +160,24 @@ define(['jquery','algebrakit/Parser','algebrakit/MMLtoAM','mathjax'], function($
                     var outContainer = stepContainer.children('.outContainer');
                     $('.buttonContainer div', outContainer).css('display','none');
                     if(this.containsExplanation) {
-                        if(stepContainer.hasClass('expanded')) {
+                        if($('.subSteps:first',stepContainer).hasClass('visible')) {
                            $('.CollapseButton', outContainer).css('display','block');
                         } else {
                            $('.ExplainButton', outContainer).css('display','block');
                         }
                     }
                     if(this.containsAfterSteps) {
-                        $('.ExpandButton', outContainer).css('display','block');
+                        if(afterDivContainer.hasClass('visible')) {
+                           $('.CollapseInnerButton', outContainer).css('display','block');
+                        } else {
+                           $('.ExpandButton', outContainer).css('display','block');
+                        }
                     }
                     if(this.parentStepPanel) {
                        $('.CollapseInnerButton', outContainer).css('display','block');
                     }
                 },
                 createSubElements   : function() {
-                    var _this = this;
                     if(!this.containsExplanation) return;
                     if(this.subStepsCreated) return;
                     var explanationHTML = '';
@@ -203,7 +189,7 @@ define(['jquery','algebrakit/Parser','algebrakit/MMLtoAM','mathjax'], function($
                           explanationHTML=explanationHTML+AKITParser.convert2HTML(child.text[0]);
                        } else {
                           //create placeholder for this step
-                          explanationHTML=explanationHTML+'<div class="subProcStep" pos="'+nprocs+'"></div>';
+                          explanationHTML=explanationHTML+'<div class="subProcStep"></div>';
                           procArray[nprocs] = child;
                           nprocs++;
                        }
@@ -211,14 +197,13 @@ define(['jquery','algebrakit/Parser','algebrakit/MMLtoAM','mathjax'], function($
                     var subDiv = $('.subSteps:first',stepContainer);
                     AKITParser.parseFromHTML(explanationHTML,subDiv[0]);
                     var ii=0;
+                    
                     subDiv.children('.subProcStep').each(function(){
                         var next = null;
                         if(ii<procArray.length-1) next = procArray[ii+1];
-                        var child = new OBJECT.StepPanel(procArray[ii],$(this),null, next);
-                        _this.childs.push(child);
+                        new OBJECT.StepPanel(procArray[ii],$(this),null, next);
                         ii++;
                     });
-                    object.postprocess();
 
                     this.subStepsCreated = true;
                 },
@@ -285,85 +270,8 @@ define(['jquery','algebrakit/Parser','algebrakit/MMLtoAM','mathjax'], function($
                     }
 
                     return renderedOutExpression;
-                },
-                postprocess : function() {
-                    var subs = stepContainer.children('.subSteps').children();
-                    if(subs.length>1) {
-                        var ii;
-                        for(ii=1; ii<subs.length; ii++) {
-                            var thisStep = $( subs[ii] );
-                            var prevStep = $( subs[ii-1] );
-                            var sd = $('.stepContainer:first>.outContainer .akit-inline-short-descr', thisStep);
-                            $('.stepContainer:first>.outContainer .akit-inline-short-descr',prevStep).html(
-                                  sd.html() );
-                        }
-                        $('.stepContainer:first>.outContainer .akit-inline-short-descr',thisStep).html('');
-                    }
-                    
-                },
-                getEditorRendering : function(nextStep) {
-                    var renderBox = {
-                        text : '',
-                        inTable : false,
-                        addInline: function(expr, shortDescr ){
-                            if(!this.inTable) {
-                                this.text = this.text + '<table tag="stepaligntable">';
-                                this.inTable = true;
-                            }
-                            this.text = this.text+'<tr tag="cells"><td tag="c1">'+expr+'</td><td tag="c2"></td><td tag="c3"></td><td tag="text">'+shortDescr+"</td></tr>";
-                        },
-                        addOffline: function(str) {
-                            if(this.inTable) {
-                                this.text = this.text + '</table>';
-                                this.inTable = false;
-                            }
-                            this.text = this.text + str;
-                        }
-                    };
-                    this.renderStep(nextStep, renderBox);
-                    return renderBox.text;
-                },
-                renderStep : function(nextStep, renderBox) {
-                    if(step.heading) {
-                        var str = transformer.transform(step.heading);
-                        if(str) {
-                            str=str.trim();
-                            if(str.length>0) {
-                                renderBox.addOffline('<p>'+str+'</p>');
-                            }
-                        }
-                        
-                    }
-                    
-                    if(this.explanationExpanded) {
-                        var procNum=0;
-                        for(var ii=0; ii<step.stepList.length; ii++) {
-                            var child = step.stepList[ii];
-                            if(child.text.length>0) {
-                                var str = transformer.transform(child.text);
-                                if(str.trim().length>0) renderBox.addOffline(str);
-                            } else {
-                                var next = null;
-                                var jj=ii+1;
-                                while(jj<step.stepList.length && !step.stepList[jj].text) jj++;
-                                if(jj<step.stepList.length) next = step.stepList[jj];
-                                this.childs[procNum].renderStep(next, renderBox);
-                                procNum++;
-                            }
-                        }
-                    }
-
-                    if(stepContainer.hasClass('substeps-derivation') && stepContainer.hasClass('expanded')) {
-                        //do not render outExpression, to prevent printing it twice
-                    } else {
-                        var outExpression = getRenderedOutExpression(step);
-                        
-                        if(  nextStep && nextStep.shortDescr
-                           &&!stepContainer.hasClass('hide-inline-shortdescr')
-                          ) 
-                            renderBox.addInline(transformer.transform(outExpression), transformer.transform(nextStep.shortDescr));
-                    }
                 }
+
             };
 
             //create buttons;
@@ -374,6 +282,7 @@ define(['jquery','algebrakit/Parser','algebrakit/MMLtoAM','mathjax'], function($
                 object.collapseExplanation();
             });
             $('.CollapseInnerButton',stepContainer).click(function() {
+                debugger;
                 if(parentStepPanel) parentStepPanel.collapseAfterSteps();
             });
             $('.ExpandButton',stepContainer).click(function() {

@@ -19,6 +19,7 @@ define(['algebrakit/Engine', 'algebrakit/StepPanel', 'jquery','jqueryui','jquery
     $('head').append('<link rel="stylesheet" href="css/StepPanel.css" type="text/css" />');
     var dialog_html = 
             '<div class="akit-container">'
+           +'  <p>Diff[ sin[x^2] ]</p> <p> LosOp[5g+1=2g+13]</p>'
            +'  <select class="audience-choser" data-placeholder="selecteer de doelgroep...">'
            +'     <option value="rekenen">rekenen</option>'
            +'     <option value="onderbouw">onderbouw</option>'
@@ -33,24 +34,32 @@ define(['algebrakit/Engine', 'algebrakit/StepPanel', 'jquery','jqueryui','jquery
 
     return {
         show: function(parent, callback_ok) {
-            var dialog = $(dialog_html).dialog({width:300, height:400});
+            var dialog = $(dialog_html).dialog({width:300, height:400, dialogClass: "akit"});
+            var panel = null;
             $('.audience-choser', dialog).chosen({width:200});
             $('.akit-ok',dialog).click(function() {
-                    //callback_ok();
+                if(panel) {
+                    debugger;
+                    var str = panel.getEditorRendering();
+                    parent.append($(str));
                     dialog.dialog('close');
+                }
             });
             $('.akit-cancel',dialog).click(function() {
                     dialog.dialog('close');
             });
             $('.akit-input-wrapper input').change(function() {
                var exp=$(this).val(); 
-               engine.solve(exp, 'vwo-b', function(data) {
+               engine.solve(exp, 'uitlegfolio', function(data) {
                    var solution = $.parseXML(data.result);
+                   
                    solution.normalize();
-                   debugger;
-                   var step = StepPanel.AKIT_ParseStepXML( $('step', solution).first() );
+                   var mainstep = $('step', solution).first();
+                   //mainstep.children('steplist').children('step').first().remove();
+                   var step = StepPanel.AKIT_ParseStepXML( mainstep );
                    $('.akit-derivation', dialog).empty();
-                   new StepPanel.StepPanel(step, $('.akit-derivation', dialog) );
+                   panel = new StepPanel.StepPanel(step, $('.akit-derivation', dialog) );
+                   panel.showExplanation();
                });
             });
         }  

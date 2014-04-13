@@ -24,7 +24,7 @@ define(['jquery'], function($) {
             if(nextStepId > 0 || thisStepId>0) this.highlight(xml,thisStepId, nextStepId);
             //embed the xml into the html page, by first converting it to string
             var htmlstr = this.convert2HTML(xml);
-            parent.innerHTML = '<div style="display:none">&nbsp;</div>'+htmlstr;
+            parent.innerHTML = htmlstr;
             //call script functions that may be defined
             var elms = $('.loadScript',parent);
             this.loadScriptCount = 0;

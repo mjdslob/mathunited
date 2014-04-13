@@ -119,10 +119,6 @@ define(['jquery', 'app/TinyMCE', 'app/ContextMenu', 'algebrakit/Widget','jqueryu
                 alternative.attr('state','yes');
             }
         });
-        var taset = $('div[tag="teacheranswer"]');
-        taset.append('<div class="akit-widget">W</div>').click(function() {
-            akitWidget.show($(this));
-        });
         
     }
 

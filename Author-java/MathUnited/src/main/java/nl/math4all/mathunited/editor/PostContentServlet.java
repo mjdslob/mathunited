@@ -268,8 +268,11 @@ public class PostContentServlet extends HttpServlet {
         }
 
         String str = result.toString();
-        if(str.getBytes().length!=length) {
-            throw new Exception("Number of bytes read does not match contextlength header.");
+        int nRead = str.getBytes().length;
+        if(nRead!=length) {
+            LOGGER.log(Level.SEVERE, "Number of bytes read does not match contextlength header. Nr of bytes read = {0}, content-length = {1}", new Object[]{nRead, length});
+            if(nRead<length*0.9)
+                throw new Exception("Number of bytes read does not match contextlength header. Nr of bytes read = "+nRead+", content-length = "+length);
         } else {
             LOGGER.log(Level.FINE, "sanity check passed: number of bytes in body matches contentlength header: {0}", length);
         }
