@@ -20,7 +20,7 @@ define(['jquery'], function($) {
     var PRIORITY_POWER = 30;
     var PRIORITY_TIMES = 20;
     var PRIORITY_PLUS = 10;
-    var PRIORITY_MIN = 100;
+    var PRIORITY_MIN = 0;
     
     return {
         transformMML : function(elm, priority) {
@@ -30,9 +30,9 @@ define(['jquery'], function($) {
             switch(name) {
                 case 'math' : result = '`'+this.transformMML(elm.childNodes[0], PRIORITY_MIN)+'`'; break;
                 case 'mstyle' : result = this.transformMML(elm.childNodes[0], priority); break;
-                case 'mi' : result = $(elm).text(); break;
-                case 'mn' : result = $(elm).text(); break;
-                case 'mo' : result = $(elm).text(); break;
+                case 'mi' : result = ' '+$(elm).text(); break;
+                case 'mn' : result = ' '+$(elm).text(); break;
+                case 'mo' : result = ' '+$(elm).text(); break;
                 case 'mfrac': 
                     if(priority>PRIORITY_TIMES){
                         result = '('+this.transformMML(elm.childNodes[0],PRIORITY_TIMES)+'/'+this.transformMML(elm.childNodes[1],PRIORITY_TIMES)+')';
@@ -50,14 +50,20 @@ define(['jquery'], function($) {
                     }
                     break;
                 case 'mrow' :
-                     for(var ii=0; ii<elm.childNodes.length; ii++) {
-                         result = result+this.transformMML(elm.childNodes[ii]);
-                     }
+                    var chlds = $(elm).children();
+                    var putBrackets = false;
+                    var newPrio = priority;
+                    if(chlds.length>1 && priority>PRIORITY_PLUS) {putBrackets = true;newPrio=PRIORITY_PLUS;}
+                    if(putBrackets) result = '('; else result = '';
+                    for(var ii=0; ii<elm.childNodes.length; ii++) {
+                         result = result+this.transformMML(elm.childNodes[ii],newPrio);
+                    }
+                    if(putBrackets) result = result+')';
                      break;
                 case 'mfenced' :
                      result = '(';
                      for(var ii=0; ii<elm.childNodes.length; ii++) {
-                         result = result+this.transformMML(elm.childNodes[ii]);
+                         result = result+this.transformMML(elm.childNodes[ii],PRIORITY_MIN);
                      }
                      result = result + ')';
                      break;
@@ -71,7 +77,17 @@ define(['jquery'], function($) {
                     var c1 = $(elm).children()[0];
                     result = 'sqrt'+this.transformMML(c1,PRIORITY_POWER);
                     break;
-                    
+                case 'mpadded': 
+                    var chlds = $(elm).children();
+                    var putBrackets = false;
+                    var newPrio = priority;
+                    if(chlds.length>1 && priority>PRIORITY_PLUS) {putBrackets = true;newPrio=PRIORITY_PLUS;}
+                    if(putBrackets) result = '('; else result = '';
+                    for(var ii=0; ii<elm.childNodes.length; ii++) {
+                         result = result+this.transformMML(elm.childNodes[ii],newPrio);
+                    }
+                    if(putBrackets) result = result+')';
+                    break;
                 default: result = '#?'+name+'#?'; break;
             }
             return result; 
@@ -102,6 +118,7 @@ define(['jquery'], function($) {
             }
         },
         transform: function(jq_elm) {
+            //return jq_elm.html();
             var _this = this;
             if(jq_elm.length===0) return '';
             var result = '';

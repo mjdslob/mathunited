@@ -19,27 +19,29 @@ define(['algebrakit/Engine', 'algebrakit/StepPanel', 'jquery','jqueryui','jquery
     $('head').append('<link rel="stylesheet" href="css/StepPanel.css" type="text/css" />');
     var dialog_html = 
             '<div class="akit-container">'
-           +'  <p>Diff[ sin[x^2] ]</p> <p> LosOp[5g+1=2g+13]</p>'
-           +'  <select class="audience-choser" data-placeholder="selecteer de doelgroep...">'
-           +'     <option value="rekenen">rekenen</option>'
-           +'     <option value="onderbouw">onderbouw</option>'
-           +'     <option value="vwo-b">bovenbouw</option>'
+           +'  <p>Diff[ sin[x^2] ]</p> <p> LosOp[5g+1=2g+13]</p> <p>LosOp[4t^2+50=200]</p> <p>LosOp[(x+1)(x+4)=30]</p>'
+           +'  <select class="audience-choser" data-placeholder="opdracht...">'
+           +'     <option value=""></option>'
+           +'     <option value="LosOp[%]">oplossen</option>'
+           +'     <option value="Diff[%]">differenti&euml;ren</option>'
+           +'     <option value="Expand[%]">haakjes wegwerken</option>'
+           +'     <option value="Factor[%]">ontbinden</option>'
+           +'     <option value="Integreer[%]">primitiveren</option>'
            +'  </select>'
            +'  <div class="akit-input-wrapper">'
-           +'     Invoer: <input type="text" width=80></input>'
+           +'     Invoer: <input type="text" width=120></input>'
            +'  </div>'
            +'  <div class="akit-derivation"></div>'
            +'  <div class="akit-button-container"><div class="akit-button akit-cancel">annuleren</div><div class="akit-button akit-ok">OK</div></div>'
-           +'</div>'
+           +'</div>';
 
     return {
         show: function(parent, callback_ok) {
-            var dialog = $(dialog_html).dialog({width:300, height:400, dialogClass: "akit"});
+            var dialog = $(dialog_html).dialog({width:500, height:600, dialogClass: "akit"});
             var panel = null;
             $('.audience-choser', dialog).chosen({width:200});
             $('.akit-ok',dialog).click(function() {
                 if(panel) {
-                    debugger;
                     var str = panel.getEditorRendering();
                     parent.append($(str));
                     dialog.dialog('close');
@@ -48,19 +50,23 @@ define(['algebrakit/Engine', 'algebrakit/StepPanel', 'jquery','jqueryui','jquery
             $('.akit-cancel',dialog).click(function() {
                     dialog.dialog('close');
             });
-            $('.akit-input-wrapper input').change(function() {
-               var exp=$(this).val(); 
-               engine.solve(exp, 'uitlegfolio', function(data) {
-                   var solution = $.parseXML(data.result);
-                   
-                   solution.normalize();
-                   var mainstep = $('step', solution).first();
-                   //mainstep.children('steplist').children('step').first().remove();
-                   var step = StepPanel.AKIT_ParseStepXML( mainstep );
-                   $('.akit-derivation', dialog).empty();
-                   panel = new StepPanel.StepPanel(step, $('.akit-derivation', dialog) );
-                   panel.showExplanation();
-               });
+            $('.akit-input-wrapper input').keypress(function(e) {
+                if(e.which === 13) {
+                    var asm = $('select.audience-choser').val();
+                    var exp=$(this).val(); 
+                    if(asm) exp = asm.replace('%',exp);
+                    engine.solve(exp, 'uitlegfolio', function(data) {
+                        var solution = $.parseXML(data.result);
+
+                        solution.normalize();
+                        var mainstep = $('step', solution).first();
+                        //mainstep.children('steplist').children('step').first().remove();
+                        var step = StepPanel.AKIT_ParseStepXML( mainstep );
+                        $('.akit-derivation', dialog).empty();
+                        panel = new StepPanel.StepPanel(step, $('.akit-derivation', dialog) );
+                        panel.showExplanation();
+                    });
+                }
             });
         }  
     };

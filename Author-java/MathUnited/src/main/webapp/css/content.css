@@ -1,4 +1,11 @@
 
+.stepaligntable {
+    border:none;
+}
+.stepaligntable td,.stepaligntable th {
+    border:none;
+}
+
 .stepaligntable .stepaligntable-c1 {
     padding:4px 0px 4px 0px;
 }

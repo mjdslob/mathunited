@@ -307,10 +307,15 @@ define(['jquery','algebrakit/Parser','algebrakit/MMLtoAM','mathjax'], function($
                         inTable : false,
                         addInline: function(expr, shortDescr ){
                             if(!this.inTable) {
-                                this.text = this.text + '<table tag="stepaligntable">';
+                                this.text = this.text + '<table class="stepaligntable" border=0>';
                                 this.inTable = true;
                             }
-                            this.text = this.text+'<tr tag="cells"><td tag="c1">'+expr+'</td><td tag="c2"></td><td tag="c3"></td><td tag="text">'+shortDescr+"</td></tr>";
+                            var parts = expr.split('=');
+                            if(parts.length==2){
+                                this.text = this.text+'<tr><td class="stepaligntable-c1">'+parts[0]+'`</td><td class="stepaligntable-c2">=</td><td class="stepaligntable-c3">`'+parts[1]+'</td><td><span class="stepaligntable-text">'+shortDescr+"</span></td></tr>";
+                            } else {
+                                this.text = this.text+'<tr><td class="stepaligntable-c1">'+expr+'</td><td class="stepaligntable-c2"></td><td class="stepaligntable-c3"></td><td><span class="stepaligntable-text">'+shortDescr+"</span></td></tr>";
+                            }
                         },
                         addOffline: function(str) {
                             if(this.inTable) {
@@ -318,10 +323,14 @@ define(['jquery','algebrakit/Parser','algebrakit/MMLtoAM','mathjax'], function($
                                 this.inTable = false;
                             }
                             this.text = this.text + str;
+                        },
+                        getText: function() {
+                            if(this.inTable) this.text = this.text + '</table>';
+                            return this.text;
                         }
                     };
                     this.renderStep(nextStep, renderBox);
-                    return renderBox.text;
+                    return renderBox.getText();
                 },
                 renderStep : function(nextStep, renderBox) {
                     if(step.heading) {
@@ -362,6 +371,9 @@ define(['jquery','algebrakit/Parser','algebrakit/MMLtoAM','mathjax'], function($
                            &&!stepContainer.hasClass('hide-inline-shortdescr')
                           ) 
                             renderBox.addInline(transformer.transform(outExpression), transformer.transform(nextStep.shortDescr));
+                        else {
+                            renderBox.addInline(transformer.transform(outExpression), '');
+                        }
                     }
                 }
             };

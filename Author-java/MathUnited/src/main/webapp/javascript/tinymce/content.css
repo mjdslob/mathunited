@@ -11,3 +11,24 @@ html, body {
     color:red;
     text-decoration: underline;
 }
+
+.stepaligntable .stepaligntable-c1 {
+    padding:4px 0px 4px 0px;
+}
+
+.stepaligntable td  .stepaligntable-text {
+    color:red;
+    position:relative;
+    left:10px;
+    top:17px;
+    font-size:0.8em;
+}
+.stepaligntable .stepaligntable-c1 {
+    text-align:right;
+}
+.stepaligntable .stepaligntable-c2 {
+    text-align:center;
+}
+.stepaligntable .stepaligntable-c3 {
+    text-align:left;
+}
