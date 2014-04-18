@@ -1329,6 +1329,8 @@ class EntityConverter {
 "infin"=>"&#8734;",
 "sum"=>"&#8721;",
 "UnderBar"=>"&#x0005F;",
+"uarr"=>"&#8593;",
+"darr"=>"&#8595;",
 "bottom"=>"&#8869;"
 
                             );
