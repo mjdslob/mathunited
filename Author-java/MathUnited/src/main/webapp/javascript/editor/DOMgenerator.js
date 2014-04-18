@@ -38,6 +38,7 @@ define(['jquery'], function($) {
         //opens a dialog containing a list of elements that the user can choose from. 
         getContentItem: function(itemtype, callback) {
             $.get(insertContentItem_typeUrl, '', function(xml) {
+            debugger;
                 var container = $('container[name="'+itemtype+'"]',xml);
                 var html='<div>';
                 var num=0;

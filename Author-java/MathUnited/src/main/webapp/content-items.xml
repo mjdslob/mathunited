@@ -149,6 +149,47 @@
         </container-item>
     </container>
 
+    <container name="examples">
+        <container-item name="nieuw item: Voorbeeld">
+            <examples>
+                <include filename="__subcomp__-ex__#1__.xml">
+                    <example type='dummy' id='__subcomp__-ex__#1__'>
+                        <examplecontent>
+                            <p>hier komt een voorbeeld...</p>
+                        </examplecontent>
+                    </example>
+                </include>
+            </examples>
+            <exercises>
+                <include filename="__subcomp__-ot__#2__.xml">
+                    <exercise id="__subcomp__-ot__#2__">
+                        <multi-item>
+                            <intro>
+                                <p>...introductie...</p>
+                            </intro>
+                            <items>
+                                <item label="a" type="open">
+                                    <itemcontent>
+                                        <question>
+                                            <p>...opgave...</p>
+                                        </question>
+                                    </itemcontent>
+                                    <answer>
+                                        <p>...antwoord...</p>
+                                    </answer>
+                                    <explanation/>
+                                    <feedback/>
+                                    <teacheranswer/>
+                                </item>
+                            </items>
+                        </multi-item>
+                    </exercise>
+
+                </include>
+            </exercises>
+        </container-item>
+    </container>
+    
     <container name="digest">
         <container-item name="nieuw item: Verwerken">
             <digest>

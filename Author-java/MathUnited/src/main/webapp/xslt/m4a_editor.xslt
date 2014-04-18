@@ -512,6 +512,7 @@
             </div>
         </div>
     </xsl:template>
+    
     <xsl:template match="theory">
         <div tag="{name()}">
             <div class="menu-button-div section-button">
@@ -526,6 +527,7 @@
                     <div style="clear:both"/>
                 </div>
             </xsl:if>
+                        
             <xsl:for-each select="examples">
                 <xsl:variable name="num" select="count(preceding-sibling::examples)+1"/>
                 <div class="_editor_context_base">
