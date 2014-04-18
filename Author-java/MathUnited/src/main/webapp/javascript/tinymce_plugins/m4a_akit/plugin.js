@@ -30,7 +30,8 @@
                     ed.addCommand('m4a_akit', function() {
                         var node = ed.selection.getNode();
                         var akitWidget = require('algebrakit/Widget');
-                        akitWidget.show($(node));
+                        var wobj = new akitWidget();
+                        wobj.show($(node));
                     });
 
                     // Register example button

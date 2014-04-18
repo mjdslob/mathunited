@@ -26,6 +26,7 @@
     <xsl:param name="repo-path"/>
     <xsl:param name="baserepo-path"/>
     <xsl:param name="component"/>
+    <xsl:param name="dopreprocess"/>
     <xsl:param name="lock_owner"/>
     <xsl:variable name="parsed_component" select="saxon:parse($component)"/>
     <xsl:variable name="subcomponent" select="$parsed_component/component/subcomponents/subcomponent[@id=$subcomp]"/>
@@ -147,10 +148,23 @@
 <!--   START PROCESSING -->
 <!--   **************** -->
     <xsl:template match="/">
-        <xsl:variable name="xml">
-            <xsl:apply-templates mode="numbering"/>
-        </xsl:variable>
-        <xsl:apply-templates select="$xml" mode="process"/>
+        <xsl:choose>
+            <xsl:when test="$dopreprocess">
+                <xsl:variable name="prepare">
+                    <xsl:apply-templates mode="editor-prepare"/>
+                </xsl:variable>
+                <xsl:variable name="xml">
+                    <xsl:apply-templates select="$prepare" mode="numbering"/>
+                </xsl:variable>
+                <xsl:apply-templates select="$xml" mode="process"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:variable name="xml">
+                    <xsl:apply-templates mode="numbering"/>
+                </xsl:variable>
+                <xsl:apply-templates select="$xml" mode="process"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <xsl:template match="@*|node()" mode="numbering">

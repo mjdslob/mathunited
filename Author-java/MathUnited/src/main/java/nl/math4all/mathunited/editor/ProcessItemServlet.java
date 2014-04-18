@@ -158,6 +158,7 @@ public class ProcessItemServlet extends HttpServlet {
             parameterMap.put("repo-path", repository.getPath());
             parameterMap.put("baserepo-path", baserepo==null?"":baserepo.getPath());
             parameterMap.put("option","editor-process-item");
+            parameterMap.put("dopreprocess","true()");  //used to remove xhtml namespaces that are added by TagSoup parser
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             ContentResolver resolver = new ContentResolver(repo, context);
             

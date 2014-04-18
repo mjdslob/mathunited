@@ -26,6 +26,18 @@ extension-element-prefixes="exsl">
     <xsl:apply-templates select="$preptable" mode="editor"/>
 </xsl:template>
 
+<!-- used to remove xhtml namespaces -->
+<xsl:template match="xhtml:*" mode="editor-prepare">
+    <xsl:element name="{local-name()}">
+        <xsl:apply-templates select="@* | node()" mode="editor-prepare"/>
+    </xsl:element>
+</xsl:template>
+<xsl:template match="node() | @*" mode="editor-prepare">
+    <xsl:copy>
+        <xsl:apply-templates select="@* | node()" mode="editor-prepare"/>
+    </xsl:copy>
+</xsl:template>
+
 <!-- DEFAULT -->
 <xsl:template match="*" mode="editor">
     <div tag="{name()}">

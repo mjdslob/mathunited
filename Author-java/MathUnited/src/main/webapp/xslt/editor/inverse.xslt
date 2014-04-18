@@ -10,7 +10,7 @@ exclude-result-prefixes="saxon cals"
 extension-element-prefixes="exsl">
 
 <xsl:template match="xhtml:*" mode="editor-prepare">
-    <xsl:element name="{name()}">
+    <xsl:element name="{local-name()}">
         <xsl:apply-templates select="@* | node()" mode="editor-prepare"/>
     </xsl:element>
 </xsl:template>

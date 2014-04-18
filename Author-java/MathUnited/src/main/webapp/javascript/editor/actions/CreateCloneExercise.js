@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['jquery'], function($) {
+define(['jquery','mathjax'], function($, MathJax) {
     
     $('.metadata-container .close-metadata-button').each(function() {
         
@@ -26,22 +26,27 @@ define(['jquery'], function($) {
             var base = elm.parents('._editor_context_base').first();
             var parent = elm.parents('.item-container',base).first();
             //remove editors first (we cannot copy tinymce, because id's need to be unique)
+            var tinymce = require('app/TinyMCE');
             $('div.tiny-editor',parent).each(function() {
-                var thisElm = $(this);
+                //var thisElm = $(this);
+                tinymce.remove($(this));
+                /*
                 var dest = $(this).parent();
                 thisElm.children().appendTo(dest);
                 thisElm.remove();
+                */
             });
             $('._editor_context_base',parent).removeAttr('num');
             $('.contextMenu',parent).remove();
-            $('._editor_option').removeAttr('id');
+            $('._editor_option',parent).removeAttr('id');
             var idelm = $('div[tag="include"]',parent).first();
             var id = idelm.attr('filename').replace('.xml','');
             
             var generator = require('app/DOMgenerator');
+            //create a copy of the current exercise...
             generator.getXML(parent[0], function(xml) {
                 xml = $(xml);
-                //make the necessary adjustments to the xml to make this a clone exercise
+                //...and make the necessary adjustments to the xml to make this a clone exercise
                 //create a unique id
                 var counter=1;
                 var newid = id+'-clone-'+counter;
@@ -62,6 +67,8 @@ define(['jquery'], function($) {
                     doc.setChanged(true);
                     doc.reinit(elm);
                     doc.reinit(base);
+                    MathJax.Hub.Queue(["Typeset",MathJax.Hub,elm[0]]);
+
                 });
             });
 

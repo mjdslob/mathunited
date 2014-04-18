@@ -283,6 +283,14 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
                 }
             }
         },
+        remove: function(jq_elm) {
+            var id = this.getInstance(jq_elm);
+            if(id) {
+                var ed = tinymce.editors[id];
+                ed.save();
+                if(ed) tinymce.get(ed.id).remove();
+            }
+        },
         editor: function(parent) {
             if(parent.parents('.tiny-editor').length>0) return; //already attached to an editor
             if(parent.parents('div[tag="componentcontent"]').length===0) return; //not part of editable content

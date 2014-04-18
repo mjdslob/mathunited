@@ -32,7 +32,9 @@ define(['jquery'], function($) {
                 case 'mstyle' : result = this.transformMML(elm.childNodes[0], priority); break;
                 case 'mi' : result = ' '+$(elm).text(); break;
                 case 'mn' : result = ' '+$(elm).text(); break;
-                case 'mo' : result = ' '+$(elm).text(); break;
+                case 'mo' : 
+                    result = ' '+$(elm).text(); 
+                    break;
                 case 'mfrac': 
                     if(priority>PRIORITY_TIMES){
                         result = '('+this.transformMML(elm.childNodes[0],PRIORITY_TIMES)+'/'+this.transformMML(elm.childNodes[1],PRIORITY_TIMES)+')';
@@ -87,6 +89,13 @@ define(['jquery'], function($) {
                          result = result+this.transformMML(elm.childNodes[ii],newPrio);
                     }
                     if(putBrackets) result = result+')';
+                    break;
+                case 'msubsup':
+                    debugger;
+                    var c1 = $(elm).children()[0];
+                    var c2 = $(elm).children()[1];
+                    var c3 = $(elm).children()[2];
+                    result = this.transformMML(c1,priority)+'_'+this.transformMML(c2,priority)+'^'+this.transformMML(c3,priority);
                     break;
                 default: result = '#?'+name+'#?'; break;
             }
