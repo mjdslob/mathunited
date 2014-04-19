@@ -38,7 +38,6 @@ define(['jquery'], function($) {
         //opens a dialog containing a list of elements that the user can choose from. 
         getContentItem: function(itemtype, callback) {
             $.get(insertContentItem_typeUrl, '', function(xml) {
-            debugger;
                 var container = $('container[name="'+itemtype+'"]',xml);
                 var html='<div>';
                 var num=0;
@@ -63,7 +62,8 @@ define(['jquery'], function($) {
                 //transform the selected item from xml to html, using the same xslt stylesheet as is used by the editor
                 $('.item-type',dlg).click(function() {
                     var cnt = $('container-item[num="'+$(this).attr('num')+'"]',container);
-                    var xmlstr = xmlToString(cnt.children().first());
+//                    var xmlstr = xmlToString(cnt.children().first());
+                    var xmlstr = xmlToString(cnt);
                     var subcomp = $('#meta-data-subcomp').text();
                     $.post(processItem_url, {
                         comp: $('#meta-data-comp').text(),

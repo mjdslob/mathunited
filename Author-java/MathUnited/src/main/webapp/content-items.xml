@@ -152,8 +152,8 @@
     <container name="examples">
         <container-item name="nieuw item: Voorbeeld">
             <examples>
-                <include filename="__subcomp__-ex__#1__.xml">
-                    <example type='dummy' id='__subcomp__-ex__#1__'>
+                <include filename="__subcomp__-v__#1__.xml">
+                    <example id='__subcomp__-v__#1__'>
                         <examplecontent>
                             <p>hier komt een voorbeeld...</p>
                         </examplecontent>
@@ -161,8 +161,8 @@
                 </include>
             </examples>
             <exercises>
-                <include filename="__subcomp__-ot__#2__.xml">
-                    <exercise id="__subcomp__-ot__#2__">
+                <include filename="__subcomp__-v__#1____#2__.xml">
+                    <exercise id="__subcomp__-v__#1____#2__">
                         <multi-item>
                             <intro>
                                 <p>...introductie...</p>

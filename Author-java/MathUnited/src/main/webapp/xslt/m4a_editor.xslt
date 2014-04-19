@@ -543,24 +543,7 @@
             </xsl:if>
                         
             <xsl:for-each select="examples">
-                <xsl:variable name="num" select="count(preceding-sibling::examples)+1"/>
-                <div class="_editor_context_base">
-                    <div class="_editor_option" type="repeat" function="actions/OptionalMenuItem" name="Voorbeeld">
-                        <xsl:attribute name="params">{item: 'examples'}</xsl:attribute>
-                        <div class="m4a-editor-item-container">
-                            <div class="m4a-editor-item-title">Voorbeeld <xsl:value-of select="$num"/><div class="item-label-button"/></div>
-                            <div class="m4a-editor-item-content">
-                            <div class="menu-button-div section-button">
-                                <span class="menu-button"></span>
-                            </div>
-                                <div tag="{name()}">
-                                    <xsl:apply-templates mode="editor"/>
-                                </div>
-                                <xsl:apply-templates select="../exercises[position()=$num]" mode="editor"/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    <xsl:apply-templates select="."/>
             </xsl:for-each>
             <div class="m4a-editor-item nonexistent">
                 <div class="menu-button-div section-button">
@@ -572,6 +555,34 @@
             </div>
         </div>
     </xsl:template>
+
+    <xsl:template match="examples">
+        <xsl:variable name="num" select="count(preceding-sibling::examples)+1"/>
+        <div class="_editor_context_base">
+            <div class="_editor_option" type="repeat" function="actions/OptionalMenuItem" name="Voorbeeld">
+                <xsl:attribute name="params">{item: 'examples'}</xsl:attribute>
+                <div class="m4a-editor-item-container">
+                    <div class="m4a-editor-item-title">Voorbeeld <xsl:value-of select="$num"/>
+                        <div class="item-label-button"/>
+                    </div>
+                    <div class="m4a-editor-item-content">
+                        <div class="menu-button-div section-button">
+                            <span class="menu-button"></span>
+                        </div>
+                        <div tag="examples">
+                            <xsl:apply-templates select="include" mode="editor"/>
+                        </div>
+                        <xsl:apply-templates select="../exercises[position()=$num]" mode="editor"/>
+                    </div>
+                </div>
+                <div style="clear:both"/>
+            </div>
+        </div>
+    </xsl:template>
+    
+    <!-- skip loose exercises-tag. Applicable when inserting a snippet of xml from the editor -->
+    <xsl:template match="exercises"></xsl:template>
+    
     <xsl:template match="digest">
         <div tag="{name()}">
             <div class="menu-button-div section-button">
@@ -676,25 +687,6 @@
     </xsl:template>
 
 
-    <xsl:template match="examples">
-            <div class="m4a-editor-item-container">
-                <div class="m4a-editor-item-title">
-                    <xsl:choose>
-                        <xsl:when test="count(preceding-sibling::examples)+count(following-sibling::examples)>0">
-                            Voorbeeld <xsl:value-of select="1+count(preceding-sibling::examples)"/><div class="item-label-button"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            Voorbeeld <div class="item-label-button"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </div>
-                <div class="m4a-editor-item-content">
-                    <xsl:apply-templates select="include" mode="editor"/>
-                </div>
-            </div>
-            <div style="clear:both"/>
-    </xsl:template>
-    
     <xsl:template match="examplesolution" mode="editor">
         <div tag="{name()}">
             <xsl:if test="count(node())>0">

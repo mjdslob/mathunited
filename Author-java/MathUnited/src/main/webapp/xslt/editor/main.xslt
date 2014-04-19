@@ -162,21 +162,35 @@ extension-element-prefixes="exsl">
 <xsl:template match="learningaspects" mode="editor">
    <div tag="learningaspects">
       <span class="headline"><b>Je leert in dit onderwerp:</b></span>
-      <ul class="paragraph">
-         <xsl:for-each select="aspect">
-             <li><xsl:apply-templates mode="paragraph"/></li>
-         </xsl:for-each>
-      </ul>
+          <xsl:choose>
+              <xsl:when test="aspect">
+                  <ul class="paragraph">
+                    <xsl:for-each select="aspect">
+                        <li><xsl:apply-templates mode="paragraph"/></li>
+                    </xsl:for-each>
+                  </ul>
+              </xsl:when>
+              <xsl:otherwise>
+                  <xsl:apply-templates mode="paragraph"/>
+              </xsl:otherwise>
+          </xsl:choose>
    </div>
 </xsl:template>
 <xsl:template match="knownaspects" mode="editor">
  <div tag="knownaspects">
     <span class="headline"><b>Voorkennis:</b></span>
-    <ul class="paragraph">
-        <xsl:for-each select="aspect">
-            <li><xsl:apply-templates mode="paragraph"/></li>
-        </xsl:for-each>
-    </ul>
+          <xsl:choose>
+              <xsl:when test="aspect">
+                  <ul class="paragraph">
+                    <xsl:for-each select="aspect">
+                        <li><xsl:apply-templates mode="paragraph"/></li>
+                    </xsl:for-each>
+                  </ul>
+              </xsl:when>
+              <xsl:otherwise>
+                  <xsl:apply-templates mode="paragraph"/>
+              </xsl:otherwise>
+          </xsl:choose>
  </div>
 </xsl:template>
 <xsl:template match="aspect" mode="paragraph">
