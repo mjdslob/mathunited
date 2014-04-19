@@ -23,12 +23,17 @@ define(['jquery','app/DOMgenerator'], function($, generator) {
             var action = params.cmd;
             
             if(action==='add'){
+                debugger;
                 generator.getContentItem(contentType, function(html) {
-                    elm.append($(html));
+                    if(params.location==='before') {
+                        elm.prepend($(html));
+                    } else {
+                        elm.append($(html));
+                    }
                     elm.next('.m4a-editor-item.nonexistent').toggleClass('visible');
                     var doc = require('app/Document');
                     doc.reinit(elm);
-                    doc.setChanged();
+                    doc.setChanged(true);
                 });
             }
             if(action==='remove') {

@@ -558,17 +558,23 @@
 
     <xsl:template match="examples">
         <xsl:variable name="num" select="count(preceding-sibling::examples)+1"/>
+        <xsl:variable name="header">
+            <xsl:choose>
+                <xsl:when test="$option='editor-process-item'">(nieuw)</xsl:when>
+                <xsl:otherwise><xsl:value-of select="$num"/></xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
         <div class="_editor_context_base">
             <div class="_editor_option" type="repeat" function="actions/OptionalMenuItem" name="Voorbeeld">
                 <xsl:attribute name="params">{item: 'examples'}</xsl:attribute>
+                <div class="menu-button-div section-button">
+                    <span class="menu-button"></span>
+                </div>
                 <div class="m4a-editor-item-container">
-                    <div class="m4a-editor-item-title">Voorbeeld <xsl:value-of select="$num"/>
+                    <div class="m4a-editor-item-title">Voorbeeld <xsl:value-of select="$header"/>
                         <div class="item-label-button"/>
                     </div>
                     <div class="m4a-editor-item-content">
-                        <div class="menu-button-div section-button">
-                            <span class="menu-button"></span>
-                        </div>
                         <div tag="examples">
                             <xsl:apply-templates select="include" mode="editor"/>
                         </div>
