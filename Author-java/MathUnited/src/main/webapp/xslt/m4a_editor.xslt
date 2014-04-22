@@ -452,8 +452,11 @@
         <div tag="objectives">
             <b>Leerdoelen</b>
             <xsl:for-each select="objective">
-                <div tag="objective" id="{@id}">
-                    <xsl:value-of select="text()"/>
+                <div class="objective-wrapper">
+                    <input class="objective-input" type="text" value="{text()}"/>
+                    <div tag="objective" id="{@id}">
+                        <xsl:value-of select="text()"/>
+                    </div>
                     <div class="objective-remove-button"/>
                     <div style="clear:both"/>
                 </div>

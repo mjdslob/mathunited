@@ -324,7 +324,7 @@ tinymce.PluginManager.add('charmap', function(editor) {
 		};
 
 		win = editor.windowManager.open({
-			title: "Referentie invoegen",
+			title: "Symbool invoegen",
 			items: [
 				charMapPanel,
 				{
@@ -342,7 +342,7 @@ tinymce.PluginManager.add('charmap', function(editor) {
 				    win.close();
 				}},
 				{text: "OK", onclick: function() {
-                                    editor.execCommand('mceInsertContent', false, document.forms[0].someval.value);
+                                    //editor.execCommand('mceInsertContent', false, document.forms[0].someval.value);
               			    win.close();
 				}}                            
 			]

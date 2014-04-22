@@ -517,10 +517,17 @@ div[tag='description'] div.m4a-editor-item-title {
 }
 
 div[tag='objective'] {
+    display:none;
+}
+div.objective-wrapper {
     background-color:rgb(220,220,220);
     margin:2px 0;
-    padding:2px 5px;
+    padding:2px 50px 2px 5px;
     position:relative;
+}
+div.objective-wrapper input {
+    width:100%;
+    background-color:rgb(240,240,240);
 }
 div.objective-new-item input {
     float:left;

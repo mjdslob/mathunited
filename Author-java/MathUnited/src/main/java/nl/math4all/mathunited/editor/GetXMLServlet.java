@@ -49,9 +49,6 @@ public class GetXMLServlet extends HttpServlet {
                          HttpServletResponse response)
              throws ServletException, IOException {
         
-        Writer w = response.getWriter();
-        PrintWriter pw = new PrintWriter(w);
-
         try{
             Configuration config = Configuration.getInstance();
             
@@ -82,14 +79,21 @@ public class GetXMLServlet extends HttpServlet {
             
             //transform with the inverse-xslt.
             Node root = processor.processToDOM(xmlSaxSource, "m4a_inverse", parameterMap, null);
-            response.setContentType("application/xml");
             String result = FileManager.serializeXML(root);
-            pw.println( result );
+            //pw.println( result );
             LOGGER.log(Level.FINE, "GetXML: result={0}", result);
+            byte[] barr = result.getBytes("UTF-8");
+            response.setContentType("application/xml");
+            response.setCharacterEncoding("UTF-8");
+            response.setContentLength(barr.length);
+            ServletOutputStream os = response.getOutputStream();
+            os.write(barr);
         }
         catch (Exception e) {
             e.printStackTrace();
             response.setContentType("text/html");
+            Writer w = response.getWriter();
+            PrintWriter pw = new PrintWriter(w);
             pw.println("<html><head></head><body><h1>Fout opgetreden</h1><p>");
             pw.println(e.getMessage());
             pw.println("</p></body></html>");

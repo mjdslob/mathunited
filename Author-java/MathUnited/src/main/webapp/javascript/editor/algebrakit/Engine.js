@@ -18,7 +18,8 @@
 //This is a stub for the actual AlgebraKIT-engine which runs on the server.
 define(['jquery'], function($) {
 //    var engineUrl = 'http://mathunited.pragma-ade.nl:41080/AKIT_RemoteServer/Main';
-    var engineUrl = 'http://localhost/AKIT_RemoteServer/Main';
+//    var engineUrl = 'http://localhost/AKIT_RemoteServer/Main';
+    var engineUrl = '/AKIT_RemoteServer/Main';
     
     return {
 

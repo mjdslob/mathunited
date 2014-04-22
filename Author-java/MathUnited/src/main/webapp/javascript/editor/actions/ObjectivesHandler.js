@@ -21,11 +21,24 @@ define(['jquery','app/Document'], function($, doc) {
     var objelm = $('div[tag="description"] div[tag="objectives"]').first();
     
     function removeObjectiveHandler() {
-        var par = $(this).parents('div[tag="description"] div[tag="objective"]').first();
-        var id = par.attr('id');
+        var par = $(this).parents('div[tag="description"] div.objective-wrapper').first();
+        var tag = $('div[tag="objective"]',par);
+        var id = tag.attr('id');
         var metaHandler = require('actions/SetExerciseMetadata');
         metaHandler.removeObjectiveFromDocument(id);
         par.remove();
+        doc.setChanged(true);
+    }
+    function changedHandler() {
+        var txt = $(this).val();
+        var par = $(this).parents('div.objective-wrapper').first();
+        var tag = $('div[tag="objective"]',par);
+        tag.text(txt);
+        
+        //also change text in metadata of exercises in current page
+        $('.metadata-obj-selector-container input[value="'+tag.attr('id')+'"]')
+                .next('.objective-ref-text').text(txt);
+        doc.setChanged(true);
     }
     
     $('div.objective-add-button',objelm).first().click(function() {
@@ -36,16 +49,22 @@ define(['jquery','app/Document'], function($, doc) {
         var id = 'obj-'+num;
         var descr = $('input',par).val();
         if(descr!==null && descr.length>0) {
-            var elm = $('<div tag="objective" id="'+id+'">'+descr
-             +'<div class="objective-remove-button"/><div style="clear:both"/></div>');
+            var elm = $(//note: this html fragment must be consistent with xslt (m4a_editor.xslt)
+                    '<div class="objective-wrapper">'
+                   +  '<input class="objective-input" type="text" value="'+descr+'"></input>'
+                   +  '<div tag="objective" id="'+id+'">'+descr+'</div>'
+                   +  '<div class="objective-remove-button"/><div style="clear:both"/>'
+                   +'</div>');
             par.before(elm);
             $('input',par).val('');
             $('.objective-remove-button',elm).click(removeObjectiveHandler);
+            $('input.objective-input',elm).change(changedHandler);
         }
         doc.setChanged(true);
     });
-    $('div.objective-remove-button',objelm).click(removeObjectiveHandler);
     
+    $('div.objective-remove-button',objelm).click(removeObjectiveHandler);
+    $('div.objective-wrapper input.objective-input',objelm).change(changedHandler);
     
     return {
         action : function() {

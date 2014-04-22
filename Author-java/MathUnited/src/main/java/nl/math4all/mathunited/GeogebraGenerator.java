@@ -23,9 +23,9 @@ public class GeogebraGenerator extends HttpServlet {
     XSLTbean processor;
     Map<String, String> variantMap = new HashMap<String,String>();
     Map<String, Component> componentMap;
-//    String ggbSource = "http://www.geogebra.org/web/4.2/web/web.nocache.js";
-    String ggbSource = "http://js.geogebra.at/web/web.nocache.js";
-
+    String ggbSource = "http://www.geogebra.org/web/4.2/web/web.nocache.js";
+//    String ggbSource = "http://js.geogebra.at/web/web.nocache.js";
+//    String ggbSource = "http://www.geogebratube.org/scripts/deployggb.js";
     @Override
     public void init(ServletConfig config) throws ServletException {
          super.init(config);
