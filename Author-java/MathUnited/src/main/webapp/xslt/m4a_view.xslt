@@ -867,20 +867,34 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="learningaspects" mode="content">
  <p>
     <b>Je leert in dit onderwerp:</b>
-    <ul><xsl:for-each select="aspect">
-       <li><xsl:apply-templates mode="content"/></li>
-       </xsl:for-each>
-    </ul>
+    <xsl:choose>
+        <xsl:when test="aspect">
+            <ul><xsl:for-each select="aspect">
+               <li><xsl:apply-templates mode="content"/></li>
+               </xsl:for-each>
+            </ul>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:apply-templates mode="content"/>
+        </xsl:otherwise>
+    </xsl:choose>
  </p>
 </xsl:template>
 
 <xsl:template match="knownaspects" mode="content">
  <p>
     <b>Voorkennis:</b>
-    <ul><xsl:for-each select="aspect">
-       <li><xsl:apply-templates mode="content"/></li>
-        </xsl:for-each>
-    </ul>
+    <xsl:choose>
+        <xsl:when test="aspect">
+            <ul><xsl:for-each select="aspect">
+               <li><xsl:apply-templates mode="content"/></li>
+               </xsl:for-each>
+            </ul>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:apply-templates mode="content"/>
+        </xsl:otherwise>
+    </xsl:choose>
  </p>
 </xsl:template>
 

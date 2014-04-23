@@ -52,9 +52,10 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
 
             } else if(tagname in allowedTags) {
                 var v = allowedTags[tagname];
-                if(v!==true && v(elm)===false)
+                if(v!==true && v(elm)===false){
                     allowed = false;
                     return false;
+                }
             } else {
                 allowed = false;
                 return false;
