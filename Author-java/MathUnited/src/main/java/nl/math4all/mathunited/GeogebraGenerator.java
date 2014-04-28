@@ -29,6 +29,7 @@ public class GeogebraGenerator extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
          super.init(config);
+         LOGGER.setLevel(Level.FINE);
     }
 
 
@@ -46,9 +47,11 @@ public class GeogebraGenerator extends HttpServlet {
             if(fname==null) {
                 throw new Exception("Please supply a filename");
             }
+            LOGGER.fine("file="+fname);
             URL url = new URL(baseURL+fname);
             URLConnection conn = url.openConnection();
             int length = conn.getContentLength();
+            LOGGER.fine("length="+length);
             byte[] b = new byte[length];
             InputStream is = url.openStream();
             int numread = is.read(b);
@@ -60,7 +63,7 @@ public class GeogebraGenerator extends HttpServlet {
             pw.println("<script type='text/javascript'>var ggbApplet = document.ggbApplet;function ggbOnInit() {}</script></body></html>");
         } catch(Exception e) {
             pw.println("An error occured: "+e.getMessage());
-            e.printStackTrace();
+            LOGGER.severe(e.getMessage());
         }
     }
 

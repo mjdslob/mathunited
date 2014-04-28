@@ -108,7 +108,24 @@ extension-element-prefixes="exsl">
          </div>
     </div>
 
+    <div id="repeatFigureAlternative">
+        <div class="_editor_context_base">
+            <div class="_editor_option" type="repeat" name="optie" function="actions/RepeatTemplate">
+                <xsl:attribute name="params">{template:'repeatFigureAlternative'}</xsl:attribute>
+                <div class="menu-button-div">
+                    <span class="menu-button"></span>
+                </div>
 
+                <div tag="alternative" state="no">
+                    <div class="editor-choice-exercise-label"/>
+                    <div tag="alternative-figure">
+                        <p/>
+                    </div>    
+                    <div style="clear:both"/>
+                </div>
+            </div>
+        </div>
+    </div>
 </xsl:template>
 <xsl:template match="exercises" mode="editor">
     <div tag="exercises">
@@ -398,6 +415,60 @@ extension-element-prefixes="exsl">
         </xsl:if>
     </div>
 </xsl:template>
+
+<!-- multiple choice item -->
+<xsl:template match="item[@type='mpcfigures']" priority="2" mode="editor">
+    <div tag="{name()}">
+        <xsl:apply-templates select="@*" mode="editor"/>
+        <div tag="itemcontent">
+            <div class="_editor_option" type="optional" function="actions/OptionalTemplate" name="item intro">
+                <xsl:attribute name="params">{template:'exercise-itemintro-template'}</xsl:attribute>
+                <xsl:choose>
+                    <xsl:when test="itemcontent/subintro">
+                        <xsl:apply-templates select="itemcontent/subintro" mode="editor"/>
+                    </xsl:when>
+                    <xsl:when test="itemcontent/itemintro">
+                        <xsl:apply-templates select="itemcontent/itemintro" mode="editor"/>
+                    </xsl:when>
+                    <xsl:when test="itemcontent/intro">
+                        <xsl:apply-templates select="itemcontent/intro" mode="editor"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <!--<div tag="itemintro"><p></p></div> -->               
+                    </xsl:otherwise>
+                </xsl:choose>
+            </div>
+            <xsl:apply-templates select="itemcontent/question" mode="editor"/>
+        </div>
+        <div tag="figurealternatives">
+            <xsl:for-each select="figurealternatives/alternative">
+                <div class="_editor_context_base">
+                    <div  class="_editor_option" type="repeat" name="optie" function="actions/RepeatTemplate">
+                        <xsl:attribute name="params">{template:'repeatFigureAlternative'}</xsl:attribute>
+                        <div class="menu-button-div">
+                            <span class="menu-button"></span>
+                        </div>
+
+                        <div tag="alternative">
+                            <xsl:apply-templates select="@*" mode="editor"/>
+                            <div class="editor-choice-exercise-label"/>
+                            <div tag="alternative-figure">
+                                <xsl:apply-templates select="alternative-figure/resource" mode="editor"/>
+                            </div>    
+                            <div style="clear:both"/>
+                        </div>
+                    </div>
+                </div>
+            </xsl:for-each>
+        </div>
+        <div style="clear:left"/>
+        <xsl:if test="explanation">
+            <div class="answer-heading">Uitwerking:</div>
+            <xsl:apply-templates select="explanation" mode="editor"/>
+        </xsl:if>
+    </div>
+</xsl:template>
+
 
 </xsl:stylesheet>
 

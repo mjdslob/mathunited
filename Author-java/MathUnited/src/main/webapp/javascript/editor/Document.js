@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['jquery', 'app/TinyMCE', 'app/ContextMenu', 'algebrakit/Widget','jqueryui'], function($, Editor, ContextMenu, akitWidget) {
+define(['jquery', 'app/TinyMCE', 'app/ContextMenu', 'algebrakit/Widget', 'moxiemanager', 'jqueryui'], function($, Editor, ContextMenu, akitWidget, moxiemanager) {
     var isDocChanged = false;
     var root = null;  //set on init
     
@@ -95,7 +95,7 @@ define(['jquery', 'app/TinyMCE', 'app/ContextMenu', 'algebrakit/Widget','jqueryu
         //opening/closing of sections
         addToggleItemContainerHandler();
         
-        $('p,ul.paragraph,ol.paragraph,table,img',elm).each(function() {
+        $('p,ul.paragraph,ol.paragraph,table,img.paperfigure',elm).each(function() {
             var parent = $(this);
             if(  parent.parents('.tiny-editor').length===0   //not already attached to an editor
               && parent.parents('div[tag="componentcontent"]').length>0 //within editable content
@@ -103,6 +103,20 @@ define(['jquery', 'app/TinyMCE', 'app/ContextMenu', 'algebrakit/Widget','jqueryu
 
                 new Editor.editor(parent);
             }
+        });
+        $('img.resource').unbind('click').click(function() {
+            var main = require('app/Main');
+            var imagebase = main.getImagebase();
+            moxman.browse({
+                path: imagebase,
+                view: 'thumbs',
+                multiple: false,
+                title: 'Afbeelding invoegen',
+                oninsert: function(args) {
+                              debugger;
+                              alert('boe');
+                           }
+            });
         });
         $('*[_done]').removeAttr('_done');
         

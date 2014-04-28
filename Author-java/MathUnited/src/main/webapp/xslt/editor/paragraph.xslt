@@ -26,12 +26,9 @@ extension-element-prefixes="exsl">
 <xsl:template match="p | itemize | paperfigure" mode="editor">
     <xsl:apply-templates select="." mode="paragraph"/>
 </xsl:template>
-<xsl:template match="xhtml:p | xhtml:itemize | xhtml:paperfigure" mode="editor">
-    <xsl:apply-templates select="." mode="paragraph"/>
-</xsl:template>
 
 <!-- DEFAULT -->
-<xsl:template match="* | xhtml:*" mode="paragraph">
+<xsl:template match="*" mode="paragraph">
     <div tag="{name()}">
         <xsl:apply-templates select="@* | node()" mode="paragraph"/>
     </div>
@@ -110,7 +107,7 @@ extension-element-prefixes="exsl">
 <xsl:template match="text" mode="paragraph">
     <span tag="text"><xsl:apply-templates mode="paragraph"/></span>
 </xsl:template>
-<xsl:template match="p | xhtml:p" mode="paragraph">
+<xsl:template match="p" mode="paragraph">
     <p><xsl:apply-templates mode="paragraph"/></p>
 </xsl:template>
 <xsl:template match="quotation" mode="paragraph">

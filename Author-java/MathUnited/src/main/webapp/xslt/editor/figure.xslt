@@ -21,6 +21,19 @@ extension-element-prefixes="exsl">
        </xsl:if>
    </img>
 </xsl:template>
+
+<!-- applicable when an image is not part of a paperfigure -->
+<xsl:template match="resource"  mode="editor">
+   <xsl:variable name="width" select="number(substring-before(width,'cm'))*$cm2px"/>
+   <img class="resource">
+       <xsl:attribute name="alt"><xsl:value-of select="description"/></xsl:attribute>
+       <xsl:attribute name="src"><xsl:value-of select="concat($urlbase,'../images/highres/',replace(name,'Images/',''))"/></xsl:attribute>
+       <xsl:if test="$width>0">
+           <xsl:attribute name="style">width:<xsl:value-of select="$width"/>px</xsl:attribute>
+       </xsl:if>
+   </img>
+</xsl:template>
+
 <!--
 <xsl:template match="combination" mode="paragraph">
     <table>

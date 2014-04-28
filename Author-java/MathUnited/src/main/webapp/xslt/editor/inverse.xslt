@@ -180,6 +180,7 @@ extension-element-prefixes="exsl">
         <xsl:apply-templates select="node()" mode="paragraph"/>
     </xsl:element>
 </xsl:template>
+
 <xsl:template match="img[@class='paperfigure']" mode="image">
    <xsl:variable name="width" select="number(@width) div $cm2px"/>
     
@@ -197,6 +198,24 @@ extension-element-prefixes="exsl">
             </resource>
         </content>
     </paperfigure>
+</xsl:template>
+
+<!-- an image ("resource"), not being part of a paperfigure and not inside a paragraph-->
+<xsl:template match="img[@class='resource']" mode="editor" priority="2">
+    <xsl:variable name="width" select="number(@width) div $cm2px"/>
+    
+    <resource>
+        <name>
+            <xsl:value-of select="reverse(tokenize(@src,'/'))[1]"/>
+        </name>
+        <id></id>
+        <width><xsl:if test="$width>0"><xsl:value-of select="$width"/>cm</xsl:if></width>
+        <height></height>
+        <description>
+            <xsl:value-of select="@alt"/>
+        </description>
+        <owner></owner>
+    </resource>
 </xsl:template>
 
 <!--

@@ -174,13 +174,13 @@ span[tag='mark'] {
 }
 
 div[tag="block"]{
-    border-left: 1px dashed rgb(150,0,0);
+    border-left: 6px solid rgb(150,0,0);
     position:relative;
-    left:-5px;
-    padding-left:5px;
+    left:-65px;
+    padding-left:59px;
 }
 div[tag="block"][medium="paper"]{
-    border-left: 1px dashed rgb(0,0,150);
+    border-left: 6px solid rgb(0,0,150);
 }
 div.exercise-contents > div[tag="title"] {
     display:none;
@@ -211,10 +211,11 @@ span[tag="sheetref"] {
 .block-button {
     background-color:rgb(150,150,150);
     color:white;
+    margin-top:3px;
     padding:1px 1px 1px 10px;
     width:50px;
     position:relative;
-    left:-66px;
+    left:-126px;
     font-size:0.8em;
 }
 .block-button:hover {
