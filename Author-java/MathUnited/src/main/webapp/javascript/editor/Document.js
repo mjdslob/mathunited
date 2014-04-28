@@ -108,7 +108,7 @@ define(['jquery', 'app/TinyMCE', 'app/ContextMenu', 'algebrakit/Widget', 'moxiem
             var main = require('app/Main');
             var imagebase = main.getImagebase();
             moxman.browse({
-                path: imagebase,
+                path: imagebase+'/',
                 view: 'thumbs',
                 multiple: false,
                 title: 'Afbeelding invoegen',
@@ -177,11 +177,11 @@ define(['jquery', 'app/TinyMCE', 'app/ContextMenu', 'algebrakit/Widget', 'moxiem
                 shiftId++;
             });
        },
-       prepareForSubmit: function() {
+       prepareForSubmit: function(elm) {
             Editor.closeAll();
-            
+            if(!elm) elm = root;
             //bugfix in MathJax: a '<' symbol messes up the xml document
-            $('script',root).each(function() { 
+            $('script',elm).each(function() { 
                var str = this.text.replace('<','&lt;');
                $(this).text(str);
             });

@@ -151,6 +151,12 @@ extension-element-prefixes="exsl">
          <xsl:apply-templates mode="editor"/>
     </table>
 </xsl:template>
+<xsl:template match="table" mode="paragraph">
+    <table tag="table">
+         <xsl:apply-templates mode="editor"/>
+    </table>
+</xsl:template>
+
 <xsl:template match="tr|td|th|tbody|col|colgroup" mode="editor">
     <xsl:copy>
          <xsl:attribute name="tag" select="name()"/>

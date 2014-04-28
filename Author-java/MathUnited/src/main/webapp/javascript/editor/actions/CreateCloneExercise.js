@@ -41,7 +41,7 @@ define(['jquery','mathjax'], function($, MathJax) {
             $('._editor_option',parent).removeAttr('id');
             var idelm = $('div[tag="include"]',parent).first();
             var id = idelm.attr('filename').replace('.xml','');
-            
+            doc.prepareForSubmit(parent);
             var generator = require('app/DOMgenerator');
             //create a copy of the current exercise...
             generator.getXML(parent[0], function(xml) {
