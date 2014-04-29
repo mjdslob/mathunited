@@ -16,7 +16,7 @@
  */
 
 requirejs.config({
-    urlArgs: "bust=v16", //update this when a modification is made, to prevent caching problems
+    urlArgs: "bust=v17", //update this when a modification is made, to prevent caching problems
     //By default load any module IDs from js/lib
     baseUrl: '/MathUnited/javascript/lib',
 //    baseUrl: 'js/lib',

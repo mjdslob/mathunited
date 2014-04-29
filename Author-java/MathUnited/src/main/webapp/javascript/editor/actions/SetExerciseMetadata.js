@@ -170,7 +170,7 @@ define(['jquery'], function($, objSelector) {
                 addMetadataElm(tag, 'clone',{active: isClone}, null,true);
                 
                 objTagContainer.empty();
-                $('input[name="objective"]:checked').each(function(){ 
+                $('input[name="objective"]:checked',container).each(function(){ 
                     addMetadataElm(objTagContainer, 'objective-ref',{value: this.value, comp: $(this).attr('comp'), subcomp: $(this).attr('subcomp')}, null,false);
                 });
             }); 
