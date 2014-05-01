@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['jquery', 'app/TinyMCE', 'app/ContextMenu', 'algebrakit/Widget', 'moxiemanager', 'jqueryui'], function($, Editor, ContextMenu, akitWidget, moxiemanager) {
+define(['jquery', 'app/TinyMCE', 'app/ContextMenu', 'algebrakit/Widget', 'elfinder', 'jqueryui'], function($, Editor, ContextMenu, akitWidget) {
     var isDocChanged = false;
     var root = null;  //set on init
     
@@ -106,7 +106,19 @@ define(['jquery', 'app/TinyMCE', 'app/ContextMenu', 'algebrakit/Widget', 'moxiem
         });
         $('img.resource').unbind('click').click(function() {
             var main = require('app/Main');
-            var imagebase = main.getImagebase();
+            var elm = $('<div class="elfinder-wrapper"></div>');
+            $(this).after(elm);
+            var elf = elm.elfinder({
+                // lang: 'ru',             // language (OPTIONAL)
+                url : '/elfinder/php/connector.php',  // connector URL (REQUIRED)
+                customData: {
+                    path: main.getImagebase(),
+                    repoPath: main.getRepoPath()
+                },
+                onlyMimes: ["image"] // display all images
+            });
+            elf.elfinder('instance');               
+/*
             moxman.browse({
                 path: imagebase+'/',
                 view: 'thumbs',
@@ -117,7 +129,9 @@ define(['jquery', 'app/TinyMCE', 'app/ContextMenu', 'algebrakit/Widget', 'moxiem
                               alert('boe');
                            }
             });
+*/            
         });
+        
         $('*[_done]').removeAttr('_done');
         
         toggleVisibleButton('block', elm);

@@ -193,6 +193,7 @@
                 <link rel="stylesheet" href="css/M4AStijl2.css" type="text/css"/>
                 <link rel="stylesheet" href="css/editor.css" type="text/css"/>
                 <link rel="stylesheet" href="javascript/lib/chosen_v1.1.0/chosen.css"/>
+                <link rel="stylesheet" type="text/css" media="screen" href="/elfinder/css/elfinder.min.css"/>
             </head>
             <body>
                 <div class="hidden-templates">

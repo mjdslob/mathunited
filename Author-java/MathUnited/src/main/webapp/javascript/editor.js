@@ -34,7 +34,7 @@ requirejs.config({
         jqueryChosen: 'chosen_v1.1.0/chosen.jquery.min',
 //        touchpunch: 'jquery.ui.touch-punch.min',
         tinymce: '../tinymce/jquery.tinymce.min',
-        moxiemanager: '/moxiemanager/js/moxman.loader.min',
+        elfinder: '/elfinder/js/elfinder.min',
         mathjax: "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML&amp;delayStartupUntil=configured"
         
     },
@@ -56,9 +56,9 @@ requirejs.config({
             deps: [],
             export: 'tinymce'
         },
-        'moxiemanager': {
-            deps: [],
-            export: 'moxiemanager'
+        'elfinder': {
+            deps: ['jquery'],
+            export: 'elfinder'
         },
         mathjax: {
             exports: "MathJax",

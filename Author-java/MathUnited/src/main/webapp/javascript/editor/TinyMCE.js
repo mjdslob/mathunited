@@ -38,8 +38,14 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
         'author-remark':true,
         keyword: function(elm) {
                      var child = $(elm).children(); 
-                     if(child.length>1)return false; 
-                     if(child.attr('tag')!=='text') return false; 
+                     if(child.length>1){
+                         console.log("tag 'keyword' is invalid because it contains more than one child");
+                         return false;
+                     } 
+                     if(child.attr('tag')!=='text') {
+                         console.log("tag 'keyword' is invalid because its child is not a 'text' element");
+                         return false;
+                     } 
                      return true;
                  }
 
@@ -54,10 +60,12 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
                 var v = allowedTags[tagname];
                 if(v!==true && v(elm)===false){
                     allowed = false;
+                    console.log("Unsupported tag: "+tagname);
                     return false;
                 }
             } else {
                 allowed = false;
+                console.log("Unsupported tag: "+tagname);
                 return false;
             }
             return true;
@@ -201,7 +209,7 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
     //active tinyMCE on the paragraph content (.paragraph-content)
     function createTinyMCE(par) {
        var main = require('app/Main');
-       var imagebase = main.getImagebase();
+       var imagebase = '/data/'+main.getImagebase();
        
        par.tinymce({
             // Location of TinyMCE script

@@ -43,8 +43,8 @@ define(['jquery', 'app/Document','actions/ObjectivesHandler', 'app/ItemSelector'
     };
     
 
-    var baseRepo = $('#meta-data-baserepo-path').text();
-    var repo     = $('#meta-data-repo-path').text();
+    var baseRepoPath = $('#meta-data-baserepo-path').text();
+    var repoPath     = $('#meta-data-repo-path').text();
     var comp     = $('#meta-data-comp').text();
     var subcomp  = $('#meta-data-subcomp').text();
     var refbase  = $('#meta-data-refbase').text();
@@ -71,11 +71,11 @@ define(['jquery', 'app/Document','actions/ObjectivesHandler', 'app/ItemSelector'
         isTouchDevice: ("ontouchstart" in document.documentElement),
         getComp      : function() {return comp;},
         getSubcomp   : function() {return subcomp;},
-        getRepo      : function() {return repo;},
-        getBaserepo  : function() {return baseRepo;},
+        getRepoPath      : function() {return repoPath;},
+        getBaserepoPath  : function() {return baseRepoPath;},
         getRefbase   : function() {return refbase;},
         getImagebase : function() {
-                            var imagebase = '/data/'+refbase;
+                            var imagebase = refbase;
                             var ind = imagebase.lastIndexOf('/'); //2 times, because of trailing /
                             imagebase = imagebase.substr(0,ind);
                             var ind = imagebase.lastIndexOf('/');
