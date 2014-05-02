@@ -173,14 +173,19 @@ span[tag='mark'] {
     color:black;
 }
 
-div[tag="block"]{
-    border-left: 6px solid rgb(150,0,0);
+div[tag="block"], div.medium-wrapper{
     position:relative;
     left:-65px;
     padding-left:59px;
 }
-div[tag="block"][medium="paper"]{
+div[tag="block"][medium="web"], div.medium-wrapper[medium="web"]{
+    border-left: 6px solid rgb(150,0,0);
+}
+div[tag="block"][medium="paper"], div.medium-wrapper[medium="paper"]{
     border-left: 6px solid rgb(0,0,150);
+}
+div[tag="block"][medium="none"], div.medium-wrapper[medium="none"]{
+    border-left: 6px solid rgb(150,150,150);
 }
 div.exercise-contents > div[tag="title"] {
     display:none;

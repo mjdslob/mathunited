@@ -15,7 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['jquery', 'app/TinyMCE', 'app/ContextMenu', 'algebrakit/Widget', 'elfinder', 'jqueryui'], function($, Editor, ContextMenu, akitWidget) {
+//define(['jquery', 'app/TinyMCE', 'app/ContextMenu', 'algebrakit/Widget', 'elfinder', 'jqueryui'], function($, Editor, ContextMenu, akitWidget) {
+define(['jquery', 'app/TinyMCE', 'app/ContextMenu', 'algebrakit/Widget', 'jqueryui'], function($, Editor, ContextMenu, akitWidget) {
     var isDocChanged = false;
     var root = null;  //set on init
     

@@ -68,7 +68,6 @@ define(['jquery'], function($, objSelector) {
                 objTagContainer = $('<div tag="objectives"></div>');
                 tag.append(objTagContainer);
             }
-            var level = $('div[tag="level"]',container).attr('value');
             var is_examenvraag = $('div[tag="exercise-type"][value="examen"]',container).length>0;
             var is_olympiadevraag = $('div[tag="exercise-type"][value="olympiade"]',container).length>0;
             var is_wdavraag = $('div[tag="exercise-type"][value="wda"]',container).length>0;
@@ -81,10 +80,22 @@ define(['jquery'], function($, objSelector) {
             });
             $('form input[name="groepslabel"]', container).val(grouplabels);
 
+            //difficulty level
+            var level = $('div[tag="level"]',container).attr('value');
             if(level) {
                 var dum=$('form input[name="level"][value="'+level+'"]', container);
                 if(dum.length>0) dum[0].checked= true;
             };
+            //medium: web, paper, both or none. Not set in metadata, but as attribute on item
+            var item = container.parents('div.medium-wrapper').first();
+            if(item.length>0){
+                var medium = item.attr('medium');
+                if(!medium) medium='both';
+                var dum=$('form input[name="medium"][value="'+medium+'"]', container);
+                if(dum.length>0) dum[0].checked= true;
+            } else {
+                $('.meta-medium',container).css('display','none');
+            }
             var isClone = $('div[tag="clone"]',container).attr('active');
             if(isClone==='true') {
                 var dum=$('form input[name="kloonopgave"]', container);
@@ -141,6 +152,12 @@ define(['jquery'], function($, objSelector) {
                 $('input[name="level"]',container).each(function() {
                    if(this.checked) level = this.value; 
                 });
+                $('input[name="medium"]',container).each(function() {
+                   if(this.checked) medium = this.value; 
+                });
+                item.attr('medium', medium);
+                container.parents('div[tag="exercise"]').first().attr('medium',medium);
+                
                 $('div[tag="exercise-type"]',tag).remove();
                 var elm = $('input[name="olympiadevraag"]',container);
                 if(elm.length>0 && elm[0].checked) {
