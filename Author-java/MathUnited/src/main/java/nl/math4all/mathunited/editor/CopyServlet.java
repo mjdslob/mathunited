@@ -18,17 +18,20 @@ import nl.math4all.mathunited.configuration.SubComponent;
 import nl.math4all.mathunited.configuration.Component;
 import nl.math4all.mathunited.exceptions.LoginException;
 import nl.math4all.mathunited.utils.FileManager;
+import nl.math4all.mathunited.utils.UserManager;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 import org.w3c.dom.Node;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import org.w3c.dom.Document;
 
 //mathunited.pragma-ade.nl/MathUnited/view?variant=basis&comp=m4a/xml/12hv-me0&subcomp=3&item=explore
 // - fixed parameters: variant, comp (component), subcomp (subcomponent).
 // - other parameters are just passed to xslt
 
-public class GetXMLServlet extends HttpServlet {
-    private final static Logger LOGGER = Logger.getLogger(GetXMLServlet.class.getName());
-    XSLTbean processor;
+public class CopyServlet extends HttpServlet {
+    private final static Logger LOGGER = Logger.getLogger(CopyServlet.class.getName());
     ServletContext context;
     
     @Override
@@ -37,7 +40,6 @@ public class GetXMLServlet extends HttpServlet {
             super.init(config);
             context = getServletContext();
             LOGGER.setLevel(Level.INFO);
-            processor = new XSLTbean(context);
         } catch(Exception e) {
             e.printStackTrace();
             LOGGER.log(Level.SEVERE, e.getMessage());
@@ -49,6 +51,8 @@ public class GetXMLServlet extends HttpServlet {
                          HttpServletResponse response)
              throws ServletException, IOException {
         
+        Writer w = response.getWriter();
+        PrintWriter pw = new PrintWriter(w);
         try{
             Configuration config = Configuration.getInstance();
             
@@ -63,38 +67,33 @@ public class GetXMLServlet extends HttpServlet {
                 }
             }
 
-            String htmlstr = parameterMap.get("html");            
-            if(htmlstr==null) {
-                throw new Exception("Het verplichte argument 'html' ontbreekt.");
+            String xmlstr = parameterMap.get("xml");     
+            if(xmlstr==null) {
+                throw new Exception("Het verplichte argument 'xml' ontbreekt.");
             }
-            LOGGER.log(Level.FINE, "GetXML: html={0}", htmlstr);
+            String typestr = parameterMap.get("type");
+            if(typestr==null) {
+                throw new Exception("Het verplichte argument 'type' ontbreekt.");
+            }
+            LOGGER.log(Level.FINE, "CopyServlet: xml={0}, type={1}", new Object[]{xmlstr, typestr});
 
-            //parse the html into xml with tagsoup parser
-            XMLReader xmlReader = XMLReaderFactory.createXMLReader("org.ccil.cowan.tagsoup.Parser");
-            xmlReader.setFeature(org.ccil.cowan.tagsoup.Parser.namespacesFeature, false);
-            xmlReader.setEntityResolver(ContentResolver.entityResolver);
-            StringReader reader = new StringReader(htmlstr);
-            InputSource xmlSource = new InputSource(reader);
-            SAXSource xmlSaxSource = new SAXSource(xmlReader, xmlSource);
+            UserSettings usettings = UserManager.isLoggedIn(request,response);
             
-            //transform with the inverse-xslt.
-            parameterMap.put("option","editor-process-item"); //flags that we are not converting an entire document
-            Node root = processor.processToDOM(xmlSaxSource, "m4a_inverse", parameterMap, null);
-            String result = FileManager.serializeXML(root);
-            //pw.println( result );
-            LOGGER.log(Level.FINE, "GetXML: result={0}", result);
-            byte[] barr = result.getBytes("UTF-8");
+            //parse string into xml
+            InputStream is = new ByteArrayInputStream(xmlstr.getBytes("UTF-16"));
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+	    Document doc = dBuilder.parse(is);
+            
+            //store the DOM in the clipboard
+            Clipboard clipboard = usettings.getClipboard();
+            clipboard.setItem(typestr, doc.getDocumentElement());
             response.setContentType("application/xml");
-            response.setCharacterEncoding("UTF-8");
-            response.setContentLength(barr.length);
-            ServletOutputStream os = response.getOutputStream();
-            os.write(barr);
+            pw.println("<?xml version=\"1.0\" encoding=\"utf-8\"?><response success=\"true\"/>");
         }
         catch (Exception e) {
             e.printStackTrace();
             response.setContentType("text/html");
-            Writer w = response.getWriter();
-            PrintWriter pw = new PrintWriter(w);
             pw.println("<html><head></head><body><h1>Fout opgetreden</h1><p>");
             pw.println(e.getMessage());
             pw.println("</p></body></html>");

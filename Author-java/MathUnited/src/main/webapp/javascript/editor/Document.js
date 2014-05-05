@@ -153,7 +153,7 @@ define(['jquery', 'app/TinyMCE', 'app/ContextMenu', 'algebrakit/Widget', 'jquery
 
     return {
        init: function(repo, baseRepo) {
-           root = $('div.pageDiv');
+           root = $('div.editorDiv');
            prepareImages(repo, baseRepo);
            this.labelAnchors();
            setShiftHandlers();

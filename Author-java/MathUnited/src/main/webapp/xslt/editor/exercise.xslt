@@ -152,14 +152,27 @@ extension-element-prefixes="exsl">
         </xsl:choose>
     </xsl:variable>
     <div class="medium-wrapper" medium="{$medium}">
+        <div class="block-button visible">
+            <xsl:choose>
+                <xsl:when test="$medium='paper'">papier</xsl:when>
+                <xsl:when test="$medium='web'">web</xsl:when>
+                <xsl:when test="$medium='none'">verborgen</xsl:when>
+                <xsl:otherwise></xsl:otherwise>
+            </xsl:choose>
+        </div>        
         <div  class="_editor_option" type="action" name="metadata invullen" function="actions/SetExerciseMetadata"/>
+        <div  class="_editor_option" type="action" name="kopiëren" function="actions/CopyHandler">
+            <xsl:attribute name="params">{itemtype: 'exercises'}</xsl:attribute>
+        </div>
         <xsl:if test="not($isclone)">
             <div  class="_editor_option" type="action" name="Maak kloonopgave" function="actions/CreateCloneExercise"/>
         </xsl:if>
         <div  class="_editor_option" type="repeat" name="opgave" function="actions/RepeatExercise">
+<!--
             <div class="menu-button-div item-container-menu">
                 <span class="menu-button"></span>
             </div>
+-->            
             <div class="exercise-container">
                 <xsl:if test="$isclone">
                     <xsl:attribute name="clone">true</xsl:attribute>
@@ -203,7 +216,7 @@ extension-element-prefixes="exsl">
                                         <input type="radio" name="medium" value="paper">papier</input>
                                         <input type="radio" name="medium" value="web">web</input>
                                         <input type="radio" name="medium" value="both">beide</input>
-                                        <input type="radio" name="medium" value="none">geen</input>
+                                        <input type="radio" name="medium" value="none">verborgen</input>
                                     </div>
                                     <b>Soort opgave: </b><br/>
                                     <input type="checkbox" name="olympiadevraag">olympiadevraag</input><br/>

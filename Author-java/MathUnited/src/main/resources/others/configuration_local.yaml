@@ -51,11 +51,13 @@ repos :
     defaultVariant: m4a_view
     componentsURL: /data/leerlijnen/components.xml
     threadsURL: /data/leerlijnen/threads.xml
+    contentItems: m4a-content-items.xml
   test :
     path: content-ma/test
     baseRepo : m4a
     edit_permission: editor_test
     defaultVariant: m4a_view
+    contentItems: m4a-content-items.xml
 
 userFile : /Library/WebServer/Documents/data/users_malmberg.yaml
 contentRoot : /Library/WebServer/Documents/data/

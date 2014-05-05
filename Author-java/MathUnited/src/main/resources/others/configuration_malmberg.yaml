@@ -16,11 +16,7 @@ repos :
     defaultVariant: m4a_view
     componentsURL: /opt/sw/mathplus/data/leerlijnen/components.xml
     threadsURL: /opt/sw/mathplus/data/leerlijnen/threads.xml
-  test :
-    path: content-ma/test
-    baseRepo : m4a
-    edit_permission: editor_test
-    defaultVariant: m4a_view
+    contentItems: m4a-content-items.xml
 
 userFile : /opt/sw/mathplus/data/users_malmberg.yaml
 contentRoot : /opt/sw/mathplus/data/

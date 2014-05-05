@@ -46,6 +46,7 @@ repos :
     defaultVariant: m4a_view
     componentsURL: /index/malmberg/components.xml
     threadsURL: /index/malmberg/threads.xml
+    contentItems: m4a-content-items.xml
   algebrakit :
     path: content-ma/algebrakit
     edit_permission: 
@@ -57,6 +58,7 @@ repos :
     defaultVariant: m4a_view
     componentsURL: /index/test/components.xml
     threadsURL: /index/test/threads.xml
+    contentItems: m4a-content-items.xml
 
 userFile : /data/content-overview/users.yaml
 contentRoot : /data/

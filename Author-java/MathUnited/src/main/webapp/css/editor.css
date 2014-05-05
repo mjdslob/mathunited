@@ -5,6 +5,15 @@ html, body {
    line-height:1.5em;
    color:#555566;
 }
+.editorDiv {
+    width:850px;
+    padding:0px 55px 40px 60px;
+    min-height:800px;
+    background-color:white;
+    margin:10px auto 20px auto;
+    position:relative;
+    font-size:14px;
+}
 #startup-msg {
     position:absolute;
     top:100px;
@@ -175,17 +184,20 @@ span[tag='mark'] {
 
 div[tag="block"], div.medium-wrapper{
     position:relative;
-    left:-65px;
-    padding-left:59px;
+    left:-70px;
+    padding-left:70px;
 }
 div[tag="block"][medium="web"], div.medium-wrapper[medium="web"]{
     border-left: 6px solid rgb(150,0,0);
+    padding-left:64px;
 }
 div[tag="block"][medium="paper"], div.medium-wrapper[medium="paper"]{
     border-left: 6px solid rgb(0,0,150);
+    padding-left:64px;
 }
 div[tag="block"][medium="none"], div.medium-wrapper[medium="none"]{
     border-left: 6px solid rgb(150,150,150);
+    padding-left:64px;
 }
 div.exercise-contents > div[tag="title"] {
     display:none;
@@ -213,36 +225,43 @@ span[tag="sheetref"] {
 .block-content.visible {
     display:block;
 }
-.block-button {
-    background-color:rgb(150,150,150);
+div[tag="block"] .block-button {
     color:white;
     margin-top:3px;
-    padding:1px 1px 1px 10px;
     width:50px;
     position:relative;
     left:-126px;
+    font-size:0.8em;
+}
+div.medium-wrapper .block-button {
+    color:white;
+    margin-top:3px;
+    width:50px;
+    position:absolute;
+    left:-67px;
+    top:-3px;
     font-size:0.8em;
 }
 .block-button:hover {
     cursor:pointer;
     background-color:rgb(255,150,150);
 }
-div[tag="block"][medium="paper"] .block-button.visible{
+div[tag="block"][medium="paper"] .block-button.visible, div.medium-wrapper[medium="paper"] .block-button.visible{
+    padding:1px 1px 1px 10px;
     background-color:rgb(0,0,150);
+}
+div[tag="block"][medium="web"] .block-button.visible, div.medium-wrapper[medium="web"] .block-button.visible{
+    padding:1px 1px 1px 10px;
+    background-color:rgb(150,0,0);
+}
+div[tag="block"][medium="none"] .block-button.visible, div.medium-wrapper[medium="none"] .block-button.visible{
+    padding:1px 1px 1px 10px;
+    background-color:rgb(150,150,150);
 }
 div[tag="block"][medium="paper"] .block-button.visible:hover{
     background-color:rgb(0,0,255);
 }
 
-.block-button.visible {
-    background-color:rgb(150,0,0);
-    color:white;
-    font-weight:bold;
-}
-.block-button.visible:hover {
-    cursor:pointer;
-    background-color:rgb(255,0,0);
-}
 div[tag="worksheets"] {
     margin-top:5px;
 }
@@ -311,10 +330,7 @@ div[tag="single-item"] {
     top:4px;
     position:relative;
     background-image: url('../sources_ma/gray-button.png');
-}
-.menu-button-div.item-container-menu {
-    position:absolute;
-    left:-65px;
+    z-index:10;
 }
 .menu-button-div {
     position:absolute;

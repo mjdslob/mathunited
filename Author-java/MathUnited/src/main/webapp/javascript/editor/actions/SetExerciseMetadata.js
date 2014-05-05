@@ -157,6 +157,14 @@ define(['jquery'], function($, objSelector) {
                 });
                 item.attr('medium', medium);
                 container.parents('div[tag="exercise"]').first().attr('medium',medium);
+                var txt;
+                switch(medium) {
+                    case 'web': txt='web'; break;
+                    case 'paper': txt='papier'; break;
+                    case 'none': txt='verborgen'; break;
+                    default: txt='';
+                }
+                $('div.block-button',item).first().text(txt);
                 
                 $('div[tag="exercise-type"]',tag).remove();
                 var elm = $('input[name="olympiadevraag"]',container);

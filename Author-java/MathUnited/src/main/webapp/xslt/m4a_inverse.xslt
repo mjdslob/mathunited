@@ -12,6 +12,7 @@ extension-element-prefixes="exsl">
 <xsl:preserve-space elements="m:*"/>
 <xsl:param name="comp"/>    <!-- id of component. Not needed as complete xml of component is given in $component-->
 <xsl:param name="subcomp"/> <!-- id of subcomponent, eg hv-me11 -->
+<xsl:param name="option"/>
 <xsl:variable name="cm2px" select="number(50)"/>
 
 <xsl:output method="xml" version="1.0" encoding="utf-8" indent="yes"/>
@@ -22,7 +23,9 @@ extension-element-prefixes="exsl">
 <!--   START PROCESSING -->
 <!--   **************** -->
 <xsl:template match="/">
-    <xsl:processing-instruction name="context-directive"><xsl:text>job ctxfile ../m4all-leertaak.ctx</xsl:text></xsl:processing-instruction> 
+    <xsl:if test="not($option='editor-process-item')">
+        <xsl:processing-instruction name="context-directive"><xsl:text>job ctxfile ../m4all-leertaak.ctx</xsl:text></xsl:processing-instruction> 
+    </xsl:if>
 <root>
     <xsl:variable name="pass1">
         <xsl:apply-templates mode="editor-prepare"/>

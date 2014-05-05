@@ -16,6 +16,7 @@ public class Repository {
     public String baseRepo;
     public String componentsURL;
     public String threadsURL;
+    public String contentItems;
     
     public Map<String, Component> readComponentMap() throws Exception {
         Configuration config = Configuration.getInstance();

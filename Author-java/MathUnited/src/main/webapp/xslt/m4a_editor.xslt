@@ -218,7 +218,7 @@
                     </div>
         
                 </div>
-                <div class="pageDiv">
+                <div class="editorDiv">
                     <div id="startup-msg">
                         <h1>Aan het opstarten...</h1><p>Als deze melding niet automatisch binnen enkele seconden verdwijnt,
                         probeer dan opnieuw door deze pagina te verversen (druk F5).</p>

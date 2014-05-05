@@ -17,10 +17,8 @@ import nl.math4all.mathunited.configuration.Component;
 import nl.math4all.mathunited.exceptions.LoginException;
 import nl.math4all.mathunited.utils.UserManager;
 
-//mathunited.pragma-ade.nl/MathUnited/view?variant=basis&comp=m4a/xml/12hv-me0&subcomp=3&item=explore
-// - fixed parameters: variant, comp (component), subcomp (subcomponent).
-// - other parameters are just passed to xslt
-
+//get all content items (examples, exercises, etc) for a given component. Used for a selection widget 
+//(see webapp/javascript/editor/ItemSelector.js)
 public class GetComponentItemsServlet extends HttpServlet {
     private final static Logger LOGGER = Logger.getLogger(GetComponentItemsServlet.class.getName());
     Map<String, Component> componentMap;

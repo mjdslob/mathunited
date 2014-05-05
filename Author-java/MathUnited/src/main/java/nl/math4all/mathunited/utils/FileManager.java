@@ -217,13 +217,6 @@ public class FileManager {
         LSSerializer writer = impl.createLSSerializer();
         DOMConfiguration config = writer.getDomConfig();
         config.setParameter("format-pretty-print", true);
-        config.setParameter("error-handler", new DOMErrorHandler(){
-           public boolean handleError(DOMError error) {
-               System.out.println(error.getMessage());
-               return true;
-           }
-        });
-
         String result = writer.writeToString(node);
         return result;
     }

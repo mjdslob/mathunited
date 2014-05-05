@@ -97,9 +97,9 @@ define(['jquery', 'app/Document','actions/ObjectivesHandler', 'app/ItemSelector'
             doc.prepareForSubmit();
             
             var status = $('#workflow-container input:checked').val();
-            var html = $('.pageDiv').first().html();
+            var html = $('.editorDiv').first().html();
             var nItems = $('div[tag="include"]').length; //used to check if all items are saved
-            var str = repo+'\n'+comp+'\n'+subcomp+'\n'+status+'\n'+nItems+'\n'+html;
+            var str = repoPath+'\n'+comp+'\n'+subcomp+'\n'+status+'\n'+nItems+'\n'+html;
         //    html = encodeURIComponent(html);
             $.post(commitURL, str,
                 function(data) {//on success

@@ -16,7 +16,8 @@
  */
 
 define(['jquery'], function($) {
-    var insertContentItem_typeUrl = 'content-items.xml';
+//    var insertContentItem_typeUrl = 'content-items.xml';
+    var insertContentItem_typeUrl = '/MathUnited/get-itemtemplates';
     var processItem_url = '/MathUnited/processitem';
     var getXML_url = '/MathUnited/getxml';
 
@@ -37,7 +38,7 @@ define(['jquery'], function($) {
     return {
         //opens a dialog containing a list of elements that the user can choose from. 
         getContentItem: function(itemtype, callback) {
-            $.get(insertContentItem_typeUrl, '', function(xml) {
+            $.get(insertContentItem_typeUrl, {type:itemtype}, function(xml) {
                 var container = $('container[name="'+itemtype+'"]',xml);
                 var html='<div>';
                 var num=0;
@@ -109,6 +110,9 @@ define(['jquery'], function($) {
                 });
 
             });
+        },
+        xmlToString : function(xml) {
+            return xmlToString(xml);
         },
         getXML: function(html, callback) {
             $.post(getXML_url, {
