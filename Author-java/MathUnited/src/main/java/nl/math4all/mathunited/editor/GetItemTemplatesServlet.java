@@ -45,8 +45,6 @@ public class GetItemTemplatesServlet extends HttpServlet {
                          HttpServletResponse response)
              throws ServletException, IOException {
         
-        Writer w = response.getWriter();
-        PrintWriter pw = new PrintWriter(w);
         try{
             Configuration config = Configuration.getInstance();
             
@@ -107,6 +105,8 @@ public class GetItemTemplatesServlet extends HttpServlet {
             response.setContentType("application/xml");
             if(containerNode==null) {
                 LOGGER.log(Level.FINE,"Could not find templates for type={0}", typestr);
+                Writer w = response.getWriter();
+                PrintWriter pw = new PrintWriter(w);
                 pw.println("<result success=\"false\"/>");
             } else {
                 Clipboard clipboard = usettings.getClipboard();
@@ -122,15 +122,21 @@ public class GetItemTemplatesServlet extends HttpServlet {
                     newNode.appendChild(importedNode);
                     containerNode = importedContainerNode;
                 }
-                
                 String result = FileManager.serializeXML(containerNode);
-                pw.println(result);
+                LOGGER.log(Level.FINE, "GetItemTemplatesServlet: result={0}", result);
+                byte[] barr = result.getBytes("UTF-8");
+                response.setCharacterEncoding("UTF-8");
+                response.setContentLength(barr.length);
+                ServletOutputStream os = response.getOutputStream();
+                os.write(barr);
             }
         }
         catch (Exception e) {
             e.printStackTrace();
             LOGGER.severe(e.getMessage());
             response.setContentType("text/html");
+            Writer w = response.getWriter();
+            PrintWriter pw = new PrintWriter(w);
             pw.println("<html><head></head><body><h1>Fout opgetreden</h1><p>");
             pw.println(e.getMessage());
             pw.println("</p></body></html>");

@@ -25,6 +25,7 @@ define(['jquery','app/Document','app/DOMgenerator'], function($, doc,generator) 
             //transform html into xml
             var base = elm.parents('._editor_context_base').first();
             var parent = elm.parents('.item-container',base).first();
+            //var parent = base;
             var type = params.itemtype;
             generator.getXML(parent[0], function(xml) {
                 xml = $(xml);
@@ -36,7 +37,6 @@ define(['jquery','app/Document','app/DOMgenerator'], function($, doc,generator) 
                     type: type
                 }, function(response) {
                     //handle response here...
-                    debugger;
                 });            
             });        
         }

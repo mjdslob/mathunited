@@ -589,7 +589,6 @@
             </div>
         </div>
     </xsl:template>
-    
     <!-- skip loose exercises-tag. Applicable when inserting a snippet of xml from the editor -->
     <xsl:template match="exercises"></xsl:template>
     

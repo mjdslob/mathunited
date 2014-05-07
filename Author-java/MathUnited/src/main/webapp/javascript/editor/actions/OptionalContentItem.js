@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['jquery','app/DOMgenerator'], function($,generator) {
+define(['jquery','app/DOMgenerator','mathjax'], function($,generator,MathJax) {
     
     return {
         action : function(elm, params) {
@@ -24,9 +24,12 @@ define(['jquery','app/DOMgenerator'], function($,generator) {
             
             if(action==='add'){
                 generator.getContentItem(contentType, function(html) {
-                    elm.append($(html));
+                    var newElm = $('<div/>');
+                    newElm.append($(html));
+                    elm.append(newElm);
                     elm.next('.m4a-editor-item.nonexistent').toggleClass('visible');
                     var doc = require('app/Document');
+                    MathJax.Hub.Queue(["Typeset",MathJax.Hub,newElm[0]]);
                     doc.reinit(elm);
                     doc.setChanged();
                 });

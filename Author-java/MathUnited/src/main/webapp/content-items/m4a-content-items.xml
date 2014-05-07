@@ -189,7 +189,20 @@
             </exercises>
         </container-item>
     </container>
-    
+
+    <container name="example">
+        <container-item name="nieuw item: Voorbeeldtekst">
+            <example>
+                <include filename="__subcomp__-v__#1__.xml">
+                    <example id="__subcomp__-v__#1__">
+                        <p>...tekst...</p>
+                    </example>
+                </include>
+            </example>
+        </container-item>
+    </container>
+     
+        
     <container name="digest">
         <container-item name="nieuw item: Verwerken">
             <digest>

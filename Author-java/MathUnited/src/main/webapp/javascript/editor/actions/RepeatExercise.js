@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['jquery','app/DOMgenerator'], function($,generator) {
+define(['jquery','app/DOMgenerator','mathjax'], function($,generator, MathJax) {
     
     return {
         action : function(elm, params) {
@@ -30,15 +30,18 @@ define(['jquery','app/DOMgenerator'], function($,generator) {
             if(action==='add') {
                 var contentType = 'exercises';
                 generator.getContentItem(contentType, function(html) {
+                    var newElm = $('<div/>');
+                    newElm.append($(html));
                     if(!location) {
-                        elm.replaceWith( $(html)); 
+                        elm.replaceWith( newElm); 
                     }
                     else if(location==='before'){
-                        base.before( $(html) );
+                        base.before( newElm );
                     } else {
-                        base.after( $(html) );
+                        base.after( newElm );
                     }
                     var uberBase = base.parents('._editor_context_base').first();
+                    MathJax.Hub.Queue(["Typeset",MathJax.Hub,newElm[0]]);
                     doc.reinit(uberBase);
                 });
             } else {

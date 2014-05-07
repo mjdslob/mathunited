@@ -82,18 +82,39 @@ extension-element-prefixes="exsl">
                 <xsl:apply-templates mode="remove-xhtml"/>
             </xsl:variable>
             <!--dit is geen document, maar slechts 1 item van xml, gebruikt door de editor om een stukje content
-                in te voegen -->
+            in te voegen -->
             <div class="item-container">
                 <div class="_editor_context_base">
-                    <div class="menu-button-div item-container-menu">
-                        <span class="menu-button"></span>
-                    </div>
-                    <div tag="include">
-                        <xsl:apply-templates select="@*" mode="editor"/>
-                        <xsl:apply-templates select="$pass1" mode="editor">
-                            <xsl:with-param name="fname" select="@filename"/>
-                        </xsl:apply-templates>
-                    </div>
+                    <xsl:choose>
+                        <xsl:when test="example">
+                            <div  class="_editor_option" type="action" name="kopiëren" function="actions/CopyHandler">
+                                <xsl:attribute name="params">{itemtype: 'example'}</xsl:attribute>
+                            </div>
+                            <div class="_editor_option" type="repeat" function="actions/OptionalMenuItem" name="Voorbeeldtekst">
+                                <xsl:attribute name="params">{item: 'example'}</xsl:attribute>
+                                <div class="menu-button-div item-container-menu">
+                                    <span class="menu-button"></span>
+                                </div>
+                                <div tag="include">
+                                    <xsl:apply-templates select="@*" mode="editor"/>
+                                    <xsl:apply-templates select="$pass1" mode="editor">
+                                        <xsl:with-param name="fname" select="@filename"/>
+                                    </xsl:apply-templates>
+                                </div>
+                            </div>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <div class="menu-button-div item-container-menu">
+                                <span class="menu-button"></span>
+                            </div>
+                            <div tag="include">
+                                <xsl:apply-templates select="@*" mode="editor"/>
+                                <xsl:apply-templates select="$pass1" mode="editor">
+                                    <xsl:with-param name="fname" select="@filename"/>
+                                </xsl:apply-templates>
+                            </div>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </div>
             </div>
         </xsl:when>
@@ -101,20 +122,42 @@ extension-element-prefixes="exsl">
             <xsl:variable name="content" select="document(concat($docbase,@filename))"/>
             <div class="item-container">
                 <div class="_editor_context_base">
-                    <div class="menu-button-div item-container-menu">
-                        <span class="menu-button"></span>
-                    </div>
-                    <div tag="{name()}">
-                        <xsl:apply-templates select="@*" mode="editor"/>
-                        <xsl:apply-templates select="$content" mode="editor">
-                            <xsl:with-param name="fname" select="@filename"/>
-                        </xsl:apply-templates>
-                    </div>
+                    <xsl:choose>
+                        <xsl:when test="$content/example">
+                            <div  class="_editor_option" type="action" name="kopiëren" function="actions/CopyHandler">
+                                <xsl:attribute name="params">{itemtype: 'example'}</xsl:attribute>
+                            </div>
+                            <div class="_editor_option" type="repeat" function="actions/OptionalMenuItem" name="Voorbeeldtekst">
+                                <xsl:attribute name="params">{item: 'example'}</xsl:attribute>
+                                <div class="menu-button-div item-container-menu">
+                                    <span class="menu-button"></span>
+                                </div>
+                                <div tag="{name()}">
+                                    <xsl:apply-templates select="@*" mode="editor"/>
+                                    <xsl:apply-templates select="$content" mode="editor">
+                                        <xsl:with-param name="fname" select="@filename"/>
+                                    </xsl:apply-templates>
+                                </div>
+                            </div>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <div class="menu-button-div item-container-menu">
+                                <span class="menu-button"></span>
+                            </div>
+                            <div tag="{name()}">
+                                <xsl:apply-templates select="@*" mode="editor"/>
+                                <xsl:apply-templates select="$content" mode="editor">
+                                    <xsl:with-param name="fname" select="@filename"/>
+                                </xsl:apply-templates>
+                            </div>
+                        </xsl:otherwise>    
+                    </xsl:choose>
                 </div>
             </div>
         </xsl:otherwise>
     </xsl:choose>
 </xsl:template>
+
 <xsl:template match="applet[@type='ggb']" mode="editor">
     <div tag="{name()}">
         <xsl:apply-templates select="@* | node()" mode="editor"/>

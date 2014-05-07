@@ -39,7 +39,7 @@ public class CopyServlet extends HttpServlet {
         try{
             super.init(config);
             context = getServletContext();
-            LOGGER.setLevel(Level.INFO);
+            LOGGER.setLevel(Level.FINE);
         } catch(Exception e) {
             e.printStackTrace();
             LOGGER.log(Level.SEVERE, e.getMessage());
