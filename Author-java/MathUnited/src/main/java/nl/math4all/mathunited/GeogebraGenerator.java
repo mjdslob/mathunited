@@ -11,6 +11,11 @@ import java.util.Map;
 import java.util.HashMap;
 import nl.math4all.mathunited.resolvers.ContentResolver;
 import javax.xml.bind.DatatypeConverter;
+import nl.math4all.mathunited.configuration.Configuration;
+import nl.math4all.mathunited.configuration.Repository;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.Path;
 
 
 //mathunited.pragma-ade.nl/MathUnited/view?variant=basis&comp=m4a/xml/12hv-me0&subcomp=3&item=explore
@@ -47,16 +52,23 @@ public class GeogebraGenerator extends HttpServlet {
             if(fname==null) {
                 throw new Exception("Please supply a filename");
             }
-            LOGGER.fine("file="+fname);
-            URL url = new URL(baseURL+fname);
-            URLConnection conn = url.openConnection();
-            int length = conn.getContentLength();
-            LOGGER.fine("length="+length);
-            byte[] b = new byte[length];
-            InputStream is = url.openStream();
-            int numread = is.read(b);
-            is.close();
-            String b64 = DatatypeConverter.printBase64Binary(b);
+            Configuration config = Configuration.getInstance();
+            String repo = request.getParameter("repo");
+            if(repo==null) {
+                throw new Exception("Please supply a repository name");
+            }
+            Map<String, Repository> repoMap = config.getRepos();
+            Repository repository = repoMap.get(repo);
+            if(repository==null) {
+                throw new Exception("Unknown repository: "+repo);
+            }
+            String pathstr = config.getContentRoot()+repository.getPath();
+            File file=new File(pathstr+fname);
+            LOGGER.log(Level.FINE, "file={0}", pathstr+fname);
+            if(!file.exists()) throw new Exception("File does not exist: "+pathstr+fname);
+            Path path = Paths.get(pathstr);
+            byte[] data = Files.readAllBytes(path);
+            String b64 = DatatypeConverter.printBase64Binary(data);
             response.setContentType("text/html");
             pw.println("<html style='overflow:hidden'><head><style type='text/css'><!--body { font-family:Arial,Helvetica,sans-serif; margin-left:40px }--></style><script type='text/javascript' language='javascript' src='"+ggbSource+"'></script></head>");
             pw.println("<body><article class='geogebraweb' style='display:inline-block;' data-param-ggbbase64='"+b64+"'></article>");
