@@ -11,37 +11,22 @@ extension-element-prefixes="exsl">
 <xsl:param name="num"/>
 <xsl:param name="refbase"/> <!-- used for includes: base path. Includes final / -->
 <xsl:param name="ws_id"/>
-<xsl:param name="comp"/>
 <xsl:param name="option"/>
-<xsl:param name="component"/>
-<xsl:param name="subcomp"/>
 <xsl:param name="is_mobile"/>
 <xsl:param name="id"/>
 <xsl:param name="repo"/>
 <xsl:param name="repo-path"/>
 <xsl:param name="baserepo-path"/>
+<xsl:param name="userid"/>
     
 <xsl:variable name="cm2px" select="number(50)"/>
-<xsl:variable name="parsed_component" select="saxon:parse($component)"/>
-<xsl:variable name="subcomponent" select="$parsed_component/component/subcomponents/subcomponent[@id=$subcomp]"/>
-<xsl:variable name="menu_color" select="subcomponent/meta/param[@name='menu-color']"/>
-<xsl:variable name="variant">studiovo_view</xsl:variable>
-<xsl:variable name="intraLinkPrefix">
-    <xsl:choose>
-        <xsl:when test="$option">
-            <xsl:value-of select="concat('view?comp=',$comp,'&amp;variant=',$variant,'&amp;option=',$option,'&amp;subcomp=')"/>
-        </xsl:when>
-        <xsl:otherwise>
-            <xsl:value-of select="concat('view?comp=',$comp,'&amp;variant=',$variant,'&amp;subcomp=')"/>
-        </xsl:otherwise>
-    </xsl:choose>
-</xsl:variable>
+<xsl:variable name="menu_color" select="assignments/meta/param[@name='menu-color']"/>
 <xsl:variable name="cssfile">
     <xsl:choose>
-      <xsl:when test="$parsed_component/component/webdata/cssfile">
-        <xsl:value-of select="$parsed_component/component/webdata/cssfile"/>
+      <xsl:when test="assignments/meta/param[@name='cssfile']">
+        <xsl:value-of select="assignments/meta/param[@name='cssfile']"/>
       </xsl:when>
-      <xsl:otherwise>basis_studiovo.css?v=2</xsl:otherwise>
+      <xsl:otherwise>basis_studiovo.css?v12</xsl:otherwise>
     </xsl:choose>
 </xsl:variable>
 <xsl:variable name="overviewRef"><xsl:value-of select="string('/auteur/math4all.html')"/></xsl:variable>
@@ -61,80 +46,30 @@ extension-element-prefixes="exsl">
 <xsl:output method="html" doctype-system="http://www.w3.org/TR/html4/strict.dtd" doctype-public="-//W3C//DTD HTML 4.01//EN"
 indent="yes" encoding="utf-8"/>
 
-<xsl:include href="calstable.xslt"/>
-<xsl:include href="content.xslt"/>
-<xsl:include href="studiovo_exercises.xslt"/>
-
-  <!--   **************** -->
-<!--   START PROCESSING -->
-<!--   **************** -->
 <xsl:template match="/">
 <html>
 <head>
    <xsl:choose>
       <!--  subtitle difference in references: leading slash or not -->
       <xsl:when test="$host_type='GAE'">
-        <link type="text/css" href="/javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
-        <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
-        <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
-        <script type="text/javascript" src="/javascript/MathUnited.js"/>
-        <script type="text/javascript" src="/javascript/MathUnited_studiovo.js"/>
-        <script type="text/javascript" src="/javascript/jquery.ui.touch-punch.min.js"/>
-        <script type="text/javascript" src="/javascript/jquery.jplayer.min.js"/>
-		<script type="text/javascript" src="/javascript/jquery.scrollIntoView.min.js"/>
-        <link rel="stylesheet" href="/css/content.css" type="text/css"/>
         <link rel="stylesheet" type="text/css">
 	        <xsl:attribute name="href">/css/<xsl:value-of select="$cssfile"/></xsl:attribute>
         </link>
+        <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
       </xsl:when>
       <xsl:otherwise>
-        <link type="text/css" href="javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
-        <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
-        <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
-        <script type="text/javascript" src="javascript/MathUnited.js"/>
-        <script type="text/javascript" src="javascript/MathUnited_studiovo.js"/>
-        <script type="text/javascript" src="javascript/jquery.ui.touch-punch.min.js"/>
-        <script type="text/javascript" src="javascript/jquery.jplayer.min.js"/>
-		<script type="text/javascript" src="javascript/jquery.scrollIntoView.min.js"/>
-        <link rel="stylesheet" href="css/content.css" type="text/css"/>
 	      <link rel="stylesheet" type="text/css">
 	   	    <xsl:attribute name="href">css/<xsl:value-of select="$cssfile"/></xsl:attribute>
 	      </link>
+        <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
       </xsl:otherwise>
    </xsl:choose>
-    
-   <title><xsl:value-of select="$subcomponent/title"/></title>
-   
-   <link href="https://vjs.zencdn.net/c/video-js.css" rel="stylesheet"/>
-   <script src="https://vjs.zencdn.net/c/video.js"></script>	
-
-    <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({
-            extensions: ["mml2jax.js","asciimath2jax.js"],
-            config : ["MMLorHTML.js" ],
-            AsciiMath: {
-                decimal: ","
-            },
-            jax: ["input/MathML","input/AsciiMath"],
-            "HTML-CSS": {
-                availableFonts: [],
-                preferredFont: "TeX",
-                webFont: "",
-                imageFont: "",
-                undefinedFamily: "'Arial Unicode MS','sans-serif'",
-                scale: 80
-            }
-        });
-    </script>
-    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js">
-    </script>
-
 </head>
 
 <!--   **************** -->
 <!--        BODY        -->
 <!--   **************** -->
-<body>
+<body class="result-page">
 <div class="pageDiv">
     <div id="menubar">
         <xsl:if test="$menu_color">
@@ -153,9 +88,8 @@ indent="yes" encoding="utf-8"/>
 	    	  </xsl:otherwise>
 	   	  </xsl:choose>
 
-            <span id="logo-text"><xsl:value-of select="$parsed_component/component/subtitle"/></span>
+            <span id="logo-text"></span>
         </div>
-        <xsl:apply-templates select="subcomponent/componentcontent/*" mode="navigation"/>
 
         <div id="menu-lines">
             <div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/>
@@ -166,20 +100,35 @@ indent="yes" encoding="utf-8"/>
             <img>
 		       <xsl:choose>
 		          <xsl:when test="$host_type='GAE'">
-		             <xsl:attribute name="src"><xsl:value-of select="subcomponent/meta/param[@name='banner-image']"/></xsl:attribute>
+		             <xsl:attribute name="src"><xsl:value-of select="assignments/meta/param[@name='banner-image']"/></xsl:attribute>
 		          </xsl:when>
 		          <xsl:otherwise>
-		             <xsl:attribute name="src"><xsl:value-of select="concat($urlbase, subcomponent/meta/param[@name='banner-image']/resource/name)"/></xsl:attribute>
+		             <xsl:attribute name="src"><xsl:value-of select="concat($urlbase, assignments/meta/param[@name='banner-image']/resource/name)"/></xsl:attribute>
 		          </xsl:otherwise>
 		       </xsl:choose>
 			</img>
         </div>
         <div id="ribbon">
-            <span id="kruimelpad"></span>
-            <span class="subcomponent-title"><xsl:value-of select="$subcomponent/title"/></span>
+            <span id="kruimelpad">Voortgang <xsl:value-of select="$userid"></xsl:value-of></span>
+            <span class="subcomponent-title"><xsl:value-of select="assignments/meta/param[@name='title']"/></span>
         </div>
         <div id="content">
-            <xsl:apply-templates select="subcomponent/componentcontent/*"/>
+        	<table class="layout-table">
+        		<tr>
+        			<td>
+			        	<table class="grouplist">
+			            	<xsl:apply-templates select="assignments/group" mode="grouplist"/>
+			        	</table>
+        			</td>
+        			<td class="rightcontent">
+		            	<xsl:apply-templates select="assignments/group" mode="group"/>
+		            	<!--  tr class="totals">
+			            	<td class="title">Totalen:</td>
+			            	<td class="score"><xsl:value-of select="/assignments/@uniqueScore" />/<xsl:value-of select="/assignments/@uniqueTotal" /></td>
+		            	</tr -->
+        			</td>
+        		</tr>
+        	</table>
         </div>
     </div>
 </div>
@@ -301,123 +250,38 @@ indent="yes" encoding="utf-8"/>
     <xsl:apply-templates mode="content"/>
 </xsl:template>
 
-<xsl:template match="textref" mode="content">
-    <xsl:choose>
-        <xsl:when test="@ref">
-            <span class="textref" ref="{@ref}"><xsl:value-of select="."/></span>
-        </xsl:when>
-        <xsl:otherwise>
-            <xsl:variable name="_comp">
-                <xsl:choose>
-                    <xsl:when test="@comp"><xsl:value-of select="@comp"/></xsl:when>
-                    <xsl:otherwise><xsl:value-of select="$comp"/></xsl:otherwise>
-                </xsl:choose>
-            </xsl:variable>
-            <xsl:variable name="_subcomp">
-                <xsl:choose>
-                    <xsl:when test="@subcomp"><xsl:value-of select="@subcomp"/></xsl:when>
-                    <xsl:otherwise><xsl:value-of select="$subcomp"/></xsl:otherwise>
-                </xsl:choose>
-            </xsl:variable>
-            
-            <xsl:choose>
-                <xsl:when test="$_cross_ref_as_links_">
-                    <a class="textref" item="{@item}">
-                        <xsl:if test="@target">
-                            <xsl:attribute name="target"><xsl:value-of select="@target"/></xsl:attribute>
-                        </xsl:if>
-                        <xsl:attribute name="href"><xsl:value-of select="concat('view?comp=',$_comp,'&amp;subcomp=',$_subcomp,'&amp;variant=',$variant)"/></xsl:attribute>
-                        <xsl:value-of select="."/>
-
-                    </a>
-                </xsl:when>
-                <xsl:otherwise>
-                    <span class="textref" item="{@item}">
-                        <xsl:value-of select="."/>
-                    </span>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:otherwise>
-    </xsl:choose>
-</xsl:template>
-
 <xsl:template match="pages" mode="content">
     <div class="pages-container">
         <xsl:apply-templates select="page" mode="content"/>
     </div>
 </xsl:template>
-<xsl:template match="page" mode="content">
-    <xsl:variable name="pos" select="position()"/>
-    <div num="{$pos}">
-        <xsl:choose>
-            <xsl:when test="$pos=1">
-                <xsl:attribute name="class">page selected</xsl:attribute>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:attribute name="class">page</xsl:attribute>
-            </xsl:otherwise>
-        </xsl:choose>
-        <xsl:apply-templates mode="content"/>
-        <div class="page-navigator">
-            <xsl:for-each select="preceding-sibling::page">
-                <div class="page-navigator-ref" onclick="javascript:togglePage(this)"><xsl:value-of select="position()"/></div>
-            </xsl:for-each>
-            <div class="page-navigator-ref selected"><xsl:value-of select="$pos"/></div>
-            <xsl:for-each select="following-sibling::page">
-                <div class="page-navigator-ref" onclick="javascript:togglePage(this)"><xsl:value-of select="$pos+position()"/></div>
-            </xsl:for-each>
-            <div style="clear:both"/>
-        </div>
-    </div>
+
+<xsl:template match="group" mode="grouplist">
+	<tr>
+		<td class="title" id="{translate(@title,' ','_')}" onclick="$('.group.level-1').hide(); $('#{translate(@title,' ','_')}.group.level-1').show(100); $('.grouplist .title').removeClass('selected'); $('.grouplist #{translate(@title,' ','_')}').addClass('selected')"><xsl:value-of select="@title" /></td>
+	</tr>
+</xsl:template>
+
+<xsl:template match="group" mode="group">
+	<div id="{translate(@title,' ','_')}">
+		<xsl:attribute name="class">group level-<xsl:value-of select="count(ancestor::group)+1" /></xsl:attribute>
+		<!-- td class="title"><xsl:value-of select="@title" /></td>
+		<td class="score"><span><xsl:value-of select="@score" />/<xsl:value-of select="@total" /></span></td -->	
+		<span class="title" onclick="$('.group.level-{count(ancestor::group)+1} .group-content').hide(); $(this).next().show(100)"><xsl:value-of select="@title" /></span>
+		<div class="group-content">
+			<xsl:apply-templates select="group" mode="group"/>
+			<xsl:apply-templates select="assignment" mode="assignment"/>
+		</div>
+	</div>
+</xsl:template>
+<xsl:template match='assignment' mode='assignment'>
+	<div class="item">
+		<div class="title"><xsl:value-of select="@title" /></div>
+		<div class="score"><span><xsl:value-of select="@score" />/<xsl:value-of select="@total" /></span></div>
+		<div class="clear-fix"></div>	
+	</div>
 </xsl:template>
 <xsl:template match='block[@medium="web"]'><xsl:apply-templates/></xsl:template>
-
-<!--  ******************** -->
-<!--   EXERCISES (QTI)     -->
-<!--  ******************** -->
-<xsl:template match="assessment" mode="content">
-    <div class="assessment-wrapper">
-        <xsl:variable name="src" select="concat('http://qt-studiovo.pulseon.nl/qt/player.html?testId=',@src,'&amp;lang=nl-NL&amp;window=false')"/>
-        <xsl:choose>
-            <xsl:when test="@width"><xsl:attribute name="popup_width" select="@width"/></xsl:when>
-            <xsl:otherwise><xsl:attribute name="popup_width" select="495"/></xsl:otherwise>
-        </xsl:choose>    
-        <xsl:choose>
-            <xsl:when test="@display='popup'">
-                <div class="assessment-button">
-                    <span class="assessment-label" onclick="javascript:toggleAssessment(this, '{$src}')"><xsl:value-of select="@label"/></span>
-                    <span class="assessment-label-text"><xsl:apply-templates mode="content"/></span>
-                </div>
-            </xsl:when>
-            <xsl:otherwise>
-                <p><xsl:apply-templates mode="content"/></p>
-            </xsl:otherwise>
-        </xsl:choose>
-        <div class="assessment-content">
-        <iframe>
-            <xsl:if test="not(@display='popup')">
-                <xsl:attribute name="class">visible</xsl:attribute>
-            </xsl:if>
-            <xsl:attribute name="style">
-                <xsl:choose>
-                    <xsl:when test="@width">width:<xsl:value-of select="@width"/>px;</xsl:when>
-                    <xsl:otherwise><xsl:attribute name="width">width:495px;</xsl:attribute></xsl:otherwise>
-                </xsl:choose><xsl:choose>
-                    <xsl:when test="@height">height:<xsl:value-of select="@height"/>px;</xsl:when>
-                    <xsl:otherwise>height:300px;</xsl:otherwise>
-                </xsl:choose>
-            </xsl:attribute>
-            <xsl:if test="not(@display='popup')">
-                <xsl:attribute name="src" select="$src"/>
-            </xsl:if>
-            <!--
-            <xsl:attribute name="src" select="concat('http://qt-demo.pulseon.nl/qt/player.html?testId=0k2xWZR1aR33tx_9MP-_qXbIXncQzNnCAWsbUDdY8BQ','&amp;lang=nl-NL&amp;window=',$dowindow)"/>
-            -->        
-            <xsl:apply-templates mode="content"/>
-        </iframe>
-        </div>
-    </div>
-</xsl:template>
 
 <!-- overrule default in content.xslt: images are in folder of xml content -->
 <xsl:template match="resource" mode="content" priority="2">

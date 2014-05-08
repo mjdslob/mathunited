@@ -298,6 +298,9 @@ $(document).ready(function () {
     });
     //$(".jplayer_inspector").jPlayerInspector({jPlayer:player});
 
+    $(".item-next").click(function () { nextItem(this) });
+    $(".item-feedback").click(function () { showFeedback(this) });
+
 });
 
 function setTab(tabid) {
@@ -335,8 +338,19 @@ function SVO_triggerMenuItem(elm) {
     setTab(tabid);
 }
 function choiceLabelClick(elm) {
+    var scoreHolder = $(elm).parents('.exercise-multi-item').first();
+    var totalClicks = scoreHolder.data("total");
+    if (totalClicks == null) totalClicks = 0;
+    var correctClicks = scoreHolder.data("correct");
+    if (correctClicks == null) correctClicks = 0;
     var par = $(elm).parents('.choice-exercise-option');
     var expar = $(par).parents('.exercise-item');
+    var waschecked = par.hasClass('checked');
+    $('.choice-exercise-option', expar).removeClass('checked'); // remove all checks
+    $('.choice-exercise-option .feedback', expar).removeClass('show');
+    if ($('.choice-exercise-option .feedback', expar).length > 0)
+        $('.item-feedback', expar).addClass('show');
+    par.addClass('checked');
     var total_correct = $('*[state="yes"]', expar).length;
     var state = $(par).attr('state');
     if (state == 'yes') {
@@ -344,21 +358,89 @@ function choiceLabelClick(elm) {
         $(elm).addClass('good-answer');
         if ($('.good-answer', expar).length == total_correct) {
             if (expar.next().length > 0) {
-                $('.item-completed', expar).addClass('show');
+                $('.item-next', expar).addClass('show');
             } else {
                 $('.exercise-completed', $(elm).parents('.exercise')).addClass('show');
             }
         } else {
-            $('.item-completed', expar).removeClass('show');
+            $('.item-next', expar).removeClass('show');
             $('.exercise-completed', $(elm).parents('.exercise')).removeClass('show');
+        }
+        if (!waschecked) {
+            totalClicks++;
+            correctClicks++;
         }
     } else {
         $('.choise-exercise-label', expar).removeClass('good-answer');
         $(elm).addClass('wrong-answer');
-        $('.item-completed', expar).removeClass('show');
+        $('.item-next', expar).removeClass('show');
+        $('.exercise-completed', $(elm).parents('.exercise')).removeClass('show');
+        if (!waschecked) {
+            totalClicks++;
+        }
+    }
+
+    scoreHolder.data("total", totalClicks);
+    scoreHolder.data("correct", correctClicks);
+    $('.item-score', scoreHolder).text("Score: " + (correctClicks / totalClicks * 100).toFixed(0) + "%");
+}
+
+function multipleLabelClick(elm) {
+    var scoreHolder = $(elm).parents('.exercise-multi-item').first();
+    var totalClicks = scoreHolder.data("total");
+    if (totalClicks == null) totalClicks = 0;
+    var correctClicks = scoreHolder.data("correct");
+    if (correctClicks == null) correctClicks = 0;
+    var par = $(elm).parents('.multiple-exercise-option');
+    var expar = $(par).parents('.exercise-item');
+    $('.multiple-exercise-option .feedback', expar).removeClass('show');
+    if ($('.multiple-exercise-option .feedback', expar).length > 0)
+        $('.item-feedback', expar).addClass('show');
+    var total_correct = $('*[state="yes"]', expar).length;
+    var state = $(par).attr('state');
+    if (state == 'yes') {
+//        $('.multiple-exercise-label', expar).removeClass('wrong-answer');
+        if ($(elm).hasClass('good-answer')) {
+            $(elm).removeClass('good-answer');
+            par.removeClass('checked');
+        }
+        else {
+            $(elm).addClass('good-answer');
+            par.addClass('checked');
+            totalClicks++;
+            correctClicks++;
+        }
+    } else {
+//        $('.multiple-exercise-label', expar).removeClass('good-answer');
+        if ($(elm).hasClass('wrong-answer')) {
+            $(elm).removeClass('wrong-answer');
+            par.removeClass('checked');
+        }
+        else {
+            $(elm).addClass('wrong-answer');
+            par.addClass('checked');
+            totalClicks++;
+        }
+        $('.item-next', expar).removeClass('show');
+        $('.exercise-completed', $(elm).parents('.exercise')).removeClass('show');
+    }
+
+    scoreHolder.data("total", totalClicks);
+    scoreHolder.data("correct", correctClicks);
+    $('.item-score', scoreHolder).text("Score: " + (correctClicks / totalClicks * 100).toFixed(0) + "%");
+
+    if ($('.good-answer', expar).length == total_correct && $('.wrong-answer', expar).length == 0) {
+        if (expar.next().length > 0) {
+            $('.item-next', expar).addClass('show');
+        } else {
+            $('.exercise-completed', $(elm).parents('.exercise')).addClass('show');
+        }
+    } else {
+        $('.item-next', expar).removeClass('show');
         $('.exercise-completed', $(elm).parents('.exercise')).removeClass('show');
     }
 }
+
 function nextItem(elm) {
     var par = $(elm).parents('.exercise-item');
     var nxt = par.next();
@@ -367,6 +449,14 @@ function nextItem(elm) {
         nxt.addClass('selected');
     }
 }
+
+function showFeedback(elm)
+{
+    var par = $(elm).parents('.exercise-item');
+    $('.choice-exercise-option.checked .feedback', par).addClass('show');
+    $('.multiple-exercise-option.checked .feedback', par).addClass('show');
+}
+
 function togglePage(elm) {
     var num = $(elm).text();
     var parent = $(elm).parents('.pages-container').first();
@@ -455,4 +545,13 @@ function toggleAssessment(elm, src) {
     }
     else
         popupDialogs[index].dialog('open');
+}
+function toggleSlider(elm) {
+    var parent = $(elm).parents('.slider-wrapper').first();
+    var content = $('.slider-content', parent).first();
+    if ($(content).is(':visible'))
+        $(elm).removeClass("open");
+    else
+        $(elm).addClass("open");
+    $(content).slideToggle("slow", function () { $(content).scrollIntoView(); });
 }

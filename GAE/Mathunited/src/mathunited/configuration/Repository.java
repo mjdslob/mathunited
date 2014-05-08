@@ -27,6 +27,7 @@ public class Repository {
     public String edit_permission;
     public String defaultVariant;
     public String baseRepo;
+    public String defaultResultVariant;
     
     public static void clearCache() {
     	componentMaps.clear();

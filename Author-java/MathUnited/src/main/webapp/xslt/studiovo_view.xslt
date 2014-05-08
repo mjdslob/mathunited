@@ -41,7 +41,7 @@ extension-element-prefixes="exsl">
       <xsl:when test="subcomponent/meta/param[@name='css-file']">
         <xsl:value-of select="subcomponent/meta/param[@name='css-file']"/>
       </xsl:when>
-      <xsl:otherwise>basis_studiovo.css</xsl:otherwise>
+      <xsl:otherwise>basis_studiovo.css?v=2</xsl:otherwise>
     </xsl:choose>
 </xsl:variable>
 <xsl:variable name="overviewRef"><xsl:value-of select="string('/auteur/math4all.html')"/></xsl:variable>
@@ -81,6 +81,7 @@ indent="yes" encoding="utf-8"/>
         <script type="text/javascript" src="/javascript/MathUnited_studiovo.js"/>
         <script type="text/javascript" src="/javascript/jquery.ui.touch-punch.min.js"/>
         <script type="text/javascript" src="/javascript/jquery.jplayer.min.js"/>
+        <script type="text/javascript" src="/javascript/jquery.scrollIntoView.min.js"/>
         <link rel="stylesheet" href="/css/content.css" type="text/css"/>
         <link rel="stylesheet" type="text/css">
 	        <xsl:attribute name="href">/css/<xsl:value-of select="$cssfile"/></xsl:attribute>
@@ -94,6 +95,7 @@ indent="yes" encoding="utf-8"/>
         <script type="text/javascript" src="javascript/MathUnited_studiovo.js"/>
         <script type="text/javascript" src="javascript/jquery.ui.touch-punch.min.js"/>
         <script type="text/javascript" src="javascript/jquery.jplayer.min.js"/>
+        <script type="text/javascript" src="javascript/jquery.scrollIntoView.min.js"/>
         <link rel="stylesheet" href="css/content.css" type="text/css"/>
 	      <link rel="stylesheet" type="text/css">
 	   	    <xsl:attribute name="href">css/<xsl:value-of select="$cssfile"/></xsl:attribute>

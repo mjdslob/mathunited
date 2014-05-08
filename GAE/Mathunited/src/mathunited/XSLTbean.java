@@ -1,28 +1,24 @@
 package mathunited;
 
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletContext;
 import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.ErrorListener;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.Templates;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.URIResolver;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.dom.DOMResult;
-import java.util.logging.Logger;
-import java.util.logging.Level;
-import java.io.*;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import java.util.Map;
-import java.util.HashMap;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
 import mathunited.configuration.TransformationSpec;
-import mathunited.configuration.Configuration;
 
 /**
- *
  * @author martijn
  */
 public class XSLTbean {
@@ -40,18 +36,19 @@ public class XSLTbean {
         });
     }
     
-
+    private Map<String,TransformationSpec> transformationMap;
+    
     //the constructor simply gets a new TransformerFactory instance
-    public XSLTbean(ServletContext ctxt) throws Exception {
+    public XSLTbean(ServletContext ctxt, Map<String,TransformationSpec> transformationMap) throws Exception {
         LOGGER.setLevel(Level.INFO);
         context = ctxt;
+        this.transformationMap = transformationMap;
     }
 
-    public static Templates getTemplate(String name) throws Exception{
+    public static Templates getTemplate(String name, Map<String,TransformationSpec> transformationMap) throws Exception{
         Templates template = templateMap.get(name);
     	try{
 	        if(template==null){
-	            Map<String,TransformationSpec> transformationMap = Configuration.getInstance().getVariants();
 	            TransformationSpec spec = transformationMap.get(name);
 	            String path = spec.path;
 	            if(path==null) throw new Exception("Onbekende transformatie: "+name);
@@ -118,7 +115,7 @@ public class XSLTbean {
                           URIResolver resolver,
                           java.io.ByteArrayOutputStream out) throws Exception {
 
-        Templates templ = getTemplate(variant);
+        Templates templ = getTemplate(variant, transformationMap);
         Transformer transformer = templ.newTransformer();
 
         for(Map.Entry<String,String> entry : parameterMap.entrySet()) {
@@ -135,8 +132,9 @@ public class XSLTbean {
     public org.w3c.dom.Node processToDOM(Source xmlSource,
                           String variant,
                           Map<String, String> parameterMap,
-                          URIResolver resolver) throws Exception{
-        Templates templ = getTemplate(variant);
+                          URIResolver resolver,
+                          Map<String,TransformationSpec> transformationMap) throws Exception{
+        Templates templ = getTemplate(variant, transformationMap);
         Transformer transformer = templ.newTransformer();
         for(Map.Entry<String,String> entry : parameterMap.entrySet()) {
             transformer.setParameter(entry.getKey(), entry.getValue());

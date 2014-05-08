@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 
 public class ViewServlet extends HttpServlet {
     private final static Logger LOGGER = Logger.getLogger(XSLTbean.class.getName());
-    XSLTbean processor;  
     ServletContext context;
     
     @Override
@@ -23,7 +22,6 @@ public class ViewServlet extends HttpServlet {
             super.init(config);
             // parse the xslt transforms
             context = getServletContext();
-            processor = new XSLTbean(context);
         } catch(Exception e) {
         	LOGGER.severe((new StringBuilder("Init of ViewServlet failed")).append(e.getMessage()).toString());
         }
@@ -36,6 +34,7 @@ public class ViewServlet extends HttpServlet {
 
         try{
             Configuration config = Configuration.getInstance(context);
+            XSLTbean processor = new XSLTbean(context, config.getVariants());
 
             //read request parameters
             Map<String, String[]> paramMap = request.getParameterMap();

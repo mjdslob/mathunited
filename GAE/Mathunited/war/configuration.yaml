@@ -14,6 +14,9 @@ variants :
   m4a_insert : {path: /xslt/m4a_insert.xslt}
   m4a_remove : {path: /xslt/m4a_remove.xslt}
   m4a_inverse : {path: /xslt/m4a_inverse.xslt}
+  
+resultVariants :
+  studiovo_result: {path: /xslt/studiovo_result.xslt}
 
 roles :
   - admin
@@ -44,6 +47,7 @@ repos :
     path: content-studiovo/concept
     edit_permission: 
     defaultVariant: studiovo_view
+    defaultResultVariant: studiovo_result
   studiovo_kennisbank :
     id : studiovo-kennisbank-2013-12-29
     path: content-studiovo/kennisbank
