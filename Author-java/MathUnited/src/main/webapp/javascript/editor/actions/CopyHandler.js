@@ -29,7 +29,22 @@ define(['jquery','app/Document','app/DOMgenerator'], function($, doc,generator) 
             var type = params.itemtype;
             generator.getXML(parent[0], function(xml) {
                 xml = $(xml);
-                
+                //modify ids
+                //newid = <id>-copy1.xml
+                $('include',xml).each(function() {
+                    var fname = $(this).attr('filename');
+                    //remove .xml and optional -copy<num> if this id is already the result of a previous copy
+                    var fnamebase = fname.replace(/(-copy\d*)?\.xml$/,'');
+                    var num = 1;
+                    var newfname = fnamebase+'-copy'+num+'.xml';
+                    var elm = $('div[tag="include"][filename="'+newfname+'"]');
+                    while(elm.length>0) {
+                        num++;
+                        newfname = fnamebase+'-copy'+num+'.xml'
+                        elm = $('div[tag="include"][filename="'+newfname+'"]');
+                    }
+                    $(this).attr('filename',newfname);
+                });
                 //send xml to server
                 var xmlstr = generator.xmlToString(xml);
                 $.post(saveToClipboard_url, {

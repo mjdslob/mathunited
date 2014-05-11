@@ -91,7 +91,6 @@ define(['jquery'], function($) {
                     if(putBrackets) result = result+')';
                     break;
                 case 'msubsup':
-                    debugger;
                     var c1 = $(elm).children()[0];
                     var c2 = $(elm).children()[1];
                     var c3 = $(elm).children()[2];
@@ -122,7 +121,6 @@ define(['jquery'], function($) {
                 case 'mstyle': return this.transform($(elm.childNodes)); break;
                 case 'text':   return this.transform($(elm.childNodes)); break;
                 default: 
-                    debugger;
                     return '<span>#?? '+name+'??#</span>'; break;
             }
         },

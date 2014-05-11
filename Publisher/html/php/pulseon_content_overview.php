@@ -25,40 +25,37 @@ class Overview {
     var $logger;
     var $callback;      //not null if dynamic scripting callback is used
     var $comm;          //request data $_POST or $_GET
-    var $config_contentRoot;
     
     function Overview() {
         header('Content-type: text/html');
         echo "<html><head><style>.component-div{margin:10px 0px;} .component-div a{display:block; margin-left:10px;}</style></head><body>";
 try{
         include("Config.php");
-        $this->config_contentRoot = $config_contentRoot;
         
         //post or get?
         $repoId = 'generic';
         $this->comm = $_GET;
         if( isset($this->comm['repo']) ) {
             $repoId = $this->comm['repo'];
-            $this->repo = $config_repos[$repoId];
+            $this->repo = Config::getRepoConfig($repoId);
             $this->logger = new Logger($this->loglevel, $repoId, false);
         } else {
             throw new Exception('missing repo identifier');
         }
 
         $comps = array();
-        $repo = $config_repos[$repoId];
-        if(!$repo) {
+        if(!$this->repo) {
             throw new Exception("Generate Index called with unknown repository $repoId".print_r($config_repos,true));
         }
         
         //read components
-        $conts = file_get_contents($config_contentRoot.$this->repo['basePath'].'leerlijnen/components.xml');
+        $conts = file_get_contents($this->repo['basePath'].'leerlijnen/components.xml');
         $conts = html_entity_decode($conts, ENT_QUOTES, "utf-8");
         $overview = new SimpleXMLElement($conts);
         
         
         //read thread
-        $conts = file_get_contents($config_contentRoot.$this->repo['basePath'].'leerlijnen/threads.xml');
+        $conts = file_get_contents($this->repo['basePath'].'leerlijnen/threads.xml');
         $conts = html_entity_decode($conts, ENT_QUOTES, "utf-8");
         $doc = new SimpleXMLElement($conts);
 

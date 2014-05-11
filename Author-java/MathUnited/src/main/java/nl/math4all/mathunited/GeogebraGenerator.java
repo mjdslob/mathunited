@@ -23,11 +23,7 @@ import java.nio.file.Path;
 // - other parameters are just passed to xslt
 
 public class GeogebraGenerator extends HttpServlet {
-    static final byte[] EOL = {(byte)'\r', (byte)'\n' };
     private final static Logger LOGGER = Logger.getLogger(GeogebraGenerator.class.getName());
-    XSLTbean processor;
-    Map<String, String> variantMap = new HashMap<String,String>();
-    Map<String, Component> componentMap;
     String ggbSource = "http://www.geogebra.org/web/4.2/web/web.nocache.js";
 //    String ggbSource = "http://js.geogebra.at/web/web.nocache.js";
 //    String ggbSource = "http://www.geogebratube.org/scripts/deployggb.js";
@@ -46,8 +42,6 @@ public class GeogebraGenerator extends HttpServlet {
         Writer w = response.getWriter();
         PrintWriter pw = new PrintWriter(w);
         try{
-            //read components. To be moved to init()
-            String baseURL = "http://127.0.0.1/data/";
             String fname = request.getParameter("file");
             if(fname==null) {
                 throw new Exception("Please supply a filename");
@@ -63,10 +57,9 @@ public class GeogebraGenerator extends HttpServlet {
                 throw new Exception("Unknown repository: "+repo);
             }
             String pathstr = config.getContentRoot()+repository.getPath();
-            File file=new File(pathstr+fname);
-            LOGGER.log(Level.FINE, "file={0}", pathstr+fname);
-            if(!file.exists()) throw new Exception("File does not exist: "+pathstr+fname);
-            Path path = Paths.get(pathstr);
+            String filestr= pathstr+fname;
+            LOGGER.log(Level.FINE, "file={0}", filestr);
+            Path path = Paths.get(filestr);
             byte[] data = Files.readAllBytes(path);
             String b64 = DatatypeConverter.printBase64Binary(data);
             response.setContentType("text/html");
@@ -74,6 +67,7 @@ public class GeogebraGenerator extends HttpServlet {
             pw.println("<body><article class='geogebraweb' style='display:inline-block;' data-param-ggbbase64='"+b64+"'></article>");
             pw.println("<script type='text/javascript'>var ggbApplet = document.ggbApplet;function ggbOnInit() {}</script></body></html>");
         } catch(Exception e) {
+            e.printStackTrace();
             pw.println("An error occured: "+e.getMessage());
             LOGGER.severe(e.getMessage());
         }

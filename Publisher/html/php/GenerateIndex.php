@@ -25,7 +25,6 @@ class Overview {
     var $logger;
     var $callback;      //not null if dynamic scripting callback is used
     var $comm;          //request data $_POST or $_GET
-    var $config_contentRoot;
     
     function Overview() {
         header('Content-type: text/html');
@@ -33,7 +32,6 @@ class Overview {
 try{
         set_time_limit(MAX_TIME_LIMIT); 
         include("Config.php");
-        $this->config_contentRoot = $config_contentRoot;
         
         //post or get?
         $repoId = 'generic';
@@ -51,14 +49,14 @@ try{
         }
 
         $comps = array();
-        $repo = $config_repos[$repoId];
+        $repo = Config::getRepoConfig($repoId);
         if(!$repo) {
-            throw new Exception("Generate Index called with unknown repository $repoId".print_r($config_repos,true));
+            throw new Exception("Generate Index called with unknown repository $repoId");
         }
         $paths = $repo['paths'];
         for($kk=0; $kk<count($paths); $kk++) {
             echo "<p>Searching for components in folder ".$paths[$kk].": </p><ul>";
-            $cc=$this->findComponents($config_contentRoot.$repo['basePath'], $paths[$kk], 0);
+            $cc=$this->findComponents($repo['basePath'], $paths[$kk], 0);
             echo "</ul>";
             $comps = array_merge($comps, $cc);
         }
@@ -171,8 +169,8 @@ try{
                 rename($indexPath, $newName);
             }
         }
-        $fname = $this->config_contentRoot.$repo['basePath'].'leerlijnen/components.xml.new';
-        $fnameNew = $this->config_contentRoot.$repo['basePath'].'leerlijnen/components.xml';
+        $fname = $repo['basePath'].'leerlijnen/components.xml.new';
+        $fnameNew = $repo['basePath'].'leerlijnen/components.xml';
         rename($fname, $fnameNew);
     }
 
@@ -188,7 +186,7 @@ try{
             $this->addComponent($cc, $componentsNode, $repo);
         }
         
-        $fname = $this->config_contentRoot.$repo['basePath'].'leerlijnen/components.xml.new';
+        $fname = $repo['basePath'].'leerlijnen/components.xml.new';
         $doc->asXML($fname);
     }
 
@@ -199,7 +197,7 @@ try{
          $metaDoc = $compDoc->metadata;
          $componentNode = $parent->addChild('component');
          $componentNode->addAttribute('id', $compDoc['id']);
-         $componentNode->addAttribute('basePath', $this->config_contentRoot.$repo['basePath']);
+         $componentNode->addAttribute('basePath', $repo['basePath']);
          $componentNode->addAttribute('file', $cc["relativePath"].$cc["file"]);
          $componentNode->addChild('year',$metaDoc->year);
          if(strlen($compDoc->description->title)>0){

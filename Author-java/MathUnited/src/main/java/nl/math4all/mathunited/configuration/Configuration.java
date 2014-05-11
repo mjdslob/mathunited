@@ -22,6 +22,7 @@ public class Configuration {
     public String mail_username;
     public String mail_password;
     public String admin_mail;
+    private String publicData = null;
     
     private static Configuration instance = null;
     
@@ -53,6 +54,12 @@ public class Configuration {
     
     public Configuration() { }//should not be used 
     
+    public String getPublicData() {
+        if(publicData==null) {
+            
+        }
+        return publicData;
+    }
     public void setVariants(Map<String, TransformationSpec> variantMap) {this.variantMap = variantMap;}
     public Map<String, TransformationSpec> getVariants() { return variantMap; }
     public void setRepos(Map<String, Repository> repos) {this.repoMap = repos;}
@@ -65,4 +72,5 @@ public class Configuration {
     public String getContentRoot() {return this.contentRoot;}
     public void setEntitiesFile(String file) {this.entitiesFile = file;}
     public String getEntitiesFile() {return this.entitiesFile;}
+    
 }

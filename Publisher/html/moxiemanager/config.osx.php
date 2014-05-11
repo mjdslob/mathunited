@@ -11,7 +11,7 @@ $moxieManagerConfig['general.temp_dir'] = '';
 $moxieManagerConfig['general.allow_override'] = 'hidden_tools,disabled_tools';
 
 // Filesystem
-$moxieManagerConfig['filesystem.rootpath'] = '/opt/sw/mathplus/data/';
+$moxieManagerConfig['filesystem.rootpath'] = '/Library/WebServer/Documents/data';
 $moxieManagerConfig['filesystem.include_directory_pattern'] = '';
 $moxieManagerConfig['filesystem.exclude_directory_pattern'] = '/^mcith$/i';
 $moxieManagerConfig['filesystem.include_file_pattern'] = '';
@@ -106,7 +106,7 @@ $moxieManagerConfig['ExternalAuthenticator.external_auth_url'] = '';
 $moxieManagerConfig['ExternalAuthenticator.secret_key'] = '';
 
 // Local filesystem
-$moxieManagerConfig['filesystem.local.wwwroot'] = '/opt/sw/mathplus';
+$moxieManagerConfig['filesystem.local.wwwroot'] = '/Library/WebServer/Documents';
 $moxieManagerConfig['filesystem.local.urlprefix'] = '';
 $moxieManagerConfig['filesystem.local.urlsuffix'] = '';
 $moxieManagerConfig['filesystem.local.access_file_name'] = 'mc_access';

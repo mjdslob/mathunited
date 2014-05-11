@@ -126,7 +126,6 @@ define(['jquery', 'app/TinyMCE', 'app/ContextMenu', 'algebrakit/Widget', 'jquery
                 multiple: false,
                 title: 'Afbeelding invoegen',
                 oninsert: function(args) {
-                              debugger;
                               alert('boe');
                            }
             });

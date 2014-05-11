@@ -24,7 +24,6 @@ define(['jquery','app/DOMgenerator','mathjax'], function($, generator, MathJax) 
             
             if(action==='add'){
                 generator.getContentItem(contentType, function(html) {
-                    debugger;
                     var newElm = $('<div/>');
                     newElm.append($(html));
                     if(params.location==='before') {

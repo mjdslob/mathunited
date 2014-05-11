@@ -28,6 +28,7 @@
      viewURL['malmberg'] = '/MathUnited/edit?variant=m4a_editor';
      viewURL['m4a'] = '/MathUnited/edit?parent=mathunited.pragma-ade.nl:41080/Publisher/html/publisher-ma.html&variant=m4a_editor';
      viewURL['wm'] = '/MathUnited/edit?parent=mathunited.pragma-ade.nl:41080/Publisher/html/publisher-ma.html&variant=wm_editor&item=1';
+     /*
      var baseFolder = [];
      baseFolder['m4a'] = '/index/math4all/';
      baseFolder['wm'] = '/index/wm/';
@@ -35,13 +36,13 @@
      baseFolder['m4a_en'] = '/data/content-ma/saba/leerlijnen/';
      baseFolder['test'] = '/index/test/';
      baseFolder['malmberg'] = '/leerlijnen/';
+     */
      var workflowURL = null;
      if(method==='malmberg') workflowURL='/MathUnited/workflow?repo=malmberg';
-     
      wm = new WM_Manager({
-        methodURL:  baseFolder[method]+'components.xml',
-        threadsURL: baseFolder[method]+'threads.xml',
-        methodId :  false,
+//        methodURL:  baseFolder[method]+'components.xml',
+//        threadsURL: baseFolder[method]+'threads.xml',
+        methodId: method,
         threadId :  gup('thread_id'),
         show_thread_chooser: false,
         viewURL  :  viewURL[method],

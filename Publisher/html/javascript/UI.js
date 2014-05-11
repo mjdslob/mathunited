@@ -19,6 +19,7 @@ $(document).ready(function(){
        var src = $(this).attr('link');
        if(src) {
            src = src.replace('{THREAD_ID}',wm.thread);
+           src = src.replace('{REPO_ID}',wm.repo);
            $(this).attr('src',src);
        }
     });

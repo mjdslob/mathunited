@@ -8,6 +8,8 @@ WM_CMD_PUBLISH_SINGLE_THREAD = 7;
 WM_CMD_SHOW_THREADS2 = 8;
 WM_CMD_UPLOADQTI_SUBCOMPONENT = 9;
 WM_CMD_PUBLISH_COMPONENTFILE = 10;
+WM_CMD_LOAD_CONFIG_DATA = 11;
+
 //spec:
 // - method: url to methods-overview.xml file
 // - threads: url to threads.xml file
@@ -15,8 +17,8 @@ WM_CMD_PUBLISH_COMPONENTFILE = 10;
 // - viewURL
 function WM_Manager(spec) {
     this.CallStack = [];
-    this.threadsURL = spec.threadsURL;
-    this.methodURL = spec.methodURL;
+//    this.threadsURL = spec.threadsURL;  //will be set by loadConfig()
+//    this.methodURL = spec.methodURL;
     this.repo = spec.repo;
     this.thread = spec.thread;
     this.publishURL = '/Publisher/php/Publisher.php';
@@ -30,8 +32,9 @@ WM_Manager.prototype.init = function() {
         this.addCommand(new WM_Command(WM_CMD_SHOW_THREADS2, {parent: 'edit-leerlijn-chooser', page:'publisher-edit-widget.html'}));
     }
     this.addCommand(new WM_Command(WM_CMD_SHOW_THREADS, {parent: 'thread-container-2'}));
-    this.addCommand(new WM_Command(WM_CMD_LOAD_THREAD_DATA, {url: this.threadsURL}));
-    this.addCommand(new WM_Command(WM_CMD_LOAD_METHOD_DATA, {url: this.methodURL}));
+    this.addCommand(new WM_Command(WM_CMD_LOAD_THREAD_DATA, {}));
+    this.addCommand(new WM_Command(WM_CMD_LOAD_METHOD_DATA, {}));
+    this.addCommand(new WM_Command(WM_CMD_LOAD_CONFIG_DATA, {}));
     this.execute();
 }
 
@@ -86,6 +89,9 @@ WM_Manager.prototype.continueProcessing = function() {
 	 case WM_CMD_UPLOADQTI_SUBCOMPONENT:
           this.uploadQTISubcomponent(cmd.args);
           break;
+      case WM_CMD_LOAD_CONFIG_DATA:
+          this.loadConfig();
+          break;
 	 
      default:
           alert("Unknown command: "+cmd.code);
@@ -100,6 +106,16 @@ WM_Manager.prototype.execute = function() {
     }
 }
 
+WM_Manager.prototype.loadConfig = function() {
+    var _this = this;
+    $.get('/MathUnited/repoconfig', {repo: this.repo},
+          function(data) {
+              _this.threadURL = $('threadsURL',data).text();
+              _this.methodURL = $('componentsURL',data).text();
+              _this.continueProcessing();
+          });
+}
+
 
 WM_Manager.prototype.setMessage = function(msg){
     $('message-box').html(msg);
@@ -108,7 +124,7 @@ WM_Manager.prototype.setMessage = function(msg){
 WM_Manager.prototype.loadMethodData = function(args) {
     var _this=this;
     this.modules = [];
-    $.get(args.url,
+    $.get(this.methodURL,
           function(xml) {
               var methods = [];
               var sel = $(xml).find('method');
@@ -170,7 +186,7 @@ WM_Manager.prototype.loadMethodData = function(args) {
 WM_Manager.prototype.loadThreads = function(args) {
     var _this = this;
     this.roots = [];
-    $.get(args.url,
+    $.get(this.threadURL,
         function(xml) {
             var threads = [];
             var sel;
@@ -285,7 +301,6 @@ WM_Manager.prototype.publish = function() {
     var _this = this;
     var subcomp = $('.subcomponent.selected');
     $(subcomp).each(function( index ) {
-    debugger;
         var elm = $(this);
         var compParent = elm.parents('.component-container').first();
         var compElm = $('.component', compParent).first();

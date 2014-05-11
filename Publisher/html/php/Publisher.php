@@ -35,7 +35,6 @@ class Publisher {
         }
 
         include("Config.php");
-        $this->contentRoot = $config_contentRoot;
         $this->logger = new Logger($this->loglevel, $this->repoID, false);
         try{
 
@@ -56,7 +55,7 @@ class Publisher {
                 $this->repoID = $this->comm['repo'];
             } else throw new Exception('repo attribute is missing');
 
-            $this->repo = $config_repos[$this->repoID];
+            $this->repo = Config::getRepoConfig($repoId);
             $baseURL = $this->repo['basePath'];;
             if(!$baseURL) throw new Exception('repo attribute is invalid');
 
@@ -157,7 +156,7 @@ class Publisher {
         //generate an id for this publish
         $publishId = date(DATE_RFC822);
         $pf = new GAEPlatform($publishId, false);
-        $pf->publishOverview($this->repoID, $this->repo, $this->logger,  $this->contentRoot.$this->repo['basePath']);
+        $pf->publishOverview($this->repoID, $this->repo, $this->logger,  $this->repo['basePath']);
         return $result;
     }
 
@@ -178,7 +177,7 @@ class Publisher {
         $comp['compId']=$compId;
         $comp['id']=$subcompId;
         $comp['ref']=$compRef;
-        $comp['fname']=$this->contentRoot.$this->repo['basePath'].$compRef;
+        $comp['fname']=$this->repo['basePath'].$compRef;
         $pf->uploadQTIComponent($comp, "", $this->logger);
     }
 
@@ -193,7 +192,7 @@ class Publisher {
                 throw new Exception('Unknown target ID');
                 break;
         }
-        $pf->publishComponentFile($compId, $compRef, $this->contentRoot.$this->repo['basePath'], $compRepo, $this->logger);
+        $pf->publishComponentFile($compId, $compRef, $this->repo['basePath'], $compRepo, $this->logger);
     }
     
     function publishSubcomponent($targetID, $subcompId, $compId, $subcompRef, $compRef, $compRepo) {
@@ -214,7 +213,7 @@ class Publisher {
         $comp['compRef']=$compRef;
         $comp['subcompId']=$subcompId;
         $comp['subcompRef']=$subcompRef;
-        $comp['pathbase']=$this->contentRoot.$this->repo['basePath'];
+        $comp['pathbase']=$this->repo['basePath'];
         $pf->publishSubcomponent($comp, "", $this->logger);
     }
 
@@ -224,7 +223,7 @@ class Publisher {
         $publishId = date(DATE_RFC822);
         
         //read threads xml
-        $baseURL = $this->contentRoot.$repo['basePath'];
+        $baseURL = $repo['basePath'];
         $threadsXMLstr = file_get_contents($baseURL.'leerlijnen/threads.xml');
         $threads = new SimpleXMLElement($threadsXMLstr);
         $compids = array();
@@ -254,7 +253,7 @@ class Publisher {
                     $sref = (string)$sref[0];
                     $sid = (string)$sc['id'];
                     $compFiles[] = array('compId'=>$ref,
-                                        'fname' => $this->contentRoot.$this->repo['basePath'].$sref,
+                                        'fname' => $this->repo['basePath'].$sref,
                                         'ref' => $sref,
                                         'id'  => $sid,
                                         'method' => $repo['id'],

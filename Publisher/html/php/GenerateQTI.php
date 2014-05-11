@@ -12,18 +12,16 @@ class QTIGenerator {
     var $loglevel = LEVEL_INFO;
     var $logger;
     var $comm;          //request data $_POST or $_GET
-    var $config_contentRoot;
     
     function QTIGenerator() {
         header('Content-type: text/html');
         include("Config.php");
-        $this->contentRoot = $config_contentRoot;
         
         //post or get?
         $this->comm = $_GET;
         if( isset($this->comm['repo']) ) {
             $repoId = $this->comm['repo'];
-            $this->repo = $config_repos[$repoId];
+            $this->repo = Config::getRepoConfig($repoId);
             $this->logger = new Logger($this->loglevel, $repoId, false);
         } else {
             throw new Exception('QTIGenerator called without repo identifier');
@@ -35,7 +33,7 @@ try{
             throw new Exception('QTIGenerator called without component identifier');
         }
 
-        $conts = file_get_contents($config_contentRoot.$this->repo['basePath'].'leerlijnen/components.xml');
+        $conts = file_get_contents($this->repo['basePath'].'leerlijnen/components.xml');
         $conts = html_entity_decode($conts, ENT_QUOTES, "utf-8");
         $doc = new SimpleXMLElement($conts);
         $comp = $doc->xpath("/mathunited/methods/method/components/component[@id='$componentId']");

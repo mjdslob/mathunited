@@ -253,7 +253,6 @@ define(['jquery', 'jqueryui', 'jqueryChosen'], function($) {
 
     return {
         init: function(methodURL, threadURL) {
-            var _this = this;
             loadMethodData(methodURL, function() {
                 loadThreads(threadURL, function() {
                     isInitialized = true;

@@ -75,7 +75,7 @@ define(['jquery', 'app/Document','actions/ObjectivesHandler', 'app/ItemSelector'
         getBaserepoPath  : function() {return baseRepoPath;},
         getRefbase   : function() {return refbase;},
         getImagebase : function() {
-                            var imagebase = refbase;
+                            var imagebase = refbase//contentbase+refbase;
                             var ind = imagebase.lastIndexOf('/'); //2 times, because of trailing /
                             imagebase = imagebase.substr(0,ind);
                             var ind = imagebase.lastIndexOf('/');

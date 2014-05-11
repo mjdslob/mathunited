@@ -186,8 +186,8 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
 
             var w = img.width();
             var h = img.height();
-            img.attr('WIDTH',''+w);
-            img.attr('HEIGHT',''+h);
+            if(w>0) img.attr('WIDTH',''+w);
+            if(h>0) img.attr('HEIGHT',''+h);
         });
     }    
 
@@ -209,9 +209,8 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
     //active tinyMCE on the paragraph content (.paragraph-content)
     function createTinyMCE(par) {
        var main = require('app/Main');
-       var imagebase = '/data/'+main.getImagebase();
-       
-       par.tinymce({
+       var imagebase = main.getImagebase();
+        par.tinymce({
             // Location of TinyMCE script
             script_url : 'javascript/tinymce/tinymce.jquery.js',
             content_css : "javascript/tinymce/content.css",
@@ -240,8 +239,8 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
             theme : "modern",
             plugins : "paste,fullscreen, table, link, charmap",
             toolbar: "undo redo | bold italic | numlist bullist outdent indent | link unlink m4a_textref | m4a_keyword m4a_quotation m4a_remark | m4a_image m4a_akit | charmap",
-            moxiemanager_rootpath: imagebase+'/',
-            moxiemanager_path: imagebase+'/',
+            moxiemanager_rootpath: '/data'+imagebase,
+            //moxiemanager_path: '/logs',//imagebase+'/',
             relative_urls:false,
 
             //clean HTML. Not XHTML, we rely on TagSoup on the server to convert to XML

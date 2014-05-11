@@ -282,7 +282,6 @@ define(['jquery','algebrakit/Parser'], function($, AKITParser) {
                 object.collapseExplanation();
             });
             $('.CollapseInnerButton',stepContainer).click(function() {
-                debugger;
                 if(parentStepPanel) parentStepPanel.collapseAfterSteps();
             });
             $('.ExpandButton',stepContainer).click(function() {

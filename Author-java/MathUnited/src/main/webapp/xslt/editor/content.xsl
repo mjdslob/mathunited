@@ -20,7 +20,7 @@ extension-element-prefixes="exsl">
             <xsl:if test="@location='right'">
                 <xsl:attribute name="style">float:right</xsl:attribute>
             </xsl:if>
-            <xsl:attribute name="src"><xsl:value-of select="concat('http://mathunited.pragma-ade.nl:41080/MathUnited/geogebra?file=',$urlbase,replace(@filename,'GeoGebra/','../geogebra/'))"/></xsl:attribute>
+            <xsl:attribute name="src"><xsl:value-of select="concat('/MathUnited/geogebra?file=',$refbase,replace(@filename,'GeoGebra/','../geogebra/'),'&amp;repo=',$repo)"/></xsl:attribute>
         </iframe>
 </xsl:template>
 

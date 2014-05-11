@@ -13,11 +13,9 @@
         <script type="text/javascript" src="javascript/WM_Module.js"></script>
         <script type="text/javascript" src="javascript/WM_Thread.js"></script>
         <script type="text/javascript">
-            var viewURL = [];
-            viewURL['malmberg'] = '/MathUnited/view?parent=/Publisher/html/auteurstool.html&repo=malmberg';
             wm = new WM_Manager({
-                methodURL:  '/index/malmberg/components.xml',
-                threadsURL: '/index/malmberg/threads.xml',
+//                methodURL:  '/index/malmberg/components.xml',
+//                threadsURL: '/index/malmberg/threads.xml',
                 repo: 'malmberg',
                 thread: 'ma-havovwo-12'
             });
@@ -109,7 +107,7 @@
                         <p>
                             Bekijk hier het lesmateriaal wanneer u deze aan het bewerken bent.
                         </p>
-                        <iframe link="publisher-preview-widget.html?thread_id={THREAD_ID}&repo=malmberg" id="wiskundemenu-iframe" class="wiskundemenu-iframe"></iframe>
+                        <iframe link="publisher-preview-widget.html?thread_id={THREAD_ID}&repo={REPO_ID}" id="wiskundemenu-iframe" class="wiskundemenu-iframe"></iframe>
                     </div>
                 </div>
                 <div id="tab-edit" class="ui-tab">
@@ -124,7 +122,7 @@
                         <p>
                             Hier kunt u het lesmateriaal bewerken met de auteurstool. 
                         </p>
-                        <iframe link="publisher-edit-widget.html?thread_id={THREAD_ID}&repo=malmberg" id="wiskundemenu-edit-iframe" class="wiskundemenu-iframe"></iframe>
+                        <iframe link="publisher-edit-widget.html?thread_id={THREAD_ID}&repo={REPO_ID}" id="wiskundemenu-edit-iframe" class="wiskundemenu-iframe"></iframe>
                     </div>
                 </div>
                 <div id="tab-logging" class="ui-tab">
