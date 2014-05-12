@@ -245,6 +245,7 @@ WM_CMD_SHOW_THREAD = 5;
 WM_CMD_INIT_VIEWS = 6;
 WM_CMD_INIT_CANVAS = 7;
 WM_CMD_LOAD_WORKFLOW_DATA = 8;
+WM_CMD_LOAD_CONFIG_DATA = 11;
 
 //spec:
 // - method: url to methods-overview.xml file
@@ -274,8 +275,9 @@ WM_Manager.prototype.init = function() {
     }
     this.addCommand(new WM_Command(WM_CMD_SHOW_THREAD, null));
     this.addCommand(new WM_Command(WM_CMD_INIT_VIEWS, null));
-    this.addCommand(new WM_Command(WM_CMD_LOAD_THREAD_DATA, {url: this.threadsURL, threadId: this.threadId, filter:this.filter}));
-    this.addCommand(new WM_Command(WM_CMD_LOAD_METHOD_DATA, {url: this.methodURL, methodId: this.methodId}));
+    this.addCommand(new WM_Command(WM_CMD_LOAD_THREAD_DATA, {threadId: this.threadId}));
+    this.addCommand(new WM_Command(WM_CMD_LOAD_METHOD_DATA, {}));
+    this.addCommand(new WM_Command(WM_CMD_LOAD_CONFIG_DATA, {}));
     this.execute();
 }
 
@@ -303,7 +305,7 @@ WM_Manager.prototype.continueProcessing = function() {
           break;
      case WM_CMD_LOAD_METHOD_DATA:
           this.setMessage('Componentenoverzicht wordt geladen...');
-          this.loadMethodData(cmd.args);   //generic: load general info from mathunited
+          this.loadMethodData();   //generic: load general info from mathunited
           break;
      case WM_CMD_LOAD_THREAD_DATA:
           this.setMessage('Leerlijnen worden geladen...');
@@ -321,6 +323,9 @@ WM_Manager.prototype.continueProcessing = function() {
      case WM_CMD_LOAD_WORKFLOW_DATA:
           this.loadWorkflowStatus(cmd.args);
           break;
+      case WM_CMD_LOAD_CONFIG_DATA:
+          this.loadConfig();
+          break;
      default:
           alert("Unknown command: "+cmd.code);
    }
@@ -333,10 +338,21 @@ WM_Manager.prototype.execute = function() {
     }
 }
 
+WM_Manager.prototype.loadConfig = function() {
+    var _this = this;
+    $.get('/MathUnited/repoconfig', {repo: this.methodId},
+          function(data) {
+              _this.threadsURL = $('threadsURL',data).text();
+              _this.methodURL = $('componentsURL',data).text();
+              _this.continueProcessing();
+          });
+}
+
 
 WM_Manager.prototype.setMessage = function(msg){
     $('message-box').html(msg);
 }
+
 
 WM_Manager.prototype.loadWorkflowStatus = function() {
     var _this = this;
@@ -391,20 +407,14 @@ WM_Manager.prototype.initCanvas = function(filter) {
           +'<br/>file: '+error.fileName;
     }
 }
-WM_Manager.prototype.loadMethodData = function(args) {
+WM_Manager.prototype.loadMethodData = function() {
     var _this=this;
     this.modules = [];
-    $.get(args.url,
+    $.get(this.methodURL,
           function(xml) {
               var methods = [];
 
-              var sel;
-              if(args.methodId) {
-                  sel = $(xml).find('method[id='+args.methodId+']');
-              } else {
-                  sel = $(xml).find('method');
-              }
-
+              var sel = $('method',xml);// $(xml).find('method[id='+_this.methodId+']');
               sel.each(function(){
                   var method = new WM_Method({
                             name: $(this).attr('id'),
@@ -463,17 +473,15 @@ WM_Manager.prototype.loadMethodData = function(args) {
 
 WM_Manager.prototype.loadThreads = function(args) {
     var _this = this;
-    var years = args.filter['jaar'];
-    var types = args.filter['niveau'];
     this.roots = [];
-    $.get(args.url,
+    $.get(this.threadsURL,
         function(xml) {
             var threads = [];
             var sel;
             if(args.threadId) {
                 sel = $(xml).find('thread[id='+args.threadId+']');
                 if(!sel || sel.length==0) {
-                    alert('Geen leerlijnen gevonden die voldoen aan criterium "'+args.threaId+'".');
+                    alert('Geen leerlijnen gevonden die voldoen aan criterium "'+args.threadId+'".');
                 }
             } else {
                 sel = $(xml).find('thread');

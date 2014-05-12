@@ -36,20 +36,20 @@ WM_Manager.prototype.init = function() {
     this.addCommand(new WM_Command(WM_CMD_LOAD_METHOD_DATA, {}));
     this.addCommand(new WM_Command(WM_CMD_LOAD_CONFIG_DATA, {}));
     this.execute();
-}
+};
 
 function WM_Command(code, args) {
     this.code = code;
     this.args = args;
-}
+};
 
 WM_Manager.prototype.addCommand = function(cmd) {
    this.CallStack.push(cmd);
-}
+};
 
 WM_Manager.prototype.continueProcessing = function() {
    var n = this.CallStack.length;
-   if(n==0) {
+   if(n===0) {
        this.isExecuting=false;
        this.setMessage('');
        isBusyPublishing=false;
@@ -96,7 +96,7 @@ WM_Manager.prototype.continueProcessing = function() {
      default:
           alert("Unknown command: "+cmd.code);
    }
-}
+};
 
 
 WM_Manager.prototype.execute = function() {
@@ -104,7 +104,7 @@ WM_Manager.prototype.execute = function() {
         this.isExecuting=true;
         this.continueProcessing();
     }
-}
+};
 
 WM_Manager.prototype.loadConfig = function() {
     var _this = this;
@@ -114,12 +114,12 @@ WM_Manager.prototype.loadConfig = function() {
               _this.methodURL = $('componentsURL',data).text();
               _this.continueProcessing();
           });
-}
+};
 
 
 WM_Manager.prototype.setMessage = function(msg){
     $('message-box').html(msg);
-}
+};
 
 WM_Manager.prototype.loadMethodData = function(args) {
     var _this=this;
@@ -174,14 +174,14 @@ WM_Manager.prototype.loadMethodData = function(args) {
                      _this.modules[comp_id]=module; //store with id as key
                      _this.modules.push(module);    //also store as array (for loops)
 
-                  }) //close each on component
+                  }); //close each on component
               }); //close each on method
 
               _this.methods = methods;
               _this.continueProcessing();
           }
     );
-}
+};
 
 WM_Manager.prototype.loadThreads = function(args) {
     var _this = this;
@@ -191,7 +191,7 @@ WM_Manager.prototype.loadThreads = function(args) {
             var threads = [];
             var sel;
             sel = $(xml).find('thread');
-            if(!sel || sel.length==0) {
+            if(!sel || sel.length===0) {
                  alert('Geen leerlijnen gevonden.');
             }
             sel.each(function(){
@@ -231,7 +231,7 @@ WM_Manager.prototype.loadThreads = function(args) {
             _this.continueProcessing();
         }
     );
-}
+};
 
 WM_Manager.prototype.showComponents = function(args) {
     var div = $('#'+args.parent);
@@ -255,14 +255,14 @@ WM_Manager.prototype.showComponents = function(args) {
                 threadContentElm.append(compElm);
                 for(var kk=0; kk<mod.subcomponents.length;kk++) {
                     var subComp = mod.subcomponents[kk];
-                    compElm.append($('<div class="subcomponent-container"><div class="subcomponent" onclick="javascript:toggleSubcomponent(this)" id="'+subComp.id+'">'+subComp.title+'</div></div>'))
+                    compElm.append($('<div class="subcomponent-container"><div class="subcomponent" onclick="javascript:toggleSubcomponent(this)" id="'+subComp.id+'">'+subComp.title+'</div></div>'));
                 }
             }
         }
     }
     
     this.continueProcessing();
-}
+};
 
 WM_Manager.prototype.showThreads = function(args) {
     var div = $('#'+args.parent);
@@ -279,7 +279,7 @@ WM_Manager.prototype.showThreads = function(args) {
     }
     
     this.continueProcessing();
-}
+};
 
 WM_Manager.prototype.showThreads2 = function(args) {
     var div = $('#'+args.parent);
@@ -291,7 +291,7 @@ WM_Manager.prototype.showThreads2 = function(args) {
     }
     
     this.continueProcessing();
-}
+};
 
 
 WM_Manager.prototype.publish = function() {
@@ -309,7 +309,7 @@ WM_Manager.prototype.publish = function() {
         var comp = _this.modules[compId];
         for(var ii=0; ii<comp.subcomponents.length;ii++){
             var sc = comp.subcomponents[ii];
-            if(sc.id==subcompId){
+            if(sc.id===subcompId){
                 _this.addCommand(new WM_Command(WM_CMD_PUBLISH_SUBCOMPONENT, {subcompId: subcompId, compId: compId, subcompRef: sc.file, compRef: comp.file, repo: _this.repo, target:_this.target}));
             }
         }
@@ -317,7 +317,7 @@ WM_Manager.prototype.publish = function() {
         
     });
     this.execute();
-}
+};
 
 WM_Manager.prototype.uploadQTI = function() {
     if(isBusyUploading) return;
@@ -334,13 +334,13 @@ WM_Manager.prototype.uploadQTI = function() {
         var comp = _this.modules[compId];
         for(var ii=0; ii<comp.subcomponents.length;ii++){
             var sc = comp.subcomponents[ii];
-            if(sc.id==subcompId){
+            if(sc.id===subcompId){
                 _this.addCommand(new WM_Command(WM_CMD_UPLOADQTI_SUBCOMPONENT, {id: subcompId, compId: compId, ref: sc.file, repo: _this.repo, target:"pulseon"}));
             }
         }
     });
     this.execute();
-}
+};
 
 WM_Manager.prototype.publishThread = function() {
     if(isBusyPublishing) return;
@@ -357,7 +357,8 @@ WM_Manager.prototype.publishThread = function() {
         _this.addCommand(new WM_Command(WM_CMD_PUBLISH_SINGLE_THREAD, {id: threadId, repo: repo, target:_this.target}));
     });
     this.execute();
-}
+};
+
 WM_Manager.prototype.publishComponentFile = function(args) {
     var _this = this;
     var elm = $('#'+args.id);
@@ -372,7 +373,8 @@ WM_Manager.prototype.publishComponentFile = function(args) {
            }
     );
     
-}
+};
+
 WM_Manager.prototype.publishSubcomponent = function(args) {
     var _this = this;
     var elm = $('#'+args.id);
@@ -386,7 +388,7 @@ WM_Manager.prototype.publishSubcomponent = function(args) {
                 _this.continueProcessing();
            }
     );
-}
+};
 
 WM_Manager.prototype.uploadQTISubcomponent = function(args) {
     var _this = this;
@@ -401,7 +403,7 @@ WM_Manager.prototype.uploadQTISubcomponent = function(args) {
                 _this.continueProcessing();
            }
     );
-}
+};
 
 WM_Manager.prototype.publishOverview = function(repo, elmid) {
     var _this = this;
@@ -417,7 +419,8 @@ WM_Manager.prototype.publishOverview = function(repo, elmid) {
                 _this.continueProcessing();
            }
     );
-}
+};
+
 WM_Manager.prototype.publishSingleThread = function(args) {
     var _this = this;
     var elm = $('#thread-'+args.id);
@@ -432,7 +435,7 @@ WM_Manager.prototype.publishSingleThread = function(args) {
                 _this.continueProcessing();
            }
     );
-}
+};
 
 function toggleComponent(elm) {
     var parent = $(elm).parents('.component-container').first();
@@ -444,13 +447,16 @@ function toggleComponent(elm) {
         $(elm).addClass('selected');
     }
 }
+
 function toggleSubcomponent(elm) {
     $(elm).toggleClass('selected');
 }
+
 function selectThread(elm) {
     $('#thread-container-2 .selected').removeClass('selected');
     $(elm).toggleClass('selected');
 }
+
 function toggleThread(elm){
     var parent = $(elm).parents('.thread-container');
     var c = $('.component',parent).first();
