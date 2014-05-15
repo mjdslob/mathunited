@@ -104,7 +104,7 @@ extension-element-prefixes="exsl">
     <span tag="sheetref"><xsl:apply-templates select="@* | node()" mode="paragraph"/></span>
 </xsl:template>
 <xsl:template match="sheetref" mode="editor">
-    <p><span tag="sheetref"><xsl:apply-templates select="@* | node()" mode="paragraph"/></span></p>
+     <span tag="sheetref"><xsl:apply-templates select="@* | node()" mode="editor"/>&#160;<span><xsl:value-of select="@item"/></span></span>
 </xsl:template>
 
 <xsl:template match="text" mode="paragraph">

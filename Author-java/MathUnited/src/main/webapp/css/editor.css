@@ -217,6 +217,7 @@ span[tag="textref"] {
 span[tag="sheetref"] {
     display:inline-block;
     color:red;
+    background-color:rgb(255,200,200);
     text-decoration: underline;
 }
 .block-content {
