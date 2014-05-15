@@ -151,6 +151,8 @@ body {
 }
 #content {
     padding: 10px 6px 10px 10px;
+	height: 430px;
+	overflow: auto;
 }
 p {
     margin:2px 0px 15px 0px;
@@ -665,3 +667,156 @@ table.answer td.label
 #content ul, #content ol {
     max-width:514px;
 }
+
+/*---------------------------*/
+/* result-page               */
+/*---------------------------*/
+.result-page
+{
+	
+}
+
+.result-page .title
+{
+	cursor: pointer;
+}
+
+.result-page .layout-table
+{
+	min-height: 420px;
+}
+
+.result-page .layout-table .leftcontent
+{
+	background-image: url('../sources_studiovo/result-background-lines.png'); 
+	background-repeat: repeat;
+	background-position: left 2px;
+}
+
+.result-page .layout-table .leftcontent .title
+{
+	width: 250px;
+}
+
+.result-page .grouplist .title:hover,
+.result-page .grouplist .title.selected
+{
+	background-color: #ffa;
+}
+
+.result-page .layout-table .rightcontent
+{
+	background-image: url('../sources_studiovo/result-background-right.png'); 
+	background-repeat: repeat-y;
+	background-position: left 2px;
+	line-height: 23px;
+	width: 355px;
+}
+
+.result-page .layout-table .column-spacer
+{
+	width: 10px;
+}
+
+.result-page .layout-table > tbody > tr > td
+{
+	vertical-align: top;
+}
+
+.result-page .group.level-1
+{
+	display: none;
+}
+
+.result-page .group.level-1 > .percentage
+{
+	display: none;
+}
+
+.result-page .group.level-1 > .title
+{
+	font-weight: bold;
+	cursor: default;
+}
+
+
+.result-page .group .score,
+.result-page .totals .score
+{
+	width: 40px;
+	padding-left: 10px;
+}
+
+.result-page .group .percentage
+{
+	width: 45px;
+	padding-right: 5px;
+	text-align: right;
+	float: right;
+}
+
+.result-page .group.level-1 td,
+.result-page .totals td
+{
+	padding-top: 1em;
+	padding-bottom: 1em;
+}
+
+.result-page .totals td
+{
+	font-weight: bold;
+}
+
+.result-page .group.level-2 > .title
+{
+	padding-left: 2em;
+	background-image: url(../sources_studiovo/opgave_pijl_dicht.png);
+	background-repeat: no-repeat;
+	background-position: left 2px;
+}
+
+.result-page .group.level-2 > .title.selected
+{
+	background-image: url(../sources_studiovo/opgave_pijl_open.png);
+}
+
+.result-page .group.level-2 .group-content
+{
+	display: none;
+}
+
+.result-page .item
+{
+	margin-left: 2em;
+}
+
+.result-page .item .title
+{
+	float: left;
+	padding-left: 2em;
+}
+
+.result-page .item .score
+{
+	float: right;
+	margin-right: 54px;
+	margin-top: 1px;
+	width: 41px;
+	line-height: 22px;
+}
+
+.result-page .item .score.score_good
+{
+	background-color: #92d050;
+}
+
+.result-page .item .score.score_ok
+{
+	background-color: #ffc0000;
+}
+
+.result-page .item .score.score_bad
+{
+	background-color: #ff0000;
+}
+

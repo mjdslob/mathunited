@@ -20,7 +20,7 @@ extension-element-prefixes="exsl">
 <xsl:param name="repo"/>
 <xsl:param name="repo-path"/>
 <xsl:param name="baserepo-path"/>
-    
+
 <xsl:variable name="cm2px" select="number(50)"/>
 <xsl:variable name="parsed_component" select="saxon:parse($component)"/>
 <xsl:variable name="subcomponent" select="$parsed_component/component/subcomponents/subcomponent[@id=$subcomp]"/>
@@ -38,10 +38,10 @@ extension-element-prefixes="exsl">
 </xsl:variable>
 <xsl:variable name="cssfile">
     <xsl:choose>
-      <xsl:when test="$parsed_component/component/webdata/cssfile">
-        <xsl:value-of select="$parsed_component/component/webdata/cssfile"/>
+      <xsl:when test="subcomponent/meta/param[@name='css-file']">
+        <xsl:value-of select="subcomponent/meta/param[@name='css-file']"/>
       </xsl:when>
-      <xsl:otherwise>basis_studiovo.css?v=22</xsl:otherwise>
+      <xsl:otherwise>basis_studiovo.css?v=2</xsl:otherwise>
     </xsl:choose>
 </xsl:variable>
 <xsl:variable name="overviewRef"><xsl:value-of select="string('/auteur/math4all.html')"/></xsl:variable>
@@ -49,12 +49,12 @@ extension-element-prefixes="exsl">
 <xsl:variable name="_sheetref_as_links_" select="true()"/>
 <xsl:variable name="lang">nl</xsl:variable>
 
+  <!--   /////////////////////////////////////////////   -->
+<!--  Specific for auteurssite):                       -->
 <!--   /////////////////////////////////////////////   -->
-<!--  Specific for GAE (do not copy from auteurssite): -->
-<!--   /////////////////////////////////////////////   -->
-<xsl:variable name="host_type">GAE</xsl:variable>
-<xsl:variable name="docbase"></xsl:variable>
-<xsl:variable name="urlbase"><xsl:value-of select="concat('http://mathunited.pragma-ade.nl:41080/data/',$refbase)"/></xsl:variable>
+<xsl:variable name="host_type">auteur</xsl:variable>
+<xsl:variable name="docbase" select="$refbase"></xsl:variable>
+<xsl:variable name="urlbase"><xsl:value-of select="concat('/data/',$refbase)"/></xsl:variable>
 <!--   /////////////////////////////////////////////   -->
 <!--   /////////////////////////////////////////////   -->
 
@@ -63,7 +63,7 @@ indent="yes" encoding="utf-8"/>
 
 <xsl:include href="calstable.xslt"/>
 <xsl:include href="content.xslt"/>
-<xsl:include href="studiovo_exercises.xslt"/>
+<xsl:include href="studiovo_exercises_test.xslt"/>
 
   <!--   **************** -->
 <!--   START PROCESSING -->
@@ -81,7 +81,7 @@ indent="yes" encoding="utf-8"/>
         <script type="text/javascript" src="/javascript/MathUnited_studiovo.js"/>
         <script type="text/javascript" src="/javascript/jquery.ui.touch-punch.min.js"/>
         <script type="text/javascript" src="/javascript/jquery.jplayer.min.js"/>
-		<script type="text/javascript" src="/javascript/jquery.scrollIntoView.min.js"/>
+        <script type="text/javascript" src="/javascript/jquery.scrollIntoView.min.js"/>
         <link rel="stylesheet" href="/css/content.css" type="text/css"/>
         <link rel="stylesheet" type="text/css">
 	        <xsl:attribute name="href">/css/<xsl:value-of select="$cssfile"/></xsl:attribute>
@@ -95,7 +95,7 @@ indent="yes" encoding="utf-8"/>
         <script type="text/javascript" src="javascript/MathUnited_studiovo.js"/>
         <script type="text/javascript" src="javascript/jquery.ui.touch-punch.min.js"/>
         <script type="text/javascript" src="javascript/jquery.jplayer.min.js"/>
-		<script type="text/javascript" src="javascript/jquery.scrollIntoView.min.js"/>
+        <script type="text/javascript" src="javascript/jquery.scrollIntoView.min.js"/>
         <link rel="stylesheet" href="css/content.css" type="text/css"/>
 	      <link rel="stylesheet" type="text/css">
 	   	    <xsl:attribute name="href">css/<xsl:value-of select="$cssfile"/></xsl:attribute>
