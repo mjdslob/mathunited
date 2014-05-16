@@ -267,6 +267,19 @@ iframe {
 }
 
 /*---------------------------*/
+/* Read speaker              */
+/*---------------------------*/
+
+#readspeaker_button1 {
+	margin-bottom: 0;
+	float: right;
+}
+
+.rsbtn_powered {
+	display: none;
+}
+
+/*---------------------------*/
 /* Dialogs                   */
 /*---------------------------*/
 .ui-dialog  
@@ -819,4 +832,3 @@ table.answer td.label
 {
 	background-color: #ff0000;
 }
-

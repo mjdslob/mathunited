@@ -82,6 +82,7 @@ indent="yes" encoding="utf-8"/>
         <script type="text/javascript" src="/javascript/jquery.ui.touch-punch.min.js"/>
         <script type="text/javascript" src="/javascript/jquery.jplayer.min.js"/>
         <script type="text/javascript" src="/javascript/jquery.scrollIntoView.min.js"/>
+        <script type="text/javascript" src="/javascript/readspeaker/ReadSpeaker.js?pids=embhl&amp;skin=ReadSpeakerMiniSkin"/>
         <link rel="stylesheet" href="/css/content.css" type="text/css"/>
         <link rel="stylesheet" type="text/css">
 	        <xsl:attribute name="href">/css/<xsl:value-of select="$cssfile"/></xsl:attribute>
@@ -96,6 +97,7 @@ indent="yes" encoding="utf-8"/>
         <script type="text/javascript" src="javascript/jquery.ui.touch-punch.min.js"/>
         <script type="text/javascript" src="javascript/jquery.jplayer.min.js"/>
         <script type="text/javascript" src="javascript/jquery.scrollIntoView.min.js"/>
+        <script type="text/javascript" src="javascript/readspeaker/ReadSpeaker.js?pids=embhl&amp;skin=ReadSpeakerMiniSkin"/>
         <link rel="stylesheet" href="css/content.css" type="text/css"/>
 	      <link rel="stylesheet" type="text/css">
 	   	    <xsl:attribute name="href">css/<xsl:value-of select="$cssfile"/></xsl:attribute>
@@ -176,6 +178,15 @@ indent="yes" encoding="utf-8"/>
         </div>
         <div id="ribbon">
             <span id="kruimelpad"></span>
+		      <xsl:if test="subcomponent/meta/param[@name='read-speaker']">
+		        	<script type="text/javascript">var readspeaker_lang="<xsl:value-of select="subcomponent/meta/param[@name='read-speaker']"/>"</script>
+		            <div id="readspeaker_button1" class="rs_skip rsbtn_miniskin rs_preserve">
+		                <a rel="nofollow" class="rsbtn_play" accesskey="L" title="Laat de tekst voorlezen met ReadSpeaker">
+		                    <span class="rsbtn_left rsimg rspart"><span class="rsbtn_text"><span>Lees voor</span></span></span>
+		                    <span class="rsbtn_right rsimg rsplay rspart"></span>
+		                </a>
+		            </div>
+		      </xsl:if>
             <span class="subcomponent-title"><xsl:value-of select="$subcomponent/title"/></span>
         </div>
         <div id="content">

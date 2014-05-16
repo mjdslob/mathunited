@@ -323,7 +323,9 @@ function setTab(tabid) {
         var elm = $('.page-navigator .page-navigator-ref', page).first();
         togglePage(elm);
     }
-
+    // set readspeaker url
+    ReadSpeaker.q(function(){if(rspkr.ui.getActivePlayer()){rspkr.ui.getActivePlayer().close()}});
+    $('.rsbtn_play').attr('href', 'https://app.readspeaker.com/cgi-bin/rsent?customerid=7345&amp;lang=' + readspeaker_lang + '&amp;readid='+tabid+'&amp;url=' + encodeURIComponent(document.URL));
 }
 
 function SVO_triggerSubMenuItem(elm) {
