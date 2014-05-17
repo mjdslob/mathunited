@@ -1,15 +1,50 @@
 variants : 
   basis : {path: /xslt/m4a_view.xslt}
+  basis_wm : {path: /xslt/wm_view.xslt}
+  basis_studiovo : {path: /xslt/studiovo_view.xslt}
+  studiovo_view : {path: /xslt/studiovo_view.xslt}
+  wm_view : {path: /xslt/wm_view.xslt}
   m4a_view : {path: /xslt/m4a_view.xslt}
+  m4a_view_en : {path: /xslt/m4a_view_en.xslt}
+  m4a_view_dedicon : {path: /xslt/m4a_view_dedicon.xslt}
+  m4a_view_pulseon : {path: /xslt/m4a_view_pulseon.xslt}
   m4a_editor : {path: /xslt/m4a_editor.xslt}
+  m4a_test : {path: /xslt/m4a_test.xslt}
+  m4a_insert : {path: /xslt/m4a_insert.xslt}
+  m4a_remove : {path: /xslt/m4a_remove.xslt}
   m4a_inverse : {path: /xslt/m4a_inverse.xslt}
 
 roles :
   - admin
+  - editor_saba
+  - editor_m4a
+  - editor_concept_alt
   - editor_test
   - editor_malmberg
   
 repos :
+  wm :
+    path: content-wm/concept
+    edit_permission: 
+    defaultVariant: wm_view
+  m4a :
+    path: content-ma/concept
+    edit_permission: editor_m4a
+    defaultVariant: m4a_view
+  algebrakit :
+    path: content-ma/algebrakit
+    edit_permission: 
+    defaultVariant: m4a_view
+  m4a_concept_alt :
+    path: content-ma/concept_alt
+    baseRepo : m4a
+    edit_permission: editor_concept_alt
+    defaultVariant: m4a_view
+  m4a_en :
+    path: content-ma/saba
+    baseRepo : m4a
+    edit_permission: editor_saba
+    defaultVariant: m4a_view_en
   malmberg :
     path: 
     edit_permission: editor_malmberg
@@ -17,15 +52,21 @@ repos :
     componentsURL: leerlijnen/components.xml
     threadsURL: leerlijnen/threads.xml
     contentItems: m4a-content-items.xml
+  test :
+    path: content-ma/test
+    baseRepo : m4a
+    edit_permission: editor_test
+    defaultVariant: m4a_view
+    contentItems: m4a-content-items.xml
 
-userFile : /opt/sw/mathplus/data/users_malmberg.yaml
-contentRoot : /opt/sw/mathplus/data/
-entitiesFile : /opt/sw/mathplus/data/entities.xml
+userFile : /Library/WebServer/Documents/data/users_malmberg.yaml
+contentRoot : /Library/WebServer/Documents/data/
+entitiesFile : /Library/WebServer/Documents/data/entities.xml
 
-mail_host : localhost
-mail_smtp_port : 25
-mail_username :  
-mail_password :  
+mail_host : smtp.xs4all.nl
+mail_smtp_port : 587
+mail_username : gaj2
+mail_password : mjd1602S
 admin_mail : m.slob@math4all.nl
 
  

@@ -183,6 +183,32 @@ extension-element-prefixes="exsl">
     -->
 </xsl:template>
 
+<xsl:template match="item[@type='algebrakit']" priority="2" mode="item">
+    <xsl:param name="options"/>        
+    <xsl:choose>
+        <xsl:when test="$options and $options/options/mode[@type='answers']">
+            <div class="question">
+                <xsl:apply-templates select="answer" mode="content">
+                    <xsl:with-param name="options" select="$options"/>
+                </xsl:apply-templates>
+            </div>
+        </xsl:when>
+        <xsl:otherwise>
+            <div class="akit-exercise" audience="{evaluation/@audience}">
+                <xsl:apply-templates select="akit-script" mode="content"/>
+                <div class="akit-main">
+                    <xsl:apply-templates select="itemcontent" mode="content">
+                        <xsl:with-param name="options" select="$options"/>
+                    </xsl:apply-templates>
+                    <span class="akit-input-widget" solve="{evaluation/@solve}" submit="{evaluation/@submit}" 
+                          mode="{evaluation/@mode}" palette="{evaluation/@palette}" answer="{evaluation/@answer}"/>
+                </div>
+            </div>
+        </xsl:otherwise>
+    </xsl:choose>
+</xsl:template>
+
+
 <xsl:template match="alternative-content" mode="content">
     <xsl:apply-templates mode="content"/>
 </xsl:template>
