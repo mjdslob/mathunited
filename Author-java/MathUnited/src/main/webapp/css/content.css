@@ -10,7 +10,7 @@
     padding:4px 0px 4px 0px;
 }
 
-.stepaligntable td  .stepaligntable-text {
+.stepaligntable td  .stepaligntable-text, .stepaligntable td.stepaligntable-text {
     color:red;
     position:relative;
     left:10px;

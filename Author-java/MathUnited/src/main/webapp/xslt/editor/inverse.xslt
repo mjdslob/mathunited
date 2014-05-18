@@ -56,19 +56,19 @@ extension-element-prefixes="exsl">
 
 
 <!-- Elements that are treated in a nonstandard way -->
-<xsl:template match="*[@tag='stepaligntable']" mode="editor">
+<xsl:template match="*[@tag='stepaligntable']" mode="editor" priority="2">
     <stepaligntable>
-        <xsl:apply-templates select=".//xhtml:tr[@tag='cells']" mode="editor"/>
+        <xsl:apply-templates select=".//tr[@tag='cells']" mode="editor"/>
     </stepaligntable>
 </xsl:template>
 
-<xsl:template match="*[@tag='cells']" mode="editor">
+<xsl:template match="*[@tag='cells']" mode="editor" priority="2">
     <cells>
-        <c1><xsl:apply-templates select="*[@tag='c1']//xhtml:p/node()" mode="paragraph"/></c1>
-        <c2><xsl:apply-templates select="*[@tag='c2']//xhtml:p/node()" mode="paragraph"/></c2>
-        <c3><xsl:apply-templates select="*[@tag='c3']//xhtml:p/node()" mode="paragraph"/></c3>
+        <c1><xsl:apply-templates select="*[@tag='c1']//p/node()" mode="paragraph"/></c1>
+        <c2><xsl:apply-templates select="*[@tag='c2']//p/node()" mode="paragraph"/></c2>
+        <c3><xsl:apply-templates select="*[@tag='c3']//p/node()" mode="paragraph"/></c3>
     </cells>
-    <text><xsl:apply-templates select="*[@tag='text']//xhtml:p/node()" mode="paragraph"/></text>
+    <text><xsl:apply-templates select="*[@tag='text']//p/node()" mode="paragraph"/></text>
 </xsl:template>
 
 <xsl:template match="table" mode="editor">

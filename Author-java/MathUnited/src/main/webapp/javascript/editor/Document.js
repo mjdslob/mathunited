@@ -97,12 +97,17 @@ define(['jquery', 'app/TinyMCE', 'app/ContextMenu', 'algebrakit/Widget', 'jquery
         addToggleItemContainerHandler();
         
         $('p,ul.paragraph,ol.paragraph,table,img.paperfigure',elm).each(function() {
-            var parent = $(this);
-            if(  parent.parents('.tiny-editor').length===0   //not already attached to an editor
-              && parent.parents('div[tag="componentcontent"]').length>0 //within editable content
-              && !parent.attr('_done')) {
+            if($(this).attr('tag')) {
+                //this is an xml tag. Do not allow editing, because it would ruin the element
+            } else {
+                var parent = $(this);
+                if(  parent.parents('.tiny-editor').length===0   //not already attached to an editor
+                  && parent.parents('div[tag="componentcontent"]').length>0 //within editable content
+                  && !parent.attr('_done')) {
 
-                new Editor.editor(parent);
+                    new Editor.editor(parent);
+                }
+                
             }
         });
         $('img.resource').unbind('click').click(function() {
