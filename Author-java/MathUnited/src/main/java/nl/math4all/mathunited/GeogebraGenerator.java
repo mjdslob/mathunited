@@ -57,7 +57,12 @@ public class GeogebraGenerator extends HttpServlet {
                 throw new Exception("Unknown repository: "+repo);
             }
             String pathstr = config.getContentRoot()+repository.getPath();
-            String filestr= pathstr+fname;
+            String filestr;
+            if(!pathstr.isEmpty() && pathstr.charAt(pathstr.length()-1)!='/') {
+                filestr = pathstr+"/"+fname;
+            } else {
+                filestr = pathstr+fname;                
+            }
             LOGGER.log(Level.FINE, "file={0}", filestr);
             Path path = Paths.get(filestr);
             byte[] data = Files.readAllBytes(path);
