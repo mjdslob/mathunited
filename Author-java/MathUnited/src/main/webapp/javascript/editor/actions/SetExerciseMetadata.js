@@ -58,10 +58,26 @@ define(['jquery'], function($, objSelector) {
             $('.metadata-obj-selector-container input[value="'+id+'"]').nextUntil('input').remove();//remove from gui
             $('.metadata-obj-selector-container input[value="'+id+'"]').remove();
         },
+        setExerciseIcons: function(parent) {
+            var iconContainer = $('.exercise-icon-wrapper',parent).first();
+            iconContainer.empty();
+            //use stars to show difficulty-level.
+            var elm = $('div[tag="level"]',parent).first();
+            var level = 0;
+            if(elm.length>0) level = parseInt(elm.attr('value'));
+            for(var ii=0;ii<level;ii++) {
+                iconContainer.append('<span class="level-star-icon"/>')
+            }
+        },
         action : function(elm, params) {
+            var _this = this;
+            //set the values (selections) in the metadata-frame. Changing values due to user clicks
+            //is handled below in this function : $('form input',container).change(....)
             var doc = require('app/Document');
             var base = elm.parents('._editor_context_base').first();
+            //container contains both the visual frame as the div with xml-tags
             container = $('.metadata-container',base).first().addClass('visible');
+            //tag contains the xml-tags : not visible but defines what is stored as xml
             var tag = $('*[tag="metadata"]',container).first();
             var objTagContainer = $('div[tag="objectives"]',container);
             if(objTagContainer.length===0) {
@@ -103,6 +119,13 @@ define(['jquery'], function($, objSelector) {
             };
             
             setReferences();
+            //calculator allowed?
+            var useCalc = true;  //default: calculator is 
+            var calc = $('div[tag="calculator"][allowed="false"]',container);
+            if(calc.length>0) useCalc = false;
+            var calcElm = $('form input[name="calculator_allowed"]',container);
+            if(calcElm.length>0 && useCalc) calcElm[0].checked=true;
+            
             //leerdoelen
             var main = require('app/Main');
             var objContainer = $('.metadata-obj-selector-container',container);
@@ -126,6 +149,10 @@ define(['jquery'], function($, objSelector) {
                  $(this).parents(".metadata-container").first().removeClass('visible');
             });
 
+            //helper function to set attributes/text on metadata-element. 
+            //- tag: which metadata xml-element (e.g. level, exercise-type)
+            //- attr/text: attributes or text to set
+            //- doReplace: add element (false) or replace existing element (true)
             function addMetadataElm(parent, tag, attr, textContent, doReplace) {
                 var elm = $('div[tag="'+tag+'"]',parent);
                 if(!doReplace || elm.length===0){
@@ -154,6 +181,10 @@ define(['jquery'], function($, objSelector) {
                 });
                 $('input[name="medium"]',container).each(function() {
                    if(this.checked) medium = this.value; 
+                });
+                $('input[name="calculator_allowed"]',container).each(function() {
+                   if(!this.checked)  addMetadataElm(tag,'calculator', {allowed: 'false'},null,true);
+                   else { $('div[tag="calculator"]',tag).remove(); }
                 });
                 item.attr('medium', medium);
                 container.parents('div[tag="exercise"]').first().attr('medium',medium);
@@ -198,6 +229,8 @@ define(['jquery'], function($, objSelector) {
                 $('input[name="objective"]:checked',container).each(function(){ 
                     addMetadataElm(objTagContainer, 'objective-ref',{value: this.value, comp: $(this).attr('comp'), subcomp: $(this).attr('subcomp')}, null,false);
                 });
+ 
+                _this.setExerciseIcons(base);
             }); 
         }
     };

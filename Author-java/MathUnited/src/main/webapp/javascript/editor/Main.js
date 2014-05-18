@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['jquery', 'app/Document','actions/ObjectivesHandler', 'app/ItemSelector', 'jqueryui'], 
- function($, doc, objectivesHandler, itemSelector) {
+define(['jquery', 'app/Document','actions/ObjectivesHandler', 'actions/SetExerciseMetadata', 'app/ItemSelector', 'jqueryui'], 
+ function($, doc, objectivesHandler, metadataHandler, itemSelector) {
     var commitURL = '/MathUnited/postcontent';
     var refreshURL = '/MathUnited/refresh-lock';
     
@@ -90,6 +90,7 @@ define(['jquery', 'app/Document','actions/ObjectivesHandler', 'app/ItemSelector'
             $('#commit-button').click(function(){_this.submit();});
             $('#show-backups-wrapper').click(function(){_this.showBackups();});
             $('#startup-msg').remove();
+            $('div[tag="exercise"]').each( function(){metadataHandler.setExerciseIcons($(this));});
         },
         submit: function() {
             $('<p>Een moment, de paragraaf wordt opgeslagen...</p>').dialog();

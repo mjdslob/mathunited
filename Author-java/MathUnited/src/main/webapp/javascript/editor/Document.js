@@ -163,6 +163,7 @@ define(['jquery', 'app/TinyMCE', 'app/ContextMenu', 'algebrakit/Widget', 'jquery
            setShiftHandlers();
            insertActions(root);
            ContextMenu.init(root);
+           //add warning on 'dangerous' links that leave the editor (needed as window.onbeforeunload does not work on IOS)
            $('a._warn_if_doc_changed_').each(function(){
                var elm = $(this);
                var target=elm.attr('href');
