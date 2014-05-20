@@ -239,7 +239,7 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
             theme : "modern",
             plugins : "paste,fullscreen, table, link, charmap",
             toolbar: "undo redo | bold italic | numlist bullist outdent indent | link unlink m4a_textref | m4a_keyword m4a_quotation m4a_remark | m4a_image m4a_akit | charmap",
-            moxiemanager_rootpath: '/data'+imagebase,
+            moxiemanager_rootpath: '/data/'+imagebase,
             //moxiemanager_path: '/logs',//imagebase+'/',
             relative_urls:false,
 
