@@ -297,10 +297,6 @@ $(document).ready(function () {
         }
     });
     //$(".jplayer_inspector").jPlayerInspector({jPlayer:player});
-
-    $(".item-next").click(function () { nextItem(this) });
-    $(".item-feedback").click(function () { showFeedback(this) });
-
 });
 
 function setTab(tabid) {
