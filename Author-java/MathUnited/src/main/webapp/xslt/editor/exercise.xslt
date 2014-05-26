@@ -190,10 +190,10 @@ extension-element-prefixes="exsl">
                         <div class="exercise-heading">
                             <xsl:choose>
                                 <xsl:when test="$isclone">
-                                      Kloonopgave <span class="opgave-title-span"><xsl:value-of select="title"/></span> <div class="opgave-label-button"/>
+                                      Kloonopgave <span class="opgave-title-span"><xsl:value-of select="title"/></span> <span class="exercise-icon-wrapper"/>
                                 </xsl:when>
                                 <xsl:otherwise>
-                                      Opgave <span class="opgave-title-span"><xsl:value-of select="title"/></span> <div class="opgave-label-button"/>
+                                      Opgave <span class="opgave-title-span"><xsl:value-of select="title"/></span> <span class="exercise-icon-wrapper"/>
                                 </xsl:otherwise>
                             </xsl:choose>
                         </div>
@@ -222,12 +222,13 @@ extension-element-prefixes="exsl">
                                     <input type="checkbox" name="olympiadevraag">olympiadevraag</input><br/>
                                     <input type="checkbox" name="examenvraag">examenvraag</input><br/>
                                     <input type="checkbox" name="wda">wiskunde-denkactiviteit (WDA)</input><br/>
+                                    <b>Rekenmachine toegestaan</b> <input type="checkbox" name="calculator_allowed"></input><br/>
                                     <b>Groepslabels:</b> 
                                     <input type="text" name="groepslabel" size="30">
                                         <xsl:for-each select="metadata/group-label/@value"> <xsl:value-of select="."/> </xsl:for-each>
                                     </input><br/>
-                                    <b>Gerelateerde theorie (id van paragraaf):</b><span class="related-theory"/>
-       <xsl:value-of select="metadata/ref-id/@value"/>
+                                    <b>Gerelateerde theorie:</b><span class="related-theory"/>
+                                     <xsl:value-of select="metadata/ref-id/@value"/>
                                     <div class="select-item-button">selecteer</div>
                                     <br/>
                                     <b>Leerdoelen</b>: <div class="metadata-obj-selector-container"/>

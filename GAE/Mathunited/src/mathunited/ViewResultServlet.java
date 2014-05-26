@@ -112,8 +112,8 @@ public class ViewResultServlet extends HttpServlet {
            		throw new Exception("Het verplichte argument 'threadid' ontbreekt: "+repo);
 
            	String userid = parameterMap.get("userid"); // for testing purposes only
-           	if (userid == null)
-           		userid = "sanderbons";
+//           	if (userid == null)
+//           		userid = "sanderbons";
             parameterMap.put("userid", userid);
            	
             parameterMap.put("repo", repo);

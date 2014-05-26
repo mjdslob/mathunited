@@ -16,7 +16,7 @@
  */
 
 requirejs.config({
-    urlArgs: "bust=v17", //update this when a modification is made, to prevent caching problems
+    urlArgs: "bust=v19", //update this when a modification is made, to prevent caching problems
     //By default load any module IDs from js/lib
     baseUrl: '/MathUnited/javascript/lib',
 //    baseUrl: 'js/lib',
@@ -35,13 +35,18 @@ requirejs.config({
 //        touchpunch: 'jquery.ui.touch-punch.min',
         tinymce: '../tinymce/jquery.tinymce.min',
         elfinder: '/elfinder/js/elfinder.min',
-        mathjax: "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML&amp;delayStartupUntil=configured"
+        mathjax: "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML&amp;delayStartupUntil=configured",
+        touchpunch: 'jquery.ui.touch-punch.min'
         
     },
     shim: {
         'jqueryui': {
             deps: ['jquery'],
             export: '$'
+        },
+        'touchpunch': {
+            deps: ['jqueryui'],
+            export: 'touchpunch'
         },
         'jqueryChosen': {
             deps: ['jquery']

@@ -685,4 +685,13 @@ select.thread-choser, select.component-choser, select.subcomponent-choser, selec
 .ui-dialog.akit {
     background-color:white;
 }
-
+.exercise-icon-wrapper {
+    position:relative;
+    top:4px;
+}
+.level-star-icon {
+    display:inline-block;
+    width:24px;
+    height:24px;
+    background-image: url('../sources/Star-grey-icon.png');
+}

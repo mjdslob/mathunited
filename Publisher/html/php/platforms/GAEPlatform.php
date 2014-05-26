@@ -27,20 +27,15 @@ class GAEPlatform extends Platform {
             $logger->trace(LEVEL_INFO, 'send threads.xml for repo '.$repoID);        
             $txt = EntityConverter::convert_entities($txt);
             $error = !$this->sendFile('threads.xml', '', $repoID, $txt, $logger);
-            
-            $threadsDoc = new SimpleXMLElement($txt);
-            $elms = $threadsDoc->xpath("//threads/thread");
-            foreach($elms as $elm) {
-                $resultXmlNode = $elm->xpath("result-xml");
-                if (count($resultXmlNode) > 0) {
-                    $xmlFile = $base.$resultXmlNode[0];
-                    $xmlContents = file_get_contents($xmlFile);
-                    if($xmlContents===false) throw new Exception("Xml file $xmlFile does not exist");
-                    $this->sendXmlFile($elm["id"], $repoID, $xmlContents, $logger, "result-structure");
-                }
-            }
-            
         } else throw new Exception("Threads file not found: ".$path.'threads.xml');
+        
+        $files = scandir("/data/".$repo['basePath'].'resultxml/');
+        foreach($files as $file) {
+            if (!is_dir($file) && strtolower(substr($file, -4)) == '.xml') {
+                $logger->trace(LEVEL_INFO, 'sending '.$file.'...');
+                $this->sendXmlFile(basename($file, ".xml"), $repoID, file_get_contents("/data/".$repo['basePath'].'resultxml/'.$file), $logger, "result-structure");
+            }
+        }
     }
     
     public function publishComponentFile($compId, $compRef, $basePath, $repo, $logger) {

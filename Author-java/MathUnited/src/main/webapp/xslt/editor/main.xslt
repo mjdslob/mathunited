@@ -256,35 +256,65 @@ extension-element-prefixes="exsl">
 </xsl:template>
 
 <xsl:template match="stepaligntable" mode="editor">
-    <table class="stepaligntable" tag="stepaligntable" editor="false"><tbody>
-        <xsl:apply-templates select="cells" mode="editor"/>
-    </tbody></table>
+    <div class="wrapper-prevent-paragraph-mode">
+        <table class="stepaligntable" tag="stepaligntable" editor="false"><tbody>
+            <xsl:apply-templates select="cells" mode="editor"/>
+        </tbody></table>
+    </div>
 </xsl:template>
 <xsl:template match="stepaligntable/cells" mode="editor">
     <tr class="stepaligntable-cells" tag="cells">
         <xsl:apply-templates select="c1|c2|c3" mode="editor"/>
-        <td tag="text">
+        <td class="stepaligntable-text" tag="text">
             <xsl:apply-templates select="following-sibling::text[1]" mode="editor"/>
         </td>
     </tr>
 </xsl:template>
 <xsl:template match="stepaligntable/cells/c1" mode="editor">
     <td class="stepaligntable-c1" tag="c1">
-        <p><xsl:apply-templates mode="paragraph"/></p>
+        <xsl:choose>
+            <xsl:when test="p">
+                <xsl:apply-templates mode="paragraph"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <p><xsl:apply-templates mode="paragraph"/></p>
+            </xsl:otherwise>
+        </xsl:choose>
     </td>
 </xsl:template>
 <xsl:template match="stepaligntable/cells/c2" mode="editor">
     <td class="stepaligntable-c2" tag="c2">
-        <p><xsl:apply-templates mode="paragraph"/></p>
+        <xsl:choose>
+            <xsl:when test="p">
+                <xsl:apply-templates mode="paragraph"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <p><xsl:apply-templates mode="paragraph"/></p>
+            </xsl:otherwise>
+        </xsl:choose>
     </td>
 </xsl:template>
 <xsl:template match="stepaligntable/cells/c3" mode="editor">
     <td class="stepaligntable-c3" tag="c3">
-        <p><xsl:apply-templates mode="paragraph"/></p>
+        <xsl:choose>
+            <xsl:when test="p">
+                <xsl:apply-templates mode="paragraph"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <p><xsl:apply-templates mode="paragraph"/></p>
+            </xsl:otherwise>
+        </xsl:choose>
     </td>
 </xsl:template>
 <xsl:template match="stepaligntable/text" mode="editor">
-    <p><xsl:apply-templates mode="paragraph"/></p>
+    <xsl:choose>
+        <xsl:when test="p">
+            <xsl:apply-templates mode="paragraph"/>
+        </xsl:when>
+        <xsl:otherwise>
+            <p><xsl:apply-templates mode="paragraph"/></p>
+        </xsl:otherwise>
+    </xsl:choose>
 </xsl:template>
 
 

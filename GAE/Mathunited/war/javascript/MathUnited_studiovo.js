@@ -297,10 +297,6 @@ $(document).ready(function () {
         }
     });
     //$(".jplayer_inspector").jPlayerInspector({jPlayer:player});
-
-    $(".item-next").click(function () { nextItem(this) });
-    $(".item-feedback").click(function () { showFeedback(this) });
-
 });
 
 function setTab(tabid) {
@@ -317,6 +313,9 @@ function setTab(tabid) {
     }
     $('.content-tab').removeClass('selected');
     $('#' + tabid).addClass('selected');
+    $('#' + tabid + ' *[ontab]').each(function(index, elm) {
+    	eval($(elm).attr("ontab"));
+    });
     //als meerdere pagina's, maak eerste pagina actief
     var page = $('.pages-container .page.selected', '#' + tabid).first();
     if (page.length > 0) {

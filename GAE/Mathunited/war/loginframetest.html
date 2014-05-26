@@ -1,0 +1,19 @@
+<html>
+<head>
+<script type="text/javascript" src="javascript/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="javascript/jquery.ba-postmessage.js"></script>
+<script type="text/javascript">
+$.receiveMessage(
+  function(e){
+    alert( e.data );
+  },
+  'http://www.eindexamensite.nl'
+);
+</script>
+</head>
+<body>
+
+<iframe src="http://www.eindexamensite.nl/iframe-page.html?parentUrl=http%3A%2F%2Fdave.mathunited2012.appspot.com%2Floginframetest.html&result=false"></iframe>
+
+</body>
+</html>
