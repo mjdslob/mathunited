@@ -833,11 +833,6 @@ table.answer td.label
 	background-color: #ff0000;
 }
 
-/*---------------------------*/
-/* result-frame              */
-/*---------------------------*/
-
-.result-frame {
-	height: 425px;
-	width: 100%;
+.result-page .busy {
+	text-align: center;
 }

@@ -315,7 +315,17 @@ indent="yes" encoding="utf-8"/>
 </xsl:template>
 
 <xsl:template match="result" mode="content">
-	<iframe class="result-frame" ontab='$(this).attr("src", "/viewresult?repo={$repo}&amp;threadid={@layout}&amp;userid=" + userid)' src="/iframeloading.html"></iframe>
+	<xsl:variable name="frameid">result-frame-<xsl:number format="0000" level="any"/></xsl:variable>
+	<div class="result-page" id="{$frameid}" ontab="$.get('/viewresult?repo={$repo}&amp;threadid={@layout}&amp;userid=' + userid, function(data) {{ $('#{$frameid}').html(data); }} ); return false;">
+		<div class="busy">
+		<br />
+		<br />
+		<br />
+		<h2>Laden... </h2>
+		<img src="sources_studiovo/loading.gif" width="100"/><br />
+		Een moment geduld a.u.b.
+		</div>
+	</div>
 </xsl:template>
 
 <xsl:template match="textref" mode="content">

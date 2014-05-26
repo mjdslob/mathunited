@@ -43,41 +43,9 @@ extension-element-prefixes="exsl">
 <!--   /////////////////////////////////////////////   -->
 <!--   /////////////////////////////////////////////   -->
 
-<xsl:output method="html" doctype-system="http://www.w3.org/TR/html4/strict.dtd" doctype-public="-//W3C//DTD HTML 4.01//EN"
-indent="yes" encoding="utf-8"/>
+<xsl:output method="xml" indent="yes" encoding="utf-8"/>
 
 <xsl:template match="/">
-<html>
-<head>
-   <xsl:choose>
-      <!--  subtitle difference in references: leading slash or not -->
-      <xsl:when test="$host_type='GAE'">
-        <link rel="stylesheet" type="text/css">
-	        <xsl:attribute name="href">/css/<xsl:value-of select="$cssfile"/></xsl:attribute>
-        </link>
-        <link type="text/css" href="/javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
-        <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
-        <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
-        <script type="text/javascript" src="/javascript/MathUnited.js"/>
-        <script type="text/javascript" src="/javascript/MathUnited_studiovo.js"/>
-      </xsl:when>
-      <xsl:otherwise>
-	    <link rel="stylesheet" type="text/css">
-	   	    <xsl:attribute name="href">css/<xsl:value-of select="$cssfile"/></xsl:attribute>
-	    </link>
-        <link type="text/css" href="javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
-        <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
-        <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
-        <script type="text/javascript" src="javascript/MathUnited.js"/>
-        <script type="text/javascript" src="javascript/MathUnited_studiovo.js"/>
-      </xsl:otherwise>
-   </xsl:choose>
-</head>
-
-<!--   **************** -->
-<!--        BODY        -->
-<!--   **************** -->
-<body class="result-page">
 	<xsl:choose>
 		<xsl:when test="$userid">
         	<table class="layout-table">
@@ -103,8 +71,6 @@ indent="yes" encoding="utf-8"/>
 			<p>Je moet ingelogd zijn om je voortgang te bekijken. Log in door rechtsboven deze pagina op "Login" te klikken.</p>
 		</xsl:otherwise>
 	</xsl:choose>
-</body>
-</html>
 </xsl:template>
 
 <xsl:template match="mulom:*"/>
