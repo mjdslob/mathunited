@@ -66,17 +66,17 @@ public class ViewServlet extends HttpServlet {
             }
 
             String comp = parameterMap.get("comp");
-            String subcomp = parameterMap.get("subcomp");            
             if(comp==null) {
                 throw new Exception("Het verplichte argument 'comp' ontbreekt.");
             }
-            
+
+            String subcomp = parameterMap.get("subcomp");
             if(subcomp==null) {
                 throw new Exception("Het verplichte argument 'subcomp' ontbreekt.");
             }
 
-            //find out which repository to use
-            //try to get repo from cookie
+            // find out which repository to use
+            // try to get repo from cookie
             String repo = parameterMap.get("repo");
             Cookie[] cookieArr = request.getCookies();
             if(cookieArr != null) {
@@ -88,7 +88,7 @@ public class ViewServlet extends HttpServlet {
                 }
             }
             String variant = parameterMap.get("variant");
-            if(repo==null) {
+            if (repo == null) {
                 //try to get repo from variant (hack to prevent problems with old urls...)
                 if(repo==null){
                     if(variant!=null){
@@ -103,11 +103,13 @@ public class ViewServlet extends HttpServlet {
             	if(repo==null)
             		throw new Exception("Het verplichte argument 'repo' ontbreekt: "+repo);
             }
+
             Map<String, Repository> repoMap = config.getRepos();
             Repository repository = repoMap.get(repo);
             if(repository==null) {
                 throw new Exception("Onbekende repository: "+repo);
             }
+
             Repository baserepo = null;
             if(repository.baseRepo!=null) {
                 baserepo = repoMap.get(repository.baseRepo);
@@ -159,7 +161,9 @@ public class ViewServlet extends HttpServlet {
             // supply path to subcomponent to xslt. Might be needed when resolving other xml-documents
             int ind = sub.file.lastIndexOf('/');
             String repoPath = repository.getPath();
-            if(repoPath.length()>0) repoPath=repoPath+"/";
+            if(repoPath.length()>0) {
+                repoPath=repoPath+"/";
+            }
             parameterMap.put("refbase", repoPath+sub.file.substring(0, ind+1));
             parameterMap.put("component", component.getXML());
             parameterMap.put("repo-path", repository.getPath());
@@ -188,7 +192,8 @@ public class ViewServlet extends HttpServlet {
             Writer w = response.getWriter();
             PrintWriter pw = new PrintWriter(w);
             pw.println("<html><head></head><body><h1>Fout opgetreden</h1><p>");
-            pw.println(e.getMessage());
+            pw.printf("<p>Exception type: <tt>%s</tt></p>\n", e.getClass().getName());
+            pw.printf("<p>Exception message: <i>%s</i</p>\n", e.getMessage());
             pw.println("</p></body></html>");
 //            throw new ServletException(e);
         }
