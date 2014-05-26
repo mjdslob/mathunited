@@ -41,7 +41,7 @@ extension-element-prefixes="exsl">
       <xsl:when test="subcomponent/meta/param[@name='css-file']">
         <xsl:value-of select="subcomponent/meta/param[@name='css-file']"/>
       </xsl:when>
-      <xsl:otherwise>basis_studiovo.css?v=25</xsl:otherwise>
+      <xsl:otherwise>basis_studiovo.css?v=26</xsl:otherwise>
     </xsl:choose>
 </xsl:variable>
 <xsl:variable name="overviewRef"><xsl:value-of select="string('/auteur/math4all.html')"/></xsl:variable>
@@ -128,7 +128,9 @@ indent="yes" encoding="utf-8"/>
             }
         });
     </script>
-    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js">
+    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js"></script>
+    <script type="text/javascript">
+    	var userid = "sanderbons";
     </script>
 
 </head>
@@ -310,6 +312,10 @@ indent="yes" encoding="utf-8"/>
 
 <xsl:template match="p">
     <xsl:apply-templates mode="content"/>
+</xsl:template>
+
+<xsl:template match="result" mode="content">
+	<iframe class="result-frame" ontab='$(this).attr("src", "/viewresult?repo={$repo}&amp;threadid={@layout}&amp;userid=" + userid)' src="/iframeloading.html"></iframe>
 </xsl:template>
 
 <xsl:template match="textref" mode="content">

@@ -37,9 +37,9 @@ extension-element-prefixes="exsl">
 <!--   /////////////////////////////////////////////   -->
 <!--  Specific for GAE (do not copy from auteurssite): -->
 <!--   /////////////////////////////////////////////   -->
-<xsl:variable name="host_type">GAE</xsl:variable>
-<xsl:variable name="docbase"></xsl:variable>
-<xsl:variable name="urlbase"><xsl:value-of select="concat('http://mathunited.pragma-ade.nl:41080/data/',$refbase)"/></xsl:variable>
+<xsl:variable name="host_type">auteur</xsl:variable>
+<xsl:variable name="docbase" select="$refbase"></xsl:variable>
+<xsl:variable name="urlbase"><xsl:value-of select="concat('/data/',$refbase)"/></xsl:variable>
 <!--   /////////////////////////////////////////////   -->
 <!--   /////////////////////////////////////////////   -->
 
@@ -78,49 +78,8 @@ indent="yes" encoding="utf-8"/>
 <!--        BODY        -->
 <!--   **************** -->
 <body class="result-page">
-<div class="pageDiv">
-    <div id="menubar">
-        <xsl:if test="$menu_color">
-            <xsl:attribute name="style">
-                background-color:<xsl:value-of select="$menu_color"/>;
-            </xsl:attribute>
-        </xsl:if>
-        <div id="logo">
-		   <xsl:choose>
-		      <!--  subtitle difference in references: leading slash or not -->
-		      <xsl:when test="$host_type='GAE'">
-            	<img src="/sources_studiovo/logo.png"/>
-		      </xsl:when>
-		      <xsl:otherwise>
-            	<img src="sources_studiovo/logo.png"/>
-	    	  </xsl:otherwise>
-	   	  </xsl:choose>
-
-            <span id="logo-text"></span>
-        </div>
-
-        <div id="menu-lines">
-            <div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/><div class="menu-line"/>
-        </div>
-    </div>
-    <div id="page-right">
-        <div id="header">
-            <img>
-		       <xsl:choose>
-		          <xsl:when test="$host_type='GAE'">
-		             <xsl:attribute name="src"><xsl:value-of select="assignments/meta/param[@name='banner-image']"/></xsl:attribute>
-		          </xsl:when>
-		          <xsl:otherwise>
-		             <xsl:attribute name="src"><xsl:value-of select="concat($urlbase, assignments/meta/param[@name='banner-image']/resource/name)"/></xsl:attribute>
-		          </xsl:otherwise>
-		       </xsl:choose>
-			</img>
-        </div>
-        <div id="ribbon">
-            <span id="kruimelpad">Voortgang <xsl:value-of select="$userid"></xsl:value-of></span>
-            <span class="subcomponent-title"><xsl:value-of select="assignments/meta/param[@name='title']"/></span>
-        </div>
-        <div id="content">
+	<xsl:choose>
+		<xsl:when test="$userid">
         	<table class="layout-table">
         		<tr>
         			<td class="leftcontent">
@@ -138,9 +97,12 @@ indent="yes" encoding="utf-8"/>
         			</td>
         		</tr>
         	</table>
-        </div>
-    </div>
-</div>
+		</xsl:when>
+		<xsl:otherwise>
+			<h2>Niet ingelogd</h2>
+			<p>Je moet ingelogd zijn om je voortgang te bekijken. Log in door rechtsboven deze pagina op "Login" te klikken.</p>
+		</xsl:otherwise>
+	</xsl:choose>
 </body>
 </html>
 </xsl:template>

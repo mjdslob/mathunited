@@ -686,7 +686,7 @@ table.answer td.label
 /*---------------------------*/
 .result-page
 {
-	
+	background-color: #fff;
 }
 
 .result-page .title
@@ -831,4 +831,13 @@ table.answer td.label
 .result-page .item .score.score_bad
 {
 	background-color: #ff0000;
+}
+
+/*---------------------------*/
+/* result-frame              */
+/*---------------------------*/
+
+.result-frame {
+	height: 425px;
+	width: 100%;
 }
