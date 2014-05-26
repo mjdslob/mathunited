@@ -37,7 +37,19 @@ define(['jquery'], function($, objSelector) {
         $('.select-item-button',container).click(function() {
             var itemSelector = require('app/ItemSelector');
             var current = null;
-            if(compid) current={threadid: threadid, compid:compid, subcompid:subid, itemid:itemid};
+            if (compid) {
+                current={threadid: threadid, compid:compid, subcompid:subid, itemid:itemid};
+            } else {
+                // TODO: Look it up in cookie or JQuery
+                // TODO: 1st try look op paragraph ref tags
+                var prev = $('div[tag="exercises"] div[tag="paragraph-ref"][thread][comp][subcomp][item]').first();
+                current = {
+                    threadid: prev.attr('thread'),
+                    compid: prev.attr('comp'),
+                    subcompid: prev.attr('subcomp'),
+                    itemid: prev.attr('item')
+                };
+            }
             itemSelector.show(current,function(result) {
                 var ref=result.thread.name+' >> '+result.component.name+' >> '+result.subcomponent.name+' >> '+result.item.name;
                 $('.related-theory',container).text(ref);

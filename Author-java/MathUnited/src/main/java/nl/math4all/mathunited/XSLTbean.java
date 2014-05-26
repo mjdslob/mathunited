@@ -1,5 +1,6 @@
 package nl.math4all.mathunited;
 
+
 import nl.math4all.mathunited.configuration.Configuration;
 import nl.math4all.mathunited.configuration.TransformationSpec;
 import javax.servlet.ServletContext;
@@ -37,6 +38,22 @@ public class XSLTbean {
                 return new StreamSource(xmlStream);
             }
         });
+        tFactory.setErrorListener(new ErrorListener() {
+            @Override
+            public void warning(TransformerException exception) throws TransformerException {
+                LOGGER.log(Level.WARNING, exception.toString());
+            }
+
+            @Override
+            public void error(TransformerException exception) throws TransformerException {
+                LOGGER.log(Level.SEVERE, exception.toString());
+            }
+
+            @Override
+            public void fatalError(TransformerException exception) throws TransformerException {
+                LOGGER.log(Level.SEVERE, exception.toString().toUpperCase());
+            }
+        });
     }
     
     //the constructor simply gets a new TransformerFactory instance
@@ -45,17 +62,21 @@ public class XSLTbean {
         context = ctxt;
     }
 
+
     public static Templates getTemplate(String name) throws Exception{
         Templates template = templateMap.get(name);
         if(template==null){
             Map<String,TransformationSpec> transformationMap = Configuration.getInstance().getVariants();
             TransformationSpec spec = transformationMap.get(name);
             String path = spec.path;
-            if(path==null) throw new Exception("Onbekende transformatie: "+name);
+            if(path==null) {
+                throw new Exception("Onbekende transformatie: " + name);
+            }
             InputStream is = context.getResourceAsStream(path);
             StreamSource xslSource = new StreamSource(is);
-            System.out.println("XSLTbean: Compiling variant "+name);
+            LOGGER.log(Level.INFO, "XSLTbean: Compiling variant '" + name + "' on path " + path);
             template = tFactory.newTemplates(xslSource);
+            LOGGER.log(Level.INFO, "XSLTbean: Succesfully stored template '" + name + "'.");
             templateMap.put(name, template);
         }
         return template;
