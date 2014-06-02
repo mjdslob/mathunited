@@ -87,6 +87,12 @@ extension-element-prefixes="exsl">
 <xsl:template match="span[@class='math-container']" mode="paragraph">
     <xsl:apply-templates mode="editor"/>
 </xsl:template>
+<xsl:template match="span[@tag='m:math']" mode="editor">
+    <!-- Default notation is in ASCIIMathML. Sometimes MathML is required to have more control.  -->
+    <m:math prevent-am="true">
+        <xsl:apply-templates mode="editor"/>
+    </m:math>
+</xsl:template>
 <xsl:template match="script" mode="paragraph"/>
 <xsl:template match="span[@class='am-container']" mode="paragraph">
     <xsl:apply-templates mode="paragraph"/>

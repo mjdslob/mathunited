@@ -10,7 +10,8 @@ xmlns:xhtml="http://www.w3.org/1999/xhtml"
 exclude-result-prefixes="saxon"
 extension-element-prefixes="exsl">
 
-
+<!--
+MSLO 2 juni 2014: keep cals:table intact 
 <xsl:include href="editor/calstable.xslt"/>
 
 <xsl:template match="cals:table" mode="editor">
@@ -25,7 +26,7 @@ extension-element-prefixes="exsl">
     </xsl:variable>
     <xsl:apply-templates select="$preptable" mode="editor"/>
 </xsl:template>
-
+-->
 <!-- used to remove xhtml namespaces -->
 <xsl:template match="xhtml:*" mode="editor-prepare">
     <xsl:element name="{local-name()}">
