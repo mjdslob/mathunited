@@ -121,6 +121,7 @@ public class ViewServlet extends HttpServlet {
             parameterMap.put("refbase", repository.path+"/"+sub.file.substring(0, ind+1));
             parameterMap.put("component", component.getXML());
             parameterMap.put("repo", repo);
+            parameterMap.put("requesturl", request.getRequestURL().toString() + "?" + request.getQueryString());
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             ContentResolver resolver = new ContentResolver(repo, sub.file, context);
             Source xmlSource = resolver.resolve(sub.file, "root");

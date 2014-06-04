@@ -99,6 +99,7 @@ body {
     height: 111px;
     margin:1px 0px 3px 0px;
     overflow:hidden;
+    background-position: -30px top;
 }
 #header img {
     position:relative;
@@ -151,7 +152,7 @@ body {
 }
 #content {
     padding: 10px 6px 10px 10px;
-	height: 430px;
+	height: 437px;
 	overflow: auto;
 }
 p {
@@ -169,7 +170,7 @@ h2 {
 .content-tab.selected {
     display:block;
     overflow:auto;
-    height:430px;    
+    height:437px;    
 }
 .figureDiv.right {
     float:right;
@@ -264,6 +265,18 @@ iframe {
 
 .slider-content .exercise {
     margin-bottom: 0;
+}
+
+/*---------------------------*/
+/* Eindexamen site			 */
+/*---------------------------*/
+
+.login-frame {
+	width: 56px;
+	height: 23px;
+	float: right;
+	margin-top: 88px;
+	border: none;
 }
 
 /*---------------------------*/
