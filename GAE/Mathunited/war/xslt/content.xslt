@@ -397,6 +397,7 @@ extension-element-prefixes="exsl">
 
 <xsl:template match="table" mode="content">
     <table class="wm-default-table">
+        <xsl:apply-templates select="@*" mode="content"/>
         <xsl:choose>
             <xsl:when test="tbody">
                 <xsl:apply-templates mode="content"/>

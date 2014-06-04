@@ -99,7 +99,7 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
         //replaces each am-container span to the ASCIIMathML code (between backquotes)
         var amContainerElm = $('span.am-container',temp);
         amContainerElm.each(function() {
-            var am = $('span[tag="am"]',this).text();
+            var am = $('span[tag="am"]',$(this) ).text();
             $(this).replaceWith("`"+am+"`");
         });
         var mathContainerElm = $('span.math-container',temp);
@@ -120,6 +120,7 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
 
         mathContainerElm.each(function() {
             $('.MathJax',$(this)).remove();
+            $('.MathJax_Preview',$(this)).remove();
             $('script',$(this)).remove();
 
             replaceTagToMathElms($(this));

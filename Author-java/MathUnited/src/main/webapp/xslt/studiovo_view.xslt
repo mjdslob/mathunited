@@ -20,6 +20,7 @@ extension-element-prefixes="exsl">
 <xsl:param name="repo"/>
 <xsl:param name="repo-path"/>
 <xsl:param name="baserepo-path"/>
+<xsl:param name="requesturl"/>
 
 <xsl:variable name="cm2px" select="number(50)"/>
 <xsl:variable name="parsed_component" select="saxon:parse($component)"/>
@@ -81,7 +82,8 @@ indent="yes" encoding="utf-8"/>
         <script type="text/javascript" src="/javascript/MathUnited_studiovo.js"/>
         <script type="text/javascript" src="/javascript/jquery.ui.touch-punch.min.js"/>
         <script type="text/javascript" src="/javascript/jquery.jplayer.min.js"/>
-        <script type="text/javascript" src="/javascript/jquery.scrollIntoView.min.js"/>
+		<script type="text/javascript" src="/javascript/jquery.scrollIntoView.min.js"/>
+		<script type="text/javascript" src="/javascript/jquery.ba-postmessage.js"/>
         <script type="text/javascript" src="/javascript/readspeaker/ReadSpeaker.js?pids=embhl&amp;skin=ReadSpeakerMiniSkin"/>
         <link rel="stylesheet" href="/css/content.css" type="text/css"/>
         <link rel="stylesheet" type="text/css">
@@ -96,7 +98,8 @@ indent="yes" encoding="utf-8"/>
         <script type="text/javascript" src="javascript/MathUnited_studiovo.js"/>
         <script type="text/javascript" src="javascript/jquery.ui.touch-punch.min.js"/>
         <script type="text/javascript" src="javascript/jquery.jplayer.min.js"/>
-        <script type="text/javascript" src="javascript/jquery.scrollIntoView.min.js"/>
+		<script type="text/javascript" src="javascript/jquery.scrollIntoView.min.js"/>
+		<script type="text/javascript" src="	javascript/jquery.ba-postmessage.js"/>
         <script type="text/javascript" src="javascript/readspeaker/ReadSpeaker.js?pids=embhl&amp;skin=ReadSpeakerMiniSkin"/>
         <link rel="stylesheet" href="css/content.css" type="text/css"/>
 	      <link rel="stylesheet" type="text/css">
@@ -130,7 +133,13 @@ indent="yes" encoding="utf-8"/>
     </script>
     <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js"></script>
     <script type="text/javascript">
-    	var userid = "sanderbons";
+    	var userid = "";
+    	$.receiveMessage(
+		  function(e){
+		    userid = e.data.split("|")[0];
+		  },
+		  'http://www.eindexamensite.nl'
+		);
     </script>
 
 </head>
@@ -167,16 +176,18 @@ indent="yes" encoding="utf-8"/>
     </div>
     <div id="page-right">
         <div id="header">
-            <img>
+            <xsl:attribute name="style">
+               background-image: url(
 		       <xsl:choose>
 		          <xsl:when test="$host_type='GAE'">
-		             <xsl:attribute name="src"><xsl:value-of select="subcomponent/meta/param[@name='banner-image']"/></xsl:attribute>
+		             <xsl:value-of select="subcomponent/meta/param[@name='banner-image']"/>
 		          </xsl:when>
 		          <xsl:otherwise>
-		             <xsl:attribute name="src"><xsl:value-of select="concat($urlbase, subcomponent/meta/param[@name='banner-image']/resource/name)"/></xsl:attribute>
+		             <xsl:value-of select="concat($urlbase, subcomponent/meta/param[@name='banner-image']/resource/name)"/>
 		          </xsl:otherwise>
-		       </xsl:choose>
-			</img>
+		       </xsl:choose>)
+			</xsl:attribute>
+			<iframe class="login-frame" src="http://www.eindexamensite.nl/iframe-page.html?parentUrl={encode-for-uri($requesturl)}&amp;result=false"></iframe>
         </div>
         <div id="ribbon">
             <span id="kruimelpad"></span>
@@ -315,7 +326,17 @@ indent="yes" encoding="utf-8"/>
 </xsl:template>
 
 <xsl:template match="result" mode="content">
-	<iframe class="result-frame" ontab='$(this).attr("src", "/viewresult?repo={$repo}&amp;threadid={@layout}&amp;userid=" + userid)' src="/iframeloading.html"></iframe>
+	<xsl:variable name="frameid">result-frame-<xsl:number format="0000" level="any"/></xsl:variable>
+	<div class="result-page" id="{$frameid}" ontab="$.get('/viewresult?repo={$repo}&amp;threadid={@layout}&amp;userid=' + userid, function(data) {{ $('#{$frameid}').html(data); }} ); return false;">
+		<div class="busy">
+		<br />
+		<br />
+		<br />
+		<h2>Laden... </h2>
+		<img src="sources_studiovo/loading.gif" width="100"/><br />
+		Een moment geduld a.u.b.
+		</div>
+	</div>
 </xsl:template>
 
 <xsl:template match="textref" mode="content">

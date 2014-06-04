@@ -52,17 +52,21 @@ extension-element-prefixes="exsl">
      `<xsl:value-of select='.'/>`
    </span>
 </xsl:template>
-<xsl:template match="m:math | math" mode="paragraph">
-    <xsl:variable name="am">
-        <xsl:apply-templates select="." mode="convert-to-asciimathml"/>
-    </xsl:variable>
-    <xsl:apply-templates select="$am" mode="paragraph"/>
-<!--    
-    <span class="math-container">
-        <span tag="m:math"><xsl:apply-templates mode="paragraph-span"/></span>
-        <xsl:apply-templates select="." mode="copy"/>
-    </span>
--->    
+<xsl:template match="m:math" mode="paragraph">
+    <xsl:choose>
+        <xsl:when test="@prevent-am">
+            <span class="math-container">
+                <span tag="m:math"><xsl:apply-templates mode="paragraph-span"/></span>
+                <xsl:apply-templates select="." mode="copy"/>
+            </span>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:variable name="am">
+                <xsl:apply-templates select="." mode="convert-to-asciimathml"/>
+            </xsl:variable>
+            <xsl:apply-templates select="$am" mode="paragraph"/>
+        </xsl:otherwise>
+    </xsl:choose>
 </xsl:template>
 
 <xsl:template match="author-remark" mode="paragraph">
