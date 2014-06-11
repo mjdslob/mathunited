@@ -21,7 +21,7 @@ define(['jquery'], function($) {
         action : function(elm, params) {
             var templateId = params.template;
             var action = params.cmd;
-            var doc = requires('app/Document');
+            var doc = require('app/Document');
 
             if(action==='remove') {
                 elm.empty();

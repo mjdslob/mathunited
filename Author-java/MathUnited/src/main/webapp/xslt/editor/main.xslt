@@ -201,13 +201,18 @@ MSLO 2 juni 2014: keep cals:table intact
     </table>
 </xsl:template>
 
-<xsl:template match="tr|td|th|tbody|col|colgroup" mode="editor">
+<xsl:template match="tr|th|tbody|col|colgroup" mode="editor">
     <xsl:copy>
          <xsl:attribute name="tag" select="name()"/>
          <xsl:apply-templates mode="editor"/>
     </xsl:copy>
 </xsl:template>
-    
+<xsl:template match="td | th" mode="editor">
+    <xsl:copy>
+         <xsl:attribute name="tag" select="name()"/>
+         <xsl:apply-templates mode="paragraph"/>
+    </xsl:copy>
+</xsl:template>
 <!-- others -->
 <xsl:template match="learningaspects" mode="editor">
    <div tag="learningaspects">

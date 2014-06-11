@@ -12,15 +12,6 @@ extension-element-prefixes="exsl">
 
 <xsl:import href="mathml/to-asciimathml.xslt"/>
 
-<!-- TEMPLATES -->
-<xsl:template name="paragraph-template">
-    <div class="tiny-editor">
-        <div class="close-paragraph"></div>
-        <div class="paragraph-content">
-            ...
-        </div>
-    </div>
-</xsl:template>
 
 <!-- Switch to paragraph mode -->
 <xsl:template match="p | itemize | paperfigure" mode="editor">
