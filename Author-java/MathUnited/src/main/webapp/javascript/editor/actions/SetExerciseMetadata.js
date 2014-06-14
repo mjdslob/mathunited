@@ -17,22 +17,27 @@
 
 define(['jquery'], function($, objSelector) {
     var container = null; //contains metadata elements, both visual representation and xml-tags
-    
+
+    function makeDescription(item) {
+        // Make descriptive display text from a reference
+        var descr = [item.thread, item.component, item.subcomponent, item.item].map(function(el) {
+            return $('<div/>').text(el.name).html();
+        }).join(" &raquo; ");
+        $('.related-theory',container).html(descr);
+    }
+
     function setReferences() {
         //gerelateerde theorie
         //var parRef = $('div[tag="paragraph-ref"]',container).attr('value');
         //$('form input[name="ref-id"]', container).val(parRef);
         var ref = $('div[tag="paragraph-ref"]', container);
-        if(ref.length>0) {
+        if (ref.length > 0) {
             var threadid = ref.attr('thread');
             var compid = ref.attr('comp');
             var subid = ref.attr('subcomp');
             var itemid = ref.attr('item');
             var itemSelector = require('app/ItemSelector');
-            itemSelector.getSelectedElements({threadid: threadid, compid: compid, subcompid:subid, itemid:itemid}, function(result) {
-                var descr=result.thread.name+' >> '+result.component.name+' >> '+result.subcomponent.name+' >> '+result.item.name;
-                $('.related-theory',container).text(descr);
-            });
+            itemSelector.getSelectedElements({threadid: threadid, compid: compid, subcompid:subid, itemid:itemid}, makeDescription);
         }
         $('.select-item-button',container).click(function() {
             var itemSelector = require('app/ItemSelector');
@@ -51,8 +56,7 @@ define(['jquery'], function($, objSelector) {
                 };
             }
             itemSelector.show(current,function(result) {
-                var ref=result.thread.name+' >> '+result.component.name+' >> '+result.subcomponent.name+' >> '+result.item.name;
-                $('.related-theory',container).text(ref);
+                makeDescription(result);
                 $('div[tag="paragraph-ref"]',container).remove();
                 $('<div tag="paragraph-ref"></div>').appendTo($('.metadata-data',container))
                         .attr('thread',result.thread.id)
@@ -131,6 +135,7 @@ define(['jquery'], function($, objSelector) {
             };
             
             setReferences();
+
             //calculator allowed?
             var useCalc = true;  //default: calculator is 
             var calc = $('div[tag="calculator"][allowed="false"]',container);

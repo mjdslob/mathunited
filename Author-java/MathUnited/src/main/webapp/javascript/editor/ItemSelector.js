@@ -111,7 +111,7 @@ define(['jquery', 'jqueryui', 'jqueryChosen'], function($) {
                         threads[threadId] = thread;
                     });
 
-                    //retain only the modules from the threads
+                    // Retain only the modules from the threads
                     for (var ii = 0; ii < threads.length; ii++) {
                         var thr = threads[ii];
                         for (var jj = 0; jj < thr.modules.length; jj++) {
@@ -200,6 +200,7 @@ define(['jquery', 'jqueryui', 'jqueryChosen'], function($) {
         elm.append($('<option value=""></option>'));
         elm.trigger('chosen:updated');
     }
+
     function setSubcomponentOptions(compId, div) {
         clearSubcomponentOptions(div);
         var elm = $('.subcomponent-choser', div);
@@ -210,6 +211,7 @@ define(['jquery', 'jqueryui', 'jqueryChosen'], function($) {
         }
         elm.trigger('chosen:updated');
     }
+
     function clearSubcomponentOptions(div) {
         var elm = $('.subcomponent-choser', div);
         $('option', elm).remove();
@@ -217,6 +219,7 @@ define(['jquery', 'jqueryui', 'jqueryChosen'], function($) {
         elm.trigger('chosen:updated');
         clearItemOptions(div);
     }
+
     function setComponentOptions(threadId, div) {
         var elm = $('.component-choser', div);
         clearComponentOptions(div);
@@ -259,6 +262,7 @@ define(['jquery', 'jqueryui', 'jqueryChosen'], function($) {
                 });
             });
         },
+
         show: function(current, callback_ok) {
             if (!isInitialized) {
                 alert('Probleem: kan de beschikbare paragrafen niet laden');
@@ -307,8 +311,6 @@ define(['jquery', 'jqueryui', 'jqueryChosen'], function($) {
                 });
             }
 
-
-
             parent.dialog({width: 300, height: 400});
             $('.thread-choser', parent).chosen()
                     .change(function(data) {
@@ -344,10 +346,15 @@ define(['jquery', 'jqueryui', 'jqueryChosen'], function($) {
                 parent.dialog('close');
             });
         },
+
         getSelectedElements: function(spec, callback) {
             var result = {};
+
             if (spec.threadid) {
-                result.thread = {id: spec.threadid, name: threads[spec.threadid].title};
+                result.thread = {
+                    id: spec.threadid,
+                    name: threads[spec.threadid].title
+                };
             }
             if (spec.compid) {
                 var comp = modules[spec.compid];

@@ -202,7 +202,7 @@ extension-element-prefixes="exsl">
                             <div tag="metadata">
                                 <form>
                                     id : <xsl:value-of select="replace($fname,'.xml','')"/><br/>
-                                    <span><b>Niveau:</b> </span>
+                                    <span><b>Niveau: </b> </span>
                                     <input type="radio" name="level" value="1">1</input>
                                     <input type="radio" name="level" value="2">2</input>
                                     <input type="radio" name="level" value="3">3</input>
@@ -212,7 +212,7 @@ extension-element-prefixes="exsl">
                                         <input type="checkbox" name="kloonopgave" value="clone">Kloonopgave van <xsl:value-of select="metadata/clone"/></input><br/>
                                     </xsl:if>
                                     <div class="meta-medium">
-                                        <b>Medium:</b>
+                                        <b>Medium: </b>
                                         <input type="radio" name="medium" value="paper">papier</input>
                                         <input type="radio" name="medium" value="web">web</input>
                                         <input type="radio" name="medium" value="both">beide</input>
@@ -222,14 +222,14 @@ extension-element-prefixes="exsl">
                                     <input type="checkbox" name="olympiadevraag">olympiadevraag</input><br/>
                                     <input type="checkbox" name="examenvraag">examenvraag</input><br/>
                                     <input type="checkbox" name="wda">wiskunde-denkactiviteit (WDA)</input><br/>
-                                    <b>Rekenmachine toegestaan</b> <input type="checkbox" name="calculator_allowed"></input><br/>
-                                    <b>Groepslabels:</b> 
+                                    <b>Rekenmachine toegestaan: </b> <input type="checkbox" name="calculator_allowed"></input><br/>
+                                    <b>Groepslabels: </b> 
                                     <input type="text" name="groepslabel" size="30">
                                         <xsl:for-each select="metadata/group-label/@value"> <xsl:value-of select="."/> </xsl:for-each>
                                     </input><br/>
-                                    <b>Gerelateerde theorie:</b><span class="related-theory"/>
+                                    <b>Gerelateerde theorie: </b><span class="related-theory"/>
                                      <xsl:value-of select="metadata/ref-id/@value"/>
-                                    <div class="select-item-button">selecteer</div>
+                                    &#160;<div class="select-item-button">selecteer</div>
                                     <br/>
                                     <b>Leerdoelen</b>: <div class="metadata-obj-selector-container"/>
                                     <br/>
