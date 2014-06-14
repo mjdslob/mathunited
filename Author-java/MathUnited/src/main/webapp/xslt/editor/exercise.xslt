@@ -82,12 +82,12 @@ extension-element-prefixes="exsl">
     </div>
     <div id="exercise-itemintro-template">
         <div tag="itemintro">
-            <xsl:call-template name="paragraph-template"/>
+            <p>...</p>
         </div>
     </div>
     <div id="exercise-intro-template">
         <div tag="intro">
-            <xsl:call-template name="paragraph-template"/>
+            <p>...</p>
         </div>
     </div>
     <div id="repeatAlternative">

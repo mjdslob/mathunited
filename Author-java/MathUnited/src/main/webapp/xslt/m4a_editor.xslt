@@ -198,7 +198,6 @@
             <body>
                 <div class="hidden-templates">
                     <xsl:call-template name="exercise-templates"/>
-                    <xsl:call-template name="paragraph-template"/>
                 </div>
                 <div id="meta-data-container" style="display:none">
                     <span id="meta-data-comp"><xsl:value-of select="$comp"/></span>
