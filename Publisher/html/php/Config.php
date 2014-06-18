@@ -56,9 +56,9 @@ class Config {
      
 
     static function getRepoConfig($repoName) {
-        $conf = Config::$repo_data;  //in php this is a copy, not a reference. So save to modify
+        $conf = Config::$repo_data[$repoName];  //in php this is a copy, not a reference. So save to modify
         $confXML = Config::getRepoFromMathunited($repoName);
-        $conf['basePath'] = $confXML->path;
+        $conf['basePath'] = (string)$confXML->path."/";
         return $conf;
     }
     static function getRepoFromMathunited($repoName) {

@@ -50,7 +50,7 @@ public class GetRepoConfigServlet extends HttpServlet {
                   + "  <path>"+config.getContentRoot()+repository.getPath()+"</path>"
                   + "  <threadsURL>"+repository.threadsURL+"</threadsURL>"
                   + "  <componentsURL>"+repository.componentsURL+"</componentsURL>"
-                  + "<repodata>";
+                  + "</repodata>";
             LOGGER.log(Level.FINE, result);
             pw.println(result);
         } catch(Exception e) {

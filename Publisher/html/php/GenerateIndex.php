@@ -42,6 +42,7 @@ try{
         } else {
             throw new Exception('Generate index called without repo identifier');
         }
+        
         $doTest=false;
         if( isset($this->comm['test']) ) {
             $doTest = ($this->comm['test']=='true');
@@ -54,6 +55,7 @@ try{
             throw new Exception("Generate Index called with unknown repository $repoId");
         }
         $paths = $repo['paths'];
+        
         for($kk=0; $kk<count($paths); $kk++) {
             echo "<p>Searching for components in folder ".$paths[$kk].": </p><ul>";
             $cc=$this->findComponents($repo['basePath'], $paths[$kk], 0);
@@ -84,21 +86,34 @@ try{
         die("not implemented");
     }
 
+    function openFile($fname) {
+        $txt = file_get_contents($fname);
+        /*
+        $ii0 = strpos($txt, '<?xml-model');
+        if($ii0!==false) {
+            $this->logger->trace(LEVEL_ERROR, "DEBUG: $fname");
+            $ii1 = strpos($txt,'?>',$ii0);
+            if($ii1!==false) {
+                $txt = substr($txt,0,$ii0).substr($txt,$ii1);
+            }
+        }
+        */
+        $txt = EntityConverter::convert_entities($txt);
+        $doc = new SimpleXMLElement($txt);
+        return $doc;
+    }
+    
     function addIdToItem($comp,$repo) {
         //read subcomponent main file
         $base = $comp['fullname'];
         $ind = strrpos($base, '/');
         $base = substr($base, 0, $ind+1);
-        $txt = file_get_contents($comp['fullname']);
-        $txt = EntityConverter::convert_entities($txt);
-        $doc = new SimpleXMLElement($txt);
+        $doc = $this->openFile($comp['fullname']);
         $subDoc = $doc->subcomponents;
         for($kk=0; $kk<count($subDoc->subcomponent);$kk++) {
              $s = $subDoc->subcomponent[$kk];
              $fname = $s->file;
-             $txt = file_get_contents($base.$fname);
-             $txt = EntityConverter::convert_entities($txt);
-             $doc = new SimpleXMLElement($txt);
+             $doc = $this->openFile($base.$fname);
              $ind = strrpos($fname, '/');
              $subbase = substr($fname, 0, $ind+1);
              $subbase = $base.$subbase;
@@ -106,9 +121,7 @@ try{
              $inclist = $doc->xpath("//include");
              foreach($inclist as $inc) {
                  $itemname = $inc['filename'];
-                 $itemtxt = file_get_contents($subbase.$itemname);
-                 $itemtxtconv = EntityConverter::convert_entities($itemtxt);
-                 $itemdoc = simplexml_load_string($itemtxtconv);
+                 $itemdoc = $this->openFile($subbase.$itemname);
                  if(!$itemdoc['id']) {
                     $this->logger->trace(LEVEL_INFO, "Item $itemname does not contain an id. Fixing it.");
                     //add id to text
@@ -126,11 +139,10 @@ try{
     
     //create overview of numbered items
     function generateComponentIndex($comp,$repo) {
+    try{
         $this->logger->trace(LEVEL_INFO, "Create index file for ".$comp['fullname']);
         if($repo['index_xsl']) {
-            $txt = file_get_contents($comp['fullname']);
-            $txt = EntityConverter::convert_entities($txt);
-            $doc = new SimpleXMLElement(html_entity_decode($txt, ENT_QUOTES, "utf-8"));
+            $doc = $this->openFile($comp['fullname']);
             $xslt_string = file_get_contents($repo['index_xsl']);
             $xsltDoc = new SimpleXMLElement(html_entity_decode($xslt_string, ENT_QUOTES, "utf-8"));
             $xslt = new XSLTProcessor();
@@ -151,6 +163,13 @@ try{
                 $resultDoc = $xslt->transformToURI($doc,'file://'.$destName);            
             }
         }
+
+    } catch(Exception $e) {
+       echo $e->getMessage();
+       $this->logger->trace(LEVEL_ERROR, $e->getMessage());
+    }        
+         
+        
     }
 
     function removeIndexFiles($comps) {
@@ -191,9 +210,7 @@ try{
     }
 
     function addComponent($cc, $parent, $repo) {
-         $conts = file_get_contents($cc["fullname"]);
-         $conts = html_entity_decode($conts, ENT_QUOTES, "utf-8");
-         $compDoc = new SimpleXMLElement($conts);
+         $compDoc = $this->openFile($cc["fullname"]);
          $metaDoc = $compDoc->metadata;
          $componentNode = $parent->addChild('component');
          $componentNode->addAttribute('id', $compDoc['id']);
@@ -255,11 +272,8 @@ try{
           if($ii>0 && $ii==strlen($file)-4 && $file!='index.xml'&& $file!='entities.xml') {
              $xmlFound = true;
              $fullName = $path.$file;
-             $txt = file_get_contents($fullName);
-             $txt = EntityConverter::convert_entities($txt);
              try{
-                 $doc = new SimpleXMLElement($txt);
-
+                 $doc = $this->openFile($fullName);
                  $id = $doc->xpath("/component/@id");
                  $schooltype = $doc->xpath("/component/metadata/schooltype");
                  $year = $doc->xpath("/component/metadata/year");
