@@ -227,9 +227,10 @@ extension-element-prefixes="exsl">
                                     <input type="text" name="groepslabel" size="30">
                                         <xsl:for-each select="metadata/group-label/@value"> <xsl:value-of select="."/> </xsl:for-each>
                                     </input><br/>
-                                    <b>Gerelateerde theorie: </b><span class="related-theory"/>
-                                     <xsl:value-of select="metadata/ref-id/@value"/>
-                                    &#160;<div class="select-item-button">selecteer</div>
+                                    <b>Gerelateerde theorie:</b>
+                                    <ul class="related-theory">
+                                        <li><div class="add-item-button">Voeg toe...</div></li>
+                                    </ul>
                                     <br/>
                                     <b>Leerdoelen</b>: <div class="metadata-obj-selector-container"/>
                                     <br/>

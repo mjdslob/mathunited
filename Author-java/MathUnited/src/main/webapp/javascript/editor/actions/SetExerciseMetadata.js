@@ -16,56 +16,189 @@
  */
 
 define(['jquery'], function($, objSelector) {
-    var container = null; //contains metadata elements, both visual representation and xml-tags
 
-    function makeDescription(item) {
+    function itemText(item) {
         // Make descriptive display text from a reference
-        var descr = [item.thread, item.component, item.subcomponent, item.item].map(function(el) {
+        return [item.thread, item.component, item.subcomponent, item.item].map(function (el) {
             return $('<div/>').text(el.name).html();
         }).join(" &raquo; ");
-        $('.related-theory',container).html(descr);
     }
 
-    function setReferences() {
-        //gerelateerde theorie
-        //var parRef = $('div[tag="paragraph-ref"]',container).attr('value');
-        //$('form input[name="ref-id"]', container).val(parRef);
-        var ref = $('div[tag="paragraph-ref"]', container);
-        if (ref.length > 0) {
-            var threadid = ref.attr('thread');
-            var compid = ref.attr('comp');
-            var subid = ref.attr('subcomp');
-            var itemid = ref.attr('item');
-            var itemSelector = require('app/ItemSelector');
-            itemSelector.getSelectedElements({threadid: threadid, compid: compid, subcompid:subid, itemid:itemid}, makeDescription);
+    function References(container) {
+        this.refs = [];
+        this.container = container;
+    }
+
+    // Return index of reference of -1 if reference is present
+    References.prototype.indexOf = function(thread, comp, subcomp, item) {
+        for (var i = 0; i < this.refs.length; i++) {
+            var cur = this.refs[i];
+            if (cur.thread == thread && cur.comp == comp && cur.subcomp == subcomp && cur.item == item) {
+                return i;
+            }
         }
-        $('.select-item-button',container).click(function() {
-            var itemSelector = require('app/ItemSelector');
-            var current = null;
-            if (compid) {
-                current={threadid: threadid, compid:compid, subcompid:subid, itemid:itemid};
+        return -1;
+    }
+
+    // Check if given reference is present
+    References.prototype.has = function(thread, comp, subcomp, item) {
+        return this.indexOf(thread, comp, subcomp, item) != -1;
+    }
+
+    // Push current exercise's references to metadata section
+    References.prototype.pushReferencesToMetadata = function() {
+        // Remove old paragraph-ref's
+        $('div[tag="paragraph-ref"]', this.container).remove();
+
+        // Store references
+        var metadata_data = $('.metadata-data', this.container);
+
+        $.each(this.refs, function() {
+            $('<div tag="paragraph-ref"></div>')
+                .attr('thread', this.thread)
+                .attr('comp', this.comp)
+                .attr('subcomp', this.subcomp)
+                .attr('item', this.item)
+                .appendTo(metadata_data);
+        });
+
+        // Write empty div if there are no references
+        if (this.refs.length == 0) {
+            $('<div tag="paragraph-ref"></div>').appendTo($('.metadata-data', this.container));
+        }
+    }
+
+    // Add a reference to the current exercise
+    References.prototype.addReference = function(thread, comp, subcomp, item) {
+        if (!this.has(thread, comp, subcomp, item)) {
+            this.refs.push({thread:thread, comp:comp, subcomp:subcomp, item:item});
+        }
+    }
+
+    // Add a reference to the current exercise
+    References.prototype.enableReference = function(thread, comp, subcomp, item) {
+        if (!this.has(thread, comp, subcomp, item)) {
+            this.refs.push({thread:thread, comp:comp, subcomp:subcomp, item:item});
+            this.pushReferencesToMetadata();
+        }
+    }
+
+    // Remove a reference from the current exercise
+    References.prototype.disableReference = function(thread, comp, subcomp, item) {
+        var refid = this.indexOf(thread, comp, subcomp, item);
+        if (refid != -1) {
+            this.refs.splice(refid, 1);
+            this.pushReferencesToMetadata();
+        }
+    }
+
+    function makeDescription(container, references, item) {
+        // We use narrow text to display the full name of the referenced paragraph
+        var text = $("<span class='related-theory-text'/>").html(itemText(item));
+
+        // HTML for buttons
+        var ADD_TXT = '&nbsp;+&nbsp;';
+        var DEL_TXT = '&nbsp;&times;&nbsp;'
+
+        // Check if the item is in the current references
+        var button_div, li_class;
+        if (references.has(item.thread.id, item.component.id, item.subcomponent.id, item.item.id)) {
+            button_div = '<div class="disable-item-button">' + DEL_TXT + '</div>';
+            li_class = 'enabled-related-theory';
+        } else {
+            button_div = '<div class="enable-item-button">' + ADD_TXT + '</div>';
+            li_class = 'disabled-related-theory';
+        }
+
+        // We will add a toggle button
+        var button = $(button_div)
+            .attr('thread', item.thread.id)
+            .attr('comp', item.component.id)
+            .attr('subcomp', item.subcomponent.id)
+            .attr('item', item.item.id);
+
+        // The remove button will remove the reference
+        var toggle = function() {
+            var li = button.parent();
+
+            // Toggle between "remove" and "add"
+            if (button.hasClass('disable-item-button')) {
+                // Disable line and make into enable-item-button
+                li.removeClass('enabled-related-theory').addClass('disabled-related-theory');
+                button.removeClass('disable-item-button').addClass('enable-item-button');
+                button.html(ADD_TXT);
+                references.disableReference(button.attr('thread'), button.attr('comp'), button.attr('subcomp'), button.attr('item'));
             } else {
-                // TODO: Look it up in cookie or JQuery
-                // TODO: 1st try look op paragraph ref tags
-                var prev = $('div[tag="exercises"] div[tag="paragraph-ref"][thread][comp][subcomp][item]').first();
-                current = {
-                    threadid: prev.attr('thread'),
-                    compid: prev.attr('comp'),
-                    subcompid: prev.attr('subcomp'),
-                    itemid: prev.attr('item')
+                // Disable line and make into enable-item-button
+                li.removeClass('disabled-related-theory').addClass('enabled-related-theory');
+                button.removeClass('enable-item-button').addClass('disable-item-button');
+                button.html(DEL_TXT);
+                references.enableReference(button.attr('thread'), button.attr('comp'), button.attr('subcomp'), button.attr('item'));
+            }
+        }
+        button.click(toggle);
+
+        // The entry consists of a the text and the button
+        var entry = $('<li>').addClass(li_class).append(text).append(button);
+
+        // We add it just in front of the add-item-button
+        entry.insertBefore($(".related-theory li:last", container));
+    }
+
+     function setReferences(container) {
+        var itemSelector = require('app/ItemSelector');
+
+        // Get all references in exercises in document (and make sure we only include them once)
+        var all_references = new References(null);
+
+        $('div[tag="exercises"] div[tag="paragraph-ref"][thread][comp][subcomp][item]').each(function() {
+            var el = $(this);
+            var t = el.attr('thread'), c = el.attr('comp'), s = el.attr('subcomp'), item = el.attr('item');
+            all_references.addReference(t, c, s, item);
+        });
+
+        // Get references of this exercise
+        var references = new References(container);
+        $('div[tag="paragraph-ref"][thread][comp][subcomp][item]', container).each(function() {
+            var el = $(this);
+            var t = el.attr('thread'), c = el.attr('comp'), s = el.attr('subcomp'), item = el.attr('item');
+            references.enableReference(t, c, s, item);
+        });
+
+        // Make text entries
+        $.each(all_references.refs, function () {
+            itemSelector.getSelectedElements({
+                    threadid: this.thread,
+                    compid: this.comp,
+                    subcompid: this.subcomp,
+                    itemid: this.item},
+                function (item) {
+                    makeDescription(container, references, item);
+                });
+        });
+
+        // Add a button to add additional references
+        $('.add-item-button',container).click(function() {
+            var current = null;
+            var ref = references.refs.length > 0 ? references.refs[0] : (all_references.refs.length > 0 ? all_references.refs[0] : null);
+            if (ref) {
+                current= {
+                    threadid: ref.thread,
+                    compid: ref.comp,
+                    subcompid: ref.subcomp,
+                    itemid: ref.item
                 };
             }
-            itemSelector.show(current,function(result) {
-                makeDescription(result);
-                $('div[tag="paragraph-ref"]',container).remove();
-                $('<div tag="paragraph-ref"></div>').appendTo($('.metadata-data',container))
-                        .attr('thread',result.thread.id)
-                        .attr('comp',result.component.id)
-                        .attr('subcomp',result.subcomponent.id)
-                        .attr('item', result.item.id);
+            itemSelector.show(current, function(result) {
+                // Enable as reference
+                references.enableReference(result.thread.id, result.component.id, result.subcomponent.id, result.item.id);
+
+                // Add line as description
+                makeDescription(container, references, result);
+
             });
         });
-        
+
     }
     
     return {
@@ -91,8 +224,10 @@ define(['jquery'], function($, objSelector) {
             //is handled below in this function : $('form input',container).change(....)
             var doc = require('app/Document');
             var base = elm.parents('._editor_context_base').first();
+
             //container contains both the visual frame as the div with xml-tags
-            container = $('.metadata-container',base).first().addClass('visible');
+            var container = $('.metadata-container',base).first().addClass('visible');
+
             //tag contains the xml-tags : not visible but defines what is stored as xml
             var tag = $('*[tag="metadata"]',container).first();
             var objTagContainer = $('div[tag="objectives"]',container);
@@ -134,7 +269,7 @@ define(['jquery'], function($, objSelector) {
                 if(dum.length>0) dum[0].checked= true;
             };
             
-            setReferences();
+            setReferences(container);
 
             //calculator allowed?
             var useCalc = true;  //default: calculator is 
@@ -232,9 +367,9 @@ define(['jquery'], function($, objSelector) {
                 var label = $('input[name="groepslabel"]',container);
                 if(label.length>0) {
                     var txt = label[0].value;
-                    var txt = txt.replace('/\s{2,}/g',' ');
+                    txt = txt.replace('/\s{2,}/g',' ');
                     var elms = txt.split(' ');
-                    for(var ii=0;ii<elms.length;ii++) {
+                    for(var ii=0; ii < elms.length; ii++) {
                         if(elms[ii].trim().length>0)
                            addMetadataElm(tag, 'group-label',{value: elms[ii]}, null, false);
                     }
