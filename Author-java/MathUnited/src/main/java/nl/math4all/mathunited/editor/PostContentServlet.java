@@ -127,7 +127,7 @@ public class PostContentServlet extends HttpServlet {
             parameterMap.put("html", html);
                         
             LOGGER.log(Level.INFO, "Commit: user={0}, comp={1}, subcomp={2}, repo={3}", new Object[]{usettings.mail, comp, subcomp, repoId});
-            
+            LOGGER.log(Level.FINE, html);
             Repository repository = config.getRepos().get(repoId);
             if(repository==null) {
                 throw new Exception(repoId+" is een ongeldige repository");
@@ -174,7 +174,7 @@ public class PostContentServlet extends HttpServlet {
             String subFolder = sub.file.substring(0, ind);
             String refbase = config.getContentRoot()+repository.getPath()+"/"+subFolder+"/";
 
-            ContentResolver resolver = new ContentResolver(repoId, context);
+            ContentResolver resolver = new ContentResolver(repository, context);
             StringReader strReader = new StringReader(html);
             InputSource xmlSource = new InputSource(strReader);
             SAXSource xmlSaxSource = new SAXSource(xmlReader, xmlSource);

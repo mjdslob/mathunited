@@ -160,7 +160,7 @@ public class ProcessItemServlet extends HttpServlet {
             parameterMap.put("option","editor-process-item");
             parameterMap.put("dopreprocess","true()");  //used to remove xhtml namespaces that are added by TagSoup parser
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-            ContentResolver resolver = new ContentResolver(repo, context);
+            ContentResolver resolver = new ContentResolver(repository, context);
             
             LOGGER.log(Level.FINE, "process-item: xml={0}", xmlstr);
             XMLReader xmlReader = XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");

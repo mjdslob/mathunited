@@ -235,20 +235,20 @@ define(['jquery'], function($, objSelector) {
                 objTagContainer = $('<div tag="objectives"></div>');
                 tag.append(objTagContainer);
             }
-            var is_examenvraag = $('div[tag="exercise-type"][value="examen"]',container).length>0;
-            var is_olympiadevraag = $('div[tag="exercise-type"][value="olympiade"]',container).length>0;
-            var is_wdavraag = $('div[tag="exercise-type"][value="wda"]',container).length>0;
+            var is_examenvraag = $('div[tag="exercise-type"][value="examen"]',tag).length>0;
+            var is_olympiadevraag = $('div[tag="exercise-type"][value="olympiade"]',tag).length>0;
+            var is_wdavraag = $('div[tag="exercise-type"][value="wda"]',container).tag>0;
             $('form input[name="examenvraag"]', container)[0].checked = is_examenvraag;
             $('form input[name="olympiadevraag"]', container)[0].checked = is_olympiadevraag;
             $('form input[name="wda"]', container)[0].checked = is_wdavraag;
             var grouplabels='';
-            $('div[tag="group-label"]',container).each(function() {
+            $('div[tag="group-label"]',tag).each(function() {
                grouplabels += $(this).attr('value')+' '; 
             });
             $('form input[name="groepslabel"]', container).val(grouplabels);
 
             //difficulty level
-            var level = $('div[tag="level"]',container).attr('value');
+            var level = $('div[tag="level"]',tag).attr('value');
             if(level) {
                 var dum=$('form input[name="level"][value="'+level+'"]', container);
                 if(dum.length>0) dum[0].checked= true;
@@ -263,7 +263,7 @@ define(['jquery'], function($, objSelector) {
             } else {
                 $('.meta-medium',container).css('display','none');
             }
-            var isClone = $('div[tag="clone"]',container).attr('active');
+            var isClone = $('div[tag="clone"]',tag).attr('active');
             if(isClone==='true') {
                 var dum=$('form input[name="kloonopgave"]', container);
                 if(dum.length>0) dum[0].checked= true;
@@ -273,7 +273,7 @@ define(['jquery'], function($, objSelector) {
 
             //calculator allowed?
             var useCalc = true;  //default: calculator is 
-            var calc = $('div[tag="calculator"][allowed="false"]',container);
+            var calc = $('div[tag="calculator"][allowed="false"]',tag);
             if(calc.length>0) useCalc = false;
             var calcElm = $('form input[name="calculator_allowed"]',container);
             if(calcElm.length>0 && useCalc) calcElm[0].checked=true;
@@ -282,19 +282,33 @@ define(['jquery'], function($, objSelector) {
             var main = require('app/Main');
             var objContainer = $('.metadata-obj-selector-container',container);
             var html='';
-            $('div[tag="description"] div[tag="objective"]').each(function() {
-                var objid = $(this).attr('id');
-                var parid = main.getSubcomp();
-                var compid = main.getComp();
-                if($('div[tag="objective-ref"][value="'+objid+'"]',objTagContainer).length>0){
-                    html+='<input type="checkbox" name="objective" checked value="'+objid+'" comp="'+compid+'" subcomp="'+parid+'"><span class="objective-ref-text">'+$(this).text()+'</span><br>'; 
-                } else {
-                    html+='<input type="checkbox" name="objective" value="'+objid+'" comp="'+compid+'" subcomp="'+parid+'"><span class="objective-ref-text">'+$(this).text()+'</span><br>'; 
-                }
-            });
-            html = $(html);
+            
             objContainer.empty();
-            objContainer.append(html);
+            function addObjective(elm){
+                var objid = elm.attr('id');
+                var parid = elm.attr('subcomp');
+                var filter = '[subcomp="'+parid+'"]';
+                if(!parid) {
+                    parid = main.getSubcomp();
+                    filter='';
+                }
+                var compid = elm.attr('comp');
+                if(!compid) compid = main.getComp();
+                var html;
+                if($('div[tag="objective-ref"][value="'+objid+'"]'+filter,objTagContainer).length>0){
+                    html='<input type="checkbox" name="objective" checked value="'+objid+'" comp="'+compid+'" subcomp="'+parid+'"><span class="objective-ref-text">'+elm.text()+'</span><br>'; 
+                } else {
+                    html='<input type="checkbox" name="objective" value="'+objid+'" comp="'+compid+'" subcomp="'+parid+'"><span class="objective-ref-text">'+elm.text()+'</span><br>'; 
+                }
+                objContainer.append( $(html) );
+            }
+            $('div[tag="description"] div[tag="objective"]').each(function() {
+                addObjective($(this));
+            });
+            //in case of non-editable objectives (Totaalbeeld)
+            $('div[tag="description"] div.objective-wrapper div.objective').each(function() {
+                addObjective($(this));
+            });
 
             //close button
             $('.close-metadata-button').click(function(){

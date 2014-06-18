@@ -16,6 +16,7 @@ import nl.math4all.mathunited.configuration.SubComponent;
 import nl.math4all.mathunited.configuration.Component;
 import nl.math4all.mathunited.exceptions.LoginException;
 import nl.math4all.mathunited.utils.UserManager;
+import nl.math4all.mathunited.utils.Utils;
 
 //mathunited.pragma-ade.nl/MathUnited/view?variant=basis&comp=m4a/xml/12hv-me0&subcomp=3&item=explore
 // - fixed parameters: variant, comp (component), subcomp (subcomponent).
@@ -48,47 +49,9 @@ public class GetBackupListServlet extends HttpServlet {
             Configuration config = Configuration.getInstance();
 
             UserSettings usettings = UserManager.isLoggedIn(request,response);
-            
-            //read request parameters
-            Map<String, String[]> paramMap = request.getParameterMap();
-            Map<String, String> parameterMap = new HashMap<String, String>();
-            for(Map.Entry<String, String[]> entry : paramMap.entrySet()) {
-                String pname = entry.getKey();
-                String[] pvalArr = entry.getValue();
-                if(pvalArr!=null && pvalArr.length>0) {
-                   parameterMap.put(pname, pvalArr[0]);
-                }
-            }
-
-            //find out which repository to use
-            //try to get repo from cookie
-            String repo = parameterMap.get("repo");
-            Cookie[] cookieArr = request.getCookies();
-            if(cookieArr != null) {
-                for(Cookie c:cookieArr) {
-                    if(c.getName().equals("REPO")) {
-                        repo = c.getValue();
-                        parameterMap.put("repo",repo);
-                    }
-                }
-            }
-            if(repo==null) {
-                throw new Exception("Er is geen archief geselecteerd.");
-            }
-
-            String comp = parameterMap.get("comp");
-            String subcomp = parameterMap.get("subcomp");            
-            if(comp==null) {
-                throw new Exception("Het verplichte argument 'comp' ontbreekt.");
-            }
-            if(subcomp==null) {
-                throw new Exception("Het verplichte argument 'subcomp' ontbreekt.");
-            }
-            Map<String, Repository> repoMap = config.getRepos();
-            Repository repository = repoMap.get(repo);
-            if(repository==null) {
-                throw new Exception("Onbekende repository: "+repo);
-            }
+            Repository repository = Utils.getRepository(request);
+            String comp = Utils.readParameter("comp", true, request);
+            String subcomp = Utils.readParameter("subcomp", true, request);
             
             //read components. 
             componentMap = repository.readComponentMap();

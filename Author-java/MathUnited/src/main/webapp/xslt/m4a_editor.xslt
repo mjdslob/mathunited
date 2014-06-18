@@ -434,10 +434,22 @@
             <div class="m4a-editor-item-container">
                 <div class="m4a-editor-item-title">Metadata<div class="item-label-button"/></div>
                 <div class="m4a-editor-item-content">
-                    <xsl:apply-templates mode="editor"/>
-                    <xsl:if test='not(objectives)'>
-                        <xsl:call-template name="objectives-handler"/>
-                    </xsl:if>
+                    <xsl:choose>
+                        <!-- je kunt geen leerdoelen aanpassen of aanmaken bij Totaalbeeld -->
+                        <!-- die worden door Javascript opgehaald door de server uit de andere paragrafen -->
+                        <xsl:when test="/subcomponent/componentcontent/summary">
+                            <b>Leerdoelen</b>
+                            <div class="objective-wrapper load-objectives">
+                                <!-- will be filled by javascript -->
+                            </div>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:apply-templates mode="editor"/>
+                            <xsl:if test='not(objectives)'>
+                                <xsl:call-template name="objectives-handler"/>
+                            </xsl:if>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </div>
                 <div style="clear:both"/>
             </div>

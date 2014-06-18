@@ -20,6 +20,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import nl.math4all.mathunited.utils.FileManager;
+import nl.math4all.mathunited.utils.Utils;
 
 //used to generate new items (examples, exercises, etc)
 // - read templates for new items from /webapp/content-items/<item-file>
@@ -47,6 +48,8 @@ public class GetItemTemplatesServlet extends HttpServlet {
         
         try{
             Configuration config = Configuration.getInstance();
+            UserSettings usettings = UserManager.isLoggedIn(request,response);
+            String typestr = Utils.readParameter("type", true, request);
             
             //read request parameters
             Map<String, String[]> paramMap = request.getParameterMap();
@@ -59,13 +62,7 @@ public class GetItemTemplatesServlet extends HttpServlet {
                 }
             }
 
-            String typestr = parameterMap.get("type");
-            if(typestr==null) {
-                throw new Exception("Het verplichte argument 'type' ontbreekt.");
-            }
             LOGGER.log(Level.FINE, "GetItemTemplatesServlet: type={0}", typestr);
-
-            UserSettings usettings = UserManager.isLoggedIn(request,response);
 
             //find out which repository to use
             //try to get repo from cookie
