@@ -84,7 +84,7 @@ define(['jquery', 'app/Document','actions/ObjectivesHandler', 'actions/SetExerci
                        },
         init: function() {
             var _this = this;
-            
+            objectivesHandler.init();
             itemSelector.init( $('#meta-components-url').text(), $('#meta-threads-url').text() );
             doc.init();
             $('#commit-button').click(function(){_this.submit();});

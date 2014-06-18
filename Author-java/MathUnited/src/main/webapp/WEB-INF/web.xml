@@ -14,6 +14,10 @@
         <servlet-class>nl.math4all.mathunited.GetRepoConfigServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>getobjectives</servlet-name>
+        <servlet-class>nl.math4all.mathunited.editor.GetObjectivesServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>getcomponentitems</servlet-name>
         <servlet-class>nl.math4all.mathunited.editor.GetComponentItemsServlet</servlet-class>
     </servlet>
@@ -100,6 +104,10 @@
     <servlet-mapping>
         <servlet-name>getrepoconfig</servlet-name>
         <url-pattern>/repoconfig</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getobjectives</servlet-name>
+        <url-pattern>/getobjectives</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>process-item</servlet-name>

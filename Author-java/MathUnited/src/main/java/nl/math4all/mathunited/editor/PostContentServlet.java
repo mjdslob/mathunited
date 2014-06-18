@@ -55,7 +55,7 @@ public class PostContentServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         try{
             super.init(config);
-            LOGGER.setLevel(Level.INFO);
+            LOGGER.setLevel(Level.FINE);
             context = getServletContext();
 
             processor = new XSLTbean(context);
@@ -127,7 +127,7 @@ public class PostContentServlet extends HttpServlet {
             parameterMap.put("html", html);
                         
             LOGGER.log(Level.INFO, "Commit: user={0}, comp={1}, subcomp={2}, repo={3}", new Object[]{usettings.mail, comp, subcomp, repoId});
-            
+            LOGGER.log(Level.FINE, html);
             Repository repository = config.getRepos().get(repoId);
             if(repository==null) {
                 throw new Exception(repoId+" is een ongeldige repository");

@@ -112,13 +112,11 @@ div[tag="metadata"] {
     display:none;
     position:relative;
 }
-div.metadata-data {
+div.metadata-container form{
     display:none;
 }
-div.metadata-container.visible div[tag="metadata"] {
+div.metadata-container.visible form{
     display:block;
-}
-div.metadata-container form{
     background-color:rgb(220,220,220);
     border:1px solid rgb(150,150,150);
     border-radius:3px;

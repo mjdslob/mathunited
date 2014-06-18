@@ -16,7 +16,7 @@
  */
 
 define(['jquery','app/Document'], function($, doc) {
-    
+    var LOADOBJECTIVES_URL = "/MathUnited/getobjectives";
     
     var objelm = $('div[tag="description"] div[tag="objectives"]').first();
     
@@ -41,6 +41,20 @@ define(['jquery','app/Document'], function($, doc) {
         doc.setChanged(true);
     }
     
+    // voor Totaalbeeld: haal alle leerdoelen op van de andere paragrafen
+    function loadObjectivesFromServer(parent_jq) {
+        var main = require('app/Main');
+        $.get(LOADOBJECTIVES_URL, {
+            comp: main.getComp()
+        }, function(data) {
+            $('objective', $(data)).each(function(){
+                var elm = $(this);
+                parent_jq.append('<div class="objective" id="'+elm.attr('id')+'" comp="'+elm.attr('comp')
+                        +'" subcomp="'+elm.attr('subcomp')+'">par. '+elm.attr('subcomp')+': '+elm.text()+'</div>');
+            });
+        });
+    }
+
     $('div.objective-add-button',objelm).first().click(function() {
         var par = $(this).parents('.objective-new-item').first();
         var num=1;
@@ -67,6 +81,12 @@ define(['jquery','app/Document'], function($, doc) {
     $('div.objective-wrapper input.objective-input',objelm).change(changedHandler);
     
     return {
+        init: function() {
+            var elm = $('.load-objectives');
+            if(elm.length>0) {
+                loadObjectivesFromServer(elm);
+            }
+        },
         action : function() {
             
         }
