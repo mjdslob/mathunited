@@ -16,6 +16,7 @@ import nl.math4all.mathunited.configuration.SubComponent;
 import nl.math4all.mathunited.configuration.Component;
 import nl.math4all.mathunited.exceptions.LoginException;
 import nl.math4all.mathunited.utils.UserManager;
+import nl.math4all.mathunited.utils.Utils;
 
 //get all content items (examples, exercises, etc) for a given component. Used for a selection widget 
 //(see webapp/javascript/editor/ItemSelector.js)
@@ -44,8 +45,9 @@ public class GetComponentItemsServlet extends HttpServlet {
 
         try{
             Configuration config = Configuration.getInstance();
-
             UserSettings usettings = UserManager.isLoggedIn(request,response);
+            Repository repository = Utils.getRepository(request);
+            String comp = Utils.readParameter("comp", true, request);
             
             //read request parameters
             Map<String, String[]> paramMap = request.getParameterMap();
@@ -56,32 +58,6 @@ public class GetComponentItemsServlet extends HttpServlet {
                 if(pvalArr!=null && pvalArr.length>0) {
                    parameterMap.put(pname, pvalArr[0]);
                 }
-            }
-
-            //find out which repository to use
-            //try to get repo from cookie
-            String repo = parameterMap.get("repo");
-            Cookie[] cookieArr = request.getCookies();
-            if(cookieArr != null) {
-                for(Cookie c:cookieArr) {
-                    if(c.getName().equals("REPO")) {
-                        repo = c.getValue();
-                        parameterMap.put("repo",repo);
-                    }
-                }
-            }
-            if(repo==null) {
-                throw new Exception("Er is geen archief geselecteerd.");
-            }
-
-            String comp = parameterMap.get("comp");
-            if(comp==null) {
-                throw new Exception("Het verplichte argument 'comp' ontbreekt.");
-            }
-            Map<String, Repository> repoMap = config.getRepos();
-            Repository repository = repoMap.get(repo);
-            if(repository==null) {
-                throw new Exception("Onbekende repository: "+repo);
             }
             
             //read components. 

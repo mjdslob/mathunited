@@ -15,6 +15,7 @@ import nl.math4all.mathunited.configuration.*;
 import nl.math4all.mathunited.configuration.SubComponent;
 import nl.math4all.mathunited.configuration.Component;
 import nl.math4all.mathunited.exceptions.LoginException;
+import nl.math4all.mathunited.utils.Utils;
 
 //mathunited.pragma-ade.nl/MathUnited/view?variant=basis&comp=m4a/xml/12hv-me0&subcomp=3&item=explore
 // - fixed parameters: variant, comp (component), subcomp (subcomponent).
@@ -65,15 +66,8 @@ public class ViewServlet extends HttpServlet {
                 parameterMap.put("is_mobile", "false");
             }
 
-            String comp = parameterMap.get("comp");
-            if(comp==null) {
-                throw new Exception("Het verplichte argument 'comp' ontbreekt.");
-            }
-
-            String subcomp = parameterMap.get("subcomp");
-            if(subcomp==null) {
-                throw new Exception("Het verplichte argument 'subcomp' ontbreekt.");
-            }
+            String comp = Utils.readParameter("comp", true, request);
+            String subcomp = Utils.readParameter("subcomp", true, request);
 
             // find out which repository to use
             // try to get repo from cookie
@@ -90,18 +84,18 @@ public class ViewServlet extends HttpServlet {
             String variant = parameterMap.get("variant");
             if (repo == null) {
                 //try to get repo from variant (hack to prevent problems with old urls...)
-                if(repo==null){
-                    if(variant!=null){
-                        if(variant.equals("basis_wm") || variant.equals("wm_view")) repo = "wm";
-                        else if(variant.equals("basis") || variant.equals("m4a_view")) repo= "m4a";
-                        else if(variant.equals("basis_studiovo") || variant.equals("studiovo_view")) repo="studiovo";
-                        System.out.println("Setting repo from variant: "+repo);
+                if (variant != null) {
+                    if (variant.equals("basis_wm") || variant.equals("wm_view")) {
+                        repo = "wm";
+                    } else if (variant.equals("basis") || variant.equals("m4a_view")) {
+                        repo = "m4a";
+                    } else if (variant.equals("basis_studiovo") || variant.equals("studiovo_view")) {
+                        repo = "studiovo";
                     }
-                } else {
-                    System.out.println("Setting repo from cookie: "+repo);
+                    System.out.println("Setting repo from variant: " + repo);
                 }
             	if(repo==null)
-            		throw new Exception("Het verplichte argument 'repo' ontbreekt: "+repo);
+                    throw new Exception("Het verplichte argument 'repo' ontbreekt: "+repo);
             }
 
             Map<String, Repository> repoMap = config.getRepos();
@@ -170,7 +164,7 @@ public class ViewServlet extends HttpServlet {
             parameterMap.put("baserepo-path", baserepo==null?"":baserepo.getPath());
             parameterMap.put("requesturl", request.getRequestURL().toString() + "?" + request.getQueryString());
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-            ContentResolver resolver = new ContentResolver(repo, context);
+            ContentResolver resolver = new ContentResolver(repository, context);
             
             Source xmlSource = resolver.resolve(repository.getPath()+"/"+sub.file, "");
             String errStr = processor.process(xmlSource, variant, parameterMap, resolver, byteStream);

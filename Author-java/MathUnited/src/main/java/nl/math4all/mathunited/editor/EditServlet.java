@@ -17,6 +17,7 @@ import nl.math4all.mathunited.configuration.SubComponent;
 import nl.math4all.mathunited.configuration.Component;
 import nl.math4all.mathunited.exceptions.LoginException;
 import nl.math4all.mathunited.utils.UserManager;
+import nl.math4all.mathunited.utils.Utils;
 
 //mathunited.pragma-ade.nl/MathUnited/view?variant=basis&comp=m4a/xml/12hv-me0&subcomp=3&item=explore
 // - fixed parameters: variant, comp (component), subcomp (subcomponent).
@@ -51,9 +52,12 @@ public class EditServlet extends HttpServlet {
 
         try{
             Configuration config = Configuration.getInstance();
-
             UserSettings usettings = UserManager.isLoggedIn(request,response);
-            
+            Repository repository = Utils.getRepository(request);
+            String comp = Utils.readParameter("comp", true, request);
+            String subcomp = Utils.readParameter("subcomp", true, request);
+            String variant = Utils.readParameter("variant", true, request);
+
             //read request parameters
             Map<String, String[]> paramMap = request.getParameterMap();
             Map<String, String> parameterMap = new HashMap<String, String>();
@@ -70,16 +74,7 @@ public class EditServlet extends HttpServlet {
                 parameterMap.put("is_mobile", "false");
             }
 
-            String comp = parameterMap.get("comp");
-            String subcomp = parameterMap.get("subcomp");            
-            if(comp==null) {
-                throw new Exception("Het verplichte argument 'comp' ontbreekt.");
-            }
             
-            if(subcomp==null) {
-                throw new Exception("Het verplichte argument 'subcomp' ontbreekt.");
-            }
-
             //find out which repository to use
             //try to get repo from cookie
             String repo = parameterMap.get("repo");
@@ -95,18 +90,10 @@ public class EditServlet extends HttpServlet {
             if(repo==null) {
                 throw new Exception("Er is geen archief geselecteerd.");
             }
-            String variant = parameterMap.get("variant");
-            if(variant==null) {
-                throw new Exception("Het verplichte argument 'variant' ontbreekt.");
-            }
-            Map<String, Repository> repoMap = config.getRepos();
-            Repository repository = repoMap.get(repo);
-            if(repository==null) {
-                throw new Exception("Onbekende repository: "+repo);
-            }
             
             Repository baserepo = null;
             if(repository.baseRepo!=null) {
+                Map<String, Repository> repoMap = config.getRepos();
                 baserepo = repoMap.get(repository.baseRepo);
             }
 
@@ -164,7 +151,7 @@ public class EditServlet extends HttpServlet {
             }
             
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-            ContentResolver resolver = new ContentResolver(repo, context);
+            ContentResolver resolver = new ContentResolver(repository, context);
             
             Source xmlSource = resolver.resolve(repository.getPath()+"/"+sub.file, "");
             String errStr = processor.process(xmlSource, variant, parameterMap, resolver, byteStream);

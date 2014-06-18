@@ -18,6 +18,7 @@ import nl.math4all.mathunited.configuration.SubComponent;
 import nl.math4all.mathunited.configuration.Component;
 import nl.math4all.mathunited.exceptions.LoginException;
 import nl.math4all.mathunited.utils.FileManager;
+import nl.math4all.mathunited.utils.Utils;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 import org.w3c.dom.Node;
@@ -62,11 +63,7 @@ public class GetXMLServlet extends HttpServlet {
                    parameterMap.put(pname, pvalArr[0]);
                 }
             }
-
-            String htmlstr = parameterMap.get("html");            
-            if(htmlstr==null) {
-                throw new Exception("Het verplichte argument 'html' ontbreekt.");
-            }
+            String htmlstr = Utils.readParameter("html", true, request);
             LOGGER.log(Level.FINE, "GetXML: html={0}", htmlstr);
 
             //parse the html into xml with tagsoup parser

@@ -55,7 +55,7 @@ public class PostContentServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         try{
             super.init(config);
-            LOGGER.setLevel(Level.FINE);
+            LOGGER.setLevel(Level.INFO);
             context = getServletContext();
 
             processor = new XSLTbean(context);
@@ -174,7 +174,7 @@ public class PostContentServlet extends HttpServlet {
             String subFolder = sub.file.substring(0, ind);
             String refbase = config.getContentRoot()+repository.getPath()+"/"+subFolder+"/";
 
-            ContentResolver resolver = new ContentResolver(repoId, context);
+            ContentResolver resolver = new ContentResolver(repository, context);
             StringReader strReader = new StringReader(html);
             InputSource xmlSource = new InputSource(strReader);
             SAXSource xmlSaxSource = new SAXSource(xmlReader, xmlSource);

@@ -22,7 +22,7 @@ public class ContentResolver implements URIResolver{
     /** resolves uri from document(), include() and import() in stylesheet */
 
     ServletContext context;
-    private String repo;
+    private Repository repository;
     
     public static EntityResolver entityResolver = new EntityResolver() {
           public InputSource resolveEntity (String publicId, String systemId)
@@ -42,9 +42,9 @@ public class ContentResolver implements URIResolver{
            }
     };
 
-    public ContentResolver(String repo, ServletContext context) {
+    public ContentResolver(Repository repo, ServletContext context) {
         this.context = context;
-        this.repo = repo;
+        this.repository = repo;
     }
     
     
@@ -58,7 +58,6 @@ public class ContentResolver implements URIResolver{
                     xmlSource = new InputSource(is);
                 } else if(href.endsWith(".xml")) {
                     Map<String, Repository> map = config.getRepos();
-                    Repository repository = map.get(repo);
                     String baseRepoStr = repository.baseRepo;
                     Repository baseRepository = map.get(baseRepoStr);
                     File f = new File(config.getContentRoot() + href);
