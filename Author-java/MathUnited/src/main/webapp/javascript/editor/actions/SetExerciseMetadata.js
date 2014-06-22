@@ -51,7 +51,7 @@ define(['jquery'], function($, objSelector) {
         $('div[tag="paragraph-ref"]', this.container).remove();
 
         // Store references
-        var metadata_data = $('.metadata-data', this.container);
+        var metadata_data = $('div[tag="metadata"]', this.container);
 
         $.each(this.refs, function() {
             $('<div tag="paragraph-ref"></div>')
@@ -63,8 +63,8 @@ define(['jquery'], function($, objSelector) {
         });
 
         // Write empty div if there are no references
-        if (this.refs.length == 0) {
-            $('<div tag="paragraph-ref"></div>').appendTo($('.metadata-data', this.container));
+        if (this.refs.length === 0) {
+            $('<div tag="paragraph-ref"></div>').appendTo(metadata_data);
         }
     }
 

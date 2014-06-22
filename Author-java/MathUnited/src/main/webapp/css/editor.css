@@ -118,6 +118,7 @@ div.metadata-container form{
     display:none;
 }
 div.metadata-container.visible form{
+    position:relative;
     display:block;
     background-color:rgb(220,220,220);
     border:1px solid rgb(150,150,150);
