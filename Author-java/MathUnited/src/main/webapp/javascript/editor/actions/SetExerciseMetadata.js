@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['jquery'], function($, objSelector) {
+define(['jquery'], function($) {
 
     function itemText(item) {
         // Make descriptive display text from a reference
@@ -33,17 +33,17 @@ define(['jquery'], function($, objSelector) {
     References.prototype.indexOf = function(thread, comp, subcomp, item) {
         for (var i = 0; i < this.refs.length; i++) {
             var cur = this.refs[i];
-            if (cur.thread == thread && cur.comp == comp && cur.subcomp == subcomp && cur.item == item) {
+            if (cur.thread === thread && cur.comp === comp && cur.subcomp === subcomp && cur.item === item) {
                 return i;
             }
         }
         return -1;
-    }
+    };
 
     // Check if given reference is present
     References.prototype.has = function(thread, comp, subcomp, item) {
-        return this.indexOf(thread, comp, subcomp, item) != -1;
-    }
+        return this.indexOf(thread, comp, subcomp, item) !== -1;
+    };
 
     // Push current exercise's references to metadata section
     References.prototype.pushReferencesToMetadata = function() {
@@ -66,14 +66,14 @@ define(['jquery'], function($, objSelector) {
         if (this.refs.length === 0) {
             $('<div tag="paragraph-ref"></div>').appendTo(metadata_data);
         }
-    }
+    };
 
     // Add a reference to the current exercise
     References.prototype.addReference = function(thread, comp, subcomp, item) {
         if (!this.has(thread, comp, subcomp, item)) {
             this.refs.push({thread:thread, comp:comp, subcomp:subcomp, item:item});
         }
-    }
+    };
 
     // Add a reference to the current exercise
     References.prototype.enableReference = function(thread, comp, subcomp, item) {
@@ -81,7 +81,7 @@ define(['jquery'], function($, objSelector) {
             this.refs.push({thread:thread, comp:comp, subcomp:subcomp, item:item});
             this.pushReferencesToMetadata();
         }
-    }
+    };
 
     // Remove a reference from the current exercise
     References.prototype.disableReference = function(thread, comp, subcomp, item) {
@@ -90,7 +90,7 @@ define(['jquery'], function($, objSelector) {
             this.refs.splice(refid, 1);
             this.pushReferencesToMetadata();
         }
-    }
+    };
 
     function makeDescription(container, references, item) {
         // We use narrow text to display the full name of the referenced paragraph
@@ -98,7 +98,7 @@ define(['jquery'], function($, objSelector) {
 
         // HTML for buttons
         var ADD_TXT = '&nbsp;+&nbsp;';
-        var DEL_TXT = '&nbsp;&times;&nbsp;'
+        var DEL_TXT = '&nbsp;&times;&nbsp;';
 
         // Check if the item is in the current references
         var button_div, li_class;
@@ -135,7 +135,7 @@ define(['jquery'], function($, objSelector) {
                 button.html(DEL_TXT);
                 references.enableReference(button.attr('thread'), button.attr('comp'), button.attr('subcomp'), button.attr('item'));
             }
-        }
+        };
         button.click(toggle);
 
         // The entry consists of a the text and the button
@@ -148,6 +148,10 @@ define(['jquery'], function($, objSelector) {
      function setReferences(container) {
         var itemSelector = require('app/ItemSelector');
 
+        // remove existing references before creating new ones
+        $('ul.related-theory li.disabled-related-theory',container).remove();
+        $('ul.related-theory li.enabled-related-theory',container).remove();
+        
         // Get all references in exercises in document (and make sure we only include them once)
         var all_references = new References(null);
 
@@ -268,7 +272,6 @@ define(['jquery'], function($, objSelector) {
                 var dum=$('form input[name="kloonopgave"]', container);
                 if(dum.length>0) dum[0].checked= true;
             };
-            
             setReferences(container);
 
             //calculator allowed?

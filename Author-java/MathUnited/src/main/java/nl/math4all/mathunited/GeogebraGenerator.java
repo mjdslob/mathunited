@@ -56,7 +56,8 @@ public class GeogebraGenerator extends HttpServlet {
             if(repository==null) {
                 throw new Exception("Unknown repository: "+repo);
             }
-            String pathstr = config.getContentRoot()+repository.getPath();
+//            String pathstr = config.getContentRoot()+repository.getPath();
+            String pathstr = config.getContentRoot();
             String filestr;
             if(!pathstr.isEmpty() && pathstr.charAt(pathstr.length()-1)!='/') {
                 filestr = pathstr+"/"+fname;
