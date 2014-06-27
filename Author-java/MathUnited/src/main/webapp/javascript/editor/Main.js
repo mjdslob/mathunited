@@ -15,8 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['jquery', 'app/Document','actions/ObjectivesHandler', 'actions/SetExerciseMetadata', 'app/ItemSelector', 'jqueryui'], 
- function($, doc, objectivesHandler, metadataHandler, itemSelector) {
+define(['jquery', 'app/Document','actions/ObjectivesHandler', 'actions/SetExerciseMetadata', 
+        'app/ItemSelector',  'actions/AlgebraKITSpecHandler', 'jqueryui'], 
+ function($, doc, objectivesHandler, metadataHandler, itemSelector, AlgebraKITSpecHandler) {
     var commitURL = '/MathUnited/postcontent';
     var refreshURL = '/MathUnited/refresh-lock';
     
@@ -86,6 +87,7 @@ define(['jquery', 'app/Document','actions/ObjectivesHandler', 'actions/SetExerci
             var _this = this;
             objectivesHandler.init();
             itemSelector.init( $('#meta-components-url').text(), $('#meta-threads-url').text() );
+            AlgebraKITSpecHandler.init();
             doc.init();
             $('#commit-button').click(function(){_this.submit();});
             $('#show-backups-wrapper').click(function(){_this.showBackups();});

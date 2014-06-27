@@ -224,7 +224,7 @@ extension-element-prefixes="exsl">
 </xsl:template>
 
 <!-- item types -->
-<xsl:template match="item[@type='open']" mode="editor">
+<xsl:template match="item[@type='open'] | item[@type='algebrakit']" mode="editor">
     <div tag="{name()}">
         <xsl:apply-templates select="@*" mode="editor"/>
         <div tag="itemcontent">
@@ -250,6 +250,18 @@ extension-element-prefixes="exsl">
         <!-- make sure a container is always present for the answer -->
         <div class="answer-button"></div>
         <div class="answer-content">
+            <xsl:if test="@type='algebrakit'">
+                <xsl:choose>
+                    <xsl:when test="evaluation">
+                        <div class="answer-heading">AlgebraKIT:</div>
+                        <xsl:call-template name="algebrakit-spec"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <div class="answer-heading">AlgebraKIT:</div>
+                        <xsl:call-template name="algebrakit-spec"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:if>
             <xsl:choose>
                 <xsl:when test="answer">
                     <div class="answer-heading">Antwoord:</div>
@@ -294,60 +306,22 @@ extension-element-prefixes="exsl">
     </div>    
 </xsl:template>
 
-<xsl:template match="item[@type='algebrakit']" mode="editor">
-    <div tag="{name()}">
-        <xsl:apply-templates select="@*" mode="editor"/>
-        <div tag="itemcontent">
-            <div class="_editor_option" type="optional" function="actions/OptionalTemplate" name="item intro">
-                <xsl:attribute name="params">{template:'exercise-itemintro-template'}</xsl:attribute>
-                <xsl:choose>
-                    <xsl:when test="itemcontent/subintro">
-                        <xsl:apply-templates select="itemcontent/subintro" mode="editor"/>
-                    </xsl:when>
-                    <xsl:when test="itemcontent/itemintro">
-                        <xsl:apply-templates select="itemcontent/itemintro" mode="editor"/>
-                    </xsl:when>
-                    <xsl:when test="itemcontent/intro">
-                        <xsl:apply-templates select="itemcontent/intro" mode="editor"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <!--<div tag="itemintro"><p></p></div> -->               
-                    </xsl:otherwise>
-                </xsl:choose>
-            </div>
-            <xsl:apply-templates select="itemcontent/question" mode="editor"/>
-        </div>
-        <!-- make sure a container is always present for the answer -->
-        <div class="answer-button"></div>
-        <div class="answer-content">
-            <xsl:choose>
-                <xsl:when test="evaluation">
-                    <div class="answer-heading">AlgebraKIT:</div>
-                    <xsl:call-template name="algebrakit-spec"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <div class="answer-heading">AlgebraKIT:</div>
-                    <xsl:call-template name="algebrakit-spec"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </div>
-    </div>    
-</xsl:template>
 
 <xsl:template name="algebrakit-spec">
     <div class="algebrakit-spec-wrapper">
         <span class="algebrakit-spec-item">Doelgroep:</span>
-        <select>
+        <select class='audience-select'>
             <option value="rekenen">rekenen</option>
             <option value="onderbouw">onderbouw</option>
             <option value="vwo-b">bovenbouw</option>
         </select><br/>
         <span class="algebrakit-spec-item">Opgave (AlgebraKIT):</span>
-        <input type="text" name="solve" size="30"><xsl:value-of select="evaluation/@solve"/></input><br/>
-        <span class="algebrakit-spec-item">Input template (Invoer naar AlgebraKIT):</span>
-        <input type="text" name="submit" size="30"><xsl:value-of select="evaluation/@submit"/></input><br/>
+        <input type="text" name="solve" size="70" value="{evaluation/@solve}"/><br/>
+        <span class="algebrakit-spec-item">Invoer naar AlgebraKIT:</span>
+        <input type="text" name="submit" size="70" value="{evaluation/@submit}"/><br/>
         <span class="algebrakit-spec-item">Label:</span>
-        <input type="text" name="question" size="30"><xsl:value-of select="evaluation/@question"/></input><br/>
+        <input type="text" name="question" size="70" value="{evaluation/@question}"/><br/>
+        <xsl:apply-templates select="evaluation" mode="editor"/>
     </div>
 </xsl:template>
 <xsl:template match="answer" mode="editor">

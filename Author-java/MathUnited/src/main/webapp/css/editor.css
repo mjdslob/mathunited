@@ -735,4 +735,8 @@ select.thread-choser, select.component-choser, select.subcomponent-choser, selec
 .related-theory-text {
     font-family: 'Roboto Condensed', sans-serif;
 }
-
+.algebrakit-spec-item {
+    display:inline-block;
+    width:200px;
+    
+}
