@@ -145,118 +145,37 @@ extension-element-prefixes="exsl">
 <xsl:template match="exercise" mode="editor">
     <xsl:param name="fname"/>
     <xsl:variable name="isclone" select="metadata/clone/@active='true'"/>
-    <xsl:variable name="medium">
-        <xsl:choose>
-            <xsl:when test="@medium"><xsl:value-of select="@medium"/></xsl:when>
-            <xsl:otherwise>both</xsl:otherwise>
-        </xsl:choose>
-    </xsl:variable>
-    <div class="medium-wrapper" medium="{$medium}">
-        <div class="block-button visible">
-            <xsl:choose>
-                <xsl:when test="$medium='paper'">papier</xsl:when>
-                <xsl:when test="$medium='web'">web</xsl:when>
-                <xsl:when test="$medium='none'">verborgen</xsl:when>
-                <xsl:otherwise></xsl:otherwise>
-            </xsl:choose>
-        </div>        
-        <div  class="_editor_option" type="action" name="metadata invullen" function="actions/SetExerciseMetadata"/>
-        <div  class="_editor_option" type="action" name="kopiëren" function="actions/CopyHandler">
-            <xsl:attribute name="params">{itemtype: 'exercises'}</xsl:attribute>
-        </div>
-        <xsl:if test="not($isclone)">
-            <div  class="_editor_option" type="action" name="Maak kloonopgave" function="actions/CreateCloneExercise"/>
+    <div class="exercise-container">
+        <xsl:if test="$isclone">
+            <xsl:attribute name="clone">true</xsl:attribute>
         </xsl:if>
-        <div  class="_editor_option" type="repeat" name="opgave" function="actions/RepeatExercise">
-<!--
-            <div class="menu-button-div item-container-menu">
-                <span class="menu-button"></span>
-            </div>
--->            
-            <div class="exercise-container">
-                <xsl:if test="$isclone">
-                    <xsl:attribute name="clone">true</xsl:attribute>
-                </xsl:if>
-                <div tag="exercise">
-                    <xsl:if test="not(@id)">
-                        <xsl:attribute name='id' select="replace($fname,'.xml','')"/>
-                    </xsl:if>
-                    <xsl:apply-templates select="@*" mode="editor"/>
+        <div tag="exercise">
+            <xsl:if test="not(@id)">
+                <xsl:attribute name='id' select="replace($fname,'.xml','')"/>
+            </xsl:if>
+            <xsl:apply-templates select="@*" mode="editor"/>
 
-                    <div class="exercise-with-heading open">
-                        <xsl:apply-templates select="@*" mode="editor"/>
-                        <div  class="_editor_option" type="action" name="schuif omhoog" function="actions/ShiftItemUp"/>
-                        <div  class="_editor_option" type="action" name="schuif omlaag" function="actions/ShiftItemDown"/>
-                        <div class="exercise-heading">
-                            <xsl:choose>
-                                <xsl:when test="$isclone">
-                                      Kloonopgave <span class="opgave-title-span"><xsl:value-of select="title"/></span> <span class="exercise-icon-wrapper"/>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                      Opgave <span class="opgave-title-span"><xsl:value-of select="title"/></span> <span class="exercise-icon-wrapper"/>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </div>
+            <div class="exercise-with-heading open">
+                <xsl:apply-templates select="@*" mode="editor"/>
+                <div class="exercise-heading">
+                    <xsl:choose>
+                        <xsl:when test="$isclone">
+                            Kloonopgave <span class="opgave-title-span">
+                                <xsl:value-of select="title"/>
+                            </span> 
+                            <span class="exercise-icon-wrapper"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            Opgave <span class="opgave-title-span">
+                                <xsl:value-of select="title"/>
+                            </span> 
+                            <span class="exercise-icon-wrapper"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </div>
 
-                        <div class="metadata-container">
-                            <form>
-                                id : <xsl:value-of select="replace($fname,'.xml','')"/>
-                                <br/>
-                                <span>
-                                    <b>Niveau:</b> 
-                                </span>
-                                <input type="radio" name="level" value="1">1</input>
-                                <input type="radio" name="level" value="2">2</input>
-                                <input type="radio" name="level" value="3">3</input>
-                                <input type="radio" name="level" value="4">4</input>
-                                <input type="radio" name="level" value="5">5</input>
-                                <br/>
-                                <xsl:if test="string-length(metadata/clone)>0">
-                                    <input type="checkbox" name="kloonopgave" value="clone">Kloonopgave van <xsl:value-of select="metadata/clone"/></input>
-                                    <br/>
-                                </xsl:if>
-                                <div class="meta-medium">
-                                    <b>Medium:</b>
-                                    <input type="radio" name="medium" value="paper">papier</input>
-                                    <input type="radio" name="medium" value="web">web</input>
-                                    <input type="radio" name="medium" value="both">beide</input>
-                                    <input type="radio" name="medium" value="none">verborgen</input>
-                                </div>
-                                <b>Soort opgave: </b>
-                                <br/>
-                                <input type="checkbox" name="olympiadevraag">olympiadevraag</input>
-                                <br/>
-                                <input type="checkbox" name="examenvraag">examenvraag</input>
-                                <br/>
-                                <input type="checkbox" name="wda">wiskunde-denkactiviteit (WDA)</input>
-                                <br/>
-                                <b>Rekenmachine toegestaan</b> 
-                                <input type="checkbox" name="calculator_allowed"></input>
-                                <br/>
-                                <b>Groepslabels:</b> 
-                                <input type="text" name="groepslabel" size="30">
-                                    <xsl:for-each select="metadata/group-label/@value"> 
-                                        <xsl:value-of select="."/> 
-                                    </xsl:for-each>
-                                </input>
-                                <br/>
-                                <b>Gerelateerde theorie:</b>
-                                <ul class="related-theory">
-                                    <li><div class="add-item-button">Voeg toe...</div></li>
-                                </ul>
-                                <br/>
-                                <b>Leerdoelen</b>: <div class="metadata-obj-selector-container"/>
-                                <br/>
-                                <div class="close-metadata-button"/>
-                            </form>
-                            <div tag="metadata">
-                                <xsl:apply-templates select="metadata/*" mode="editor"></xsl:apply-templates>
-                            </div>
-                        </div>
-                        <div class="exercise-contents">
-                            <xsl:apply-templates select="*[name()!='metadata']" mode="editor"/>
-                        </div>
-                    </div>
+                <div class="exercise-contents">
+                    <xsl:apply-templates select="*[name()!='metadata']" mode="editor"/>
                 </div>
             </div>
         </div>
@@ -375,6 +294,62 @@ extension-element-prefixes="exsl">
     </div>    
 </xsl:template>
 
+<xsl:template match="item[@type='algebrakit']" mode="editor">
+    <div tag="{name()}">
+        <xsl:apply-templates select="@*" mode="editor"/>
+        <div tag="itemcontent">
+            <div class="_editor_option" type="optional" function="actions/OptionalTemplate" name="item intro">
+                <xsl:attribute name="params">{template:'exercise-itemintro-template'}</xsl:attribute>
+                <xsl:choose>
+                    <xsl:when test="itemcontent/subintro">
+                        <xsl:apply-templates select="itemcontent/subintro" mode="editor"/>
+                    </xsl:when>
+                    <xsl:when test="itemcontent/itemintro">
+                        <xsl:apply-templates select="itemcontent/itemintro" mode="editor"/>
+                    </xsl:when>
+                    <xsl:when test="itemcontent/intro">
+                        <xsl:apply-templates select="itemcontent/intro" mode="editor"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <!--<div tag="itemintro"><p></p></div> -->               
+                    </xsl:otherwise>
+                </xsl:choose>
+            </div>
+            <xsl:apply-templates select="itemcontent/question" mode="editor"/>
+        </div>
+        <!-- make sure a container is always present for the answer -->
+        <div class="answer-button"></div>
+        <div class="answer-content">
+            <xsl:choose>
+                <xsl:when test="evaluation">
+                    <div class="answer-heading">AlgebraKIT:</div>
+                    <xsl:call-template name="algebrakit-spec"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <div class="answer-heading">AlgebraKIT:</div>
+                    <xsl:call-template name="algebrakit-spec"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </div>
+    </div>    
+</xsl:template>
+
+<xsl:template name="algebrakit-spec">
+    <div class="algebrakit-spec-wrapper">
+        <span class="algebrakit-spec-item">Doelgroep:</span>
+        <select>
+            <option value="rekenen">rekenen</option>
+            <option value="onderbouw">onderbouw</option>
+            <option value="vwo-b">bovenbouw</option>
+        </select><br/>
+        <span class="algebrakit-spec-item">Opgave (AlgebraKIT):</span>
+        <input type="text" name="solve" size="30"><xsl:value-of select="evaluation/@solve"/></input><br/>
+        <span class="algebrakit-spec-item">Input template (Invoer naar AlgebraKIT):</span>
+        <input type="text" name="submit" size="30"><xsl:value-of select="evaluation/@submit"/></input><br/>
+        <span class="algebrakit-spec-item">Label:</span>
+        <input type="text" name="question" size="30"><xsl:value-of select="evaluation/@question"/></input><br/>
+    </div>
+</xsl:template>
 <xsl:template match="answer" mode="editor">
     <div tag="answer">
         <xsl:apply-templates select="@*" mode="editor"/>

@@ -40,7 +40,7 @@ define(['jquery','app/Document','app/DOMgenerator'], function($, doc,generator) 
                     var elm = $('div[tag="include"][filename="'+newfname+'"]');
                     while(elm.length>0) {
                         num++;
-                        newfname = fnamebase+'-copy'+num+'.xml'
+                        newfname = fnamebase+'-copy'+num+'.xml';
                         elm = $('div[tag="include"][filename="'+newfname+'"]');
                     }
                     $(this).attr('filename',newfname);

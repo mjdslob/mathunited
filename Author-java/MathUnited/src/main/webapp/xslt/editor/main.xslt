@@ -10,6 +10,12 @@ xmlns:xhtml="http://www.w3.org/1999/xhtml"
 exclude-result-prefixes="saxon"
 extension-element-prefixes="exsl">
 
+<xsl:include href="editor/exercise.xslt"/>
+<xsl:include href="editor/content.xsl"/>
+<xsl:include href="editor/figure.xslt"/>
+<xsl:include href="editor/paragraph.xslt"/>
+<xsl:include href="editor/include.xslt"/>
+    
 <!--
 MSLO 2 juni 2014: keep cals:table intact 
 <xsl:include href="editor/calstable.xslt"/>
@@ -75,90 +81,6 @@ MSLO 2 juni 2014: keep cals:table intact
     </xsl:copy>
 </xsl:template>
 
-<!-- elements with special behaviour -->
-<xsl:template match="include" mode="editor">
-    <xsl:choose>
-        <xsl:when test="$option='editor-process-item'">
-            <xsl:variable name="pass1">
-                <xsl:apply-templates mode="remove-xhtml"/>
-            </xsl:variable>
-            <!--dit is geen document, maar slechts 1 item van xml, gebruikt door de editor om een stukje content
-            in te voegen -->
-            <div class="item-container">
-                <div class="_editor_context_base">
-                    <xsl:choose>
-                        <xsl:when test="example">
-                            <div  class="_editor_option" type="action" name="kopiëren" function="actions/CopyHandler">
-                                <xsl:attribute name="params">{itemtype: 'example'}</xsl:attribute>
-                            </div>
-                            <div class="_editor_option" type="repeat" function="actions/OptionalMenuItem" name="Voorbeeldtekst">
-                                <xsl:attribute name="params">{item: 'example'}</xsl:attribute>
-                                <div class="menu-button-div item-container-menu">
-                                    <span class="menu-button"></span>
-                                </div>
-                                <div tag="include">
-                                    <xsl:apply-templates select="@*" mode="editor"/>
-                                    <xsl:apply-templates select="$pass1" mode="editor">
-                                        <xsl:with-param name="fname" select="@filename"/>
-                                    </xsl:apply-templates>
-                                </div>
-                            </div>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <div class="menu-button-div item-container-menu">
-                                <span class="menu-button"></span>
-                            </div>
-                            <div tag="include">
-                                <xsl:apply-templates select="@*" mode="editor"/>
-                                <xsl:apply-templates select="$pass1" mode="editor">
-                                    <xsl:with-param name="fname" select="@filename"/>
-                                </xsl:apply-templates>
-                            </div>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </div>
-            </div>
-        </xsl:when>
-        <xsl:otherwise>
-            <xsl:variable name="content" select="document(concat($docbase,@filename))"/>
-            <div class="item-container">
-                <div class="_editor_context_base">
-                    <xsl:choose>
-                        <xsl:when test="$content/example">
-                            <div  class="_editor_option" type="action" name="kopiëren" function="actions/CopyHandler">
-                                <xsl:attribute name="params">{itemtype: 'example'}</xsl:attribute>
-                            </div>
-                            <div class="_editor_option" type="repeat" function="actions/OptionalMenuItem" name="Voorbeeldtekst">
-                                <xsl:attribute name="params">{item: 'example'}</xsl:attribute>
-                                <div class="menu-button-div item-container-menu">
-                                    <span class="menu-button"></span>
-                                </div>
-                                <div tag="{name()}">
-                                    <xsl:apply-templates select="@*" mode="editor"/>
-                                    <xsl:apply-templates select="$content" mode="editor">
-                                        <xsl:with-param name="fname" select="@filename"/>
-                                    </xsl:apply-templates>
-                                </div>
-                            </div>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <div class="menu-button-div item-container-menu">
-                                <span class="menu-button"></span>
-                            </div>
-                            <div tag="{name()}">
-                                <xsl:apply-templates select="@*" mode="editor"/>
-                                <xsl:apply-templates select="$content" mode="editor">
-                                    <xsl:with-param name="fname" select="@filename"/>
-                                </xsl:apply-templates>
-                            </div>
-                        </xsl:otherwise>    
-                    </xsl:choose>
-                </div>
-            </div>
-        </xsl:otherwise>
-    </xsl:choose>
-</xsl:template>
-
 <xsl:template match="applet[@type='ggb']" mode="editor">
     <div tag="{name()}">
         <xsl:apply-templates select="@* | node()" mode="editor"/>
@@ -167,14 +89,18 @@ MSLO 2 juni 2014: keep cals:table intact
 </xsl:template>
 <!-- BLOCKS -->
 <xsl:template match="block" mode="editor">
-    <div tag="block">
-        <xsl:apply-templates select="@*" mode="editor"/>
-        <div class="block-button visible"><xsl:value-of select="@medium"/></div>
-        <div class="block-content visible">
-            <xsl:apply-templates select="node()" mode="editor"/>
+    <xsl:if test="*">
+        <div tag="block">
+            <xsl:apply-templates select="@*" mode="editor"/>
+            <div class="block-button visible">
+                <xsl:value-of select="@medium"/>
+            </div>
+            <div class="block-content visible">
+                <xsl:apply-templates select="node()" mode="editor"/>
+            </div>
+            <div style="clear:both"/>
         </div>
-        <div style="clear:both"/>
-    </div>
+    </xsl:if>
 </xsl:template>
 <xsl:template match="worksheet" mode="editor">
     <div tag="worksheet">
@@ -322,6 +248,5 @@ MSLO 2 juni 2014: keep cals:table intact
         </xsl:otherwise>
     </xsl:choose>
 </xsl:template>
-
 
 </xsl:stylesheet>

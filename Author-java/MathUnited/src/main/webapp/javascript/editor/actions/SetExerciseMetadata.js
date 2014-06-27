@@ -155,7 +155,7 @@ define(['jquery'], function($) {
         // Get all references in exercises in document (and make sure we only include them once)
         var all_references = new References(null);
 
-        $('div[tag="exercises"] div[tag="paragraph-ref"][thread][comp][subcomp][item]').each(function() {
+        $('div[tag="exercise"] div[tag="paragraph-ref"][thread][comp][subcomp][item]').each(function() {
             var el = $(this);
             var t = el.attr('thread'), c = el.attr('comp'), s = el.attr('subcomp'), item = el.attr('item');
             all_references.addReference(t, c, s, item);
@@ -219,7 +219,7 @@ define(['jquery'], function($) {
             var level = 0;
             if(elm.length>0) level = parseInt(elm.attr('value'));
             for(var ii=0;ii<level;ii++) {
-                iconContainer.append('<span class="level-star-icon"/>')
+                iconContainer.append('<span class="level-star-icon"/>');
             }
         },
         action : function(elm, params) {
@@ -258,7 +258,7 @@ define(['jquery'], function($) {
                 if(dum.length>0) dum[0].checked= true;
             };
             //medium: web, paper, both or none. Not set in metadata, but as attribute on item
-            var item = container.parents('div.medium-wrapper').first();
+            var item = container.parents('div.included-item-wrapper').first();
             if(item.length>0){
                 var medium = item.attr('medium');
                 if(!medium) medium='both';
@@ -314,7 +314,7 @@ define(['jquery'], function($) {
             });
 
             //close button
-            $('.close-metadata-button').click(function(){
+            $('.close-metadata-button',container).click(function(){
                  $(this).parents(".metadata-container").first().removeClass('visible');
             });
 
@@ -356,6 +356,9 @@ define(['jquery'], function($) {
                    else { $('div[tag="calculator"]',tag).remove(); }
                 });
                 item.attr('medium', medium);
+//                var include = container.parents('div[tag]="include"').first();
+//                var itemelm = include.children().first();
+//                itemelm.attr('medium', medium);
                 container.parents('div[tag="exercise"]').first().attr('medium',medium);
                 var txt;
                 switch(medium) {

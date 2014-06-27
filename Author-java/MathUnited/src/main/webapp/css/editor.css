@@ -73,6 +73,8 @@ html, body {
 }
 .item-container {
     position:relative;
+    margin-bottom:30px;
+    clear:both;
 }
 .shift-handle-prev {
     position:absolute;
@@ -183,27 +185,27 @@ span[tag='mark'] {
     color:black;
 }
 
-div[tag="block"], div.medium-wrapper{
+div[tag="block"], div.included-item-wrapper{
     position:relative;
     left:-70px;
     padding-left:70px;
 }
-div[tag="block"][medium="web"], div.medium-wrapper[medium="web"]{
+div[tag="block"][medium="web"], div.included-item-wrapper[medium="web"]{
     border-left: 6px solid rgb(150,0,0);
     padding-left:64px;
 }
-div[tag="block"][medium="paper"], div.medium-wrapper[medium="paper"]{
+div[tag="block"][medium="paper"], div.included-item-wrapper[medium="paper"]{
     border-left: 6px solid rgb(0,0,150);
     padding-left:64px;
 }
-div[tag="block"][medium="none"], div.medium-wrapper[medium="none"]{
+div[tag="block"][medium="none"], div.included-item-wrapper[medium="none"]{
     border-left: 6px solid rgb(150,150,150);
     padding-left:64px;
 }
 div.exercise-contents > div[tag="title"] {
     display:none;
 }
-div.exercise-container[clone="true"] {
+div.included-item-wrapper[clone="true"] {
     background-color:rgb(220,220,200);
 }
 div.answer-heading {
@@ -235,7 +237,7 @@ div[tag="block"] .block-button {
     left:-126px;
     font-size:0.8em;
 }
-div.medium-wrapper .block-button {
+div.included-item-wrapper .block-button, div.medium-wrapper .block-button {
     color:white;
     margin-top:3px;
     width:50px;
@@ -248,15 +250,15 @@ div.medium-wrapper .block-button {
     cursor:pointer;
     background-color:rgb(255,150,150);
 }
-div[tag="block"][medium="paper"] .block-button.visible, div.medium-wrapper[medium="paper"] .block-button.visible{
+div[tag="block"][medium="paper"] .block-button.visible, div.included-item-wrapper[medium="paper"] .block-button.visible{
     padding:1px 1px 1px 10px;
     background-color:rgb(0,0,150);
 }
-div[tag="block"][medium="web"] .block-button.visible, div.medium-wrapper[medium="web"] .block-button.visible{
+div[tag="block"][medium="web"] .block-button.visible, div.included-item-wrapper[medium="web"] .block-button.visible{
     padding:1px 1px 1px 10px;
     background-color:rgb(150,0,0);
 }
-div[tag="block"][medium="none"] .block-button.visible, div.medium-wrapper[medium="none"] .block-button.visible{
+div[tag="block"][medium="none"] .block-button.visible, div.included-item-wrapper[medium="none"] .block-button.visible{
     padding:1px 1px 1px 10px;
     background-color:rgb(150,150,150);
 }

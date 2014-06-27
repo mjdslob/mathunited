@@ -90,7 +90,10 @@ define(['jquery', 'app/Document','actions/ObjectivesHandler', 'actions/SetExerci
             $('#commit-button').click(function(){_this.submit();});
             $('#show-backups-wrapper').click(function(){_this.showBackups();});
             $('#startup-msg').remove();
-            $('div[tag="exercise"]').each( function(){metadataHandler.setExerciseIcons($(this));});
+            $('div[tag="exercise"]').each( function(){
+                var base = $(this).parents('div[tag="include"]').first();
+                metadataHandler.setExerciseIcons(base);
+            });
         },
         submit: function() {
             $('<p>Een moment, de paragraaf wordt opgeslagen...</p>').dialog();

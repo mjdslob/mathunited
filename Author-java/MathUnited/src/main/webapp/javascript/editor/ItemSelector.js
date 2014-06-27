@@ -174,6 +174,8 @@ define(['jquery', 'jqueryui', 'jqueryChosen'], function($) {
                     var item = $('#' + itemid, sc).first();
                     if (item.length > 0) {
                         var name = itemNameMap[ item[0].localName ];
+                        var num = $(item).attr('_nr');
+                        if(num) name = name+' '+num;
                         if (name)
                             callback({id: itemid, name: name});
                     }

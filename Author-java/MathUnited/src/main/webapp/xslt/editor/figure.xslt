@@ -18,6 +18,7 @@ extension-element-prefixes="exsl">
        <xsl:attribute name="location"><xsl:value-of select="@location"/></xsl:attribute>
        <xsl:if test="$width>0">
            <xsl:attribute name="style">width:<xsl:value-of select="$width"/>px</xsl:attribute>
+           <xsl:attribute name="width"><xsl:value-of select="$width"/></xsl:attribute>
        </xsl:if>
    </img>
 </xsl:template>
@@ -30,6 +31,7 @@ extension-element-prefixes="exsl">
        <xsl:attribute name="src"><xsl:value-of select="concat($urlbase,'../images/highres/',replace(name,'Images/',''))"/></xsl:attribute>
        <xsl:if test="$width>0">
            <xsl:attribute name="style">width:<xsl:value-of select="$width"/>px</xsl:attribute>
+           <xsl:attribute name="width"><xsl:value-of select="$width"/></xsl:attribute>
        </xsl:if>
    </img>
 </xsl:template>

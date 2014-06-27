@@ -59,11 +59,7 @@
 <!--   /////////////////////////////////////////////   -->
 
     <xsl:include href="editor/main.xslt"/>
-    <xsl:include href="editor/exercise.xslt"/>
-    <xsl:include href="editor/content.xsl"/>
-    <xsl:include href="editor/figure.xslt"/>
-    <xsl:include href="editor/paragraph.xslt"/>
-
+    
     <xsl:variable name="item-list">
         <xsl:choose>
             <xsl:when test="subcomponent/componentcontent/summary">
@@ -575,6 +571,7 @@
         <xsl:variable name="num" select="count(preceding-sibling::examples)+1"/>
         <xsl:variable name="header">
             <xsl:choose>
+                <!-- if example was just created, there is not a number yet -->
                 <xsl:when test="$option='editor-process-item'">(nieuw)</xsl:when>
                 <xsl:otherwise><xsl:value-of select="$num"/></xsl:otherwise>
             </xsl:choose>
@@ -582,22 +579,22 @@
         <div class="_editor_context_base">
             <div class="_editor_option" type="repeat" function="actions/OptionalMenuItem" name="Voorbeeld">
                 <xsl:attribute name="params">{item: 'examples'}</xsl:attribute>
-                <div class="menu-button-div section-button">
-                    <span class="menu-button"></span>
-                </div>
-                <div class="m4a-editor-item-container">
-                    <div class="m4a-editor-item-title">Voorbeeld <xsl:value-of select="$header"/>
-                        <div class="item-label-button"/>
-                    </div>
-                    <div class="m4a-editor-item-content">
-                        <div tag="examples">
-                            <xsl:apply-templates select="include" mode="editor"/>
-                        </div>
-                        <xsl:apply-templates select="../exercises[position()=$num]" mode="editor"/>
-                    </div>
-                </div>
-                <div style="clear:both"/>
             </div>
+            <div class="menu-button-div section-button">
+                <span class="menu-button"></span>
+            </div>
+            <div class="m4a-editor-item-container">
+                <div class="m4a-editor-item-title">Voorbeeld <xsl:value-of select="$header"/>
+                    <div class="item-label-button"/>
+                </div>
+                <div class="m4a-editor-item-content">
+                    <div tag="examples">
+                        <xsl:apply-templates select="include" mode="editor"/>
+                    </div>
+                    <xsl:apply-templates select="../exercises[position()=$num]" mode="editor"/>
+                </div>
+            </div>
+            <div style="clear:both"/>
         </div>
     </xsl:template>
     <!-- skip loose exercises-tag. Applicable when inserting a snippet of xml from the editor -->

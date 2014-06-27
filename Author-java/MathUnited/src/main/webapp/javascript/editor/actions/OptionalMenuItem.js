@@ -19,22 +19,23 @@ define(['jquery','app/DOMgenerator','mathjax'], function($, generator, MathJax) 
     
     return {
         action : function(elm, params) {
-            var contentType = params.item;
-            var action = params.cmd;
+            var base = elm.parents('._editor_context_base').first();
+            var contentType = params.item; //e.g. 'example'
+            var action = params.cmd;       //'add', 'remove'
             
             if(action==='add'){
                 generator.getContentItem(contentType, function(html) {
                     var newElm = $('<div/>');
                     newElm.append($(html));
                     if(params.location==='before') {
-                        elm.prepend(newElm);
+                        base.before(newElm);
                     } else {
-                        elm.append(newElm);
+                        base.after(newElm);
                     }
-                    elm.next('.m4a-editor-item.nonexistent').toggleClass('visible');
+                    base.next('.m4a-editor-item.nonexistent').toggleClass('visible');
                     var doc = require('app/Document');
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,newElm[0]]);
-                    doc.reinit(elm);
+                    doc.reinit(newElm);
                     doc.setChanged(true);
                 });
             }
