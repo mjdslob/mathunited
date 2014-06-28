@@ -233,6 +233,7 @@ iframe {
     font-weight:bold;
     cursor:pointer;
     margin-right: 0.5em;
+    text-decoration: none;
 }
 .popup-label:hover {
     background-color: #74AEFF;    
@@ -276,6 +277,7 @@ iframe {
 	height: 23px;
 	float: right;
 	margin-top: 88px;
+	margin-right: 2px;
 	border: none;
 }
 
@@ -707,9 +709,20 @@ table.answer td.label
 	cursor: pointer;
 }
 
+.result-page h3
+{
+	margin: 0;
+	min-height: 25px;
+	max-height: 25px;
+}
+
+.result-page table td {
+	font: 12px verdana,arial,sans-serif;
+}
+
 .result-page .layout-table
 {
-	min-height: 420px;
+	min-height: 405px;
 }
 
 .result-page .layout-table .leftcontent
@@ -722,6 +735,7 @@ table.answer td.label
 .result-page .layout-table .leftcontent .title
 {
 	width: 250px;
+	line-height: 19px;
 }
 
 .result-page .grouplist .title:hover,
@@ -848,4 +862,138 @@ table.answer td.label
 
 .result-page .busy {
 	text-align: center;
+}
+
+.result-frame {
+	width: 100%;
+	height: 432px;
+}
+
+.backend-page {
+	background-color: #fff;
+}
+
+.backend-page table td {
+	font: 12px verdana,arial,sans-serif;
+}
+
+.message {
+	border: 2px solid gray;
+	background-color: #ffc;
+	padding: 0.5em;
+	margin-bottom: 0.5em; 
+}
+
+.error {
+	border: 2px solid red;
+	background-color: #fcc;
+	padding: 0.5em; 
+}
+
+.empty-text {
+	font-style: italic;
+}
+
+.grid th {
+	margin: 0 2px 2px 0;
+	padding: 0.25em;
+	background-color: #528BE0;
+	color: #fff;
+	text-align: left;
+	font: 12px verdana,arial,sans-serif;
+	font-weight: bold;
+}
+.grid td {
+	margin: 0 2px 2px 0;
+	padding: 0.25em;
+	background-color: #C1D8FA;
+}
+
+.grid.class-result th {
+	min-width: 60px;
+	max-width: 60px;
+	white-space: nowrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+}
+
+.grid.class-result th.first {
+	max-width: auto;
+}
+
+.grid.class-result th.last {
+	max-width: auto;
+}
+
+.grid.class-result td {
+	text-align: right;
+}
+
+.grid.class-result td.clickable {
+	background-color: #528BE0;
+	color: #fff;
+	text-align: left;
+	font-weight: bold;
+}
+
+.grid.class-result td.clickable a {
+	text-decoration: none;
+	color: #fff;
+	white-space: nowrap;
+}
+
+.grid.class-result td.clickable:hover {
+	background-color: #74AEFF;    
+}
+
+.settings-button {
+	position: absolute;
+	right: 0;
+	font-weight: bold;
+	padding: 0.25em;
+}
+
+.settings-button a {
+	text-decoration: none;
+	color: #fff;
+}
+
+.settings-button .icon {
+	vertical-align: middle;
+	display: inline-block;
+	height: 20px;
+	width: 20px;
+	background-image: url('../sources_studiovo/settings-20.png');
+}
+
+.settings-button .hover-text {
+	display: none;
+}
+
+.settings-button:hover {
+	background-color: #528CE0;
+}
+.settings-button:hover .icon {
+	background-position: 0 -20px;
+}
+.settings-button:hover .hover-text {
+	display: inline-block;
+	margin-right: 0.5em;
+}
+
+a.back-button {
+	display: inline-block;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+
+    background-color: #528CE0;
+    padding:4px 10px;
+    text-decoration: none;
+    color:white;
+    font-weight:bold;
+}
+
+a.back-button:hover {
+    background-color: #74AEFF;    
 }

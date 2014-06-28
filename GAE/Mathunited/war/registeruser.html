@@ -1,0 +1,52 @@
+<html>
+<head>
+	<link rel="stylesheet" href="css/basis_studiovo.css?v=1" type="text/css"/>
+    <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
+    <script type="text/javascript" src="javascript/MathUnited_studiovo.js"></script>
+	<script type="text/javascript">
+
+	function IsEmail(email) {
+	  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+	  return regex.test(email);
+	}
+
+	function submit()
+	{
+		if ($('#firstName').val() == "") { alert("Voer a.u.b. je voornaam in"); return; }
+		if ($('#lastName').val() == "") { alert("Voer a.u.b. je achternaam in"); return; }
+		if ($('#email').val() != "" && !IsEmail($('#email').val())) { alert("Het e-mailadres is ongeldig"); return; }
+		document.getElementById('form').submit();
+	}
+	</script>
+</head>
+<body class="backend-page">
+<h1>Registratie</h1>
+<p>Dit is de eerste keer dat je je aanmeldt in ons systeem. We vragen je daarom wat gegevens in te vullen zodat we je beter van dienst kunnen zijn.</p>
+<form method="post" action="/viewresult?post=registeruser" id="form">
+	<input type="hidden" id="userid" name="userid">
+	<input type="hidden" id="repo" name="repo">
+	<input type="hidden" id="threadid" name="threadid">
+	<script type="text/javascript">
+	$("#userid").val(getURLParameter("userid"));
+	$("#repo").val(getURLParameter("repo"));
+	$("#threadid").val(getURLParameter("threadid"));
+	</script>
+	<table>
+		<tr>
+			<td>Je voornaam*:</td><td><input id="firstName" name="firstName" /></td>
+		</tr>
+		<tr>
+			<td>Tussenvoegsel:</td><td><input id="lastNamePrefix" name="lastNamePrefix" /></td>
+		</tr>
+		<tr>
+			<td>Achternaam*:</td><td><input id="lastName" name="lastName" /></td>
+		</tr>
+		<tr>
+			<td>E-mail:</td><td><input id="email" name="email" /></td>
+		</tr>
+	</table>
+	<small>Velden met een * zijn verplicht</small><br />
+	<a href="javascript:{}" onclick="submit()" class="popup-label">Registreren</a>
+</form>
+</body>
+</html>

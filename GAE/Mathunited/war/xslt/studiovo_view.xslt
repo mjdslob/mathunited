@@ -42,7 +42,7 @@ extension-element-prefixes="exsl">
       <xsl:when test="subcomponent/meta/param[@name='css-file']">
         <xsl:value-of select="subcomponent/meta/param[@name='css-file']"/>
       </xsl:when>
-      <xsl:otherwise>basis_studiovo.css?v=31</xsl:otherwise>
+      <xsl:otherwise>basis_studiovo.css?v=34</xsl:otherwise>
     </xsl:choose>
 </xsl:variable>
 <xsl:variable name="overviewRef"><xsl:value-of select="string('/auteur/math4all.html')"/></xsl:variable>
@@ -56,6 +56,7 @@ extension-element-prefixes="exsl">
 <xsl:variable name="host_type">GAE</xsl:variable>
 <xsl:variable name="docbase"></xsl:variable>
 <xsl:variable name="urlbase"><xsl:value-of select="concat('http://mathunited.pragma-ade.nl:41080/data/',$refbase)"/></xsl:variable>
+<xsl:variable name="urlprefix">/</xsl:variable>
 <!--   /////////////////////////////////////////////   -->
 <!--   /////////////////////////////////////////////   -->
 
@@ -79,7 +80,7 @@ indent="yes" encoding="utf-8"/>
         <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
         <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
         <script type="text/javascript" src="/javascript/MathUnited.js"/>
-        <script type="text/javascript" src="/javascript/MathUnited_studiovo.js"/>
+        <script type="text/javascript" src="/javascript/MathUnited_studiovo.js?v=1"/>
         <script type="text/javascript" src="/javascript/jquery.ui.touch-punch.min.js"/>
         <script type="text/javascript" src="/javascript/jquery.jplayer.min.js"/>
 		<script type="text/javascript" src="/javascript/jquery.scrollIntoView.min.js"/>
@@ -95,7 +96,7 @@ indent="yes" encoding="utf-8"/>
         <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
         <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
         <script type="text/javascript" src="javascript/MathUnited.js"/>
-        <script type="text/javascript" src="javascript/MathUnited_studiovo.js"/>
+        <script type="text/javascript" src="javascript/MathUnited_studiovo.js?v=1"/>
         <script type="text/javascript" src="javascript/jquery.ui.touch-punch.min.js"/>
         <script type="text/javascript" src="javascript/jquery.jplayer.min.js"/>
 		<script type="text/javascript" src="javascript/jquery.scrollIntoView.min.js"/>
@@ -134,14 +135,36 @@ indent="yes" encoding="utf-8"/>
     <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js"></script>
     <script type="text/javascript">
     	var userid = "";
+    	var userrole = "";
+    	var schoolcode = "";
     	$.receiveMessage(
 		  function(e){
-		    userid = e.data.split("|")[0];
+		    if (e.data.substring(0,7).toLowerCase() == 'http://' || e.data.substring(0,8).toLowerCase() == 'https://')
+		    {
+		    	toggleParentPopup(e.data);
+		    }
+			else 
+			{
+		    	userid = e.data.split("|")[0];
+		    	// TEST CODE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		    	if ('<xsl:value-of select="$requesturl"/>'.indexOf('&amp;role=student') > -1)
+		    		userrole = "student";
+		    	else if ('<xsl:value-of select="$requesturl"/>'.indexOf('&amp;role=employee') > -1)
+		    		userrole = "employee";
+		    	else
+		    	// END OF TEST CODE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		    		userrole = e.data.split("|")[1];
+		    	schoolcode = e.data.split("|")[2];
+		    }
 		  },
-		  'http://www.eindexamensite.nl'
+		  function (origin) {
+		  	return 
+		  		'{<xsl:value-of select="$requesturl"/>}'.toLowerCase().substring(0, origin.length) == origin.toLowerCase()
+		  		||
+	            origin.toLowerCase() == 'http://www.eindexamensite.nl'
+          }
 		);
     </script>
-
 </head>
 
 <!--   **************** -->
@@ -187,7 +210,9 @@ indent="yes" encoding="utf-8"/>
 		          </xsl:otherwise>
 		       </xsl:choose>)
 			</xsl:attribute>
-			<iframe class="login-frame" src="http://www.eindexamensite.nl/iframe-page.html?parentUrl={encode-for-uri($requesturl)}&amp;result=false"></iframe>
+			<xsl:if test="subcomponent/meta/param[@name='show-login']='true'">
+				<iframe class="login-frame" src="http://www.eindexamensite.nl/iframe-page.html?parentUrl={encode-for-uri($requesturl)}&amp;result=false"></iframe>
+			</xsl:if>
         </div>
         <div id="ribbon">
             <span id="kruimelpad"></span>
@@ -206,6 +231,12 @@ indent="yes" encoding="utf-8"/>
             <xsl:apply-templates select="subcomponent/componentcontent/*"/>
         </div>
     </div>
+</div>
+<div class="popup-content" id="parent-popup">
+    <xsl:attribute name="title">
+        <xsl:value-of select="@title"/>
+    </xsl:attribute>
+    <iframe width="750" height="450"></iframe>
 </div>
 </body>
 </html>
@@ -326,17 +357,7 @@ indent="yes" encoding="utf-8"/>
 </xsl:template>
 
 <xsl:template match="result" mode="content">
-	<xsl:variable name="frameid">result-frame-<xsl:number format="0000" level="any"/></xsl:variable>
-	<div class="result-page" id="{$frameid}" ontab="$.get('/viewresult?repo={$repo}&amp;threadid={@layout}&amp;userid=' + userid, function(data) {{ $('#{$frameid}').html(data); }} ); return false;">
-		<div class="busy">
-		<br />
-		<br />
-		<br />
-		<h2>Laden... </h2>
-		<img src="sources_studiovo/loading.gif" width="100"/><br />
-		Een moment geduld a.u.b.
-		</div>
-	</div>
+	<iframe class="result-frame" ontab='$(this).attr("src", "/viewresult?repo={$repo}&amp;threadid={@layout}&amp;userid=" + userid + "&amp;userrole=" + userrole + "&amp;schoolcode=" + schoolcode)' src="/iframeloading.html"></iframe>
 </xsl:template>
 
 <xsl:template match="textref" mode="content">
@@ -386,7 +407,8 @@ indent="yes" encoding="utf-8"/>
 </xsl:template>
 <xsl:template match="page" mode="content">
     <xsl:variable name="pos" select="position()"/>
-    <div num="{$pos}">
+	<xsl:variable name="id"><xsl:value-of select="translate(document-uri(/), '/. ', '-')" />_<xsl:number level="any" /></xsl:variable>
+    <div num="{$pos}" id="{$id}">
         <xsl:choose>
             <xsl:when test="$pos=1">
                 <xsl:attribute name="class">page selected</xsl:attribute>

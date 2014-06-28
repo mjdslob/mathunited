@@ -1,16 +1,26 @@
 package mathunited;
 
-import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.transform.Source;
+
 import mathunited.configuration.Component;
-import mathunited.configuration.SubComponent;
 import mathunited.configuration.Configuration;
 import mathunited.configuration.Repository;
-import javax.xml.transform.Source;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.logging.Logger;
+import mathunited.configuration.SubComponent;
 
 public class ViewServlet extends HttpServlet {
     private final static Logger LOGGER = Logger.getLogger(XSLTbean.class.getName());

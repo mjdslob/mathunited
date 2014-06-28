@@ -18,17 +18,14 @@ extension-element-prefixes="exsl">
 <xsl:param name="repo-path"/>
 <xsl:param name="baserepo-path"/>
 <xsl:param name="userid"/>
+<xsl:param name="username" />
+<xsl:param name="registered" />
+<xsl:param name="viewid"/>
+<xsl:param name="threadid"/>
     
 <xsl:variable name="cm2px" select="number(50)"/>
 <xsl:variable name="menu_color" select="assignments/meta/param[@name='menu-color']"/>
-<xsl:variable name="cssfile">
-    <xsl:choose>
-      <xsl:when test="assignments/meta/param[@name='cssfile']">
-        <xsl:value-of select="assignments/meta/param[@name='cssfile']"/>
-      </xsl:when>
-      <xsl:otherwise>basis_studiovo.css?v23</xsl:otherwise>
-    </xsl:choose>
-</xsl:variable>
+<xsl:variable name="cssfile">basis_studiovo.css?v=32</xsl:variable>
 <xsl:variable name="overviewRef"><xsl:value-of select="string('/auteur/math4all.html')"/></xsl:variable>
 <xsl:variable name="_cross_ref_as_links_" select="true()"/>
 <xsl:variable name="_sheetref_as_links_" select="true()"/>
@@ -40,14 +37,50 @@ extension-element-prefixes="exsl">
 <xsl:variable name="host_type">GAE</xsl:variable>
 <xsl:variable name="docbase"></xsl:variable>
 <xsl:variable name="urlbase"><xsl:value-of select="concat('http://mathunited.pragma-ade.nl:41080/data/',$refbase)"/></xsl:variable>
+<xsl:variable name="urlprefix">/</xsl:variable>
 <!--   /////////////////////////////////////////////   -->
 <!--   /////////////////////////////////////////////   -->
 
-<xsl:output method="xml" indent="yes" encoding="utf-8"/>
+<xsl:output method="html" indent="yes" encoding="utf-8"/>
 
 <xsl:template match="/">
+<html>
+<head>
+   <xsl:choose>
+      <!--  subtitle difference in references: leading slash or not -->
+      <xsl:when test="$host_type='GAE'">
+        <link type="text/css" href="/javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
+        <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js" />
+        <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js" />
+        <script type="text/javascript" src="/javascript/MathUnited.js"/>
+        <script type="text/javascript" src="/javascript/MathUnited_studiovo.js?v=2"/>
+		<script type="text/javascript" src="/javascript/jquery.ba-postmessage.js"/>
+        <link rel="stylesheet" href="/css/content.css" type="text/css"/>
+        <link rel="stylesheet" type="text/css">
+	        <xsl:attribute name="href">/css/<xsl:value-of select="$cssfile"/></xsl:attribute>
+        </link>
+      </xsl:when>
+      <xsl:otherwise>
+        <link type="text/css" href="javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
+        <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js" />
+        <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js" />
+        <script type="text/javascript" src="javascript/MathUnited.js"/>
+        <script type="text/javascript" src="javascript/MathUnited_studiovo.js?v=2"/>
+		<script type="text/javascript" src="javascript/jquery.ba-postmessage.js"/>
+        <link rel="stylesheet" href="css/content.css" type="text/css"/>
+		<link rel="stylesheet" type="text/css">
+			<xsl:attribute name="href">css/<xsl:value-of select="$cssfile"/></xsl:attribute>
+		</link>
+      </xsl:otherwise>
+   </xsl:choose>
+</head>
+<body class="result-page">
 	<xsl:choose>
 		<xsl:when test="$userid">
+			<xsl:if test="$registered=1">
+				<div class="settings-button"><a href="{$urlprefix}viewclasses.jsp?userid={$userid}&amp;repo={$repo}&amp;threadid={$threadid}"><span class="hover-text">Mijn profiel</span>&#160;<div class="icon"></div></a></div>
+			</xsl:if>
+			<h3>Voortgang <xsl:value-of select="$username"/></h3>
         	<table class="layout-table">
         		<tr>
         			<td class="leftcontent">
@@ -65,12 +98,18 @@ extension-element-prefixes="exsl">
         			</td>
         		</tr>
         	</table>
+        	<xsl:if test="not($viewid='')">
+			<a class="back-button" href="javascript:window.history.go(-1)">&lt; Terug</a>
+			</xsl:if>
 		</xsl:when>
 		<xsl:otherwise>
 			<h2>Niet ingelogd</h2>
 			<p>Je moet ingelogd zijn om je voortgang te bekijken. Log in door rechtsboven deze pagina op "Login" te klikken.</p>
 		</xsl:otherwise>
 	</xsl:choose>
+	
+</body>
+</html>	
 </xsl:template>
 
 <xsl:template match="mulom:*"/>
@@ -220,13 +259,7 @@ extension-element-prefixes="exsl">
 <xsl:template match='assignment' mode='assignment'>
 	<div class="item">
 		<div class="title popup-wrapper">
-  	       <span class="result-popup-label" onclick="{concat('javascript:togglePopup(',785,', false, this)')}"><xsl:value-of select="@title"/></span>
-	       <div class="popup-content">
-	           <xsl:attribute name="title">
-	               <xsl:value-of select="@title"/>
-	           </xsl:attribute>
-	           <iframe src-orig="http://www.eindexamensite.nl/iframe-page.html?tx_iframequestion_pi1%5Bquestion%5D={@id}&amp;template=1" width="750" height="450"></iframe>
-	       </div>
+  	       <span class="result-popup-label" onclick="javascript:sendToggleParentPopup('http://www.eindexamensite.nl/iframe-page.html?tx_iframequestion_pi1%5Bquestion%5D={@id}&amp;template=1')"><xsl:value-of select="@title"/></span>
 		</div>
 		<div>
 			<xsl:attribute name="class">

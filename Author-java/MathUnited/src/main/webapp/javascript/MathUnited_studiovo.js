@@ -324,7 +324,7 @@ function setTab(tabid) {
     }
     // set readspeaker url
     ReadSpeaker.q(function(){if(rspkr.ui.getActivePlayer()){rspkr.ui.getActivePlayer().close()}});
-    $('.rsbtn_play').attr('href', 'https://app.readspeaker.com/cgi-bin/rsent?customerid=7345&amp;lang=' + readspeaker_lang + '&amp;readid='+tabid+'&amp;url=' + encodeURIComponent(document.URL));
+    $('.rsbtn_play').attr('href', 'https://app.readspeaker.com/cgi-bin/rsent?customerid=7345&amp;lang=' + readspeaker_lang + '&amp;dict=no_main&amp;readid='+tabid+'&amp;url=' + encodeURIComponent(document.URL));
 }
 
 function SVO_triggerSubMenuItem(elm) {
@@ -462,7 +462,12 @@ function togglePage(elm) {
     var num = $(elm).text();
     var parent = $(elm).parents('.pages-container').first();
     $('.page', parent).removeClass('selected');
-    $('.page[num="' + num + '"]', parent).addClass('selected');
+    var selectedPage = $('.page[num="' + num + '"]', parent);
+    $(selectedPage).addClass('selected');
+    // set readspeaker url
+    ReadSpeaker.q(function(){if(rspkr.ui.getActivePlayer()){rspkr.ui.getActivePlayer().close()}});
+    //alert('https://app.readspeaker.com/cgi-bin/rsent?customerid=7345&amp;lang=' + readspeaker_lang + '&amp;readid='+$(selectedPage).attr('id')+'&amp;url=' + encodeURIComponent(document.URL));
+    $('.rsbtn_play').attr('href', 'https://app.readspeaker.com/cgi-bin/rsent?customerid=7345&amp;lang=' + readspeaker_lang + '&amp;readid='+$(selectedPage).attr('id')+'&amp;url=' + encodeURIComponent(document.URL));
 }
 
 function toggleMovie(elm) {
@@ -555,4 +560,39 @@ function toggleSlider(elm) {
     else
         $(elm).addClass("open");
     $(content).slideToggle("slow", function () { $(content).scrollIntoView(); });
+}
+// Shows the url in an iframe inside a popup
+function toggleParentPopup(url) {
+    var position = { my: 'center center', at: 'center top', of: '#content' };
+    var content = $('#parent-popup');
+    if (content.parents('.popup-content').length > 0) {
+        position = { my: 'center top', at: 'center center', of: $(elm) };
+    }
+    var dialog = content.dialog({
+        autoOpen: false,
+        width: 785,
+        position: position
+    });
+    dialog.dialog('open');
+    // load iframes inside the popup
+    $(content).find('iframe').each(function (index) {
+        $(this).attr("src", url);
+    });
+}
+// Sends a message to the parent of the iframe to show the url in a popup (popups in iframes dont work well)
+function sendToggleParentPopup(url) {
+	$.postMessage(url, "*");
+}
+function getURLParameter(sParam)
+{
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++) 
+    {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam) 
+        {
+            return sParameterName[1];
+        }
+    }
 }

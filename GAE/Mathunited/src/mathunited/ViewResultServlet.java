@@ -5,10 +5,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -33,6 +31,11 @@ import javax.xml.transform.stream.StreamResult;
 
 import mathunited.configuration.Configuration;
 import mathunited.configuration.Repository;
+import mathunited.model.Score;
+import mathunited.model.User;
+import mathunited.model.User.UserRole;
+import mathunited.utils.UserException;
+import mathunited.utils.Utils;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -54,6 +57,7 @@ import com.google.appengine.labs.repackaged.org.json.JSONObject;
 @SuppressWarnings("serial")
 public class ViewResultServlet extends HttpServlet {
     private final static Logger LOGGER = Logger.getLogger(XSLTbean.class.getName());
+    private final static int VERSION = 8;
     ServletContext context;
     
     @Override
@@ -72,7 +76,6 @@ public class ViewResultServlet extends HttpServlet {
 
         try{
             Configuration config = Configuration.getInstance(context);
-            XSLTbean processor = new XSLTbean(context, config.getResultVariants());
             
             //read request parameters
             Map<String, String[]> paramMap = request.getParameterMap();
@@ -92,6 +95,7 @@ public class ViewResultServlet extends HttpServlet {
             }
             
             String repo = parameterMap.get("repo");
+            parameterMap.put("repo", repo);
            	if(repo==null)
            		throw new Exception("Het verplichte argument 'repo' ontbreekt: "+repo);
             Repository repository = config.getRepos().get(repo);
@@ -111,212 +115,106 @@ public class ViewResultServlet extends HttpServlet {
            	if(threadid==null)
            		throw new Exception("Het verplichte argument 'threadid' ontbreekt: "+repo);
 
-           	String userid = parameterMap.get("userid"); // for testing purposes only
-//           	if (userid == null)
-//           		userid = "sanderbons";
-            parameterMap.put("userid", userid);
+           	String userid = parameterMap.get("userid"); 
+           	String viewid = parameterMap.get("viewid");
+           	String userrole = parameterMap.get("userrole"); // optional when already registered
+           	String schoolcode = parameterMap.get("schoolcode"); // optional when already registered
            	
-            parameterMap.put("repo", repo);
             //ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             response.setContentType("text/html");
             
             //byte[] result = byteStream.toByteArray();
-            
-            String xml = getResultStrucureXml(repository, "result-structure/" + threadid);
-            if (xml == null)
-            	throw new Exception("Structuur xml met id " + "result-structure/" + threadid + " niet gevonden");
-            
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        	DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        	InputSource is = new InputSource(new StringReader(xml));
-        	Document inputDoc = dBuilder.parse(is);
-        	Map<Integer, Score> results = new HashMap<Integer, Score>();
-            
-        	HashMap<Integer, Integer> eindExamenSiteItems = new HashMap<Integer, Integer>();
-        	
-        	NodeList itemNodes = inputDoc.getElementsByTagName("item");
-        	for (int i=0; i < itemNodes.getLength(); i++)
-        	{
-        		Element itemElem = (Element)itemNodes.item(i);
-        		if (itemElem.getAttribute("source").equals("es"))
-        		{
-        			int id = Integer.parseInt(itemElem.getAttribute("id"));
-        			int total = Integer.parseInt(itemElem.getAttribute("total"));
-        			eindExamenSiteItems.put(id, total);
-        		}
-        	}
-            
-    		if (eindExamenSiteItems.size() > 0)
-        	{
-        		getEindExamenSiteResults(eindExamenSiteItems, userid, results);
-        	}
-        	
-    		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-    		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-     		
-    		Document outputDoc = docBuilder.newDocument();
-    		Element rootElement = outputDoc.createElement("assignments");
-    		outputDoc.appendChild(rootElement);
-    		copyMetaElements(inputDoc, outputDoc, rootElement);
-    		
-    		Score uniqueTotal = new Score();
-    		processGroup(inputDoc.getDocumentElement(), outputDoc, rootElement, results, new Score(), uniqueTotal, new ArrayList<Integer>());
-    		rootElement.setAttribute("uniqueScore", Integer.toString(uniqueTotal.score));
-    		rootElement.setAttribute("uniqueTotal", Integer.toString(uniqueTotal.total));
 
-            ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-//            ContentResolver resolver = new ContentResolver(repo, sub.file, context);
-            ContentResolver resolver = null;
-            DOMSource xmlSource = new DOMSource(outputDoc); 
-            processor.process(xmlSource, variant, parameterMap, resolver, byteStream);
-            response.setContentType("text/html");
+            User user = User.load(userid, repository);
             
-            byte[] result = byteStream.toByteArray();
-            response.setContentLength(result.length);
-            ServletOutputStream os = response.getOutputStream();
-            os.write(result);
-
-            os.println("<!--");
-        	TransformerFactory tf = TransformerFactory.newInstance();
-        	Transformer transformer = tf.newTransformer();
-        	transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-        	StringWriter writer = new StringWriter();
-        	transformer.transform(new DOMSource(outputDoc), new StreamResult(writer));
-        	os.println(writer.getBuffer().toString());
-            os.println("-->");
-            
-            
-            os.flush();
-            os.close();
-            
-//            response.setContentLength(outputString.length());
-//            response.getOutputStream().write(outputString.getBytes());
-//            response.getOutputStream().flush();
-//            response.getOutputStream().close();
+            // show results page immediately for registered students or entree accounts
+            if (userid == null || userid.isEmpty())
+            	response.sendRedirect("/loginmessage.html?v=" + VERSION);
+            else if (user != null && user.isTeacher() && viewid == null)
+            	response.sendRedirect("/viewclasses.jsp?userid=" + userid + "&repo=" + repo + "&threadid=" + threadid);
+            else if ((user != null && user.isRegistered()) || userrole == null || userrole.isEmpty() || userrole.equals("affiliate")) {
+                parameterMap.put("registered", user != null && user.isRegistered() ? "1" : "0");
+                parameterMap.put("username", user != null ? user.fullName() : "");
+            	renderResultPage(repository, threadid, variant, userid, viewid, response, parameterMap);
+            }
+            else if (user == null || !user.isRegistered())
+            {
+            	user = new User();
+            	user.id = userid;
+            	if (userrole.equals("student"))
+            		user.role = UserRole.Student;
+            	else if (userrole.equals("staff"))
+            		user.role = UserRole.Teacher;
+            	else if (userrole.equals("employee"))
+            		user.role = UserRole.Teacher;
+            	else
+               		throw new Exception("Ongeldige waarde voor 'userrole': " + userrole);
+            	user.schoolcode = schoolcode;
+            	user.save(repository);
+            	
+            	response.sendRedirect("/registeruser.html?v=" + VERSION + "&userid=" + userid + "&repo=" + repo + "&threadid=" + threadid);
+            }
+            else
+            {
+            	throw new UserException("Don't know that to do.<br><br>userid=" + userid + "; userrole=" + userrole + "; schoolcode=" + schoolcode + "; user=" + (user == null ? "null" : "loaded"));
+            }
+            	
         }
         catch (Exception e) {
-            e.printStackTrace(response.getWriter());
+            ServletOutputStream os = response.getOutputStream();
             response.setContentType("text/html");
-            Writer w = response.getWriter();
-            PrintWriter pw = new PrintWriter(w);
-            pw.println("<html><head></head><body><h1>Fout opgetreden</h1><p>");
-            pw.println(e.getMessage());
-            pw.println("</p></body></html>");
+            os.println("<html><head></head><body><h1>Fout opgetreden</h1><p>");
+            os.println(e.getMessage());
+            os.println("</p></body></html>"); 
+            os.flush();
+            os.close();
             throw new ServletException(e);
         }
 
     }
     
-    private void getEindExamenSiteResults(HashMap<Integer, Integer> eindExamenSiteItems, String userid, Map<Integer, Score> results) throws Exception 
+    private void renderResultPage(Repository repository, String threadid, String variant, String userid, String viewid, HttpServletResponse response, Map<String, String> parameterMap) throws Exception
     {
-    	// construct input json E.g. {"userid":"sanderbons","assignmentids":[6507,6503,3978]}
-    	JSONObject json = new JSONObject();
-    	json.put("userid", userid);
-    	JSONArray array = new JSONArray();
-    	for (Integer id : eindExamenSiteItems.keySet()) {
-        	array.put(id);
-		}
-    	json.put("assignmentids", array);
-    	// execute webservice
-    	JSONObject result = executeHttpPostResult("http://www.eindexamensite.nl/GetUserResults/services.html", json);
-    	// get result json
-    	JSONArray assignments = result.getJSONArray("assignments");
+        Configuration config = Configuration.getInstance(context);
+        XSLTbean processor = new XSLTbean(context, config.getResultVariants());
+
+        Document inputDoc = Utils.getResultStrucureXml(repository, "result-structure/" + threadid);
+        
+    	HashMap<Integer, Integer> eindExamenSiteItems = Utils.getEindExamenSiteItems(inputDoc);
+        
+    	if (viewid == null || viewid.equals(""))
+    		viewid = userid;
     	
-    	for (int i = 0; i < assignments.length(); i++)
-    	{
-    		JSONObject assignment = assignments.getJSONObject(i);
-    		int id = assignment.getInt("id");
-    		Score score = new Score();
-    		String scoreString = assignment.getString("score");
-    		if (!scoreString.equals("null"))
-    			score.score = Integer.parseInt(scoreString);
-       		String totalString = assignment.getString("total");
-    		if (!totalString.equals("null"))
-    		{
-    			score.total = Integer.parseInt(totalString);
-    			score.made = true;
-    		}
-    		else
-    		{
-    			score.total = eindExamenSiteItems.get(id);
-    			score.made = false;
-    		}
-    		results.put(id, score);
-    	}
+        Map<Integer, Score> results = new HashMap<Integer, Score>();
+   		Utils.getEindExamenSiteResults(eindExamenSiteItems, viewid, results);
+		Document outputDoc = Utils.transformResults(inputDoc, results);
+		
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+//        ContentResolver resolver = new ContentResolver(repo, sub.file, context);
+        ContentResolver resolver = null;
+        DOMSource xmlSource = new DOMSource(outputDoc); 
+        processor.process(xmlSource, variant, parameterMap, resolver, byteStream);
+        response.setContentType("text/html");
+        
+        byte[] result = byteStream.toByteArray();
+//        response.setContentLength(result.length);
+        ServletOutputStream os = response.getOutputStream();
+        os.write(result);
+
+        os.println("<!--");
+    	TransformerFactory tf = TransformerFactory.newInstance();
+    	Transformer transformer = tf.newTransformer();
+    	transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+    	StringWriter writer = new StringWriter();
+    	transformer.transform(new DOMSource(outputDoc), new StreamResult(writer));
+    	os.println(writer.getBuffer().toString());
+        os.println("-->");
+        
+        
+        os.flush();
+        os.close();
     }
     
-    private void processGroup(Element inputElem, Document outputDoc, Element outElement, Map<Integer, Score> results, Score total, Score uniqueTotal, ArrayList<Integer> countedItemIds) throws JSONException
-    {
-    	Score groupTotal = new Score();
-		NodeList childNodes = inputElem.getChildNodes();
-    	for (int childIndex=0; childIndex<childNodes.getLength(); childIndex++)
-    	{
-    		Node childNode = childNodes.item(childIndex);
-    		if (childNode.getNodeType() == Node.ELEMENT_NODE && childNode.getNodeName().equals("group"))
-    		{
-    			Element childElem = (Element) childNode;
-    			Element outGroupElem = outputDoc.createElement("group");
-    			outGroupElem.setAttribute("title", childElem.getAttribute("title"));
-    			outElement.appendChild(outGroupElem);
-    			processGroup((Element)childNode, outputDoc, outGroupElem, results, groupTotal, uniqueTotal, countedItemIds);
-    		}
-    		if (childNode.getNodeType() == Node.ELEMENT_NODE && childNode.getNodeName().equals("item"))
-    			processItem((Element)childNode, outputDoc, outElement, results, groupTotal, uniqueTotal, countedItemIds);
-    	}
-    	outElement.setAttribute("score", Integer.toString(groupTotal.score));
-    	outElement.setAttribute("total", Integer.toString(groupTotal.total));
-    	total.score += groupTotal.score;
-    	total.total += groupTotal.total;
-    }
-
-    private void processItem(Element itemElem, Document outputDoc, Element groupElem, Map<Integer, Score> results, Score total, Score unique, ArrayList<Integer> countedItemIds) throws JSONException
-    {
-		int id = Integer.parseInt(itemElem.getAttribute("id"));
-		Score score = results.get(id);
-		if (score != null)
-		{
-			Element assignmentElem = outputDoc.createElement("assignment"); 
-    		assignmentElem.setAttribute("id", 	 Integer.toString(id));
-    		assignmentElem.setAttribute("title", itemElem.getAttribute("title"));
-    		assignmentElem.setAttribute("score", Integer.toString(score.score));
-    		assignmentElem.setAttribute("total", Integer.toString(score.total));
-    		assignmentElem.setAttribute("made",  Boolean.toString(score.made));
-    		groupElem.appendChild(assignmentElem);
-    		total.score += score.score;
-    		total.total += score.total;
-    		if (!countedItemIds.contains(id))
-    		{
-    			unique.score += score.score;
-    			unique.total += score.total;
-    			countedItemIds.add(id);
-    		}
-		}
-    }
-    
-    private void copyMetaElements(Document inputDoc, Document outputDoc, Element targetElem) {
-		NodeList resultNodes = inputDoc.getElementsByTagName("result");
-		Element metaElem = outputDoc.createElement("meta");
-		if (resultNodes.getLength() > 0)
-		{
-			Element resultNode = (Element)resultNodes.item(0);
-			NodeList metaNodes = resultNode.getElementsByTagName("meta");
-			if (metaNodes.getLength() > 0)
-			{
-				Element metaNode = (Element)metaNodes.item(0);
-				NodeList paramNodes = metaNode.getElementsByTagName("param");
-				for (int i = 0; i < paramNodes.getLength(); i++)
-				{
-					Element paramNode = (Element) paramNodes.item(i);
-					Element paramElem = outputDoc.createElement("param");
-					paramElem.setAttribute("name", paramNode.getAttribute("name"));
-					paramElem.setTextContent(paramNode.getTextContent());
-					metaElem.appendChild(paramElem);
-				}
-			}
-		}
-		targetElem.appendChild(metaElem);
-	}
-
 	public static String executeHttpPostStringResult(String url, JSONObject jsonObject) throws Exception
     {
     	HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
@@ -355,17 +253,6 @@ public class ViewResultServlet extends HttpServlet {
     	return new JSONObject(executeHttpPostStringResult(url, jsonObject));
     }
     
-	private String getResultStrucureXml(Repository repository, String id) throws EntityNotFoundException
-    {
-	   DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
-	   Key repoKey = KeyFactory.createKey("Repository", repository.id);
-	   Key key = KeyFactory.createKey(repoKey, "XmlFile", id);
-	   Entity entity = datastore.get(key);
-	   Text textProp = (Text)entity.getProperty("text");
-	   return textProp.getValue();
-    }
-    
     public boolean isMobile(String uaStr) {
     	boolean ismobile = false;
     	if(uaStr.contains("iPad") || uaStr.contains("Android")) ismobile = true;
@@ -373,17 +260,43 @@ public class ViewResultServlet extends HttpServlet {
     }
     
     @Override
-    public void doPost (  HttpServletRequest request,
-                         HttpServletResponse response)
-             throws ServletException, IOException {
-        //get the pdf from the session and return it
-    }
-    
-    public class Score
-    {
-    	public int score;
-    	public int total;
-    	public boolean made;
-    }
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+ 
+    	try
+    	{
+	    	String repo = request.getParameter("repo");
+	    	String userid = request.getParameter("userid");
+	    	String threadid = request.getParameter("threadid");
+	    	
+	        Configuration config = Configuration.getInstance(context);
+	        Repository repository = config.getRepos().get(repo);
+	        if(repository==null) {
+	            throw new Exception("Onbekende repository: "+repo);
+	        }
+	        
+	        User user = User.load(userid, repository);
+	        if (user == null)
+	        	throw new Exception("Gebruiker niet teruggevonden in database");
+	        if (user.isRegistered())
+	        	throw new Exception("Je bent al geregistreerd");
+	
+	        user.firstName = request.getParameter("firstName");
+	        user.lastNamePrefix = request.getParameter("lastNamePrefix");
+	        user.lastName = request.getParameter("lastName");
+	        user.email = request.getParameter("email");
+	        user.save(repository);
 
+	        response.sendRedirect("/viewclasses.jsp?userid=" + userid + "&repo=" + repo + "&threadid=" + threadid);
+    	}
+        catch (Exception e) {
+            ServletOutputStream os = response.getOutputStream();
+            response.setContentType("text/html");
+            os.println("<html><head></head><body><h1>Fout opgetreden</h1><p>");
+            os.println(e.getMessage());
+            os.println("</p></body></html>");
+            os.flush();
+            os.close();
+            throw new ServletException(e);
+        }
+    }
 }
