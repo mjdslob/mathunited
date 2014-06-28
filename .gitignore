@@ -1,3 +1,7 @@
-/GAE/Mathunited/.metadata
-/GAE/Mathunited/war/WEB-INF/classes
-/Author-java/MathUnited/target
+/GAE/Mathunited/.metadata/
+/GAE/Mathunited/war/WEB-INF/classes/
+/GAE/Mathunited/war/WEB-INF/lib/
+/Author-java/.metadata/
+/Author-java/MathUnited/target/
+/Author-java/MathUnited/.settings/
+GAE/Mathunited/.settings/org.eclipse.wst.validation.prefs
