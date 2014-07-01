@@ -185,7 +185,7 @@
                 <link type="text/css" href="javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
                 <script data-main="javascript/editor.js" src="javascript/require.js"></script>
                 <link rel="stylesheet" href="css/content.css" type="text/css"/>
-                <link rel="stylesheet" href="css/exercises.css" type="text/css"/>
+                <link rel="stylesheet" href="css/exercises.css?nocache=2" type="text/css"/>
                 <link rel="stylesheet" href="css/M4AStijl2.css" type="text/css"/>
                 <link rel="stylesheet" href="css/editor.css" type="text/css"/>
                 <link rel="stylesheet" href="javascript/lib/chosen_v1.1.0/chosen.css"/>

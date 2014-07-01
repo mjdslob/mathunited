@@ -20,6 +20,11 @@ extension-element-prefixes="exsl">
            <xsl:attribute name="style">width:<xsl:value-of select="$width"/>px</xsl:attribute>
            <xsl:attribute name="width"><xsl:value-of select="$width"/></xsl:attribute>
        </xsl:if>
+       <xsl:if test="@paperlocation">
+           <xsl:attribute name="paperlocation" select="@paperlocation"/>
+       </xsl:if>
+           
+           
    </img>
 </xsl:template>
 
