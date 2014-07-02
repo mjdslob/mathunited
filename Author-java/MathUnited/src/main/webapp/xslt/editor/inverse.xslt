@@ -128,6 +128,9 @@ extension-element-prefixes="exsl">
         
     </xsl:choose>
 </xsl:template>
+
+<xsl:template match="br" mode="paragraph"><br/></xsl:template>
+
 <xsl:template match="ul" mode="paragraph">
     <itemize nr="4" type="packed">
         <xsl:apply-templates select="li" mode="paragraph"/>
