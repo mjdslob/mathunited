@@ -403,6 +403,15 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="pages" mode="content">
     <div class="pages-container">
         <xsl:apply-templates select="page" mode="content"/>
+        <div class="page-navigator">
+            <xsl:for-each select="page">
+                <div num="{position()}" onclick="javascript:togglePage(this)">
+                	<xsl:attribute name="class">page-navigator-ref <xsl:if test="position() = 1">selected</xsl:if></xsl:attribute>
+                	<xsl:value-of select="position()"/>
+                </div>
+            </xsl:for-each>
+            <div style="clear:both"/>
+        </div>
     </div>
 </xsl:template>
 <xsl:template match="page" mode="content">
@@ -418,16 +427,6 @@ indent="yes" encoding="utf-8"/>
             </xsl:otherwise>
         </xsl:choose>
         <xsl:apply-templates mode="content"/>
-        <div class="page-navigator">
-            <xsl:for-each select="preceding-sibling::page">
-                <div class="page-navigator-ref" onclick="javascript:togglePage(this)"><xsl:value-of select="position()"/></div>
-            </xsl:for-each>
-            <div class="page-navigator-ref selected"><xsl:value-of select="$pos"/></div>
-            <xsl:for-each select="following-sibling::page">
-                <div class="page-navigator-ref" onclick="javascript:togglePage(this)"><xsl:value-of select="$pos+position()"/></div>
-            </xsl:for-each>
-            <div style="clear:both"/>
-        </div>
     </div>
 </xsl:template>
 <xsl:template match='block[@medium="web"]'><xsl:apply-templates/></xsl:template>
