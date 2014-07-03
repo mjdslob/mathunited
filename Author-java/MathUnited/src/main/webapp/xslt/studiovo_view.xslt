@@ -42,7 +42,7 @@ extension-element-prefixes="exsl">
       <xsl:when test="subcomponent/meta/param[@name='css-file']">
         <xsl:value-of select="subcomponent/meta/param[@name='css-file']"/>
       </xsl:when>
-      <xsl:otherwise>basis_studiovo.css?v=26</xsl:otherwise>
+      <xsl:otherwise>basis_studiovo.css?v=35</xsl:otherwise>
     </xsl:choose>
 </xsl:variable>
 <xsl:variable name="overviewRef"><xsl:value-of select="string('/auteur/math4all.html')"/></xsl:variable>
@@ -80,7 +80,7 @@ indent="yes" encoding="utf-8"/>
         <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
         <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
         <script type="text/javascript" src="/javascript/MathUnited.js"/>
-        <script type="text/javascript" src="/javascript/MathUnited_studiovo.js?v=1"/>
+        <script type="text/javascript" src="/javascript/MathUnited_studiovo.js?v=2"/>
         <script type="text/javascript" src="/javascript/jquery.ui.touch-punch.min.js"/>
         <script type="text/javascript" src="/javascript/jquery.jplayer.min.js"/>
 		<script type="text/javascript" src="/javascript/jquery.scrollIntoView.min.js"/>
@@ -96,7 +96,7 @@ indent="yes" encoding="utf-8"/>
         <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
         <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
         <script type="text/javascript" src="javascript/MathUnited.js"/>
-        <script type="text/javascript" src="javascript/MathUnited_studiovo.js?v=1"/>
+        <script type="text/javascript" src="javascript/MathUnited_studiovo.js?v=2"/>
         <script type="text/javascript" src="javascript/jquery.ui.touch-punch.min.js"/>
         <script type="text/javascript" src="javascript/jquery.jplayer.min.js"/>
 		<script type="text/javascript" src="javascript/jquery.scrollIntoView.min.js"/>
@@ -403,6 +403,15 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="pages" mode="content">
     <div class="pages-container">
         <xsl:apply-templates select="page" mode="content"/>
+        <div class="page-navigator">
+            <xsl:for-each select="page">
+                <div num="{position()}" onclick="javascript:togglePage(this)">
+                	<xsl:attribute name="class">page-navigator-ref <xsl:if test="position() = 1">selected</xsl:if></xsl:attribute>
+                	<xsl:value-of select="position()"/>
+                </div>
+            </xsl:for-each>
+            <div style="clear:both"/>
+        </div>
     </div>
 </xsl:template>
 <xsl:template match="page" mode="content">
@@ -418,16 +427,6 @@ indent="yes" encoding="utf-8"/>
             </xsl:otherwise>
         </xsl:choose>
         <xsl:apply-templates mode="content"/>
-        <div class="page-navigator">
-            <xsl:for-each select="preceding-sibling::page">
-                <div class="page-navigator-ref" onclick="javascript:togglePage(this)"><xsl:value-of select="position()"/></div>
-            </xsl:for-each>
-            <div class="page-navigator-ref selected"><xsl:value-of select="$pos"/></div>
-            <xsl:for-each select="following-sibling::page">
-                <div class="page-navigator-ref" onclick="javascript:togglePage(this)"><xsl:value-of select="$pos+position()"/></div>
-            </xsl:for-each>
-            <div style="clear:both"/>
-        </div>
     </div>
 </xsl:template>
 <xsl:template match='block[@medium="web"]'><xsl:apply-templates/></xsl:template>
