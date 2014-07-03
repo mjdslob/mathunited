@@ -114,5 +114,12 @@
 <% } %>
 
 <% } catch(Exception e) { %><%= Utils.renderErrorHtml(e) %><% } %>
+
+<!--
+<p>
+encoded = <%= Utils.encodeData("dnote|affiliate|ENTREE") %><br/>
+decoded = <%= Utils.decodeData("wXfLxhpVClrS3ZhQ1rT8N4W3r+ImIk/SdXR3JMCz158=") %>
+</p>
+-->
 </body>
 </html>
