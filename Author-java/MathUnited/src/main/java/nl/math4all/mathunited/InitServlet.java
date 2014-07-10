@@ -3,11 +3,6 @@ package nl.math4all.mathunited;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import java.util.logging.Logger;
-import java.util.logging.Level;
-import java.util.Map;
-import java.util.HashMap;
-import nl.math4all.mathunited.resolvers.ContentResolver;
 import nl.math4all.mathunited.configuration.*;
 import nl.math4all.mathunited.editor.WorkflowServlet;
 

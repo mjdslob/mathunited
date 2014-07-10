@@ -1,15 +1,11 @@
 package nl.math4all.mathunited;
 
-import nl.math4all.mathunited.configuration.Component;
 import java.io.*;
-import java.net.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 import java.util.Map;
-import java.util.HashMap;
-import nl.math4all.mathunited.resolvers.ContentResolver;
 import javax.xml.bind.DatatypeConverter;
 import nl.math4all.mathunited.configuration.Configuration;
 import nl.math4all.mathunited.configuration.Repository;

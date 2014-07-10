@@ -1,5 +1,4 @@
 package nl.math4all.mathunited.configuration;
-import org.w3c.dom.Node;
 /**
  *
  * @author martijnslob

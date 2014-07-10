@@ -1,7 +1,6 @@
 package nl.math4all.mathunited.editor;
 
 import java.io.*;
-import java.net.URLDecoder;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.util.logging.Logger;
@@ -17,17 +16,6 @@ import org.w3c.dom.Element;
 import javax.xml.xpath.*;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
-import java.nio.channels.FileChannel;
-import org.w3c.dom.bootstrap.DOMImplementationRegistry;
-import org.w3c.dom.Document;
-import org.w3c.dom.ls.DOMImplementationLS;
-import org.w3c.dom.ls.LSSerializer;
-import org.w3c.dom.ls.LSOutput;
-import org.w3c.dom.DOMConfiguration;
-import org.w3c.dom.DOMError;
-import org.w3c.dom.DOMErrorHandler;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
 import nl.math4all.mathunited.XSLTbean;
 import nl.math4all.mathunited.exceptions.LoginException;
 import nl.math4all.mathunited.configuration.*;
@@ -36,8 +24,6 @@ import nl.math4all.mathunited.configuration.Component;
 import nl.math4all.mathunited.resolvers.ContentResolver;
 import nl.math4all.mathunited.utils.UserManager;
 import nl.math4all.mathunited.utils.FileManager;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.*;
 
 
 //mathunited.pragma-ade.nl/MathUnited/view?variant=basis&comp=m4a/xml/12hv-me0&subcomp=3&item=explore

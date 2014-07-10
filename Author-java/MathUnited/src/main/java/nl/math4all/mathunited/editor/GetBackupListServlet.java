@@ -6,15 +6,10 @@ import javax.servlet.http.*;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 import java.util.Map;
-import java.util.HashMap;
-import javax.xml.transform.Source;
-import org.xml.sax.InputSource;
 import java.util.Properties;
-import nl.math4all.mathunited.resolvers.ContentResolver;
 import nl.math4all.mathunited.configuration.*;
 import nl.math4all.mathunited.configuration.SubComponent;
 import nl.math4all.mathunited.configuration.Component;
-import nl.math4all.mathunited.exceptions.LoginException;
 import nl.math4all.mathunited.utils.UserManager;
 import nl.math4all.mathunited.utils.Utils;
 

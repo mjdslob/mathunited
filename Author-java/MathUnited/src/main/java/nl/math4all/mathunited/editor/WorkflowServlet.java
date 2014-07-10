@@ -1,7 +1,5 @@
 package nl.math4all.mathunited.editor;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
@@ -13,16 +11,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import nl.math4all.mathunited.XSLTbean;
 import nl.math4all.mathunited.configuration.Component;
 import nl.math4all.mathunited.configuration.SubComponent;
 import nl.math4all.mathunited.configuration.Configuration;
 import nl.math4all.mathunited.configuration.Repository;
-import org.xml.sax.InputSource;
 
 /**
  *

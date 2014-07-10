@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 import java.util.Map;
 import java.util.HashMap;
-import javax.xml.transform.Source;
 import org.xml.sax.InputSource;
 import java.util.Properties;
 import javax.xml.transform.sax.SAXSource;
@@ -16,8 +15,6 @@ import nl.math4all.mathunited.resolvers.ContentResolver;
 import nl.math4all.mathunited.configuration.*;
 import nl.math4all.mathunited.configuration.SubComponent;
 import nl.math4all.mathunited.configuration.Component;
-import nl.math4all.mathunited.exceptions.LoginException;
-import static nl.math4all.mathunited.resolvers.ContentResolver.entityResolver;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 

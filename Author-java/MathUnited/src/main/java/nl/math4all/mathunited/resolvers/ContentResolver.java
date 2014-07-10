@@ -2,15 +2,12 @@ package nl.math4all.mathunited.resolvers;
 
 import javax.servlet.ServletContext;
 import javax.xml.transform.URIResolver;
-import javax.xml.transform.Source;
 import org.xml.sax.InputSource;
 import org.xml.sax.helpers.XMLReaderFactory;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.XMLReader;
 import javax.xml.transform.sax.SAXSource;
-import java.net.URL;
 import java.io.*;
-import java.net.MalformedURLException;
 import org.xml.sax.SAXException;
 import nl.math4all.mathunited.configuration.*;
 import java.util.Map;

@@ -1,7 +1,6 @@
 package nl.math4all.mathunited.editor;
 
 import nl.math4all.mathunited.configuration.*;
-import nl.math4all.mathunited.exceptions.LoginException;
 import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -16,7 +15,6 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
-import static nl.math4all.mathunited.configuration.Component.readComponent;
 import nl.math4all.mathunited.resolvers.ContentResolver;
 import nl.math4all.mathunited.utils.Utils;
 import org.w3c.dom.Document;

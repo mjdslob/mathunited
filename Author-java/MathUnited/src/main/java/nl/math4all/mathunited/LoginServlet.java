@@ -5,12 +5,6 @@ import nl.math4all.mathunited.exceptions.LoginException;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import java.util.logging.Logger;
-import java.util.logging.Level;
-import java.util.Map;
-import java.util.HashMap;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import nl.math4all.mathunited.utils.UserManager;
 
 //mathunited.pragma-ade.nl/MathUnited/view?variant=basis&comp=m4a/xml/12hv-me0&subcomp=3&item=explore
