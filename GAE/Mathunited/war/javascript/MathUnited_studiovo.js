@@ -464,6 +464,9 @@ function togglePage(elm) {
     $('.page', parent).removeClass('selected');
     var selectedPage = $('.page[num="' + num + '"]', parent);
     $(selectedPage).addClass('selected');
+    $('.page-navigator-ref', parent).removeClass('selected');
+    var selectedPageNav = $('.page-navigator-ref[num="' + num + '"]', parent);
+    $(selectedPageNav).addClass('selected');
     // set readspeaker url
     ReadSpeaker.q(function(){if(rspkr.ui.getActivePlayer()){rspkr.ui.getActivePlayer().close()}});
     //alert('https://app.readspeaker.com/cgi-bin/rsent?customerid=7345&amp;lang=' + readspeaker_lang + '&amp;readid='+$(selectedPage).attr('id')+'&amp;url=' + encodeURIComponent(document.URL));

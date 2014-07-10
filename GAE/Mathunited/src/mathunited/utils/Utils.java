@@ -8,19 +8,31 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.codec.binary.Base64;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+
+import sun.misc.BASE64Encoder;
 
 import mathunited.configuration.Repository;
 import mathunited.model.Score;
@@ -37,6 +49,7 @@ import com.google.appengine.api.datastore.Text;
 import com.google.appengine.labs.repackaged.org.json.JSONArray;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
+import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
 
 public class Utils {
 	
@@ -353,4 +366,28 @@ public class Utils {
     		output.items.add(outscore);
 		}
     }
+    
+    public static final String encDecKey = "Qzi8w2E+OHYRnPx7eLvnGw==";
+    public static final String encDecAlgorithm = "AES";
+    
+    public static String encodeData(String stringToEncrypt) throws Exception {
+    	byte[] encodedKey     = Base64.decodeBase64(encDecKey);
+        SecretKey originalKey = new SecretKeySpec(encodedKey, 0, encodedKey.length, encDecAlgorithm);
+    	Cipher aesCipher = Cipher.getInstance(encDecAlgorithm); 
+    	aesCipher.init(Cipher.ENCRYPT_MODE,originalKey); 
+    	byte[] byteDataToEncrypt = stringToEncrypt.getBytes(); 
+    	byte[] byteCipherText = aesCipher.doFinal(byteDataToEncrypt); 
+    	return Base64.encodeBase64String(byteCipherText);
+    }
+    
+    public static String decodeData(String stringToDecrypt) throws Exception {
+    	byte[] encodedKey     = Base64.decodeBase64(encDecKey);
+        SecretKey originalKey = new SecretKeySpec(encodedKey, 0, encodedKey.length, encDecAlgorithm);
+    	Cipher aesCipher = Cipher.getInstance(encDecAlgorithm); 
+        aesCipher.init(Cipher.DECRYPT_MODE, originalKey, aesCipher.getParameters()); 
+        byte[] byteCipherText = Base64.decodeBase64(stringToDecrypt);
+        byte[] byteDecryptedText = aesCipher.doFinal(byteCipherText); 
+        return new String(byteDecryptedText);
+    }
+
 }

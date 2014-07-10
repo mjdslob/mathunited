@@ -128,6 +128,9 @@ extension-element-prefixes="exsl">
         
     </xsl:choose>
 </xsl:template>
+
+<xsl:template match="br" mode="paragraph"><br/></xsl:template>
+
 <xsl:template match="ul" mode="paragraph">
     <itemize nr="4" type="packed">
         <xsl:apply-templates select="li" mode="paragraph"/>
@@ -192,6 +195,9 @@ extension-element-prefixes="exsl">
     
     <paperfigure type='c' label='*' id='*'>
         <xsl:attribute name="location"><xsl:value-of select="@location"/></xsl:attribute>
+        <xsl:if test="@paperlocation">
+            <xsl:attribute name="paperlocation" select="@paperlocation"/>
+        </xsl:if>
         <caption></caption>
         <content>
             <resource>

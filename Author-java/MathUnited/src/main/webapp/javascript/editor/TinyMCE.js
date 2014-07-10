@@ -253,7 +253,7 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
               + "name|href|target|title|class|onfocus|onblur],"
             + "b/strong,i/em,strike,u,"
             + "#p,-ol[type|compact],-ul[type|compact],-li,br,img[longdesc|usemap|"
-            + "src|border|alt=|title|hspace|vspace|width|height|align|location],-sub,-sup,"
+            + "src|border|alt=|title|hspace|vspace|width|height|align|location|paperlocation],-sub,-sup,"
             + "-blockquote,-table[border=0|cellspacing|cellpadding|width|frame|rules|"
             + "height|align|summary|bgcolor|background|bordercolor],-tr[rowspan|width|"
             + "height|align|valign|bgcolor|background|bordercolor],tbody,thead,tfoot,"

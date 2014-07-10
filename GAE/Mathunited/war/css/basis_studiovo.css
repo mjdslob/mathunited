@@ -673,8 +673,8 @@ table.answer td.label
 }
 .page-navigator {
     position:absolute;
-    right:0px;
-    bottom:0px;
+    right:5px;
+    bottom:5px;
     cursor:pointer;
     font-size:0.7em;
 }

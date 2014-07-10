@@ -55,7 +55,7 @@ class Publisher {
                 $this->repoID = $this->comm['repo'];
             } else throw new Exception('repo attribute is missing');
 
-            $this->repo = Config::getRepoConfig($repoId);
+            $this->repo = Config::getRepoConfig($this->repoID);
             $baseURL = $this->repo['basePath'];;
             if(!$baseURL) throw new Exception('repo attribute is invalid');
 
