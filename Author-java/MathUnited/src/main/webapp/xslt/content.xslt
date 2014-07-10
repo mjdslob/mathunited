@@ -38,6 +38,7 @@ extension-element-prefixes="exsl">
           </xsl:otherwise>
       </xsl:choose>
 </xsl:template>
+
 <xsl:template match="inlinefigure" mode="content">
     <xsl:apply-templates mode="content"/>
 </xsl:template>
@@ -50,6 +51,7 @@ extension-element-prefixes="exsl">
         </xsl:apply-templates>
     </tbody></table>
 </xsl:template>
+
 <xsl:template match="combiblock" mode="content">
     <xsl:param name = "nx"/>
     <xsl:param name = "ny"/>
@@ -90,11 +92,13 @@ extension-element-prefixes="exsl">
 <xsl:template match="content" mode="content">
     <xsl:apply-templates mode="content"/>
 </xsl:template>
+
 <xsl:template match="subcaption" mode="content">
     <div class="subcaption">
         <xsl:apply-templates mode="content"/>
     </div>
 </xsl:template>
+
 <xsl:template match="paperfigure/caption" mode="content">
     <div class="caption">
         <xsl:apply-templates mode="content"/>

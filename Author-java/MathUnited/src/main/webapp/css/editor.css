@@ -740,3 +740,21 @@ select.thread-choser, select.component-choser, select.subcomponent-choser, selec
     width:200px;
     
 }
+
+figure.no-edit {
+    border: 3px solid orange;
+}
+
+figure.no-edit table.no-edit {
+    border-collapse: collapse;
+}
+
+figure.no-edit table.no-edit td {
+    border: 1px solid orange;
+}
+
+figure.no-edit table.no-edit th {
+    border-color: orange;
+    background-color: orange;
+    color: white;
+}

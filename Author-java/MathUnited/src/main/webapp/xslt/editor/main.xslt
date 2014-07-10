@@ -15,6 +15,7 @@ extension-element-prefixes="exsl">
 <xsl:include href="editor/figure.xslt"/>
 <xsl:include href="editor/paragraph.xslt"/>
 <xsl:include href="editor/include.xslt"/>
+<xsl:include href="editor/combination.xslt"/>
     
 <!--
 MSLO 2 juni 2014: keep cals:table intact 
@@ -39,6 +40,7 @@ MSLO 2 juni 2014: keep cals:table intact
         <xsl:apply-templates select="@* | node()" mode="editor-prepare"/>
     </xsl:element>
 </xsl:template>
+
 <xsl:template match="node() | @*" mode="editor-prepare">
     <xsl:copy>
         <xsl:apply-templates select="@* | node()" mode="editor-prepare"/>
@@ -51,6 +53,7 @@ MSLO 2 juni 2014: keep cals:table intact
         <xsl:apply-templates select="@* | node()" mode="editor"/>
     </div>
 </xsl:template>
+
 <xsl:template match="@*" mode="editor">
     <xsl:copy/>
 </xsl:template>

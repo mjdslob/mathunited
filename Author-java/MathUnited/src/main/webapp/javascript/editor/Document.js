@@ -95,11 +95,13 @@ define(['jquery', 'app/TinyMCE', 'app/ContextMenu', 'algebrakit/Widget', 'jquery
     function insertActions(elm) {
         //opening/closing of sections
         addToggleItemContainerHandler();
-        
+
+        $("[no-edit]").addClass("no-edit");
+
         $('p,ul.paragraph,ol.paragraph,table,img.paperfigure',elm).each(function() {
-//            if($(this).attr('tag')) {
-                //this is an xml tag. Do not allow editing, because it would ruin the element
-//            } else {
+            if ($(this).attr('no-edit')) {
+                //this is an xml tag. Do not allow editing, because it would ruin the element. set
+            } else {
                 var parent = $(this);
                 if(  parent.parents('.tiny-editor').length===0   //not already attached to an editor
                   && parent.parents('div[tag="componentcontent"]').length>0 //within editable content
@@ -108,7 +110,7 @@ define(['jquery', 'app/TinyMCE', 'app/ContextMenu', 'algebrakit/Widget', 'jquery
                     new Editor.editor(parent);
                 }
                 
-//            }
+            }
         });
         $('img.resource').unbind('click').click(function() {
             var main = require('app/Main');
