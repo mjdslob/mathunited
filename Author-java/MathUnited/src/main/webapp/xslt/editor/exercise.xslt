@@ -191,6 +191,7 @@ extension-element-prefixes="exsl">
 <!-- needed to display label of subitem-->
 <xsl:template match="items" mode="editor">
     <div tag="{name()}">
+        <xsl:apply-templates select="@*" mode="editor"/>
         <xsl:for-each select="item">
             <xsl:variable name="items-pass1">
                     <xsl:apply-templates select="." mode="editor"/>

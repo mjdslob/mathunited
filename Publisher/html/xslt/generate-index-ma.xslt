@@ -36,7 +36,14 @@
 
 <xsl:template match="theory" mode="collect">
     <xsl:param name="path"/>
+    <xsl:variable name="id">
+        <xsl:choose>
+            <xsl:when test="@id"><xsl:value-of select="@id"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="substring-before(include/@filename,'.xml')"/></xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
     <xsl:element name="{name()}">
+        <xsl:attribute name="id"><xsl:value-of select="$id"/></xsl:attribute>
         <xsl:apply-templates  mode="collect">
             <xsl:with-param name="path" select="$path"/>
         </xsl:apply-templates>

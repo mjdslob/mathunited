@@ -132,12 +132,12 @@ extension-element-prefixes="exsl">
 <xsl:template match="br" mode="paragraph"><br/></xsl:template>
 
 <xsl:template match="ul" mode="paragraph">
-    <itemize nr="4" type="packed">
+    <itemize number="1" type="packed">
         <xsl:apply-templates select="li" mode="paragraph"/>
     </itemize>
 </xsl:template>
 <xsl:template match="ol" mode="paragraph">
-    <itemize>
+    <itemize number='n'>
         <xsl:apply-templates select="li" mode="paragraph"/>
     </itemize>
 </xsl:template>

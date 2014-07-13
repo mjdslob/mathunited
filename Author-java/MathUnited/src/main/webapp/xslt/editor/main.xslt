@@ -139,6 +139,7 @@ MSLO 2 juni 2014: keep cals:table intact
 <xsl:template match="td | th" mode="editor">
     <xsl:copy>
          <xsl:attribute name="tag" select="name()"/>
+         <xsl:if test="@paperwidth"><xsl:attribute name="paperwidth" select="@paperwidth"/></xsl:if>
          <xsl:apply-templates mode="paragraph"/>
     </xsl:copy>
 </xsl:template>

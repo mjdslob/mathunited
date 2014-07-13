@@ -174,13 +174,13 @@ extension-element-prefixes="exsl">
 
 <!-- ITEMIZE -->
 <!-- ITEMIZE -->
-<xsl:template match="itemize[@type='packed']" mode="paragraph">
+<xsl:template match="itemize[not(@number='n')]" mode="paragraph">
         <ul class="paragraph">
             <xsl:apply-templates select="@*" mode="paragraph"/>
             <xsl:apply-templates mode="paragraph"/>
         </ul>
 </xsl:template>
-<xsl:template match="itemize[not(@type='packed')]" mode="paragraph">
+<xsl:template match="itemize[@number='n']" mode="paragraph">
         <ol class="paragraph">
             <xsl:apply-templates select="@*" mode="paragraph"/>
             <xsl:apply-templates mode="paragraph"/>

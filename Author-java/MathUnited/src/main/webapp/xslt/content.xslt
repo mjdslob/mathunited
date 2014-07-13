@@ -181,10 +181,10 @@ extension-element-prefixes="exsl">
     </a>
 </xsl:template>
 
-<xsl:template match="itemize[@type='packed']" mode="content">
+<xsl:template match="itemize[not(@number='n')]" mode="content">
      <ul><xsl:apply-templates mode="content"/></ul>
 </xsl:template>
-<xsl:template match="itemize[not(@type='packed')]" mode="content">
+<xsl:template match="itemize[@number='n']" mode="content">
      <ol><xsl:apply-templates mode="content"/></ol>
 </xsl:template>
 <xsl:template match="itemize/item" mode="content">

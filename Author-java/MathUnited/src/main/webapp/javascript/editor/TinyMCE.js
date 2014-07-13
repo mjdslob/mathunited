@@ -258,7 +258,7 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
             + "height|align|summary|bgcolor|background|bordercolor],-tr[rowspan|width|"
             + "height|align|valign|bgcolor|background|bordercolor],tbody,thead,tfoot,"
             + "#td[colspan|rowspan|width|height|align|valign|bgcolor|background|bordercolor"
-            + "|scope],#th[colspan|rowspan|width|height|align|valign|scope],caption,-div,"
+            + "|scope|paperwidth],#th[colspan|rowspan|width|height|align|valign|scope|paperwidth],caption,-div,"
             + "-span,-code,-pre,address,-h1,-h2,-h3,-h4,-h5,-h6,hr[size|noshade],-font[face"
             + "|size|color],dd,dl,dt,cite,abbr,acronym,del[datetime|cite],ins[datetime|cite],"
             + "object[classid|width|height|codebase|*],param[name|value|_value],embed[type|width"
