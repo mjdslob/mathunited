@@ -95,7 +95,7 @@ extension-element-prefixes="exsl">
 </xsl:template>
 <xsl:template match="script" mode="paragraph"/>
 <xsl:template match="span[@class='am-container']" mode="paragraph">
-    <xsl:apply-templates mode="paragraph"/>
+    <xsl:apply-templates select="span[@tag='am']" mode="paragraph"/>
 </xsl:template>
 <!-- end of ASCIIMathML: -->
 
@@ -160,6 +160,9 @@ extension-element-prefixes="exsl">
     </xsl:element>
 </xsl:template>
 <xsl:template match="p" mode="paragraph">
+    <xsl:for-each select="@*[name()!='tag']">
+        <xsl:attribute name="{name()}" select="."/>
+    </xsl:for-each>
     <xsl:for-each select="img">
         <xsl:apply-templates select="." mode="image"/>
     </xsl:for-each>

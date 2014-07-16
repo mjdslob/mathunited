@@ -131,8 +131,11 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
     }
 
     function onGetContent(obj) {
-        obj.content = obj.content.replace(/`([^\n\r`]*)`/g,"<span class='am-container'><span tag='am'>$1</span>`$1`</span>")
-        obj.content = obj.content.replace(/\s+/g,' ');
+        var convert = obj.content.replace(/`([^\n\r`]*)`/g,"<span class='am-container'><span tag='am'>$1</span>`$1`</span>");
+        console.log(convert);
+        convert = convert.replace(/\u00a0/g, " "); //replace no-break-space with regular space
+        obj.content = convert.replace(/\s+/g,' ');
+        
         if(obj.content==='') obj.content="<p></p>";
     }
 
@@ -190,6 +193,8 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
             if(w>0) img.attr('WIDTH',''+w);
             if(h>0) img.attr('HEIGHT',''+h);
         });
+        
+        console.log("onremove: "+parent.innerHTML);
     }    
 
     //concatenate editable blocks into one

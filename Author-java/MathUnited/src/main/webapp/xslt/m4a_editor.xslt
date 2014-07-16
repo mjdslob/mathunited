@@ -250,6 +250,16 @@
                             </span>
                         </div>
                     </div>
+
+                    <xsl:variable name="lockstatus">
+                        <xsl:choose>
+                            <xsl:when test="not(/subcomponent/@status) or /subcomponent/@status='bewerking'"></xsl:when>
+                            <xsl:when test="/subcomponent/@status='auteur_gereed'"></xsl:when>
+                            <xsl:when test="/subcomponent/@status='coauteur_gereed'"></xsl:when>
+                            <xsl:otherwise>lock</xsl:otherwise>
+                    </xsl:choose>
+                    </xsl:variable>
+
                     <div class="contentDiv">
                         <div class="contentDiv-content">
                             <xsl:apply-templates select="*"/>
@@ -261,8 +271,15 @@
                                 momenteel bewerkt wordt door de auteur met username '<xsl:value-of select="$lock_owner"/>'.
                             </div>
                         </xsl:if>
+                        <xsl:if test="$lockstatus='lock'">
+                            <div id="locked-message">
+                                Het is niet meer mogelijk deze paragraaf te bewerken via de auteurstool. Indien u toch 
+                                nog een wijziging wilt (laten) uitvoeren, neem dan contact op met Meyke Bos.
+                            </div>
+                        </xsl:if> 
                     </div>
-                    <xsl:if test="not(string-length($lock_owner)>0)">
+                    
+                    <xsl:if test="not(string-length($lock_owner)>0) and not($lockstatus='lock')">
                       <div class="footer">
                         <div id="commit-button">
                             <div id="commit-button-image"/>

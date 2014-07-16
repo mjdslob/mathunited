@@ -20,7 +20,6 @@ define(['jquery'], function($) {
     return {
         init: function() {            
             $('.algebrakit-spec-wrapper').each(function() {
-                debugger;
                 var parent = $(this);
                 var tag = $('div[tag="evaluation"]', parent);
                 $('input', parent).change(function() {
