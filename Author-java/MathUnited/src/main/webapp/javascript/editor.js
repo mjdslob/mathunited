@@ -16,7 +16,7 @@
  */
 
 requirejs.config({
-    urlArgs: "bust=v25", //update this when a modification is made, to prevent caching problems
+    urlArgs: "bust=v26", //update this when a modification is made, to prevent caching problems
     //By default load any module IDs from js/lib
     baseUrl: '/MathUnited/javascript/lib',
 //    baseUrl: 'js/lib',
@@ -76,7 +76,6 @@ requirejs.config({
                     },
                     jax: ["input/MathML","input/AsciiMath"]
               });
-              MathJax.Hub.Startup.onload();
               return MathJax;
             }
         }
@@ -86,6 +85,8 @@ requirejs.config({
 // Start the main app logic.
 requirejs(['jquery', 'app/Main', 'mathjax'],
 function   ($, Main, MathJax) {
-   $( function(){Main.init(); } );
+   $( function(){
+       Main.init(); 
+   } );
 });
 

@@ -85,17 +85,24 @@ define(['jquery', 'app/Document','actions/ObjectivesHandler', 'actions/SetExerci
                        },
         init: function() {
             var _this = this;
-            objectivesHandler.init();
-            itemSelector.init( $('#meta-components-url').text(), $('#meta-threads-url').text() );
-            AlgebraKITSpecHandler.init();
-            doc.init();
-            $('#commit-button').click(function(){_this.submit();});
-            $('#show-backups-wrapper').click(function(){_this.showBackups();});
-            $('#startup-msg').remove();
-            $('div[tag="exercise"]').each( function(){
-                var base = $(this).parents('div[tag="include"]').first();
-                metadataHandler.setExerciseIcons(base);
-            });
+            $('#startup-msg p').html('Weergeven formules');
+            MathJax.Hub.Configured();
+            MathJax.Hub.Queue(function () {
+                $('#startup-msg p').html('Initialiseer document');
+                objectivesHandler.init();
+                itemSelector.init( $('#meta-components-url').text(), $('#meta-threads-url').text() );
+                AlgebraKITSpecHandler.init();
+                doc.init();
+                $('#commit-button').click(function(){_this.submit();});
+                $('#show-backups-wrapper').click(function(){_this.showBackups();});
+                $('div[tag="exercise"]').each( function(){
+                    var base = $(this).parents('div[tag="include"]').first();
+                    metadataHandler.setExerciseIcons(base);
+                });
+                $('#startup-msg').remove();
+
+            });    
+            
         },
         submit: function() {
             $('<p>Een moment, de paragraaf wordt opgeslagen...</p>').dialog();
