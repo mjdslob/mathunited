@@ -146,8 +146,11 @@
     <xsl:template match="/">
         <xsl:choose>
             <xsl:when test="$dopreprocess">
+                <xsl:variable name="noxhtml">
+                    <xsl:apply-templates mode="remove-xhtml"/>
+                </xsl:variable>
                 <xsl:variable name="prepare">
-                    <xsl:apply-templates mode="editor-prepare"/>
+                    <xsl:apply-templates select="$noxhtml" mode="editor-prepare"/>
                 </xsl:variable>
                 <xsl:variable name="xml">
                     <xsl:apply-templates select="$prepare" mode="numbering"/>
@@ -155,8 +158,11 @@
                 <xsl:apply-templates select="$xml" mode="process"/>
             </xsl:when>
             <xsl:otherwise>
+                <xsl:variable name="prepare">
+                    <xsl:apply-templates mode="editor-prepare"/>
+                </xsl:variable>
                 <xsl:variable name="xml">
-                    <xsl:apply-templates mode="numbering"/>
+                    <xsl:apply-templates select="$prepare" mode="numbering"/>
                 </xsl:variable>
                 <xsl:apply-templates select="$xml" mode="process"/>
             </xsl:otherwise>

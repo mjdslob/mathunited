@@ -14,6 +14,7 @@ extension-element-prefixes="exsl">
         <xsl:apply-templates select="@* | node()" mode="editor-prepare"/>
     </xsl:element>
 </xsl:template>
+
 <xsl:template match="node() | @*" mode="editor-prepare">
     <xsl:copy>
         <xsl:apply-templates select="@* | node()" mode="editor-prepare"/>
@@ -23,6 +24,17 @@ extension-element-prefixes="exsl">
 <!-- cleanup: remove empty paragraph nodes -->
 <xsl:template match="itemintro[not(p) or not(p/text())]" mode="cleanup"/>    
 <xsl:template match="p[not(count(*)>0 or text())]" mode="cleanup"/>    
+<!-- transform block into @medium attribute. Note that in main.xslt the @medium-attribute is converted into a block to enable support in editor -->
+<xsl:template match="block[count(*) = count(p)+count(paperfigure)+count(papertable)]" mode="cleanup">
+    <xsl:variable name="medium" select="@medium"/>
+    <xsl:for-each select="*">
+        <xsl:element name="{name()}">
+            <xsl:attribute name="medium" select="$medium"/>
+            <xsl:apply-templates select="@* | node()" mode="cleanup"/>
+        </xsl:element>
+    </xsl:for-each>
+</xsl:template>
+
 <xsl:template match="node() | @*" mode="cleanup">
     <xsl:copy>
         <xsl:apply-templates select="@* | node()" mode="cleanup"/>

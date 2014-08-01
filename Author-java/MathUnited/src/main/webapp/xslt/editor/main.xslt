@@ -34,17 +34,20 @@ MSLO 2 juni 2014: keep cals:table intact
     <xsl:apply-templates select="$preptable" mode="editor"/>
 </xsl:template>
 -->
-<!-- used to remove xhtml namespaces -->
-<xsl:template match="xhtml:*" mode="editor-prepare">
-    <xsl:element name="{local-name()}">
-        <xsl:apply-templates select="@* | node()" mode="editor-prepare"/>
-    </xsl:element>
-</xsl:template>
 
 <xsl:template match="node() | @*" mode="editor-prepare">
     <xsl:copy>
         <xsl:apply-templates select="@* | node()" mode="editor-prepare"/>
     </xsl:copy>
+</xsl:template>
+
+<!-- combine list of nodes with identical @medium-tag into one block -->
+<xsl:template match="p[@medium] | paperfigure[@medium] | papertable[@medium]" mode="editor-prepare">
+    <block medium="{@medium}">
+        <xsl:element name="{local-name()}">
+            <xsl:apply-templates select="@*[name()!='medium'] | node()" mode="editor-prepare"/>
+        </xsl:element>
+    </block>
 </xsl:template>
 
 <!-- DEFAULT -->
@@ -90,7 +93,10 @@ MSLO 2 juni 2014: keep cals:table intact
     </div>
     <xsl:apply-templates select="." mode="content"/>
 </xsl:template>
-<!-- BLOCKS -->
+
+<!-- ///////////////////////// -->
+<!-- Multi-channel: WEB, PAPER -->
+<!-- ///////////////////////// -->
 <xsl:template match="block" mode="editor">
     <xsl:if test="*">
         <div tag="block">
@@ -105,6 +111,11 @@ MSLO 2 juni 2014: keep cals:table intact
         </div>
     </xsl:if>
 </xsl:template>
+
+
+<!-- ////////// -->
+<!-- Worksheets -->
+<!-- ////////// -->
 <xsl:template match="worksheet" mode="editor">
     <div tag="worksheet">
         <xsl:apply-templates select="@*" mode="editor"/>

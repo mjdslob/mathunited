@@ -11,7 +11,7 @@ exclude-result-prefixes="saxon"
 extension-element-prefixes="exsl">
 
 <xsl:template match="include" mode="editor">
-    <xsl:variable name="content">
+    <xsl:variable name="rawcontent">
         <xsl:choose>
             <xsl:when test="$option='editor-process-item'">
                 <!--dit is geen document, maar slechts 1 item van xml, gebruikt door de editor om een stukje content
@@ -25,6 +25,10 @@ extension-element-prefixes="exsl">
         </xsl:choose>
     </xsl:variable>
 
+    <xsl:variable name="content">
+        <xsl:apply-templates select="$rawcontent" mode="editor-prepare"/>
+    </xsl:variable>
+    
     <div class="_editor_context_base">
         <div class="item-container">
             <!-- set item-specific menu-options -->
