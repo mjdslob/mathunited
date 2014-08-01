@@ -241,9 +241,11 @@ define(['jquery'], function($) {
             }
             var is_examenvraag = $('div[tag="exercise-type"][value="examen"]',tag).length>0;
             var is_olympiadevraag = $('div[tag="exercise-type"][value="olympiade"]',tag).length>0;
+            var is_kangoeroevraag = $('div[tag="exercise-type"][value="kangoeroe"]',tag).length>0;
             var is_wdavraag = $('div[tag="exercise-type"][value="wda"]',container).tag>0;
             $('form input[name="examenvraag"]', container)[0].checked = is_examenvraag;
             $('form input[name="olympiadevraag"]', container)[0].checked = is_olympiadevraag;
+            $('form input[name="kangoeroevraag"]', container)[0].checked = is_kangoeroevraag;
             $('form input[name="wda"]', container)[0].checked = is_wdavraag;
             var grouplabels='';
             $('div[tag="group-label"]',tag).each(function() {
@@ -373,6 +375,10 @@ define(['jquery'], function($) {
                 var elm = $('input[name="olympiadevraag"]',container);
                 if(elm.length>0 && elm[0].checked) {
                     addMetadataElm(tag,'exercise-type', {value: 'olympiade'},null,false);
+                }
+                var elm = $('input[name="kangoeroevraag"]',container);
+                if(elm.length>0 && elm[0].checked) {
+                    addMetadataElm(tag,'exercise-type', {value: 'kangoeroe'},null,false);
                 }
                 var elm = $('input[name="examenvraag"]',container);
                 if(elm.length>0 && elm[0].checked) {

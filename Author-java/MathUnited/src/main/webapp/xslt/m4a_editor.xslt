@@ -256,6 +256,8 @@
                             <xsl:when test="not(/subcomponent/@status) or /subcomponent/@status='bewerking'"></xsl:when>
                             <xsl:when test="/subcomponent/@status='auteur_gereed'"></xsl:when>
                             <xsl:when test="/subcomponent/@status='coauteur_gereed'"></xsl:when>
+                            <xsl:when test="/subcomponent/@status='assets_gereed'"></xsl:when>
+                            <xsl:when test="/subcomponent/@status='eindredactie_gereed'"></xsl:when>
                             <xsl:otherwise>lock</xsl:otherwise>
                     </xsl:choose>
                     </xsl:variable>

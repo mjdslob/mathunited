@@ -221,6 +221,8 @@ extension-element-prefixes="exsl">
                         <br/>
                         <input type="checkbox" name="examenvraag">examenvraag</input>
                         <br/>
+                        <input type="checkbox" name="kangoeroevraag">kangoeroevraag</input>
+                        <br/>
                         <input type="checkbox" name="wda">wiskunde-denkactiviteit (WDA)</input>
                         <br/>
                         <b>Rekenmachine toegestaan</b> 

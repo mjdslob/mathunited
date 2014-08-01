@@ -50,8 +50,8 @@ define(['jquery','app/DOMgenerator','mathjax'], function($, generator, MathJax) 
                             $( this ).dialog( "close" );
                         },
                         "verwijderen": function() {
-                            elm.html('');
-                            elm.next('.m4a-editor-item.nonexistent').toggleClass('visible');
+                            base.next('.m4a-editor-item.nonexistent').toggleClass('visible');
+                            base.remove();
                             var doc = require('app/Document');
                             doc.reinit(elm);
                             doc.reinit(elm.next('.m4a-editor-item.nonexistent'));
