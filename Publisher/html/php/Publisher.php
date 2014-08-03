@@ -156,7 +156,15 @@ class Publisher {
         //generate an id for this publish
         $publishId = date(DATE_RFC822);
         $pf = new GAEPlatform($publishId, false);
-        $pf->publishOverview($this->repoID, $this->repo, $this->logger,  $this->repo['basePath']);
+        $threadURL = 'http://localhost'.$this->repo['threadsURL'];
+        $this->logger->trace(LEVEL_INFO, 'threads url: '.$threadURL); 
+        $componentsURL = 'http://localhost'.$this->repo['componentsURL'];
+        $threadsXML = file_get_contents($threadURL);
+        $componentsXML = file_get_contents($componentsURL);
+        $threadsXML = EntityConverter::convert_entities($threadsXML);
+        $componentsXML = EntityConverter::convert_entities($componentsXML);
+        
+        $pf->publishOverview($this->repoID, $this->repo, $this->logger, $threadsXML, $componentsXML);
         return $result;
     }
 

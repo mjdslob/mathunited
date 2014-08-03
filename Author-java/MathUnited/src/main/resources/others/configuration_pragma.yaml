@@ -26,6 +26,8 @@ repos :
     path: content-wm/concept
     edit_permission: 
     defaultVariant: wm_view
+    componentsURL: /index/wm/components.xml
+    threadsURL: /index/wm/threads.xml
   m4a :
     path: content-ma/concept
     edit_permission: editor_m4a

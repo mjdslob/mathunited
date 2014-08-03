@@ -12,22 +12,11 @@ class GAEPlatform extends Platform {
         $this->publishId = $publishId;
     }
 
-    public function publishOverview($repoID, $repo, $logger, $base) {
-        $path = "/data/".$repo['basePath'].'leerlijnen/';
-
-        if(file_exists($path.'components.xml')) {
-            $logger->trace(LEVEL_INFO, 'load cpmponents.xml file from '.$path.'components.xml');
-            $txt = file_get_contents($path.'components.xml');
-            $logger->trace(LEVEL_INFO, 'send components.xml for repo '.$repoID);        
-            $txt = EntityConverter::convert_entities($txt);
-            $error = !$this->sendFile('components.xml', '', $repoID, $txt, $logger);
-        } else throw new Exception("Components file not found: ".$path.'components.xml');
-        if(file_exists($path.'threads.xml')) {
-            $txt = file_get_contents($path.'threads.xml');
-            $logger->trace(LEVEL_INFO, 'send threads.xml for repo '.$repoID);        
-            $txt = EntityConverter::convert_entities($txt);
-            $error = !$this->sendFile('threads.xml', '', $repoID, $txt, $logger);
-        } else throw new Exception("Threads file not found: ".$path.'threads.xml');
+    public function publishOverview($repoID, $repo, $logger, $threadsXML, $componentsXML) {
+        $logger->trace(LEVEL_INFO, 'send components.xml for repo '.$repoID);        
+        $error = !$this->sendFile('components.xml', '', $repoID, $componentsXML, $logger);
+        $logger->trace(LEVEL_INFO, 'send threads.xml for repo '.$repoID);        
+        $error = !$this->sendFile('threads.xml', '', $repoID, $threadsXML, $logger);
         
         $files = scandir("/data/".$repo['basePath'].'resultxml/');
         foreach($files as $file) {
