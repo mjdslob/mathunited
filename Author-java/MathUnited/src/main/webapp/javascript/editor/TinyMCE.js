@@ -134,7 +134,7 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
         var convert = obj.content.replace(/`([^\n\r`]*)`/g,"<span class='am-container'><span tag='am'>$1</span>`$1`</span>");
         console.log(convert);
         convert = convert.replace(/\u00a0/g, " "); //replace no-break-space with regular space
-        obj.content = convert.replace(/\s+/g,' ');
+        obj.content = convert.replace(/\s+/g,' ').trim();
         
         if(obj.content==='') obj.content="<p></p>";
     }
