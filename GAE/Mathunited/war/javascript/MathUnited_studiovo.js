@@ -565,8 +565,11 @@ function toggleSlider(elm) {
     $(content).slideToggle("slow", function () { $(content).scrollIntoView(); });
 }
 // Shows the url in an iframe inside a popup
-function toggleParentPopup(url) {
-    var position = { my: 'center center', at: 'center top', of: '#content' };
+function toggleParentPopup(data) {
+	var url = data.split("|")[0];
+	var itemid = data.split("|")[1];
+	var viewid = data.split("|")[2];
+	var position = { my: 'center center', at: 'center top', of: '#content' };
     var content = $('#parent-popup');
     if (content.parents('.popup-content').length > 0) {
         position = { my: 'center top', at: 'center center', of: $(elm) };
@@ -574,7 +577,17 @@ function toggleParentPopup(url) {
     var dialog = content.dialog({
         autoOpen: false,
         width: 785,
-        position: position
+        position: position,
+        close: function(event,ui) { 
+        	if (viewid == "") { // refresh result frame after closing popup, but only if teacher is viewing, in that case viewid != ""
+	        	var src = $('iframe.result-frame').attr('src');
+	        	var idx = src.lastIndexOf("&itemid=");
+	        	if (idx > -1)
+	        		src = src.substr(0, idx);
+	        	src += "&itemid=" + itemid;
+	        	$('iframe.result-frame').attr('src', src);
+	        }
+        }
     });
     dialog.dialog('open');
     // load iframes inside the popup

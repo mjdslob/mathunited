@@ -17,15 +17,17 @@ extension-element-prefixes="exsl">
 <xsl:param name="repo"/>
 <xsl:param name="repo-path"/>
 <xsl:param name="baserepo-path"/>
-<xsl:param name="userid"/>
+<xsl:param name="logintoken" />
+<xsl:param name="userid" />
 <xsl:param name="username" />
 <xsl:param name="registered" />
 <xsl:param name="viewid"/>
 <xsl:param name="threadid"/>
+<xsl:param name="itemid" /> <!-- id of assignment to open automatically when returning from assignment popup -->
     
 <xsl:variable name="cm2px" select="number(50)"/>
 <xsl:variable name="menu_color" select="assignments/meta/param[@name='menu-color']"/>
-<xsl:variable name="cssfile">basis_studiovo.css?v=32</xsl:variable>
+<xsl:variable name="cssfile">basis_studiovo.css?v=36</xsl:variable>
 <xsl:variable name="overviewRef"><xsl:value-of select="string('/auteur/math4all.html')"/></xsl:variable>
 <xsl:variable name="_cross_ref_as_links_" select="true()"/>
 <xsl:variable name="_sheetref_as_links_" select="true()"/>
@@ -53,7 +55,7 @@ extension-element-prefixes="exsl">
         <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js" />
         <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js" />
         <script type="text/javascript" src="/javascript/MathUnited.js"/>
-        <script type="text/javascript" src="/javascript/MathUnited_studiovo.js?v=2"/>
+        <script type="text/javascript" src="/javascript/MathUnited_studiovo.js?v=10"/>
 		<script type="text/javascript" src="/javascript/jquery.ba-postmessage.js"/>
         <link rel="stylesheet" href="/css/content.css" type="text/css"/>
         <link rel="stylesheet" type="text/css">
@@ -65,7 +67,7 @@ extension-element-prefixes="exsl">
         <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js" />
         <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js" />
         <script type="text/javascript" src="javascript/MathUnited.js"/>
-        <script type="text/javascript" src="javascript/MathUnited_studiovo.js?v=2"/>
+        <script type="text/javascript" src="javascript/MathUnited_studiovo.js?v=10"/>
 		<script type="text/javascript" src="javascript/jquery.ba-postmessage.js"/>
         <link rel="stylesheet" href="css/content.css" type="text/css"/>
 		<link rel="stylesheet" type="text/css">
@@ -76,9 +78,9 @@ extension-element-prefixes="exsl">
 </head>
 <body class="result-page">
 	<xsl:choose>
-		<xsl:when test="$userid">
-			<xsl:if test="$registered=1">
-				<div class="settings-button"><a href="{$urlprefix}viewclasses.jsp?userid={$userid}&amp;repo={$repo}&amp;threadid={$threadid}"><span class="hover-text">Mijn profiel</span>&#160;<div class="icon"></div></a></div>
+		<xsl:when test="$logintoken">
+			<xsl:if test="$registered=1 and $viewid=''">
+				<div class="settings-button"><a href="{$urlprefix}viewclasses.jsp?logintoken={encode-for-uri($logintoken)}&amp;repo={$repo}&amp;threadid={$threadid}"><span class="hover-text">Mijn profiel</span>&#160;<div class="icon"></div></a></div>
 			</xsl:if>
 			<h3>Voortgang <xsl:value-of select="$username"/></h3>
         	<table class="layout-table">
@@ -234,7 +236,10 @@ extension-element-prefixes="exsl">
 
 <xsl:template match="group" mode="grouplist">
 	<tr>
-		<td class="title" id="{translate(@title,' ','_')}" onclick="$('.group.level-1').hide(); $('#{translate(@title,' ','_')}.group.level-1').show(100); $('.grouplist .title').removeClass('selected'); $('.grouplist #{translate(@title,' ','_')}').addClass('selected')"><xsl:value-of select="@title" /></td>
+		<td class="title" id="{translate(@title,' ','_')}" onclick="$('.group.level-1').hide(); $('#{translate(@title,' ','_')}.group.level-1').show(100); $('.grouplist .title').removeClass('selected'); $('.grouplist #{translate(@title,' ','_')}').addClass('selected')">
+			<div class="left"><xsl:value-of select="@title" /></div>
+			<div class="right"><xsl:value-of select="round(@score * 100 div @total)" />%</div>
+		</td>
 	</tr>
 </xsl:template>
 
@@ -257,9 +262,10 @@ extension-element-prefixes="exsl">
 	</div>
 </xsl:template>
 <xsl:template match='assignment' mode='assignment'>
-	<div class="item">
+	<xsl:variable name="locItemId"><xsl:number level="any" /></xsl:variable>
+	<div class="item" id="assignment_{$locItemId}" testitemid="{$itemid}">
 		<div class="title popup-wrapper">
-  	       <span class="result-popup-label" onclick="javascript:sendToggleParentPopup('http://www.eindexamensite.nl/iframe-page.html?tx_iframequestion_pi1%5Bquestion%5D={@id}&amp;template=1')"><xsl:value-of select="@title"/></span>
+  	       <span class="result-popup-label" onclick="javascript:sendToggleParentPopup('http://www.eindexamensite.nl/iframe-page.html?tx_iframequestion_pi1%5Bquestion%5D={@id}&amp;userid={$viewid}&amp;template=1|{$locItemId}|{$viewid}')"><xsl:value-of select="@title"/></span>
 		</div>
 		<div>
 			<xsl:attribute name="class">
@@ -273,6 +279,7 @@ extension-element-prefixes="exsl">
 			<span><xsl:value-of select="@score" />/<xsl:value-of select="@total" /></span>
 		</div>
 		<div class="clear-fix"></div>
+		<xsl:if test="$itemid = $locItemId"><script type="text/javascript">$('#assignment_<xsl:value-of select="$locItemId" />').parents('.group-content').eq(0).show(); $('#assignment_<xsl:value-of select="$locItemId" />').parents('.group.level-1').eq(0).show();</script></xsl:if>
 	</div>
 </xsl:template>
 <xsl:template match='block[@medium="web"]'><xsl:apply-templates/></xsl:template>

@@ -273,7 +273,7 @@ iframe {
 /*---------------------------*/
 
 .login-frame {
-	width: 56px;
+	width: 65px;
 	height: 23px;
 	float: right;
 	margin-top: 88px;
@@ -709,6 +709,17 @@ table.answer td.label
 	cursor: pointer;
 }
 
+.result-page .title .left {
+	display: inline-block;
+	width: 196px;
+}
+
+.result-page .title .right {
+	display: inline-block;
+	width: 50px;
+	text-align: right;
+}
+
 .result-page h3
 {
 	margin: 0;
@@ -718,11 +729,6 @@ table.answer td.label
 
 .result-page table td {
 	font: 12px verdana,arial,sans-serif;
-}
-
-.result-page .layout-table
-{
-	min-height: 405px;
 }
 
 .result-page .layout-table .leftcontent
@@ -852,7 +858,7 @@ table.answer td.label
 
 .result-page .item .score.score_ok
 {
-	background-color: #ffc0000;
+	background-color: #ffc000;
 }
 
 .result-page .item .score.score_bad

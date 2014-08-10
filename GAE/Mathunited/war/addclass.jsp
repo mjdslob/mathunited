@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.lang.*" %>
 <%@ page import="java.util.*" %>
+<%@ page import="java.net.URLEncoder" %>
 <%@ page import="mathunited.configuration.*" %>
 <%@ page import="mathunited.model.*" %>
 <%@ page import="mathunited.model.Class" %>
@@ -35,13 +36,14 @@
    	if(threadid==null || threadid.isEmpty())
    		throw new Exception("Het verplichte argument 'threadid' ontbreekt");
 
-    String userid = request.getParameter("userid");
-   	if(userid==null || userid.isEmpty())
-   		throw new Exception("Het verplichte argument 'userid' ontbreekt");
+    String logintoken = request.getParameter("logintoken");
+   	if(logintoken==null || logintoken.isEmpty())
+   		throw new Exception("Het verplichte argument 'logintoken' ontbreekt");
+   	String userid = Utils.userIdFromLoginToken(logintoken);
     User user = User.load(userid, repository);
     
     if (user == null || !user.isRegistered())
-    	response.sendRedirect("/registeruser.html?userid=" + userid + "&repo=" + repo + "&threadid=" + threadid);
+    	response.sendRedirect("/registeruser.jsp?logintoken=" + URLEncoder.encode(logintoken, "UTF-8") + "&repo=" + repo + "&threadid=" + threadid);
     	
     if (!user.isTeacher())
     	throw new UserException("Je bent niet bevoegd klassen aan te maken.");
@@ -63,14 +65,14 @@
 	   	cls.ownerId = userid;
 	   	cls.save(repository);
 	   	
-    	response.sendRedirect("/viewclasses.jsp?userid=" + userid + "&repo=" + repo + "&threadid=" + threadid + "&added=" + classId);
+    	response.sendRedirect("/viewclasses.jsp?logintoken=" + URLEncoder.encode(logintoken, "UTF-8") + "&repo=" + repo + "&threadid=" + threadid + "&added=" + classId);
     }
    
 %>
 
 <h3>Mijn klassen - Klas aanmaken</h3>
 
-<form method="post" action="/addclass.jsp?userid=<%= user.id %>&repo=<%= repo %>&threadid=<%= threadid %>" id="form">
+<form method="post" action="/addclass.jsp?logintoken=<%= URLEncoder.encode(logintoken, "UTF-8") %>&repo=<%= repo %>&threadid=<%= threadid %>" id="form">
 	<input type="hidden" id="postback" name="postback" value="1" />
 	<table>
 		<tr>
@@ -79,7 +81,7 @@
 	</table>
 	<small>Velden met een * zijn verplicht</small><br />
 	<a href="javascript:{}" onclick="submit()" class="popup-label">Toevoegen</a>
-	<a href="/viewclasses.jsp?userid=<%= user.id %>&repo=<%= repo %>&threadid=<%= threadid %>">annuleren</a>
+	<a href="/viewclasses.jsp?logintoken=<%= URLEncoder.encode(logintoken, "UTF-8") %>&repo=<%= repo %>&threadid=<%= threadid %>">annuleren</a>
 </form>
 
 <% } catch(Exception e) { %><%= Utils.renderErrorHtml(e) %><% } %>

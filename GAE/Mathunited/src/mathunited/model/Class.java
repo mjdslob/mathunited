@@ -10,7 +10,6 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.datastore.Text;
 
 public class Class extends Base {
 	
@@ -57,5 +56,12 @@ public class Class extends Base {
 		entity.setProperty("registrationDate", registrationDate);
 		
 		return datastore.put(entity);
+	}
+	
+	public void delete(Repository repository) {
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+ 		Key repoKey = KeyFactory.createKey("Repository", repository.id);
+		Key key = KeyFactory.createKey(repoKey, "Class", id);
+		datastore.delete(key);
 	}
 }

@@ -5,11 +5,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -21,8 +20,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -38,20 +35,7 @@ import mathunited.utils.UserException;
 import mathunited.utils.Utils;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.EntityNotFoundException;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.datastore.Text;
-import com.google.appengine.labs.repackaged.org.json.JSONArray;
-import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
 @SuppressWarnings("serial")
@@ -115,26 +99,41 @@ public class ViewResultServlet extends HttpServlet {
            	if(threadid==null)
            		throw new Exception("Het verplichte argument 'threadid' ontbreekt: "+repo);
 
-           	String userid = parameterMap.get("userid"); 
            	String viewid = parameterMap.get("viewid");
-           	String userrole = parameterMap.get("userrole"); // optional when already registered
-           	String schoolcode = parameterMap.get("schoolcode"); // optional when already registered
-           	
+
+           	String logintoken = parameterMap.get("logintoken");
+           	String userid = Utils.userIdFromLoginToken(logintoken);
+           	parameterMap.put("userid", userid);
+           	String userrole = Utils.userRoleFromLoginToken(logintoken);
+           	if (parameterMap.containsKey("userrole") && parameterMap.get("userrole").length() > 0)
+           		userrole = parameterMap.get("userrole"); // testcode which enables us to vary the role we are using to register
+           	String schoolcode = Utils.userSchoolFromLoginToken(logintoken);
+
             //ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             response.setContentType("text/html");
             
             //byte[] result = byteStream.toByteArray();
 
-            User user = User.load(userid, repository);
+           	User user = User.load(userid, repository);
+           	User viewUser = null;
+           	if (viewid != null && viewid.length() > 0)
+           		viewUser = User.load(viewid, repository);
             
             // show results page immediately for registered students or entree accounts
             if (userid == null || userid.isEmpty())
             	response.sendRedirect("/loginmessage.html?v=" + VERSION);
             else if (user != null && user.isTeacher() && viewid == null)
-            	response.sendRedirect("/viewclasses.jsp?userid=" + userid + "&repo=" + repo + "&threadid=" + threadid);
+            	response.sendRedirect("/viewclasses.jsp?logintoken=" +  URLEncoder.encode(logintoken, "UTF-8") + "&repo=" + repo + "&threadid=" + threadid);
             else if ((user != null && user.isRegistered()) || userrole == null || userrole.isEmpty() || userrole.equals("affiliate")) {
                 parameterMap.put("registered", user != null && user.isRegistered() ? "1" : "0");
-                parameterMap.put("username", user != null ? user.fullName() : "");
+                String username = "";
+                if (viewUser == null) {
+                	if (user != null)
+                		username = user.fullName();
+                }
+                else
+                	username = viewUser.fullName();
+                parameterMap.put("username", username);
             	renderResultPage(repository, threadid, variant, userid, viewid, response, parameterMap);
             }
             else if (user == null || !user.isRegistered())
@@ -152,11 +151,11 @@ public class ViewResultServlet extends HttpServlet {
             	user.schoolcode = schoolcode;
             	user.save(repository);
             	
-            	response.sendRedirect("/registeruser.html?v=" + VERSION + "&userid=" + userid + "&repo=" + repo + "&threadid=" + threadid);
+            	response.sendRedirect("/registeruser.jsp?v=" + VERSION + "&logintoken=" + URLEncoder.encode(logintoken, "UTF-8") + "&repo=" + repo + "&threadid=" + threadid);
             }
             else
             {
-            	throw new UserException("Don't know that to do.<br><br>userid=" + userid + "; userrole=" + userrole + "; schoolcode=" + schoolcode + "; user=" + (user == null ? "null" : "loaded"));
+            	throw new UserException("Don't know that to do.<br><br>user=" + (user == null ? "null" : "loaded"));
             }
             	
         }
@@ -265,7 +264,8 @@ public class ViewResultServlet extends HttpServlet {
     	try
     	{
 	    	String repo = request.getParameter("repo");
-	    	String userid = request.getParameter("userid");
+	    	String logintoken = request.getParameter("logintoken");
+	    	String userid = Utils.userIdFromLoginToken(logintoken);
 	    	String threadid = request.getParameter("threadid");
 	    	
 	        Configuration config = Configuration.getInstance(context);
@@ -277,8 +277,6 @@ public class ViewResultServlet extends HttpServlet {
 	        User user = User.load(userid, repository);
 	        if (user == null)
 	        	throw new Exception("Gebruiker niet teruggevonden in database");
-	        if (user.isRegistered())
-	        	throw new Exception("Je bent al geregistreerd");
 	
 	        user.firstName = request.getParameter("firstName");
 	        user.lastNamePrefix = request.getParameter("lastNamePrefix");
@@ -286,7 +284,7 @@ public class ViewResultServlet extends HttpServlet {
 	        user.email = request.getParameter("email");
 	        user.save(repository);
 
-	        response.sendRedirect("/viewclasses.jsp?userid=" + userid + "&repo=" + repo + "&threadid=" + threadid);
+	        response.sendRedirect("/viewclasses.jsp?logintoken=" +  URLEncoder.encode(logintoken, "UTF-8") + "&repo=" + repo + "&threadid=" + threadid);
     	}
         catch (Exception e) {
             ServletOutputStream os = response.getOutputStream();

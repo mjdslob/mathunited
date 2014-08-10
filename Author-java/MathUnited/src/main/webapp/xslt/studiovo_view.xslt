@@ -80,7 +80,7 @@ indent="yes" encoding="utf-8"/>
         <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
         <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
         <script type="text/javascript" src="/javascript/MathUnited.js"/>
-        <script type="text/javascript" src="/javascript/MathUnited_studiovo.js?v=2"/>
+        <script type="text/javascript" src="/javascript/MathUnited_studiovo.js?v=10"/>
         <script type="text/javascript" src="/javascript/jquery.ui.touch-punch.min.js"/>
         <script type="text/javascript" src="/javascript/jquery.jplayer.min.js"/>
 		<script type="text/javascript" src="/javascript/jquery.scrollIntoView.min.js"/>
@@ -96,11 +96,11 @@ indent="yes" encoding="utf-8"/>
         <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
         <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
         <script type="text/javascript" src="javascript/MathUnited.js"/>
-        <script type="text/javascript" src="javascript/MathUnited_studiovo.js?v=2"/>
+        <script type="text/javascript" src="javascript/MathUnited_studiovo.js?v=10"/>
         <script type="text/javascript" src="javascript/jquery.ui.touch-punch.min.js"/>
         <script type="text/javascript" src="javascript/jquery.jplayer.min.js"/>
 		<script type="text/javascript" src="javascript/jquery.scrollIntoView.min.js"/>
-		<script type="text/javascript" src="	javascript/jquery.ba-postmessage.js"/>
+		<script type="text/javascript" src="javascript/jquery.ba-postmessage.js"/>
         <script type="text/javascript" src="javascript/readspeaker/ReadSpeaker.js?pids=embhl&amp;skin=ReadSpeakerMiniSkin"/>
         <link rel="stylesheet" href="css/content.css" type="text/css"/>
 	      <link rel="stylesheet" type="text/css">
@@ -134,9 +134,8 @@ indent="yes" encoding="utf-8"/>
     </script>
     <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js"></script>
     <script type="text/javascript">
-    	var userid = "";
+    	var logintoken = "";
     	var userrole = "";
-    	var schoolcode = "";
     	$.receiveMessage(
 		  function(e){
 		    if (e.data.substring(0,7).toLowerCase() == 'http://' || e.data.substring(0,8).toLowerCase() == 'https://')
@@ -145,16 +144,13 @@ indent="yes" encoding="utf-8"/>
 		    }
 			else 
 			{
-		    	userid = e.data.split("|")[0];
+		    	logintoken = e.data;
 		    	// TEST CODE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		    	if ('<xsl:value-of select="$requesturl"/>'.indexOf('&amp;role=student') > -1)
 		    		userrole = "student";
 		    	else if ('<xsl:value-of select="$requesturl"/>'.indexOf('&amp;role=employee') > -1)
 		    		userrole = "employee";
-		    	else
 		    	// END OF TEST CODE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		    		userrole = e.data.split("|")[1];
-		    	schoolcode = e.data.split("|")[2];
 		    }
 		  },
 		  function (origin) {
@@ -357,7 +353,7 @@ indent="yes" encoding="utf-8"/>
 </xsl:template>
 
 <xsl:template match="result" mode="content">
-	<iframe class="result-frame" ontab='$(this).attr("src", "/viewresult?repo={$repo}&amp;threadid={@layout}&amp;userid=" + userid + "&amp;userrole=" + userrole + "&amp;schoolcode=" + schoolcode)' src="/iframeloading.html"></iframe>
+	<iframe class="result-frame" ontab='$(this).attr("src", "/viewresult?repo={$repo}&amp;threadid={@layout}&amp;logintoken=" + encodeURIComponent(logintoken) + "&amp;userrole=" + userrole)' src="/iframeloading.html"></iframe>
 </xsl:template>
 
 <xsl:template match="textref" mode="content">

@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.lang.*" %>
 <%@ page import="java.util.*" %>
+<%@ page import="java.net.URLEncoder" %>
 <%@ page import="mathunited.configuration.*" %>
 <%@ page import="mathunited.model.*" %>
 <%@ page import="mathunited.utils.*" %>
@@ -36,13 +37,14 @@
    	if(threadid==null || threadid.isEmpty())
    		throw new Exception("Het verplichte argument 'threadid' ontbreekt");
 
-    String userid = parameterMap.get("userid"); 
-   	if(userid==null || userid.isEmpty())
-   		throw new Exception("Het verplichte argument 'userid' ontbreekt");
+	String logintoken = parameterMap.get("logintoken");
+   	if(logintoken==null || logintoken.isEmpty())
+   		throw new Exception("Het verplichte argument 'logintoken' ontbreekt");
+    String userid = Utils.userIdFromLoginToken(logintoken);
     User user = User.load(userid, repository);
     
     if (user == null || !user.isRegistered())
-    	response.sendRedirect("/registeruser.html?userid=" + userid + "&repo=" + repo + "&threadid=" + threadid);
+    	response.sendRedirect("/registeruser.jsp?logintoken=" + URLEncoder.encode(logintoken, "UTF-8") + "&repo=" + repo + "&threadid=" + threadid);
     	
     ClassList classes;
     if (user.isTeacher())
@@ -51,6 +53,19 @@
     	classes = ClassList.loadForStudent(user.id, repository);
 
 %>
+
+<h3>Mijn profiel</h3>
+
+<table>
+	<tr><td>Naam:</td><td><%= user.fullName() %></td></tr>
+	<tr><td>E-mail:</td><td><%= user.email %></td></tr>
+</table>
+
+<br/>
+
+<a href="registeruser.jsp?logintoken=<%= URLEncoder.encode(logintoken, "UTF-8") %>&repo=<%= repo %>&threadid=<%= threadid %>" class="popup-label">Aanpassen</a>
+
+<br/>
 
 <h3>Mijn klassen</h3>
 
@@ -73,6 +88,7 @@
 			Leraar
 		<% } %>
 		</th>
+		<th>Opties</th>
 	</tr>
 <%
    	for (mathunited.model.Class cls : classes.items) {
@@ -81,7 +97,7 @@
 %>
 	<tr><td>
 		<% if (user.isTeacher()) { %>
-			<a href="viewclassresult.jsp?repo=<%= repo %>&threadid=<%= threadid %>&userid=<%= userid %>&classid=<%= cls.id %>"><%= cls.id %></a>
+			<a href="viewclassresult.jsp?repo=<%= repo %>&threadid=<%= threadid %>&logintoken=<%= URLEncoder.encode(logintoken, "UTF-8") %>&classid=<%= cls.id %>"><%= cls.id %></a>
 		<% } else { %>
 			<%= cls.id %>
 		<% } %>
@@ -91,6 +107,12 @@
 	<% } else { %>
 		<td><%= teacher.fullName() %></td>
 	<% } %>
+	<td>
+		<% if (user.isTeacher()) { %>
+		<a href="deleteclass.jsp?id=<%= cls.id %>&repo=<%= repo %>&threadid=<%= threadid %>&logintoken=<%= URLEncoder.encode(logintoken, "UTF-8") %>" onclick="return confirm('Weet je zeker dat de klas <%= cls.id %> wilt verwijderen?')">Verwijderen</a></td>
+		<% } else { %>
+		<a href="unregisterclass.jsp?id=<%= cls.id %>&repo=<%= repo %>&threadid=<%= threadid %>&logintoken=<%= URLEncoder.encode(logintoken, "UTF-8") %>" onclick="return confirm('Weet je zeker dat je je voor klas <%= cls.id %> wilt afmelden?')">Afmelden</a></td>
+		<% } %>
 	</tr>
 <%
 	}
@@ -108,18 +130,19 @@
 <br />
 
 <% if (user.isTeacher()) { %>
-<a href="addclass.jsp?userid=<%= user.id %>&repo=<%= repo %>&threadid=<%= threadid %>" class="popup-label">Klas toevoegen</a>
+<a href="addclass.jsp?logintoken=<%= URLEncoder.encode(logintoken, "UTF-8") %>&repo=<%= repo %>&threadid=<%= threadid %>" class="popup-label">Klas toevoegen</a>
 <% } else { %>
-<a href="registerforclass.jsp?userid=<%= user.id %>&repo=<%= repo %>&threadid=<%= threadid %>" class="popup-label">Aanmelden voor nieuwe klas</a>
+<a href="registerforclass.jsp?logintoken=<%= URLEncoder.encode(logintoken, "UTF-8") %>&repo=<%= repo %>&threadid=<%= threadid %>" class="popup-label">Aanmelden voor nieuwe klas</a>
 <% } %>
 
 <% } catch(Exception e) { %><%= Utils.renderErrorHtml(e) %><% } %>
 
-<!--
+<%-- 
+<p>key = <%= Utils.generateKey() %></p>
 <p>
 encoded = <%= Utils.encodeData("dnote|affiliate|ENTREE") %><br/>
-decoded = <%= Utils.decodeData("wXfLxhpVClrS3ZhQ1rT8N4W3r+ImIk/SdXR3JMCz158=") %>
+decoded = <%= Utils.decodeData("wXfLxhpVClrS3ZhQ1rT8Nx4KT7Cn00bB55+tfpgKX/4=") %>
 </p>
--->
+--%>
 </body>
 </html>

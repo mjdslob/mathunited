@@ -12,6 +12,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 
@@ -27,7 +28,12 @@ public class UserList extends Base {
  	   
  	   Query query = new Query("User");
  	   query.setAncestor(repoKey);
- 	   query.setFilter(new FilterPredicate("role", FilterOperator.EQUAL, UserRole.Teacher.name()));
+ 	   query.setFilter(
+  		   CompositeFilterOperator.and(
+			   new FilterPredicate("role", FilterOperator.EQUAL, UserRole.Teacher.name()), 
+			   new FilterPredicate("schoolcode", FilterOperator.EQUAL, schoolcode)
+  		   )
+  	   );
  	   PreparedQuery pq = datastore.prepare(query);
  	  
  	   UserList result = new UserList();

@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.lang.*" %>
 <%@ page import="java.util.*" %>
+<%@ page import="java.net.URLEncoder" %>
 <%@ page import="mathunited.configuration.*" %>
 <%@ page import="mathunited.model.*" %>
 <%@ page import="mathunited.model.Class" %>
@@ -38,13 +39,14 @@
    	if(threadid==null || threadid.isEmpty())
    		throw new Exception("Het verplichte argument 'threadid' ontbreekt");
 
-    String userid = parameterMap.get("userid"); 
-   	if(userid==null || userid.isEmpty())
-   		throw new Exception("Het verplichte argument 'userid' ontbreekt");
+    String logintoken = request.getParameter("logintoken");
+   	if(logintoken==null || logintoken.isEmpty())
+   		throw new Exception("Het verplichte argument 'logintoken' ontbreekt");
+    String userid = Utils.userIdFromLoginToken(logintoken);
     User user = User.load(userid, repository);
     
     if (user == null || !user.isRegistered())
-    	response.sendRedirect("/registeruser.html?userid=" + userid + "&repo=" + repo + "&threadid=" + threadid);
+    	response.sendRedirect("/registeruser.jsp?logintoken=" + URLEncoder.encode(logintoken, "UTF-8") + "&repo=" + repo + "&threadid=" + threadid);
     	
     String classid = parameterMap.get("classid"); 
    	if(classid==null || classid.isEmpty())
@@ -104,7 +106,7 @@
 %>
 	<tr>
 		<td class="clickable">
-			<a href="/viewresult?repo=<%= repo %>&threadid=<%= threadid %>&userid=<%= userid %>&viewid=<%= student.id %>"><%= student.fullName() %> ></a>
+			<a href="/viewresult?repo=<%= repo %>&threadid=<%= threadid %>&logintoken=<%= URLEncoder.encode(logintoken, "UTF-8") %>&viewid=<%= student.id %>"><%= student.fullName() %> ></a>
 		</td>
 <%
     for (ScoreGroup group : result.groups) {
@@ -116,7 +118,7 @@
     }
 %>
 		<td class="clickable">
-			<a href="/viewclassresult.jsp?repo=<%= repo %>&threadid=<%= threadid %>&userid=<%= userid %>&classid=<%= cls.id %>&removeid=<%= student.id %>" onclick="return confirm('Weet je zeker dat je deze leerling uit de klas wil verwijderen?')">Verwijder</a>
+			<a href="/viewclassresult.jsp?repo=<%= repo %>&threadid=<%= threadid %>&logintoken=<%= URLEncoder.encode(logintoken, "UTF-8") %>&classid=<%= cls.id %>&removeid=<%= student.id %>" onclick="return confirm('Weet je zeker dat je deze leerling uit de klas wil verwijderen?')">Verwijder</a>
 		</td>
 	</tr>
 <%

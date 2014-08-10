@@ -11,6 +11,8 @@ import java.net.URL;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.spec.AlgorithmParameterSpec;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,12 +20,16 @@ import java.util.Map;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
+import net.sf.saxon.sxpath.DedicatedStaticContext;
 
 import org.apache.commons.codec.binary.Base64;
 import org.w3c.dom.Document;
@@ -33,7 +39,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import sun.misc.BASE64Encoder;
-
 import mathunited.configuration.Repository;
 import mathunited.model.Score;
 import mathunited.model.ScoreGroup;
@@ -370,24 +375,77 @@ public class Utils {
     public static final String encDecKey = "Qzi8w2E+OHYRnPx7eLvnGw==";
     public static final String encDecAlgorithm = "AES";
     
+    public static String generateKey() throws Exception {
+    	KeyGenerator keyGen = KeyGenerator.getInstance(encDecAlgorithm);
+    	keyGen.init(128); // for example
+    	SecretKey secretKey = keyGen.generateKey();
+    	return Base64.encodeBase64String(secretKey.getEncoded());
+    }
+    
     public static String encodeData(String stringToEncrypt) throws Exception {
     	byte[] encodedKey     = Base64.decodeBase64(encDecKey);
-        SecretKey originalKey = new SecretKeySpec(encodedKey, 0, encodedKey.length, encDecAlgorithm);
-    	Cipher aesCipher = Cipher.getInstance(encDecAlgorithm); 
-    	aesCipher.init(Cipher.ENCRYPT_MODE,originalKey); 
-    	byte[] byteDataToEncrypt = stringToEncrypt.getBytes(); 
-    	byte[] byteCipherText = aesCipher.doFinal(byteDataToEncrypt); 
-    	return Base64.encodeBase64String(byteCipherText);
+//        SecretKey originalKey = new SecretKeySpec(encodedKey, 0, 16, encDecAlgorithm);
+//    	Cipher aesCipher = Cipher.getInstance(encDecAlgorithm); 
+//    	aesCipher.init(Cipher.ENCRYPT_MODE,originalKey); 
+//    	byte[] byteDataToEncrypt = stringToEncrypt.getBytes(); 
+//    	byte[] byteCipherText = aesCipher.doFinal(byteDataToEncrypt); 
+//    	return Base64.encodeBase64String(byteCipherText);
+    	
+    	SecretKeySpec originalKey = new SecretKeySpec(encodedKey, "AES");
+    	Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
+    	int blockSize = cipher.getBlockSize();
+
+    	byte[] inputBytes = stringToEncrypt.getBytes();
+    	int byteLength = inputBytes.length;
+    	if (byteLength % blockSize != 0) {
+    	    byteLength = byteLength + (blockSize - (byteLength % blockSize));
+    	}
+
+    	byte[] paddedBytes = new byte[byteLength];
+
+    	System.arraycopy(inputBytes, 0, paddedBytes, 0, inputBytes.length);
+
+    	byte[] iv  = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+    	AlgorithmParameterSpec ivSpec = new IvParameterSpec(iv);
+    	
+    	cipher.init(Cipher.ENCRYPT_MODE, originalKey, ivSpec);
+    	byte[] results = cipher.doFinal(paddedBytes);    
+    	return Base64.encodeBase64String(results);
     }
     
     public static String decodeData(String stringToDecrypt) throws Exception {
     	byte[] encodedKey     = Base64.decodeBase64(encDecKey);
-        SecretKey originalKey = new SecretKeySpec(encodedKey, 0, encodedKey.length, encDecAlgorithm);
-    	Cipher aesCipher = Cipher.getInstance(encDecAlgorithm); 
-        aesCipher.init(Cipher.DECRYPT_MODE, originalKey, aesCipher.getParameters()); 
+        SecretKey originalKey = new SecretKeySpec(encodedKey, 0, 16, "AES");
+    	Cipher aesCipher = Cipher.getInstance("AES/CBC/NoPadding"); 
+
+    	byte[] iv  = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+    	AlgorithmParameterSpec ivSpec = new IvParameterSpec(iv);
+        
+    	aesCipher.init(Cipher.DECRYPT_MODE, originalKey, ivSpec); 
         byte[] byteCipherText = Base64.decodeBase64(stringToDecrypt);
         byte[] byteDecryptedText = aesCipher.doFinal(byteCipherText); 
         return new String(byteDecryptedText);
     }
+    
+    public static String userIdFromLoginToken(String logintoken) throws Exception {
+    	if (logintoken == null || logintoken.length() == 0) return "";
+       	String decodedToken = Utils.decodeData(logintoken);
+       	int idx = decodedToken.indexOf('|');
+       	return decodedToken.substring(0, idx);
+    }
+    
+    public static String userRoleFromLoginToken(String logintoken) throws Exception {
+    	if (logintoken == null || logintoken.length() == 0) return "";
+       	String decodedToken = Utils.decodeData(logintoken);
+       	int idx1 = decodedToken.indexOf('|');
+       	int idx2 = decodedToken.lastIndexOf('|');
+       	return decodedToken.substring(idx1 + 1, idx2);
+    }
 
+    public static String userSchoolFromLoginToken(String logintoken) throws Exception {
+    	if (logintoken == null || logintoken.length() == 0) return "";
+       	String decodedToken = Utils.decodeData(logintoken);
+       	int idx = decodedToken.lastIndexOf('|');
+       	return decodedToken.substring(idx + 1).trim();
+    }
 }
