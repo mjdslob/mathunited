@@ -73,9 +73,9 @@ public class XSLTbean {
             }
             InputStream is = context.getResourceAsStream(path);
             StreamSource xslSource = new StreamSource(is);
-            LOGGER.log(Level.INFO, "XSLTbean: Compiling variant '" + name + "' on path " + path);
+            LOGGER.log(Level.INFO, "XSLTbean: Compiling variant ''{0}'' on path {1}", new Object[]{name, path});
             template = tFactory.newTemplates(xslSource);
-            LOGGER.log(Level.INFO, "XSLTbean: Succesfully stored template '" + name + "'.");
+            LOGGER.log(Level.INFO, "XSLTbean: Succesfully stored template ''{0}''.", name);
             templateMap.put(name, template);
         }
         return template;

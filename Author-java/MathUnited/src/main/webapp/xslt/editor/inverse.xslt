@@ -6,6 +6,8 @@ xmlns:exsl="http://exslt.org/common"
 xmlns:m="http://www.w3.org/1998/Math/MathML"
 xmlns:cals="http://www.someplace.org/cals"
 xmlns:xhtml="http://www.w3.org/1999/xhtml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:c="http://www.w3.org/ns/xproc-step"
 exclude-result-prefixes="saxon cals"
 extension-element-prefixes="exsl">
 
