@@ -5,7 +5,8 @@ variants :
   studiovo_view : {path: /xslt/studiovo_view.xslt}
   wm_view : {path: /xslt/wm_view.xslt}
   m4a_view : {path: /xslt/m4a_view.xslt}
-  m4a_view_en : {path: /xslt/m4a_view_en.xslt}
+  m4a_view_saba : {path: /xslt/m4a_view_saba.xslt}
+  m4a_view_engels : {path: /xslt/m4a_view_engels.xslt}
   m4a_view_dedicon : {path: /xslt/m4a_view_dedicon.xslt}
   m4a_view_pulseon : {path: /xslt/m4a_view_pulseon.xslt}
   m4a_editor : {path: /xslt/m4a_editor.xslt}
@@ -26,8 +27,6 @@ repos :
     path: content-wm/concept
     edit_permission: 
     defaultVariant: wm_view
-    componentsURL: /index/wm/components.xml
-    threadsURL: /index/wm/threads.xml
   m4a :
     path: content-ma/concept
     edit_permission: editor_m4a
@@ -41,7 +40,12 @@ repos :
     path: content-ma/saba
     baseRepo : m4a
     edit_permission: editor_saba
-    defaultVariant: m4a_view_en
+    defaultVariant: m4a_view_saba
+  m4a_engels :
+    path: content-ma/engels
+    baseRepo : m4a
+    edit_permission: editor_engels
+    defaultVariant: m4a_view_engels
   malmberg :
     path: content-ma/malmberg
     edit_permission: editor_malmberg_inactive

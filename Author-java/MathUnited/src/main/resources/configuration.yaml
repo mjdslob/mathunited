@@ -44,7 +44,7 @@ repos :
   m4a_engels :
     path: content-ma/engels
     baseRepo : m4a
-    edit_permission: editor_saba
+    edit_permission: editor_engels
     defaultVariant: m4a_view_engels
   malmberg :
     path: content-ma/malmberg
