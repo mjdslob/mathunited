@@ -27,7 +27,7 @@ define(['jquery'], function($) {
             var params = 'cmd=solve&exp='+encodeURIComponent(expression)+'&audience='+audience;
             $.post(engineUrl, params, 
                    function(data) {
-                        data = JSON.parse(data);
+                        //data = JSON.parse(data);
                         callback(data);
                    }
             );
