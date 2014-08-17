@@ -7,6 +7,7 @@ class PulseOnPlatform extends Platform {
     public function PulseOnPlatform($publishId) {
         $this->publishId = $publishId;
 	$this->uploadURL = "http://qt-studiovo.pulseon.nl/rest/testIndex";
+	$this->indexURL = "http://qt-studiovo.pulseon.nl/rest/testIndexAdmin";
     }
     
     //Upload QTI of a single component
@@ -102,6 +103,23 @@ class PulseOnPlatform extends Platform {
             case "204":
                 $logger->trace(LEVEL_INFO, "Code 204: Assignment already exists, deleting existing version");
                 $this->removeAssessment($fname, $logger);
+//Dave test
+        $ch = curl_init($this->uploadURL); 
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        if($response!=null && strncmp($response, 'error', 5)==0){
+            throw new Exception($response);
+        }
+        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+	if ($code == "204") {
+	        $logger->trace(LEVEL_INFO, "Code 204: Failed to deleting existing version");
+		break;
+	}
+	else {
+//Dave test
+
                 $ch = curl_init($this->uploadURL); 
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -111,6 +129,7 @@ class PulseOnPlatform extends Platform {
                 }
                 $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
                 curl_close($ch);
+	}
                 break;
             case "200":
                 break;
@@ -129,7 +148,7 @@ class PulseOnPlatform extends Platform {
         $name = substr($fname, $ind+1);
 
         //retrieve assessment id
-        $ch = curl_init($this->uploadURL);
+        $ch = curl_init($this->indexURL);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);
         $ind = strpos($response, $name);
@@ -148,7 +167,7 @@ class PulseOnPlatform extends Platform {
             $logger->trace(LEVEL_INFO, "Delete: name=$name, id=$id, response=$response");
 
             //retrieve assessment id
-            $ch = curl_init($this->uploadURL);
+            $ch = curl_init($this->indexURL);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $response = curl_exec($ch);
             $ind = strpos($response, $name);
