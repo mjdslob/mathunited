@@ -152,13 +152,13 @@ extension-element-prefixes="exsl">
           </xsl:for-each>
         </td>
         <td align="right">
-          <div class="item-next" onclick="javascript:nextItem(this)"></div>
+          <div class="item-next"></div>
           <div class="exercise-completed">klaar!</div>
         </td>
       </tr>
       <tr>
         <td>
-          <div class="item-feedback" onclick="javascript:showFeedback(this)">Feedback</div>
+          <div class="item-feedback">Feedback</div>
         </td>
         <td align="right">
           <xsl:if test="$showscore = 'true'">
@@ -198,13 +198,13 @@ extension-element-prefixes="exsl">
           </xsl:for-each>
         </td>
         <td align="right">
-          <div class="item-next" onclick="javascript:nextItem(this)"></div>
+          <div class="item-next"></div>
           <div class="exercise-completed">klaar!</div>
         </td>
       </tr>
       <tr>
         <td>
-          <div class="item-feedback" onclick="javascript:showFeedback(this)">Feedback</div>
+          <div class="item-feedback">Feedback</div>
         </td>
         <td align="right">
           <xsl:if test="$showscore = 'true'">
