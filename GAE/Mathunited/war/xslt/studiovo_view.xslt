@@ -73,41 +73,18 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="/">
 <html>
 <head>
-   <xsl:choose>
-      <!--  subtitle difference in references: leading slash or not -->
-      <xsl:when test="$host_type='GAE'">
-        <link type="text/css" href="/javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
-        <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
-        <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
-        <script type="text/javascript" src="/javascript/MathUnited.js"/>
-        <script type="text/javascript" src="/javascript/MathUnited_studiovo.js?v=10"/>
-        <script type="text/javascript" src="/javascript/jquery.ui.touch-punch.min.js"/>
-        <script type="text/javascript" src="/javascript/jquery.jplayer.min.js"/>
-		<script type="text/javascript" src="/javascript/jquery.scrollIntoView.min.js"/>
-		<script type="text/javascript" src="/javascript/jquery.ba-postmessage.js"/>
-        <script type="text/javascript" src="/javascript/readspeaker/ReadSpeaker.js?pids=embhl&amp;skin=ReadSpeakerMiniSkin"/>
-        <link rel="stylesheet" href="/css/content.css" type="text/css"/>
-        <link rel="stylesheet" type="text/css">
-	        <xsl:attribute name="href">/css/<xsl:value-of select="$cssfile"/></xsl:attribute>
-        </link>
-      </xsl:when>
-      <xsl:otherwise>
-        <link type="text/css" href="javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
-        <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
-        <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
-        <script type="text/javascript" src="javascript/MathUnited.js"/>
-        <script type="text/javascript" src="javascript/MathUnited_studiovo.js?v=10"/>
-        <script type="text/javascript" src="javascript/jquery.ui.touch-punch.min.js"/>
-        <script type="text/javascript" src="javascript/jquery.jplayer.min.js"/>
-		<script type="text/javascript" src="javascript/jquery.scrollIntoView.min.js"/>
-		<script type="text/javascript" src="javascript/jquery.ba-postmessage.js"/>
-        <script type="text/javascript" src="javascript/readspeaker/ReadSpeaker.js?pids=embhl&amp;skin=ReadSpeakerMiniSkin"/>
-        <link rel="stylesheet" href="css/content.css" type="text/css"/>
-	      <link rel="stylesheet" type="text/css">
-	   	    <xsl:attribute name="href">css/<xsl:value-of select="$cssfile"/></xsl:attribute>
-	      </link>
-      </xsl:otherwise>
-   </xsl:choose>
+	<link type="text/css" href="/javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
+	<script type="text/javascript" src="{$urlprefix}javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
+	<script type="text/javascript" src="{$urlprefix}javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
+	<script type="text/javascript" src="{$urlprefix}javascript/MathUnited.js"/>
+	<script type="text/javascript" src="{$urlprefix}javascript/MathUnited_studiovo.js?v=13"/>
+	<script type="text/javascript" src="{$urlprefix}javascript/jquery.ui.touch-punch.min.js"/>
+	<script type="text/javascript" src="{$urlprefix}javascript/jquery.jplayer.min.js"/>
+	<script type="text/javascript" src="{$urlprefix}javascript/jquery.scrollIntoView.min.js"/>
+	<script type="text/javascript" src="{$urlprefix}javascript/jquery.ba-postmessage.js"/>
+	<script type="text/javascript" src="{$urlprefix}javascript/readspeaker/ReadSpeaker.js?pids=embhl&amp;skin=ReadSpeakerMiniSkin"/>
+    <link rel="stylesheet" href="{$urlprefix}css/content.css" type="text/css"/>
+    <link rel="stylesheet" href="{$urlprefix}css/{$cssfile}" type="text/css" />
     
    <title><xsl:value-of select="$subcomponent/title"/></title>
    

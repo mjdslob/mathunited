@@ -171,6 +171,7 @@ function showEntryExercise(exerciseId) {
 
 
 $(document).ready(function () {
+
     var TOLX = 20; var TOLY = 10;
     var elm = $('.menu-hierarchy').first();
     elm = $('.menu-item', elm).first();
@@ -297,6 +298,10 @@ $(document).ready(function () {
         }
     });
     //$(".jplayer_inspector").jPlayerInspector({jPlayer:player});
+    
+    $(".item-next").click(function () { nextItem(this) });
+    $(".item-feedback").click(function () { showFeedback(this) });
+    
 });
 
 function setTab(tabid) {
@@ -323,8 +328,10 @@ function setTab(tabid) {
         togglePage(elm);
     }
     // set readspeaker url
-    ReadSpeaker.q(function(){if(rspkr.ui.getActivePlayer()){rspkr.ui.getActivePlayer().close()}});
-    $('.rsbtn_play').attr('href', 'https://app.readspeaker.com/cgi-bin/rsent?customerid=7345&amp;lang=' + readspeaker_lang + '&amp;dict=no_main&amp;readid='+tabid+'&amp;url=' + encodeURIComponent(document.URL));
+    if (typeof readspeaker_lang !== 'undefined') {
+	    ReadSpeaker.q(function(){if(rspkr.ui.getActivePlayer()){rspkr.ui.getActivePlayer().close()}});
+	    $('.rsbtn_play').attr('href', 'https://app.readspeaker.com/cgi-bin/rsent?customerid=7345&amp;lang=' + readspeaker_lang + '&amp;dict=no_main&amp;readid='+tabid+'&amp;url=' + encodeURIComponent(document.URL));
+    }
 }
 
 function SVO_triggerSubMenuItem(elm) {
@@ -468,9 +475,10 @@ function togglePage(elm) {
     var selectedPageNav = $('.page-navigator-ref[num="' + num + '"]', parent);
     $(selectedPageNav).addClass('selected');
     // set readspeaker url
-    ReadSpeaker.q(function(){if(rspkr.ui.getActivePlayer()){rspkr.ui.getActivePlayer().close()}});
-    //alert('https://app.readspeaker.com/cgi-bin/rsent?customerid=7345&amp;lang=' + readspeaker_lang + '&amp;readid='+$(selectedPage).attr('id')+'&amp;url=' + encodeURIComponent(document.URL));
-    $('.rsbtn_play').attr('href', 'https://app.readspeaker.com/cgi-bin/rsent?customerid=7345&amp;lang=' + readspeaker_lang + '&amp;readid='+$(selectedPage).attr('id')+'&amp;url=' + encodeURIComponent(document.URL));
+    if (typeof readspeaker_lang !== 'undefined') {
+	    ReadSpeaker.q(function(){if(rspkr.ui.getActivePlayer()){rspkr.ui.getActivePlayer().close()}});
+	    $('.rsbtn_play').attr('href', 'https://app.readspeaker.com/cgi-bin/rsent?customerid=7345&amp;lang=' + readspeaker_lang + '&amp;readid='+$(selectedPage).attr('id')+'&amp;url=' + encodeURIComponent(document.URL));
+    }
 }
 
 function toggleMovie(elm) {

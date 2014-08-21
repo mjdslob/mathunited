@@ -259,9 +259,9 @@ iframe {
 
 .slider-content {
     border: 2px solid #aaa;
-    padding: 0.5em;
-    margin-right: 0.5em;
-    margin-bottom: 0.5em;
+    padding: 6px;
+    margin-right: 6px;
+    margin-bottom: 6px;
 }
 
 .slider-content .exercise {
@@ -550,6 +550,11 @@ table.answer td.label
     width: 142px;    
     margin-left: 80px;
 }
+
+.slider-content .exercise-drop-cells {
+	margin-left: 70px;	
+}
+
 .exercise-drop-cell {
     width:142px;
     border: 1px solid black;
