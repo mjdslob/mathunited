@@ -195,13 +195,16 @@ extension-element-prefixes="exsl">
         </xsl:when>
         <xsl:otherwise>
             <div class="akit-exercise" audience="{evaluation/@audience}">
+                <xsl:if test="@palette">
+                     <xsl:attribute name="palette" select="@palette"/>
+                </xsl:if>
                 <xsl:apply-templates select="akit-script" mode="content"/>
                 <div class="akit-main">
                     <xsl:apply-templates select="itemcontent" mode="content">
                         <xsl:with-param name="options" select="$options"/>
                     </xsl:apply-templates>
                     <span class="akit-input-widget" solve="{evaluation/@solve}" submit="{evaluation/@submit}" 
-                          mode="{evaluation/@mode}" palette="{evaluation/@palette}" answer="{evaluation/@answer}">
+                          mode="{evaluation/@mode}" answer="{evaluation/@answer}">
                         <xsl:if test="evaluation/@question">
                             <span class="akit-input-label"><xsl:value-of select="evaluation/@question"/></span>
                         </xsl:if>
