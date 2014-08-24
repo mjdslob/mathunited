@@ -73,7 +73,7 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="/">
 <html>
 <head>
-	<link type="text/css" href="/javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
+	<link type="text/css" href="{$urlprefix}javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
 	<script type="text/javascript" src="{$urlprefix}javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
 	<script type="text/javascript" src="{$urlprefix}javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
 	<script type="text/javascript" src="{$urlprefix}javascript/MathUnited.js"/>
