@@ -109,7 +109,7 @@ indent="yes" encoding="utf-8"/>
             }
         });
     </script>
-    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript">
     	var logintoken = "";
     	var userrole = "";
