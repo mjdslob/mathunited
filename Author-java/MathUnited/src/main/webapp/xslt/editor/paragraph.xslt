@@ -65,18 +65,17 @@ extension-element-prefixes="exsl">
         <xsl:apply-templates mode="paragraph"/>
     </span>
 </xsl:template>
+
 <xsl:template match="keyword" mode="paragraph">
     <span tag="keyword">
-        <xsl:choose>
-            <xsl:when test="text">
-                <xsl:apply-templates mode="paragraph"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <span tag="text">
-                    <xsl:apply-templates mode="paragraph"/>
-                </span>
-            </xsl:otherwise>
-        </xsl:choose>
+        <span tag="text">
+            <xsl:apply-templates select="text"/>
+        </span>
+        <xsl:if test="word">
+            <span tag="word">
+                <xsl:apply-templates select="word"/>
+            </span>
+        </xsl:if>
     </span>
 </xsl:template>
 

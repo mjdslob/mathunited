@@ -36,18 +36,8 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
         li:true,
         p:true,
         'author-remark':true,
-        keyword: function(elm) {
-                     var child = $(elm).children(); 
-                     if(child.length>1){
-                         console.log("tag 'keyword' is invalid because it contains more than one child");
-                         return false;
-                     } 
-                     if(child.attr('tag')!=='text') {
-                         console.log("tag 'keyword' is invalid because its child is not a 'text' element");
-                         return false;
-                     } 
-                     return true;
-                 }
+        keyword: true,
+        word: true
 
     };
     function allowEditing(par) {
