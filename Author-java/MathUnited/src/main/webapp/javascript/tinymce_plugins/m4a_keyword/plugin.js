@@ -33,7 +33,7 @@
                             // This is already a keyword text, make it normal text
                             var txt = $(node).text();
                             $(node).parent().replaceWith(txt);
-                        } else if(node.nodeName=='SPAN' && $(node).attr('tag')=='mode' && $(node).parent().attr('tag')=='keyword'){
+                        } else if(node.nodeName=='SPAN' && $(node).attr('tag')=='word' && $(node).parent().attr('tag')=='keyword'){
                             // This is already a keyword-word, make it normal text
                             var txt = $(node).text();
                             $(node).parent().replaceWith(txt);
