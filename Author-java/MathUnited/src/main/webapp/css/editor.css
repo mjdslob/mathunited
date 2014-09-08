@@ -173,9 +173,28 @@ span[tag="m:math"] {
     display:none;
 }
 span[tag="keyword"] {
-    font-weight:bold;
-    color:blue;
+    padding: 3px;
+    border: 1px #444444 dotted;
+    color: blue;
 }
+
+span[tag="text"] {
+    font-weight: bold;
+}
+
+span[tag="word"]:before {
+    /* content: " (";  (removed as space is now added by XSLT) */
+    content: "(";
+}
+
+span[tag="word"]:after {
+    content: ")";
+}
+
+span[tag="word"] {
+    font-style: italic;
+}
+
 span[tag='quotation'] {
     color: rgb(0,256,256);
     font-weight: bold;

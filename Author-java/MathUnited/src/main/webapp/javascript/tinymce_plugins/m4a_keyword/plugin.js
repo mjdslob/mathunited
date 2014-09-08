@@ -28,13 +28,18 @@
                     // Register the command so that it can be invoked by using tinyMCE.activeEditor.execCommand('mceExample');
                     ed.addCommand('m4a_keyword', function() {
                         var node = ed.selection.getNode();
+
                         if(node.nodeName=='SPAN' && $(node).attr('tag')=='text' && $(node).parent().attr('tag')=='keyword'){
-                            //this is already a keyword
+                            // This is already a keyword text, make it normal text
+                            var txt = $(node).text();
+                            $(node).parent().replaceWith(txt);
+                        } else if(node.nodeName=='SPAN' && $(node).attr('tag')=='mode' && $(node).parent().attr('tag')=='keyword'){
+                            // This is already a keyword-word, make it normal text
                             var txt = $(node).text();
                             $(node).parent().replaceWith(txt);
                         } else {
                             var elm = $('<span>'+ed.selection.getContent()+'</span>').text();
-                            ed.selection.setContent('<span tag="keyword"><span tag="text">'+elm+'</span></span>');
+                            ed.selection.setContent('<span tag="keyword"><span tag="text">'+elm+'</span><span>&#160;</span><span tag="word">'+elm+'</span></span>');
                         }
                     });
 

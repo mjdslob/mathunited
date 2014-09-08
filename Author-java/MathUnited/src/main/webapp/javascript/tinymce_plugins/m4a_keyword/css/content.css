@@ -1,5 +1,22 @@
-span[tag='keyword'] {
-    color:blue;
+span[tag="keyword"] {
+    padding: 3px;
+    border: 1px #444444 dotted;
+    color: blue;
+}
+
+span[tag="text"] {
     font-weight: bold;
 }
 
+span[tag="word"]:before {
+    /* content: " (";  (removed as space is now added by XSLT) */
+    content: "(";
+}
+
+span[tag="word"]:after {
+    content: ")";
+}
+
+span[tag="word"] {
+    font-style: italic;
+}

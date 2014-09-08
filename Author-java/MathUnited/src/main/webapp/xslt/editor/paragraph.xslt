@@ -72,6 +72,8 @@ extension-element-prefixes="exsl">
             <xsl:apply-templates select="text"/>
         </span>
         <xsl:if test="word">
+            <!-- Some space to make tinymce be happy -->
+            <span>&#160;</span>
             <span tag="word">
                 <xsl:apply-templates select="word"/>
             </span>
