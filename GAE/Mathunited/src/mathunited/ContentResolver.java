@@ -52,7 +52,7 @@ public class ContentResolver implements URIResolver {
         		href = href.replace("../","");
         		base="root"; 
         	}
-        	LOGGER.info("MSLO: resolving href="+href+", base="+base); 
+//        	LOGGER.info("MSLO: resolving href="+href+", base="+base); 
         	Configuration config = Configuration.getInstance();
             InputSource xmlSource = null;
 	        if(href != null) {
