@@ -138,6 +138,18 @@ indent="yes" encoding="utf-8"/>
           }
 		);
     </script>
+    <style>
+        <xsl:if test="$menu_color">
+			#menubar { background-color:<xsl:value-of select="$menu_color"/>; }
+        </xsl:if>
+        <xsl:if test="subcomponent/meta/param[@name='menu-text-color']">
+			#menubar .menu-item { color:<xsl:value-of select="subcomponent/meta/param[@name='menu-text-color']"/>; }
+        </xsl:if>
+        <xsl:if test="subcomponent/meta/param[@name='menu-link-color']">
+			#menubar .menu-item.selected { color:<xsl:value-of select="subcomponent/meta/param[@name='menu-link-color']"/>; }
+			#menubar .submenu-item.selected { color:<xsl:value-of select="subcomponent/meta/param[@name='menu-link-color']"/>; }
+        </xsl:if>
+    </style>
 </head>
 
 <!--   **************** -->
@@ -146,19 +158,20 @@ indent="yes" encoding="utf-8"/>
 <body>
 <div class="pageDiv">
     <div id="menubar">
-        <xsl:if test="$menu_color">
-            <xsl:attribute name="style">
-                background-color:<xsl:value-of select="$menu_color"/>;
-            </xsl:attribute>
-        </xsl:if>
         <div id="logo">
 		   <xsl:choose>
-		      <!--  subtitle difference in references: leading slash or not -->
-		      <xsl:when test="$host_type='GAE'">
-            	<img src="/sources_studiovo/logo.png"/>
+		      <xsl:when test="subcomponent/meta/param[@name='menu-image']">
+			       <xsl:choose>
+			          <xsl:when test="$host_type='GAE'">
+			          	<img src="{subcomponent/meta/param[@name='menu-image']}" />
+			          </xsl:when>
+			          <xsl:otherwise>
+			          	<img src="{concat($urlbase, subcomponent/meta/param[@name='menu-image']/resource/name)}" />
+			          </xsl:otherwise>
+			       </xsl:choose>
 		      </xsl:when>
 		      <xsl:otherwise>
-            	<img src="sources_studiovo/logo.png"/>
+            	<img src="{$urlprefix}sources_studiovo/logo.png"/>
 	    	  </xsl:otherwise>
 	   	  </xsl:choose>
 
