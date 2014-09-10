@@ -205,6 +205,9 @@ extension-element-prefixes="exsl">
                     </xsl:apply-templates>
                     <span class="akit-input-widget" solve="{evaluation/@solve}" submit="{evaluation/@submit}" 
                           mode="{evaluation/@mode}" answer="{evaluation/@answer}">
+                        <xsl:if test="evaluation/@solution-attributes">
+                            <xsl:attribute name="solution-attributes" select="evaluation/@solution-attributes"/>
+                        </xsl:if>
                         <xsl:if test="evaluation/@question">
                             <span class="akit-input-label"><xsl:value-of select="evaluation/@question"/></span>
                         </xsl:if>
