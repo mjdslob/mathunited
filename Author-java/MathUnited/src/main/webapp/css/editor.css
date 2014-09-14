@@ -777,3 +777,18 @@ figure.no-edit table.no-edit th {
     background-color: orange;
     color: white;
 }
+
+div.item-type:hover:before {
+    content: "☑ ";
+    text-decoration: underline;
+    color: rgb(0, 100, 0);
+}
+
+div.item-type:hover {
+    text-decoration: underline;
+    color: rgb(0, 100, 0);
+}
+
+div.item-type:before {
+    content: "☐ ";
+}
