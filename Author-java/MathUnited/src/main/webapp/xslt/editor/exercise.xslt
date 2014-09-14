@@ -78,6 +78,10 @@ extension-element-prefixes="exsl">
              <div style="clear:left"></div>
              <div class="answer-heading">Uitwerking:</div>
              <div tag="explanation"><p></p></div>
+             <div class="answer-heading">Hint:</div>
+             <div tag="feedback">
+                  <p></p>
+             </div>
           </div>
     </div>
     <div id="exercise-itemintro-template">
@@ -405,6 +409,11 @@ extension-element-prefixes="exsl">
             <div class="answer-heading">Uitwerking:</div>
             <xsl:apply-templates select="explanation" mode="editor"/>
         </xsl:if>
+        <xsl:if test="feedback">
+            <div class="answer-heading">Hint:</div>
+            <xsl:apply-templates select="feedback" mode="editor"/>
+        </xsl:if>
+
     </div>
 </xsl:template>
 
@@ -457,6 +466,10 @@ extension-element-prefixes="exsl">
         <xsl:if test="explanation">
             <div class="answer-heading">Uitwerking:</div>
             <xsl:apply-templates select="explanation" mode="editor"/>
+        </xsl:if>
+        <xsl:if test="feedback">
+            <div class="answer-heading">Hint:</div>
+            <xsl:apply-templates select="feedback" mode="editor"/>
         </xsl:if>
     </div>
 </xsl:template>
