@@ -198,6 +198,9 @@ extension-element-prefixes="exsl">
                 <xsl:if test="@palette">
                      <xsl:attribute name="palette" select="@palette"/>
                 </xsl:if>
+                <xsl:if test="evaluation/@show-hints">
+                     <xsl:attribute name="show-hints" select="evaluation/@show-hints"/>
+                </xsl:if>
                 <xsl:apply-templates select="akit-script" mode="content"/>
                 <div class="akit-main">
                     <xsl:apply-templates select="itemcontent" mode="content">
