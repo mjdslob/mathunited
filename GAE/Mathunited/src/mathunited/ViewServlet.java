@@ -130,6 +130,7 @@ public class ViewServlet extends HttpServlet {
             int ind = sub.file.lastIndexOf('/');
             parameterMap.put("refbase", repository.path+"/"+sub.file.substring(0, ind+1));
             parameterMap.put("component", component.getXML());
+            component.addToParameterMap(parameterMap, subcomp);
             parameterMap.put("repo", repo);
             parameterMap.put("requesturl", request.getRequestURL().toString() + "?" + request.getQueryString());
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();

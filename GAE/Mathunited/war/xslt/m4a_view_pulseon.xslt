@@ -23,9 +23,16 @@
     <xsl:param name="is_mobile"/>
     <xsl:param name="repo"/>
     <xsl:param name="id"/>
-    <xsl:param name="component"/>
-    <xsl:variable name="parsed_component" select="saxon:parse($component)"/>
-    <xsl:variable name="subcomponent" select="$parsed_component/component/subcomponents/subcomponent[@id=$subcomp]"/>
+	<xsl:param name="component_id"/>
+	<xsl:param name="component_number"/>
+	<xsl:param name="component_file"/>
+	<xsl:param name="component_title"/>
+	<xsl:param name="component_subtitle"/>
+	<xsl:param name="subcomponent_number"/>
+	<xsl:param name="subcomponent_title"/>
+	<xsl:param name="subcomponent_index"/>
+	<xsl:param name="subcomponent_count"/>
+	
     <xsl:param name="refbase"/> <!-- used for includes: base path. Includes final / -->
     <xsl:variable name="lang">nl</xsl:variable>
     <xsl:variable name="item-list">
@@ -177,11 +184,11 @@
             </xsl:choose>
         </xsl:variable>
         <xsl:variable name="assessment-test">
-            <mslob:file name="{concat($subcomponent/@id,'.xml')}">
+            <mslob:file name="{concat($subcomponent_id,'.xml')}">
                 <qti:assessmentTest xmlns:m="http://www.w3.org/1998/Math/MathML"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 imsqti_v2p1.xsd"
-                identifier="{$subcomponent/@id}" title="{concat($parsed_component/component/title,' - ', $subcomponent/title)}">
+                identifier="{$subcomponent_id}" title="{concat($component_title,' - ', $subcomponent_title)}">
                     <qti:outcomeDeclaration identifier="SCORE" cardinality="single"
                             baseType="float">
                         <qti:defaultValue>
@@ -269,16 +276,16 @@
                                 identifier="manifestID">
                     <imscp:organizations />
                     <imscp:resources>
-                        <imscp:resource identifier="{$subcomponent/@id}" type="imsqti_assessment_xmlv2p1" href="{concat($subcomponent/@id,'.xml')}">
+                        <imscp:resource identifier="{$subcomponent_id}" type="imsqti_assessment_xmlv2p1" href="{concat($subcomponent_id,'.xml')}">
                             <imsmd:metadata>
                                 <imsmd:lom>
                                     <imsmd:general>
                                         <imsmd:identifier>
-                                            <xsl:value-of select="$subcomponent/@id"/>
+                                            <xsl:value-of select="$subcomponent_id"/>
                                         </imsmd:identifier>
                                         <imsmd:title>
                                             <imsmd:langstring>
-                                                <xsl:value-of select="concat($parsed_component/component/title,' - ', $subcomponent/title)"/>
+                                                <xsl:value-of select="concat($component_title,' - ', $subcomponent_title)"/>
                                             </imsmd:langstring>
                                         </imsmd:title>
                                         <imsmd:language>nl</imsmd:language>
@@ -300,7 +307,7 @@
                                     </imsmd:lifecycle>
                                 </imsmd:lom>
                             </imsmd:metadata>
-                            <imscp:file href="{concat($subcomponent/@id,'.xml')}" />
+                            <imscp:file href="{concat($subcomponent_id,'.xml')}" />
                             <xsl:apply-templates select="$assessment-test" mode="imscp-dependency"/>
                             <xsl:apply-templates select="$assignments" mode="imscp-dependency"/>
                         </imscp:resource>
@@ -402,7 +409,7 @@
 <!--   ****************** -->
     <xsl:template match="subcomponent/componentcontent/*[name()!='theory' and name()!='extra']">
         <xsl:variable name="name" select="name()"/>
-        <qti:assessmentSection identifier="{concat('section-',$subcomponent/@id,'-',$name,$num)}" fixed="false" title="{$item-list/item-list/*[name()=$name]/@name}" visible="true">
+        <qti:assessmentSection identifier="{concat('section-',$subcomponent_id,'-',$name,$num)}" fixed="false" title="{$item-list/item-list/*[name()=$name]/@name}" visible="true">
             <xsl:apply-templates select="include" mode="rubric">
                 <xsl:with-param name="item">
                     <xsl:value-of select="name()"/>
@@ -414,7 +421,7 @@
     <xsl:template match="subcomponent/componentcontent/extra"></xsl:template>
     <xsl:template match="subcomponent/componentcontent/theory">
         <xsl:if test="include">
-            <qti:assessmentSection identifier="{concat('section-',$subcomponent/@id,'-theory')}" fixed="false" title="{$item-list/item-list/theory/@name}" visible="true">
+            <qti:assessmentSection identifier="{concat('section-',$subcomponent_id,'-theory')}" fixed="false" title="{$item-list/item-list/theory/@name}" visible="true">
                 <xsl:apply-templates select="include" mode="rubric">
                     <xsl:with-param name="item">
                         <xsl:value-of select="name()"/>
@@ -425,7 +432,7 @@
         <xsl:apply-templates select="examples"/>
     </xsl:template>
     <xsl:template match="examples">
-        <qti:assessmentSection identifier="{concat('section-',$subcomponent/@id,'-example-',position())}" fixed="false" title="{$item-list/item-list/example/@name}" visible="true">
+        <qti:assessmentSection identifier="{concat('section-',$subcomponent_id,'-example-',position())}" fixed="false" title="{$item-list/item-list/example/@name}" visible="true">
             <xsl:apply-templates select="include" mode="rubric">
                 <xsl:with-param name="item">
                     <xsl:value-of select="name()"/>
@@ -469,7 +476,7 @@
     <xsl:template match="*" mode="rubric"></xsl:template>
     
     <xsl:template match="exercise" mode="link-assignments">
-        <xsl:variable name="asm-id" select="concat($subcomponent/@id,'-',generate-id())"/>
+        <xsl:variable name="asm-id" select="concat($subcomponent_id,'-',generate-id())"/>
         <qti:assessmentItemRef identifier="{$asm-id}" href="{concat($asm-id,'.xml')}" fixed="false" />
     </xsl:template>
 
@@ -505,7 +512,7 @@
     <xsl:template match="exercise" mode="assessmentItem">
         <xsl:param name="item"/>
         <xsl:param name="nr"/>
-        <xsl:variable name="asm-id" select="concat($subcomponent/@id,'-',generate-id())"/>
+        <xsl:variable name="asm-id" select="concat($subcomponent_id,'-',generate-id())"/>
         <mslob:file name="{concat($asm-id,'.xml')}">
             <xsl:apply-templates select="." mode="content">
                 <xsl:with-param name="item" select="$item"/>

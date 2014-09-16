@@ -13,7 +13,6 @@ extension-element-prefixes="exsl">
 <xsl:param name="ws_id"/>
 <xsl:param name="comp"/>
 <xsl:param name="option"/>
-<xsl:param name="component"/>
 <xsl:param name="subcomp"/>
 <xsl:param name="is_mobile"/>
 <xsl:param name="id"/>
@@ -21,10 +20,17 @@ extension-element-prefixes="exsl">
 <xsl:param name="repo-path"/>
 <xsl:param name="baserepo-path"/>
 <xsl:param name="requesturl"/>
+<xsl:param name="component_id"/>
+<xsl:param name="component_number"/>
+<xsl:param name="component_file"/>
+<xsl:param name="component_title"/>
+<xsl:param name="component_subtitle"/>
+<xsl:param name="subcomponent_number"/>
+<xsl:param name="subcomponent_title"/>
+<xsl:param name="subcomponent_index"/>
+<xsl:param name="subcomponent_count"/>
     
 <xsl:variable name="cm2px" select="number(50)"/>
-<xsl:variable name="parsed_component" select="saxon:parse($component)"/>
-<xsl:variable name="subcomponent" select="$parsed_component/component/subcomponents/subcomponent[@id=$subcomp]"/>
 <xsl:variable name="menu_color" select="subcomponent/meta/param[@name='menu-color']"/>
 <xsl:variable name="variant">studiovo_view</xsl:variable>
 <xsl:variable name="intraLinkPrefix">
@@ -86,7 +92,7 @@ indent="yes" encoding="utf-8"/>
     <link rel="stylesheet" href="{$urlprefix}css/content.css" type="text/css"/>
     <link rel="stylesheet" href="{$urlprefix}css/{$cssfile}" type="text/css" />
     
-   <title><xsl:value-of select="$subcomponent/title"/></title>
+   <title><xsl:value-of select="$subcomponent_title"/></title>
    
    <link href="https://vjs.zencdn.net/c/video-js.css" rel="stylesheet"/>
    <script src="https://vjs.zencdn.net/c/video.js"></script>	
@@ -175,7 +181,7 @@ indent="yes" encoding="utf-8"/>
 	    	  </xsl:otherwise>
 	   	  </xsl:choose>
 
-            <span id="logo-text"><xsl:value-of select="$parsed_component/component/subtitle"/></span>
+            <span id="logo-text"><xsl:value-of select="$component_subtitle"/></span>
         </div>
         <xsl:apply-templates select="subcomponent/componentcontent/*" mode="navigation"/>
 
@@ -211,7 +217,7 @@ indent="yes" encoding="utf-8"/>
 		                </a>
 		            </div>
 		      </xsl:if>
-            <span class="subcomponent-title"><xsl:value-of select="$subcomponent/title"/></span>
+            <span class="subcomponent-title"><xsl:value-of select="$subcomponent_title"/></span>
         </div>
         <div id="content">
             <xsl:apply-templates select="subcomponent/componentcontent/*"/>

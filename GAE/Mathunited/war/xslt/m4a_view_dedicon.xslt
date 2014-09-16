@@ -19,9 +19,16 @@ extension-element-prefixes="exsl">
 <xsl:param name="is_mobile"/>
 <xsl:param name="id"/>
 <xsl:param name="repo"/>
-<xsl:param name="component"/>
-<xsl:variable name="parsed_component" select="saxon:parse($component)"/>
-<xsl:variable name="subcomponent" select="$parsed_component/component/subcomponents/subcomponent[@id=$subcomp]"/>
+<xsl:param name="component_id"/>
+<xsl:param name="component_number"/>
+<xsl:param name="component_file"/>
+<xsl:param name="component_title"/>
+<xsl:param name="component_subtitle"/>
+<xsl:param name="subcomponent_number"/>
+<xsl:param name="subcomponent_title"/>
+<xsl:param name="subcomponent_index"/>
+<xsl:param name="subcomponent_count"/>
+
 <xsl:param name="refbase"/> <!-- used for includes: base path. Includes final / -->
 <xsl:variable name="lang">nl</xsl:variable>
 
@@ -180,7 +187,7 @@ indent="yes" encoding="utf-8"/>
       </xsl:otherwise>
    </xsl:choose>
 
-   <title><xsl:value-of select="$parsed_component/component/title"/></title>
+   <title><xsl:value-of select="$component_title"/></title>
 </head>
 
 <!--   **************** -->
@@ -204,7 +211,7 @@ indent="yes" encoding="utf-8"/>
         <xsl:if test="$is_mobile='true'">
             (m)
         </xsl:if>
-        <xsl:value-of select="$parsed_component/component/title"/> &gt; <xsl:value-of select="$subcomponent/title"/>
+        <xsl:value-of select="$component_title"/> &gt; <xsl:value-of select="$subcomponent_title"/>
     </div>
     <div class="overzichtDiv">
         <a>
@@ -217,11 +224,11 @@ indent="yes" encoding="utf-8"/>
    <div class="balk">
        <xsl:call-template name="list-section-nrs">
            <xsl:with-param name="i"><xsl:value-of select="number(1)"/></xsl:with-param>
-           <xsl:with-param name="count"><xsl:value-of select="count($parsed_component/component/subcomponents/subcomponent)"/></xsl:with-param>
-           <xsl:with-param name="highlight"><xsl:value-of select="1+count($subcomponent/preceding-sibling::subcomponent)"/></xsl:with-param>
+           <xsl:with-param name="count"><xsl:value-of select="$subcomponent_count"/></xsl:with-param>
+           <xsl:with-param name="highlight"><xsl:value-of select="1+number($subcomponent_index)"/></xsl:with-param>
            <xsl:with-param name="subcomponents" select="subcomponent/internal-meta/subcomponents"/>
        </xsl:call-template>
-       <span class="subcomponent-title"><xsl:value-of select="$subcomponent/title"/></span>
+       <span class="subcomponent-title"><xsl:value-of select="$subcomponent_title"/></span>
        <span class="font-selector"><span class="sizeA" onclick="javascript:MU_fontSelect(1)">A</span><span class="sizeB" onclick="javascript:MU_fontSelect(2)">A</span><span class="sizeC" onclick="javascript:MU_fontSelect(3)">A</span></span>
    </div>
 </div>
