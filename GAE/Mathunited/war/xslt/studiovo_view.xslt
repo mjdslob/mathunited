@@ -548,14 +548,7 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="movie" mode="content" priority="2">
     <div class="movie-wrapper">
         <xsl:if test="@optional='true'">
-            <xsl:choose>
-                <xsl:when test="$host_type='GAE'">
-                    <img src="/sources/movie_icon_60.gif" class="studiovo-movie-icon" onclick="javascript:toggleMovie(this)"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <img src="sources/movie_icon_60.gif" class="studiovo-movie-icon" onclick="javascript:toggleMovie(this)"/>
-                </xsl:otherwise>
-            </xsl:choose>
+            <img src="{$urlprefix}sources/movie_icon_60.gif" class="studiovo-movie-icon" onclick="javascript:toggleMovie(this)"/>
             <span class="movie-title"><xsl:value-of select="@title"/></span>
         </xsl:if>
         <div>
@@ -581,12 +574,15 @@ indent="yes" encoding="utf-8"/>
                             width="{@width}" height="{@height}"
                             controls="true" preload="none">
                         <xsl:choose>
-                            <xsl:when test="$host_type='GAE'">
-                                <source src="{@href}" type='video/mp4'/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <source src="{concat($urlbase,@href)}" type='video/mp4'/>
-                            </xsl:otherwise>
+							<xsl:when test="$host_type='GAE'">
+								<source src="{@href}" type='video/mp4' />
+								<xsl:if test="@href2">
+									<source src="{@href2}" type='video/webm' />
+								</xsl:if>
+							</xsl:when>
+							<xsl:otherwise>
+								<source src="{concat($urlbase,@href)}" type='video/mp4' />
+							</xsl:otherwise>
                         </xsl:choose>
                     </video>
                     <div style="clear:both"/>
@@ -611,14 +607,7 @@ indent="yes" encoding="utf-8"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </audio>
-                <xsl:choose>
-                    <xsl:when test="$host_type='GAE'">
-                        <img src="/sources_studiovo/speaker-16.png" class="studiovo-speaker-icon" />
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <img src="sources_studiovo/speaker-16.png" class="studiovo-speaker-icon" />
-                    </xsl:otherwise>
-                </xsl:choose>
+                <img src="{$urlprefix}sources_studiovo/speaker-16.png" class="studiovo-speaker-icon" />
             </a>
         </xsl:when>
         <xsl:otherwise>

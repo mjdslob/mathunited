@@ -290,14 +290,8 @@ class GAEPlatform extends Platform {
             $id = (string)$rsrcId['href'];
             $id = urldecode($id);
             $type = "movie";
-            $fileExists = false;
-            if(file_exists($base.$id)) { 
-                $fname = $base.$id;
-                $fileExists = true;
-            } else {
-                $fileExists = false;
-            }
-            if($fileExists){
+            $fname = $base.$id;
+            if(file_exists($fname)){
         		$mimetype = $this->getMIMEtype($fname);
                 try
                 {
@@ -310,7 +304,24 @@ class GAEPlatform extends Platform {
                 }
             } else {
                   $logger->trace(LEVEL_ERROR, "Broken resourcelink: File $id does not exist in subcomponent $compId."); 
-//                throw new Exception("Broken resourcelink: File $fname does not exist in subcomponent $compId.");
+            }
+            
+            $idx = strrpos($id,'.');
+            if ($idx != FALSE) {
+                $id = substr($id,0,$idx).'.webm';
+	            $fname = $base.$id;
+	            if(file_exists($fname)){
+	        		$mimetype = $this->getMIMEtype($fname);
+	                try
+	                {
+	                    $getUrl = $this->sendResource($fname, $compId, $id, $repo, $type, $mimetype, $logger);
+	                    $rsrcId['href2'] = trim($getUrl)."&attachment=true"; //put the direct URL in the xml
+	                }
+	                catch(Exception $e)
+	                {
+	        	        $logger->trace(LEVEL_ERROR, $e->getMessage());
+	                }
+	            }
             }
         }
 
