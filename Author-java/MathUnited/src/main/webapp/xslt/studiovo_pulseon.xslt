@@ -13,13 +13,20 @@ extension-element-prefixes="exsl">
 <xsl:param name="ws_id"/>
 <xsl:param name="comp"/>
 <xsl:param name="option"/>
-<xsl:param name="component"/>
 <xsl:param name="subcomp"/>
 <xsl:param name="is_mobile"/>
 <xsl:param name="id"/>
+<xsl:param name="component_id"/>
+<xsl:param name="component_number"/>
+<xsl:param name="component_file"/>
+<xsl:param name="component_title"/>
+<xsl:param name="component_subtitle"/>
+<xsl:param name="subcomponent_number"/>
+<xsl:param name="subcomponent_title"/>
+<xsl:param name="subcomponent_index"/>
+<xsl:param name="subcomponent_count"/>
+
 <xsl:variable name="cm2px" select="number(50)"/>
-<xsl:variable name="parsed_component" select="saxon:parse($component)"/>
-<xsl:variable name="subcomponent" select="$parsed_component/component/subcomponents/subcomponent[@id=$subcomp]"/>
 <xsl:variable name="variant">studiovo_pulseon</xsl:variable>
 <xsl:variable name="intraLinkPrefix">
    <xsl:value-of select="concat('https://mathunited2012.appspot.com/view?repo=studiovo&amp;comp=',$comp,'&amp;variant=pulseon_studiovo_item','&amp;subcomp=',$subcomp,'&amp;fragment=')"/>
@@ -56,8 +63,8 @@ indent="yes" encoding="utf-8"/>
 
 <body>
     <div id="meta">
-        <h1>Component: <xsl:value-of select="$parsed_component/component/title"/></h1>
-        <h2>Subcomponent: <xsl:value-of select="$subcomponent/title"/></h2>
+        <h1>Component: <xsl:value-of select="$component_title"/></h1>
+        <h2>Subcomponent: <xsl:value-of select="$component_title"/></h2>
     </div>
     <div id="links">
         <xsl:apply-templates select="subcomponent/componentcontent/*"/>

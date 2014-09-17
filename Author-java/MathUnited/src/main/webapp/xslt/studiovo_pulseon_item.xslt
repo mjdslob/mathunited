@@ -16,13 +16,20 @@ extension-element-prefixes="exsl">
 <xsl:param name="ws_id"/>
 <xsl:param name="comp"/>
 <xsl:param name="option"/>
-<xsl:param name="component"/>
 <xsl:param name="subcomp"/>
 <xsl:param name="is_mobile"/>
 <xsl:param name="id"/>
+<xsl:param name="component_id"/>
+<xsl:param name="component_number"/>
+<xsl:param name="component_file"/>
+<xsl:param name="component_title"/>
+<xsl:param name="component_subtitle"/>
+<xsl:param name="subcomponent_number"/>
+<xsl:param name="subcomponent_title"/>
+<xsl:param name="subcomponent_index"/>
+<xsl:param name="subcomponent_count"/>
+
 <xsl:variable name="cm2px" select="number(50)"/>
-<xsl:variable name="parsed_component" select="saxon:parse($component)"/>
-<xsl:variable name="subcomponent" select="$parsed_component/component/subcomponents/subcomponent[@id=$subcomp]"/>
 <xsl:variable name="variant">studiovo_pulseon_item</xsl:variable>
 <xsl:variable name="intraLinkPrefix">
     <xsl:choose>
@@ -71,7 +78,7 @@ indent="yes" encoding="utf-8"/>
    <script type="text/javascript" src="javascript/jquery.jplayer.min.js"/>
    <link rel="stylesheet" href="css/pulseon_studiovo.css" type="text/css"/>
    <link rel="stylesheet" href="css/content.css" type="text/css"/>
-   <title><xsl:value-of select="$parsed_component/component/title"/></title>
+   <title><xsl:value-of select="$component_title"/></title>
    
    <link href="https://vjs.zencdn.net/c/video-js.css" rel="stylesheet"/>
    <script src="https://vjs.zencdn.net/c/video.js"></script>	
@@ -102,7 +109,7 @@ indent="yes" encoding="utf-8"/>
     </xsl:variable>
     <xsl:variable name="lom-set">
         <lom-set>
-            <xsl:copy-of select="document(concat($docbase, '../../../',$parsed_component/component/@file))/component/mulom:lom"/>
+            <xsl:copy-of select="document(concat($docbase, '../../../',$component_file))/component/mulom:lom"/>
             <xsl:copy-of select="subcomponent/mulom:lom"/>
             <xsl:for-each select="$phase1//mulom:lom">
                 <xsl:copy-of select="."/>
@@ -260,11 +267,11 @@ indent="yes" encoding="utf-8"/>
             </div>
             <div class="ribbon">
                 <div class="left-title">
-                <span class="subcomponent-title"><xsl:value-of select="$subcomponent/title"/></span>
+                <span class="subcomponent-title"><xsl:value-of select="$subcomponent_title"/></span>
                 |
                 <span class="fragment-title"><xsl:value-of select="title"/></span>
                 </div>
-                <span class="component-title"><xsl:value-of select="$parsed_component/component/title"/></span>
+                <span class="component-title"><xsl:value-of select="$component_title"/></span>
             </div>
 
             <xsl:apply-templates mode="content"/>

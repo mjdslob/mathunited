@@ -105,5 +105,32 @@ public class Component {
         return sb.toString();
     }
 
+	public void addToParameterMap(Map<String, String> parameterMap, String subComp) {
+        parameterMap.put("component_id", id);
+        parameterMap.put("component_number", number);
+        parameterMap.put("component_file", compfile);
+        parameterMap.put("component_title", title);
+        parameterMap.put("component_subtitle", subTitle);
+        parameterMap.put("subcomponent_count", Integer.toString(subComponentList.size()));
+        int index = 0;
+        String precId = "";
+        for(SubComponent sc : subComponentList) {
+        	if (sc.id.equals(subComp)) {
+                parameterMap.put("subcomponent_number", sc.number);
+                parameterMap.put("subcomponent_title", sc.title);
+                parameterMap.put("subcomponent_index", Integer.toString(index));
+                break;
+        	}
+        	else 
+        		precId = sc.id;
+        	index++;
+        }
+        String nextId = "";
+        if (index + 1 < subComponentList.size())
+            nextId = subComponentList.get(index + 1).id;
+        parameterMap.put("subcomponent_preceding_id", precId);
+        parameterMap.put("subcomponent_following_id", nextId);
+	}
+
 }
 
