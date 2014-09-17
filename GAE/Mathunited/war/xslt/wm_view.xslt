@@ -27,9 +27,12 @@ extension-element-prefixes="exsl">
 <xsl:param name="subcomponent_title"/>
 <xsl:param name="subcomponent_index"/>
 <xsl:param name="subcomponent_count"/>
+<xsl:param name="subcomponent_preceding_id"/>
+<xsl:param name="subcomponent_following_id"/>
 
+<!-- 
 <xsl:variable name="subcomponent" select="$parsed_component/component/subcomponents/subcomponent[@id=$subcomp]"/>
-
+ -->
 <!--   /////////////////////////////////////////////   -->
 <!--  Specific for GAE (do not copy from auteurssite): -->
 <!--   /////////////////////////////////////////////   -->
