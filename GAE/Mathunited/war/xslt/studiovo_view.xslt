@@ -151,6 +151,10 @@ indent="yes" encoding="utf-8"/>
         <xsl:if test="subcomponent/meta/param[@name='menu-text-color']">
 			#menubar .menu-item { color:<xsl:value-of select="subcomponent/meta/param[@name='menu-text-color']"/>; }
         </xsl:if>
+        <xsl:if test="subcomponent/meta/param[@name='title-text-color']">
+        	#kruimelpad { color:<xsl:value-of select="subcomponent/meta/param[@name='title-text-color']"/>; }
+        	.subcomponent-title { color:<xsl:value-of select="subcomponent/meta/param[@name='title-text-color']"/>; }
+        </xsl:if>
         <xsl:if test="subcomponent/meta/param[@name='menu-link-color']">
 			#menubar .menu-item.selected { color:<xsl:value-of select="subcomponent/meta/param[@name='menu-link-color']"/>; }
 			#menubar .submenu-item.selected { color:<xsl:value-of select="subcomponent/meta/param[@name='menu-link-color']"/>; }
