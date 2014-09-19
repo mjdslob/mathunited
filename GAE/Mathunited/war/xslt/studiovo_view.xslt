@@ -121,24 +121,27 @@ indent="yes" encoding="utf-8"/>
     	var userrole = "";
     	$.receiveMessage(
 		  function(e){
-		    if (e.data.substring(0,7).toLowerCase() == 'http://' || e.data.substring(0,8).toLowerCase() == 'https://')
-		    {
-		    	toggleParentPopup(e.data);
-		    }
-			else 
-			{
-		    	logintoken = e.data;
-		    	// TEST CODE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		    	if ('<xsl:value-of select="$requesturl"/>'.indexOf('&amp;role=student') > -1)
-		    		userrole = "student";
-		    	else if ('<xsl:value-of select="$requesturl"/>'.indexOf('&amp;role=employee') > -1)
-		    		userrole = "employee";
-		    	// END OF TEST CODE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		    }
+		  	if (e.data.indexOf('readspeaker.com') == -1) // hack, origin filtering does not seem to work so message from readspeaker are received
+		  	{
+			    if (e.data.substring(0,7).toLowerCase() == 'http://' || e.data.substring(0,8).toLowerCase() == 'https://')
+			    {
+			    	toggleParentPopup(e.data);
+			    }
+				else 
+				{
+			    	logintoken = e.data;
+			    	// TEST CODE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			    	if ('<xsl:value-of select="$requesturl"/>'.indexOf('&amp;role=student') > -1)
+			    		userrole = "student";
+			    	else if ('<xsl:value-of select="$requesturl"/>'.indexOf('&amp;role=employee') > -1)
+			    		userrole = "employee";
+			    	// END OF TEST CODE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			    }
+			 }
 		  },
 		  function (origin) {
 		  	return 
-		  		'{<xsl:value-of select="$requesturl"/>}'.toLowerCase().substring(0, origin.length) == origin.toLowerCase()
+		  		'<xsl:value-of select="$requesturl"/>'.toLowerCase().substring(0, origin.length) == origin.toLowerCase()
 		  		||
 	            origin.toLowerCase() == 'http://www.eindexamensite.nl'
           }

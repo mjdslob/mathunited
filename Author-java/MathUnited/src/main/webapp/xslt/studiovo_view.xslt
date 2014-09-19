@@ -121,24 +121,27 @@ indent="yes" encoding="utf-8"/>
     	var userrole = "";
     	$.receiveMessage(
 		  function(e){
-		    if (e.data.substring(0,7).toLowerCase() == 'http://' || e.data.substring(0,8).toLowerCase() == 'https://')
-		    {
-		    	toggleParentPopup(e.data);
-		    }
-			else 
-			{
-		    	logintoken = e.data;
-		    	// TEST CODE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		    	if ('<xsl:value-of select="$requesturl"/>'.indexOf('&amp;role=student') > -1)
-		    		userrole = "student";
-		    	else if ('<xsl:value-of select="$requesturl"/>'.indexOf('&amp;role=employee') > -1)
-		    		userrole = "employee";
-		    	// END OF TEST CODE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		    }
+		  	if (e.data.indexOf('readspeaker.com') == -1) // hack, origin filtering does not seem to work so message from readspeaker are received
+		  	{
+			    if (e.data.substring(0,7).toLowerCase() == 'http://' || e.data.substring(0,8).toLowerCase() == 'https://')
+			    {
+			    	toggleParentPopup(e.data);
+			    }
+				else 
+				{
+			    	logintoken = e.data;
+			    	// TEST CODE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			    	if ('<xsl:value-of select="$requesturl"/>'.indexOf('&amp;role=student') > -1)
+			    		userrole = "student";
+			    	else if ('<xsl:value-of select="$requesturl"/>'.indexOf('&amp;role=employee') > -1)
+			    		userrole = "employee";
+			    	// END OF TEST CODE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			    }
+			 }
 		  },
 		  function (origin) {
 		  	return 
-		  		'{<xsl:value-of select="$requesturl"/>}'.toLowerCase().substring(0, origin.length) == origin.toLowerCase()
+		  		'<xsl:value-of select="$requesturl"/>'.toLowerCase().substring(0, origin.length) == origin.toLowerCase()
 		  		||
 	            origin.toLowerCase() == 'http://www.eindexamensite.nl'
           }
@@ -574,15 +577,15 @@ indent="yes" encoding="utf-8"/>
                             width="{@width}" height="{@height}"
                             controls="true" preload="none">
                         <xsl:choose>
-                            <xsl:when test="$host_type='GAE'">
-                                <source src="{@href}" type='video/mp4' />
+							<xsl:when test="$host_type='GAE'">
+								<source src="{@href}" type='video/mp4' />
 								<xsl:if test="@href2">
 									<source src="{@href2}" type='video/webm' />
 								</xsl:if>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <source src="{concat($urlbase,@href)}" type='video/mp4' />
-                            </xsl:otherwise>
+							</xsl:when>
+							<xsl:otherwise>
+								<source src="{concat($urlbase,@href)}" type='video/mp4' />
+							</xsl:otherwise>
                         </xsl:choose>
                     </video>
                     <div style="clear:both"/>
