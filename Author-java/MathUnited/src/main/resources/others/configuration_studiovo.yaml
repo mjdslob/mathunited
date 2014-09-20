@@ -14,6 +14,8 @@ repos :
     path: content-studiovo/concept
     edit_permission: 
     defaultVariant: studiovo_view
+    componentsURL: /index/studiovo/components.xml
+    threadsURL: /index/studiovo/threads.xml
 
 userFile : /data/content-overview/users.yaml
 contentRoot : /data/
