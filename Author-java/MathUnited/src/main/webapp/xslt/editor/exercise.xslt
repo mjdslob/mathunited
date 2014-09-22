@@ -316,9 +316,27 @@ extension-element-prefixes="exsl">
     <div class="algebrakit-spec-wrapper">
         <span class="algebrakit-spec-item">Doelgroep:</span>
         <select class='audience-select'>
-            <option value="rekenen">rekenen</option>
             <option value="onderbouw">onderbouw</option>
-            <option value="vwo-b">bovenbouw</option>
+            <option value="havo-a">havo-a</option>
+            <option value="havo-b">havo-b</option>
+            <option value="vwo-a">vwo-a</option>
+            <option value="vwo-b">vwo-b</option>
+        </select><br/>
+        <span class="algebrakit-spec-item">Formule-palet:</span>
+        <select class='item-palette-select'>
+            <option value="default">Standaard</option>
+            <option value="vergelijkingen">Vergelijkingen</option>
+        </select><br/>
+        <span class="algebrakit-spec-item">Antwoord modus:</span>
+        <select class='algebrakit-mode-select'>
+            <option value="EXACT">Precies hetzelfde</option>
+            <option value="EQUIVALENT">Wiskundig gelijkwaardig</option>
+            <option value="EQUIVALENT_MANUAL_COMMIT">Wiskundig gelijkwaardig zonder controle</option>
+        </select><br/>
+        <span class="algebrakit-spec-item">Toon hints:</span>
+        <select class='algebrakit-hint-select'>
+            <option value="true">Ja</option>
+            <option value="false">Nee</option>
         </select><br/>
         <span class="algebrakit-spec-item">Opgave (AlgebraKIT):</span>
         <input type="text" name="solve" size="70" value="{evaluation/@solve}"/><br/>
@@ -326,6 +344,8 @@ extension-element-prefixes="exsl">
         <input type="text" name="submit" size="70" value="{evaluation/@submit}"/><br/>
         <span class="algebrakit-spec-item">Label:</span>
         <input type="text" name="question" size="70" value="{evaluation/@question}"/><br/>
+        <span class="algebrakit-spec-item">Antwoord (AlgebraKIT):</span>
+        <input type="text" name="answer" size="70" value="{evaluation/@answer}"/><br/>
         <xsl:apply-templates select="evaluation" mode="editor"/>
     </div>
 </xsl:template>

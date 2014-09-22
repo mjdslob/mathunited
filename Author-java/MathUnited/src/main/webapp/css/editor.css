@@ -792,3 +792,7 @@ div.item-type:hover {
 div.item-type:before {
     content: "☐ ";
 }
+
+input.wrong-input-line {
+    background: #ff0000;
+}
