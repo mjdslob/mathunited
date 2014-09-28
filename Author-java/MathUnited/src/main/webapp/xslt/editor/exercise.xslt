@@ -204,6 +204,7 @@ extension-element-prefixes="exsl">
         </xsl:for-each>
     </div>
 </xsl:template>
+
 <xsl:template match="div[@tag='item']" mode="insert-label">
     <div class="_editor_context_base">
         <div  class="_editor_option" type="repeat" function="actions/RepeatExerciseItem" name="deelvraag">
@@ -233,6 +234,7 @@ extension-element-prefixes="exsl">
     <div tag="{name()}">
         <xsl:apply-templates select="@*" mode="editor"/>
         <div tag="itemcontent">
+            <div class="_editor_option" type="action" name="AlgebraKIT aan/uit" function="actions/ToggleAlgebraKIT" />
             <div class="_editor_option" type="optional" function="actions/OptionalTemplate" name="item intro">
                 <xsl:attribute name="params">{template:'exercise-itemintro-template'}</xsl:attribute>
                 <xsl:choose>
@@ -329,8 +331,8 @@ extension-element-prefixes="exsl">
         </select><br/>
         <span class="algebrakit-spec-item">Antwoord modus:</span>
         <select class='algebrakit-mode-select'>
-            <option value="EXACT">Precies hetzelfde</option>
             <option value="EQUIVALENT">Wiskundig gelijkwaardig</option>
+            <option value="EXACT">Precies hetzelfde</option>
             <option value="EQUIVALENT_MANUAL_COMMIT">Wiskundig gelijkwaardig zonder controle</option>
         </select><br/>
         <span class="algebrakit-spec-item">Toon hints:</span>
@@ -339,7 +341,11 @@ extension-element-prefixes="exsl">
             <option value="false">Nee</option>
         </select><br/>
         <span class="algebrakit-spec-item">Opgave (AlgebraKIT):</span>
-        <input type="text" name="solve" size="70" value="{evaluation/@solve}"/><br/>
+        <input type="text" name="solve" size="70" value="{evaluation/@solve}">
+            <xsl:if test="evaluation/@solve=''">
+                <xsl:attribute name="class">wrong-input-line</xsl:attribute>
+            </xsl:if>
+        </input><br/>
         <span class="algebrakit-spec-item">Invoer naar AlgebraKIT:</span>
         <input type="text" name="submit" size="70" value="{evaluation/@submit}"/><br/>
         <span class="algebrakit-spec-item">Label:</span>

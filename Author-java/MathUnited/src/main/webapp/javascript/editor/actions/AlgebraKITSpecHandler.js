@@ -79,7 +79,7 @@ define(['jquery'], function($) {
                 chooseSelectedItem('item-palette-select', item, 'palette', 'default', true);
 
                 // Change 'mode' tag on <evaluation>
-                chooseSelectedItem('algebrakit-mode-select', tag, 'mode', 'EXACT', true);
+                chooseSelectedItem('algebrakit-mode-select', tag, 'mode', 'EQUIVALENT', true);
 
                 // Change 'show-hints' tag on <evaluation>
                 chooseSelectedItem('algebrakit-hint-select', tag, 'show-hints', 'true', true);
