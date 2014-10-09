@@ -25,7 +25,7 @@
                 <xsl:attribute name="style">float:right</xsl:attribute>
             </xsl:if>
             <xsl:attribute name="src">
-                <xsl:value-of select="concat('/MathUnited/geogebra?file=',$refbase,replace(replace(@filename,'geogebra/','../geogebra/'),'GeoGebra/','../geogebra/'),'&amp;repo=',$repo)"/>
+                <xsl:value-of select="concat('/MathUnited/geogebra?file=',$refbase,'../geogebra/',replace(@filename,'GeoGebra/','../geogebra/'),'&amp;repo=',$repo)"/>
             </xsl:attribute>
         </iframe>
     </xsl:template>

@@ -1,5 +1,5 @@
-URLlogging = '/Publisher/logs/log_{#REPOID}.txt';
-URLClearlogging = '/Publisher/php/ClearLogging.php?repo={#REPOID}';
+URLlogging = '/Publisher/html/logs/log_{#REPOID}.txt';
+URLClearlogging = '/Publisher/html/php/ClearLogging.php?repo={#REPOID}';
 $(document).ready(function(){
     isBusyPublishing = false;
     window.onbeforeunload = confirmExit;
