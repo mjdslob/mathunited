@@ -21,6 +21,7 @@ public class Repository {
     public Map<String, Component> readComponentMap() throws Exception {
         Configuration config = Configuration.getInstance();
         File f = new File(config.contentRoot+this.getPath()+"/leerlijnen/components.xml");
+//        File f = new File("/var/www/html/index/studiovo/components.xml");
         if(!f.exists() && this.baseRepo!=null && !this.baseRepo.isEmpty()) {
             Repository baseRepo = config.getRepos().get(this.baseRepo);
             f = new File(config.contentRoot+baseRepo.getPath()+"/leerlijnen/components.xml");

@@ -131,7 +131,7 @@
                 <xsl:value-of select="concat('http://',$parent,'?thread=',$thread)"/>
            </xsl:when>
            <xsl:otherwise>
-                <xsl:value-of select="string('/')"/>
+                <xsl:value-of select="concat('/?tab=tab-edit&amp;thread=',$thread)"/>
            </xsl:otherwise>
         </xsl:choose>
     </xsl:variable>

@@ -109,7 +109,7 @@ extension-element-prefixes="exsl">
 	    <xsl:value-of select="concat('http://',$parent,'?thread=',$thread)"/>
        </xsl:when>
        <xsl:otherwise>
-	    <xsl:value-of select="string('/')"/>
+           <xsl:value-of select="concat('/?tab=tab-preview&amp;thread=',$thread)"/>
        </xsl:otherwise>
     </xsl:choose>
 </xsl:variable>

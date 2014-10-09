@@ -213,6 +213,8 @@ class Overview {
         }
 
         $fname = $repo['basePath'] . 'leerlijnen/components.xml.new';
+//        $fname = '/var/www/html/index/studiovo/components.xml.new';
+        $this->logger->trace(LEVEL_INFO, "createComponentsFile $fname ".$fname);
         $doc->asXML($fname);
     }
 

@@ -148,7 +148,7 @@ public class WorkflowServlet extends HttpServlet {
 
             while (line != null) {
                 sb.append(line);
-                sb.append(System.lineSeparator());
+                sb.append(System.getProperty("line.separator"));
                 line = br.readLine();
             }
             String text = sb.toString();

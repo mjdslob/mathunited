@@ -27,7 +27,7 @@ extension-element-prefixes="exsl">
     
 <xsl:variable name="cm2px" select="number(50)"/>
 <xsl:variable name="menu_color" select="assignments/meta/param[@name='menu-color']"/>
-<xsl:variable name="cssfile">basis_studiovo.css?v=36</xsl:variable>
+<xsl:variable name="cssfile">basis_studiovo.css?v=37</xsl:variable>
 <xsl:variable name="overviewRef"><xsl:value-of select="string('/auteur/math4all.html')"/></xsl:variable>
 <xsl:variable name="_cross_ref_as_links_" select="true()"/>
 <xsl:variable name="_sheetref_as_links_" select="true()"/>

@@ -168,15 +168,17 @@ define(['jquery', 'app/TinyMCE', 'app/ContextMenu', 'algebrakit/Widget', 'jquery
            //add warning on 'dangerous' links that leave the editor (needed as window.onbeforeunload does not work on IOS)
            $('a._warn_if_doc_changed_').each(function(){
                var elm = $(this);
-               var target=elm.attr('href');
+               var target = elm.attr('href');
                elm.attr('href','#');
+               elm.attr('target', target);
                elm.click(function() {
                     var goOn = true;
                     var isiPad = navigator.userAgent.match(/iPad/i) != null;
                     if(isiPad && isDocChanged) {
                         goOn = confirm('Wilt u de editor verlaten? Wijzigingen die u niet heeft opgeslagen gaan verloren.');
                     }
-                    if(goOn) {
+                    if (goOn) {
+                        elm.attr('href', target);
                         window.location.href = target;
                     }
                });
