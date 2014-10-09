@@ -106,7 +106,7 @@ public class PostContentServlet extends HttpServlet {
             if(html==null) {
                 throw new Exception("Het verplichte argument 'html' ontbreekt.");
             }
-            Map<String, String> parameterMap = new HashMap<>();
+            Map<String, String> parameterMap = new HashMap<String, String>();
             parameterMap.put("comp", comp);
             parameterMap.put("subcomp", subcomp);
             parameterMap.put("repo", repoId);

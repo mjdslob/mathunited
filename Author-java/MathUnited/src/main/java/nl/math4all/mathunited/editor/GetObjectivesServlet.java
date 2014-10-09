@@ -62,7 +62,7 @@ public class GetObjectivesServlet extends HttpServlet {
     }
     
     private List<String> readObjectives(String compstr, Repository repository) throws Exception {
-        List<String> objectiveList = new ArrayList<>();
+        List<String> objectiveList = new ArrayList<String>();
         Configuration config = Configuration.getInstance();
         Map<String, Component> componentMap = repository.readComponentMap();
 
@@ -77,7 +77,7 @@ public class GetObjectivesServlet extends HttpServlet {
     }
     
     private List<String> readSubcomponentObjectives(SubComponent sub, String compStr, Repository repository, Configuration config) throws Exception {
-        List<String> list = new ArrayList<>();
+        List<String> list = new ArrayList<String>();
         String path = config.contentRoot+repository.getPath()+"/"+sub.file;
         
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();

@@ -107,6 +107,7 @@ public class ProcessItemServlet extends HttpServlet {
             
             //read components. To be moved to init()
             File f = new File(config.contentRoot+repository.getPath()+"/leerlijnen/components.xml");
+//            File f = new File("/var/www/html/index/studiovo/components.xml");
             if(!f.exists() && !repository.baseRepo.isEmpty()) {
                 Repository baseRepo = config.getRepos().get(repository.baseRepo);
                 f = new File(config.contentRoot+baseRepo.getPath()+"/leerlijnen/components.xml");
