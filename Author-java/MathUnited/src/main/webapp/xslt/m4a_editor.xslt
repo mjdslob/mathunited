@@ -128,7 +128,7 @@
                 <xsl:value-of select="concat('http://',$parent,'&amp;thread=',$thread)"/>
            </xsl:when>
            <xsl:when test="$parent">
-                <xsl:value-of select="concat('http://',$parent,'?thread=',$thread)"/>
+                <xsl:value-of select="concat('http://',$parent,'?thread=',$thread,'&amp;tab=tab-edit')"/>
            </xsl:when>
            <xsl:otherwise>
                 <xsl:value-of select="concat('/?tab=tab-edit&amp;thread=',$thread)"/>
@@ -262,6 +262,7 @@
 
                     <xsl:variable name="lockstatus">
                         <xsl:choose>
+                            <xsl:when test="not($repo='malmberg')"></xsl:when>
                             <xsl:when test="not(/subcomponent/@status) or /subcomponent/@status='bewerking'"></xsl:when>
                             <xsl:when test="/subcomponent/@status='auteur_gereed'"></xsl:when>
                             <xsl:when test="/subcomponent/@status='coauteur_gereed'"></xsl:when>

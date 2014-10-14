@@ -52,7 +52,7 @@ repos :
     defaultVariant: m4a_view_engels
   malmberg :
     path: content-ma/malmberg
-    edit_permission: editor_malmberg_inactive
+    edit_permission: editor_malmberg
     defaultVariant: m4a_view
     componentsURL: /index/malmberg/components.xml
     threadsURL: /index/malmberg/threads.xml
