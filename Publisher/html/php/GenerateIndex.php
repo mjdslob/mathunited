@@ -44,7 +44,6 @@ class Overview {
             } else {
                 throw new Exception('Generate index called without repo identifier');
             }
-
             $doTest = false;
             if (isset($this->comm['test'])) {
                 $doTest = ($this->comm['test'] == 'true');
@@ -57,7 +56,6 @@ class Overview {
                 throw new Exception("Generate Index called with unknown repository $repoId");
             }
             $paths = $repo['paths'];
-
             for ($kk = 0; $kk < count($paths); $kk++) {
                 echo "<p>Searching for components in folder " . $paths[$kk] . ": </p><ul>";
                 $cc = $this->findComponents($repo['basePath'], $paths[$kk], 0);

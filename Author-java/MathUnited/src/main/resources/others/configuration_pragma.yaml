@@ -50,7 +50,7 @@ repos :
     baseRepo : m4a
     edit_permission: editor_engels
     defaultVariant: m4a_view_engels
-  malmberg :
+  malmberg_pragma :
     path: content-ma/malmberg
     edit_permission: editor_malmberg
     defaultVariant: m4a_view

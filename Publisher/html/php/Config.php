@@ -6,7 +6,7 @@ class Config {
         'm4a' => array(
             'id'=>'m4a',
             'paths'=>array(
-                'vb/','va/','v3/',
+                'vd/', 'vb/','va/','v3/',
                 'hv/',
                 'h3/',
                 'ha/',
@@ -16,7 +16,7 @@ class Config {
     //        'get_QTI_url' => 'http://mathunited.nl/view?repo=m4a&variant=m4a_view_pulseon&comp={#COMP}&subcomp={#SUBCOMP}'
             'get_QTI_url' => 'http://localhost:8080/MathUnited/view?repo=m4a&variant=m4a_view_pulseon&comp={#COMP}&subcomp={#SUBCOMP}'
         ),
-        'malmberg' => array(
+        'malmberg_pragma' => array(
             'id'=>'malmberg-2013-07-19',
             'paths'=>array(
                 ''
