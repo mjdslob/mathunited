@@ -16,7 +16,7 @@
  */
 
 //define(['jquery', 'app/TinyMCE', 'app/ContextMenu', 'algebrakit/Widget', 'elfinder', 'jqueryui'], function($, Editor, ContextMenu, akitWidget) {
-define(['jquery', 'app/TinyMCE', 'app/ContextMenu', 'algebrakit/Widget', 'jqueryui'], function($, Editor, ContextMenu, akitWidget) {
+define(['jquery', 'app/TinyMCE', 'app/ContextMenu',  'app/AlgebraKITSpecHandler', 'jqueryui'], function($, Editor, ContextMenu, AlgebraKITSpecHandler) {
     var isDocChanged = false;
     var root = null;  //set on init
     
@@ -95,7 +95,8 @@ define(['jquery', 'app/TinyMCE', 'app/ContextMenu', 'algebrakit/Widget', 'jquery
     function insertActions(elm) {
         //opening/closing of sections
         addToggleItemContainerHandler();
-
+        AlgebraKITSpecHandler.init(elm);
+        
         $("[no-edit]").addClass("no-edit");
 
         $('p,ul.paragraph,ol.paragraph,table,img.paperfigure',elm).each(function() {

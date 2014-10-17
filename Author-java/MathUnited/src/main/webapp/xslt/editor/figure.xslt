@@ -19,10 +19,12 @@ extension-element-prefixes="exsl">
        <xsl:if test="$width>0">
            <xsl:attribute name="style">width:<xsl:value-of select="$width"/>px</xsl:attribute>
            <xsl:attribute name="width"><xsl:value-of select="$width"/></xsl:attribute>
+           <xsl:attribute name="paperwidth"><xsl:value-of select="content/resource/width"/></xsl:attribute>
        </xsl:if>
        <xsl:if test="@paperlocation">
            <xsl:attribute name="paperlocation" select="@paperlocation"/>
        </xsl:if>
+       
            
            
    </img>
@@ -37,6 +39,7 @@ extension-element-prefixes="exsl">
        <xsl:if test="$width>0">
            <xsl:attribute name="style">width:<xsl:value-of select="$width"/>px</xsl:attribute>
            <xsl:attribute name="width"><xsl:value-of select="$width"/></xsl:attribute>
+           <xsl:attribute name="paperwidth"><xsl:value-of select="width"/></xsl:attribute>
        </xsl:if>
    </img>
 </xsl:template>

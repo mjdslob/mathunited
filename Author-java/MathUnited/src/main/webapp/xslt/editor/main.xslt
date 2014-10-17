@@ -132,26 +132,28 @@ MSLO 2 juni 2014: keep cals:table intact
 <!-- copy the table (it it html anyway) but add the @tag attributes -->
 <xsl:template match="table" mode="editor">
     <table tag="table">
-         <xsl:apply-templates mode="editor"/>
+         <xsl:apply-templates select="@*|node()" mode="editor"/>
     </table>
 </xsl:template>
 <xsl:template match="table" mode="paragraph">
     <table tag="table">
-         <xsl:apply-templates mode="editor"/>
+         <xsl:apply-templates select="@*|node()" mode="editor"/>
     </table>
 </xsl:template>
 
 <xsl:template match="tr|th|tbody|col|colgroup" mode="editor">
     <xsl:copy>
          <xsl:attribute name="tag" select="name()"/>
-         <xsl:apply-templates mode="editor"/>
+         <xsl:apply-templates select="@*|node()" mode="editor"/>
     </xsl:copy>
 </xsl:template>
 <xsl:template match="td | th" mode="editor">
     <xsl:copy>
          <xsl:attribute name="tag" select="name()"/>
+<!--         
          <xsl:if test="@paperwidth"><xsl:attribute name="paperwidth" select="@paperwidth"/></xsl:if>
-         <xsl:apply-templates mode="paragraph"/>
+-->         
+         <xsl:apply-templates select="@*|node()" mode="paragraph"/>
     </xsl:copy>
 </xsl:template>
 <!-- others -->

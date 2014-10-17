@@ -7,8 +7,7 @@ xmlns:m="http://www.w3.org/1998/Math/MathML"
 xmlns:cals="http://www.someplace.org/cals"
 xmlns:xhtml="http://www.w3.org/1999/xhtml"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xmlns:c="http://www.w3.org/ns/xproc-step"
-exclude-result-prefixes="saxon cals"
+exclude-result-prefixes="saxon cals xsi"
 extension-element-prefixes="exsl">
 
 <xsl:template match="xhtml:*" mode="editor-prepare">
@@ -208,19 +207,23 @@ extension-element-prefixes="exsl">
 </xsl:template>
 
 <xsl:template match="img[@class='paperfigure']" mode="image">
+    <!-- only use original width, stored as attribute 'paperwidth'
    <xsl:variable name="width" select="number(@width) div $cm2px"/>
-    
+     -->
     <paperfigure type='c' label='*' id='*'>
         <xsl:attribute name="location"><xsl:value-of select="@location"/></xsl:attribute>
         <xsl:if test="@paperlocation">
             <xsl:attribute name="paperlocation" select="@paperlocation"/>
+        </xsl:if>
+        <xsl:if test="@reset">
+            <xsl:attribute name="reset" select="@reset"/>
         </xsl:if>
         <caption></caption>
         <content>
             <resource>
                 <name><xsl:value-of select="reverse(tokenize(@src,'/'))[1]"/></name>
                 <id></id>
-                <width><xsl:if test="$width>0"><xsl:value-of select="$width"/>cm</xsl:if></width>
+                <width><xsl:if test="@paperwidth"><xsl:value-of select="@paperwidth"/></xsl:if></width>
                 <height></height>
                 <description><xsl:value-of select="@alt"/></description>
                 <owner></owner>
@@ -231,14 +234,15 @@ extension-element-prefixes="exsl">
 
 <!-- an image ("resource"), not being part of a paperfigure and not inside a paragraph-->
 <xsl:template match="img[@class='resource']" mode="editor" priority="2">
+    <!-- only use original width, stored as attribute 'paperwidth'
     <xsl:variable name="width" select="number(@width) div $cm2px"/>
-    
+    -->
     <resource>
         <name>
             <xsl:value-of select="reverse(tokenize(@src,'/'))[1]"/>
         </name>
         <id></id>
-        <width><xsl:if test="$width>0"><xsl:value-of select="$width"/>cm</xsl:if></width>
+        <width><xsl:if test="@paperwidth"><xsl:value-of select="@paperwidth"/></xsl:if></width>
         <height></height>
         <description>
             <xsl:value-of select="@alt"/>

@@ -258,16 +258,8 @@ extension-element-prefixes="exsl">
         <div class="answer-button"></div>
         <div class="answer-content">
             <xsl:if test="@type='algebrakit'">
-                <xsl:choose>
-                    <xsl:when test="evaluation">
-                        <div class="answer-heading">AlgebraKIT:</div>
-                        <xsl:call-template name="algebrakit-spec"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <div class="answer-heading">AlgebraKIT:</div>
-                        <xsl:call-template name="algebrakit-spec"/>
-                    </xsl:otherwise>
-                </xsl:choose>
+                <div class="answer-heading">AlgebraKIT:</div>
+                <xsl:call-template name="algebrakit-spec"/>
             </xsl:if>
             <xsl:choose>
                 <xsl:when test="answer">
@@ -331,7 +323,7 @@ extension-element-prefixes="exsl">
         </select><br/>
         <span class="algebrakit-spec-item">Antwoord modus:</span>
         <select class='algebrakit-mode-select'>
-            <option value="EQUIVALENT">Wiskundig gelijkwaardig</option>
+            <option value="EQUIVALENT">Wiskundig gelijkwaardig (standaard)</option>
             <option value="EXACT">Precies hetzelfde</option>
             <option value="EQUIVALENT_MANUAL_COMMIT">Wiskundig gelijkwaardig zonder controle</option>
         </select><br/>
@@ -346,13 +338,17 @@ extension-element-prefixes="exsl">
                 <xsl:attribute name="class">wrong-input-line</xsl:attribute>
             </xsl:if>
         </input><br/>
-        <span class="algebrakit-spec-item">Invoer naar AlgebraKIT:</span>
+        <span class="algebrakit-spec-item">Invoertemplate voor AlgebraKIT:</span>
         <input type="text" name="submit" size="70" value="{evaluation/@submit}"/><br/>
-        <span class="algebrakit-spec-item">Label:</span>
+        <span class="algebrakit-spec-item">Tekst vóór invoerveld:</span>
         <input type="text" name="question" size="70" value="{evaluation/@question}"/><br/>
         <span class="algebrakit-spec-item">Antwoord (AlgebraKIT):</span>
         <input type="text" name="answer" size="70" value="{evaluation/@answer}"/><br/>
+        <span class="algebrakit-spec-item">Extra attributen:</span>
+        <input type="text" name="solution-attributes" size="70" value="{evaluation/@solution-attributes}"/><br/>
+        <div class="algebrakit-test-config">testen</div>
         <xsl:apply-templates select="evaluation" mode="editor"/>
+        
     </div>
 </xsl:template>
 <xsl:template match="answer" mode="editor">

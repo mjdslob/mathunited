@@ -16,7 +16,7 @@
  */
 
 requirejs.config({
-    urlArgs: "bust=v26", //update this when a modification is made, to prevent caching problems
+    urlArgs: "bust=v27", //update this when a modification is made, to prevent caching problems
     //By default load any module IDs from js/lib
     baseUrl: '/MathUnited/javascript/lib',
 //    baseUrl: 'js/lib',
@@ -27,8 +27,10 @@ requirejs.config({
     //the paths config could be for a directory.
     paths: {
         app: '../editor',
+        org: '../org',
+        com: '../com',
         actions: '../editor/actions',
-        algebrakit: '../editor/algebrakit',
+        akitex: '../editor/akit_ex',
         jquery: 'jquery-1.10.2', //change here when using newer version of jquery,
         jqueryui: 'jquery-ui-1.10.4.custom.min', //change here when using newer version of jquery,
         jqueryChosen: 'chosen_v1.1.0/chosen.jquery.min',
@@ -40,6 +42,12 @@ requirejs.config({
         
     },
     shim: {
+        'org/mathdox': {
+            //These script dependencies should be loaded before loading
+            //backbone.js
+            deps: ['../org/mathdox/formulaeditor/FEConcatenation','jquery','http://cdn.mathjax.org/mathjax/latest/MathJax.js'],
+            exports: 'MathDox'
+        },
         'jqueryui': {
             deps: ['jquery'],
             export: '$'

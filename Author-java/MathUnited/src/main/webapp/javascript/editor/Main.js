@@ -16,8 +16,8 @@
  */
 
 define(['jquery', 'app/Document','actions/ObjectivesHandler', 'actions/SetExerciseMetadata', 
-        'app/ItemSelector',  'actions/AlgebraKITSpecHandler', 'jqueryui'], 
- function($, doc, objectivesHandler, metadataHandler, itemSelector, AlgebraKITSpecHandler) {
+        'app/ItemSelector', 'jqueryui'], 
+ function($, doc, objectivesHandler, metadataHandler, itemSelector) {
     var commitURL = '/MathUnited/postcontent';
     var refreshURL = '/MathUnited/refresh-lock';
     
@@ -91,7 +91,6 @@ define(['jquery', 'app/Document','actions/ObjectivesHandler', 'actions/SetExerci
                 $('#startup-msg p').html('Initialiseer document');
                 objectivesHandler.init();
                 itemSelector.init( $('#meta-components-url').text(), $('#meta-threads-url').text() );
-                AlgebraKITSpecHandler.init();
                 doc.init();
                 $('#commit-button').click(function(){_this.submit();});
                 $('#show-backups-wrapper').click(function(){_this.showBackups();});

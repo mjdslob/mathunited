@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['jquery','mathjax','./AlgebraKITSpecHandler'], function($, MathJax, AlgebraKITSpecHandler) {
+define(['jquery','mathjax','app/AlgebraKITSpecHandler'], function($, MathJax, AlgebraKITSpecHandler) {
     
     return {
         action : function(elm, params) {

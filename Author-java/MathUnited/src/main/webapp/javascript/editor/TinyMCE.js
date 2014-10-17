@@ -241,14 +241,14 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
 
             //clean HTML. Not XHTML, we rely on TagSoup on the server to convert to XML
             valid_elements : 
-              "@[id|class|style|title|dir<ltr?rtl|lang|xml::lang|onclick|ondblclick|"
+              "@[reset|id|class|style|title|dir<ltr?rtl|lang|xml::lang|onclick|ondblclick|"
               + "onmousedown|onmouseup|onmouseover|onmousemove|onmouseout|onkeypress|"
               + "onkeydown|onkeyup|tag|ref|item],"
             + "a[rel|rev|charset|hreflang|tabindex|accesskey|type|"
               + "name|href|target|title|class|onfocus|onblur],"
             + "b/strong,i/em,strike,u,"
             + "#p,-ol[type|compact],-ul[type|compact],-li,br,img[longdesc|usemap|"
-            + "src|border|alt=|title|hspace|vspace|width|height|align|location|paperlocation],-sub,-sup,"
+            + "src|border|alt=|title|hspace|vspace|width|height|align|location|paperlocation|paperwidth],-sub,-sup,"
             + "-blockquote,-table[border=0|cellspacing|cellpadding|width|frame|rules|"
             + "height|align|summary|bgcolor|background|bordercolor],-tr[rowspan|width|"
             + "height|align|valign|bgcolor|background|bordercolor],tbody,thead,tfoot,"

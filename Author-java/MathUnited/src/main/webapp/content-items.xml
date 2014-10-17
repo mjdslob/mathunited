@@ -330,6 +330,45 @@
             </test>
         </container-item>
     </container>
+    
+    <container name="context">
+        <container-item name="nieuw item: Context">
+            <context>
+                <include filename="__subcomp__-context__#1__.xml">
+                    <context id="__subcomp__-context__#1__">
+                        <p>...</p>
+                    </context>
+                </include>
+                <exercises>
+                    <include filename="__subcomp__-context__#1__-ex-__#2__.xml">
+                        <exercise id="__subcomp__-context__#1__-ex-__#2__.">
+                            <multi-item>
+                                <intro>
+                                    <p>...introductie...</p>
+                                </intro>
+                                <items>
+                                    <item label="a" type="open">
+                                        <itemcontent>
+                                            <question>
+                                                <p>...opgave...</p>
+                                            </question>
+                                        </itemcontent>
+                                        <answer>
+                                            <p>...antwoord...</p>
+                                        </answer>
+                                        <explanation/>
+                                        <feedback/>
+                                        <teacheranswer/>
+                                    </item>
+                                </items>
+                            </multi-item>
+                        </exercise>
+                    </include>
+                </exercises>
+            </context>
+        </container-item>
+    </container>
+    
     <container name="exercises">
         <!--
         <container-item name="Paragraaf">

@@ -71,6 +71,11 @@
                     <exam name="Examenopgaven" optional="true"/>
                 </item-list>
             </xsl:when>
+            <xsl:when test="subcomponent/componentcontent/context">
+                <item-list>
+                    <context name="Context"/>
+                </item-list>
+            </xsl:when>
             <xsl:otherwise>
                 <item-list>
                     <introduction name="Inleiding" optional="true"/>
@@ -197,6 +202,7 @@
                 <link rel="stylesheet" href="css/exercises.css?nocache=3" type="text/css"/>
                 <link rel="stylesheet" href="css/M4AStijl2.css" type="text/css"/>
                 <link rel="stylesheet" href="css/editor.css" type="text/css"/>
+	        <link rel="stylesheet" href="css/AKIT-Exercise.css" type="text/css"/>
                 <link rel="stylesheet" href="javascript/lib/chosen_v1.1.0/chosen.css"/>
                 <link rel="stylesheet" type="text/css" media="screen" href="/elfinder/css/elfinder.min.css"/>
             </head>
