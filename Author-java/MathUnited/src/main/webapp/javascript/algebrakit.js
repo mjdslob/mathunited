@@ -16,9 +16,8 @@
  */
 
 requirejs.config({
-    urlArgs: "bust=v27", //update this when a modification is made, to prevent caching problems
     //By default load any module IDs from js/lib
-    baseUrl: '/MathUnited/javascript/lib',
+    baseUrl: 'javascript/lib',
 //    baseUrl: 'js/lib',
     //except, if the module ID starts with "app",
     //load it from the js/app directory. paths
@@ -26,17 +25,11 @@ requirejs.config({
     //never includes a ".js" extension since
     //the paths config could be for a directory.
     paths: {
-        app: '../editor',
-        actions: '../editor/actions',
         akitex: '../editor/akit_ex',
         jquery: 'jquery-1.10.2', //change here when using newer version of jquery,
         jqueryui: 'jquery-ui-1.10.4.custom.min', //change here when using newer version of jquery,
-        jqueryChosen: 'chosen_v1.1.0/chosen.jquery.min',
-//        touchpunch: 'jquery.ui.touch-punch.min',
-        tinymce: '../tinymce/jquery.tinymce.min',
         mathjax: "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML&amp;delayStartupUntil=configured",
         touchpunch: 'jquery.ui.touch-punch.min'
-        
     },
     shim: {
         'mathquill': {
@@ -45,24 +38,11 @@ requirejs.config({
         },
         'jqueryui': {
             deps: ['jquery'],
-            export: '$'
+            export: 'jqueryui'
         },
         'touchpunch': {
             deps: ['jqueryui'],
             export: 'touchpunch'
-        },
-        'jqueryChosen': {
-            deps: ['jquery']
-        },
-/*        
-        'touchpunch': {
-            deps: ['jqueryui'],
-            export: 'touchpunch'
-        },
-*/        
-        'tinymce': {
-            deps: [],
-            export: 'tinymce'
         },
         mathjax: {
             exports: "MathJax",
@@ -82,10 +62,14 @@ requirejs.config({
 });
 
 // Start the main app logic.
-requirejs(['jquery', 'app/Main', 'mathjax'],
-function   ($, Main, MathJax) {
-   $( function(){
-       Main.init(); 
-   } );
+requirejs(['jquery', 'akitex/Main','touchpunch','mathjax'],
+function   ($, Main,touchpunch) {
+    $('.akit-exercise').each(function() {
+        try{
+            Main.addExercise(this);
+        } catch(err) {
+            alert(err.message);
+        }
+    });
 });
 

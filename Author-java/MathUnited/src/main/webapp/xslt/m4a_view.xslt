@@ -222,9 +222,10 @@ indent="yes" encoding="utf-8"/>
 		   <link rel="stylesheet" href="css/content.css" type="text/css"/>
 		   <link rel="stylesheet" href="css/exercises.css" type="text/css"/>
 		   <link rel="stylesheet" href="css/M4AStijl2.css" type="text/css"/>
-		   <link rel="stylesheet" href="/AlgebraKIT/css/StepPanel.css" type="text/css"/>
-		   <link rel="stylesheet" href="/AlgebraKIT/css/AKIT-Exercise.css" type="text/css"/>
-                   <script data-main="/AlgebraKIT/js/main.js" src="/AlgebraKIT/js/require.js"></script>
+		   <link rel="stylesheet" href="css/StepPanel.css" type="text/css"/>
+		   <link rel="stylesheet" href="css/AKIT-Exercise.css" type="text/css"/>
+		   <link rel="stylesheet" href="css/mathquill.css" type="text/css"/>
+                   <script data-main="javascript/algebrakit.js" src="javascript/require.js"></script>
       </xsl:otherwise>
    </xsl:choose>
 

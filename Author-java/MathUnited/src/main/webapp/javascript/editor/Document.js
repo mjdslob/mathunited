@@ -113,33 +113,6 @@ define(['jquery', 'app/TinyMCE', 'app/ContextMenu',  'app/AlgebraKITSpecHandler'
                 
             }
         });
-        $('img.resource').unbind('click').click(function() {
-            var main = require('app/Main');
-            var elm = $('<div class="elfinder-wrapper"></div>');
-            $(this).after(elm);
-            var elf = elm.elfinder({
-                // lang: 'ru',             // language (OPTIONAL)
-                url : '/elfinder/php/connector.php',  // connector URL (REQUIRED)
-                customData: {
-                    path: main.getImagebase(),
-                    repoPath: main.getRepoPath()
-                },
-                onlyMimes: ["image"] // display all images
-            });
-            elf.elfinder('instance');               
-/*
-            moxman.browse({
-                path: imagebase+'/',
-                view: 'thumbs',
-                multiple: false,
-                title: 'Afbeelding invoegen',
-                oninsert: function(args) {
-                              alert('boe');
-                           }
-            });
-*/            
-        });
-        
         $('*[_done]').removeAttr('_done');
         
         toggleVisibleButton('block', elm);
