@@ -21,7 +21,7 @@ function WM_Manager(spec) {
 //    this.methodURL = spec.methodURL;
     this.repo = spec.repo;
     this.thread = spec.thread;
-    this.publishURL = '/Publisher/php/Publisher.php';
+    this.publishURL = '/Publisher/htmlphp/Publisher.php';
     this.target = 'mathunited';
 }
 
