@@ -12,6 +12,34 @@ class GAEPlatform extends Platform {
         $this->publishId = $publishId;
     }
 
+    function openFile($fname, $logger) {
+        # Get text from file
+        $txt = file_get_contents($fname);
+
+        # Regular expression to match xml-model directive (optional space between
+        # starting <? and xml-model; can appear on multiple lines.
+        $pattern = "/<\?\s*xml-model.*?\?>/m";
+        $limit = -1; # Keep searching for more for safety. // TODO: could be = 1 as only one model should be specified
+        $count = 0; # Count number of replacements
+        
+
+        # Replace pattern with the empty string
+        $filtered_txt = preg_replace($pattern, "", $txt, $limit, $count);
+                
+        # Log if replacement was done, and set text in that case
+        if ($count > 0) {
+            //$msg = "DEBUG: Removed $count xml-model directives from $fname.";
+            //$logger->trace(LEVEL_ERROR, $msg);
+            #error_log("GenerateIndex::openFile: " . $msg);
+            $txt = $filtered_txt;
+        }
+
+        
+        $txt = EntityConverter::convert_entities($txt);
+        $doc = new SimpleXMLElement($txt);
+        return $doc;
+    }
+    
     public function publishOverview($repoID, $repo, $logger, $threadsXML, $componentsXML) {
         $logger->trace(LEVEL_INFO, 'send components.xml for repo '.$repoID);        
         $error = !$this->sendFile('components.xml', '', $repoID, $componentsXML, $logger);
@@ -30,11 +58,7 @@ class GAEPlatform extends Platform {
     public function publishComponentFile($compId, $compRef, $basePath, $repo, $logger) {
         $logger->trace(LEVEL_INFO, 'publishing component file for '.$compId.' repo='.$repo);
         $compFile = $basePath.$compRef;
-        $txt = file_get_contents($compFile);
-        if($txt===false) throw new Exception("Component $compFile does not exist");
-
-        $txt = EntityConverter::convert_entities($txt);
-        $doc = new SimpleXMLElement($txt);
+        $doc = $this->openFile($compFile, $logger);
         $this->sendFile($compRef, "", $repo, $doc->asXML(), $logger);
         
     }
@@ -69,11 +93,7 @@ class GAEPlatform extends Platform {
             $indexDoc = new SimpleXMLElement($txt);
         }
 
-        $txt = file_get_contents($subcompFile);
-        if($txt===false) throw new Exception("Subcomponent $subcompFile does not exist");
-
-        $txt = EntityConverter::convert_entities($txt);
-        $doc = new SimpleXMLElement($txt);
+        $doc = $this->openFile($subcompFile, $logger);
 
         if($indexDoc!=null) {
             $elm = $indexDoc->xpath("//component[@id='$compId']/subcomponent[@id='$subcompId']");
@@ -97,17 +117,13 @@ class GAEPlatform extends Platform {
         $this->sendFile($subcompRef, "", $repo, $doc->asXML(), $logger);
 
         //also post containing includes
-        $main = new SimpleXMLElement($txt);
-        $incs = $main->xpath("//include");
+        //$main = new SimpleXMLElement($txt);
+        $incs = $doc->xpath("//include");
         foreach($incs as $inc) {
             $incId = (string)$inc['filename'];
             $fname = $base.$incId;
-            $txt = file_get_contents($fname);
-            if($txt===false) throw new Exception("File $fname does not exist");
-            $txt = EntityConverter::convert_entities($txt);
-
+            $doc = $this->openFile($fname, $logger);
             //find references to resources in this document
-            $doc = new SimpleXMLElement($txt);
 
             $this->setTextrefs($compId, $doc, $indexDoc, $logger);
             $this->sendResourcesFromFile($doc, $subcompId, $repo, $logger, $base);
@@ -242,7 +258,11 @@ class GAEPlatform extends Platform {
                 if($exif_type){
                     $mimetype = image_type_to_mime_type($exif_type);
                 } else {
-                    $mimetype = "application/octet-stream";
+                    //check for svg
+                    $strArr = explode(".",$imagefname);
+                    $ext = $strArr[ count($strArr)-1 ];
+                    if(strcmp($ext, 'svg')==0 || strcmp($ext, 'SVG')==0) $mimetype = 'image/svg+xml';
+                    else $mimetype = "application/octet-stream";
                 }
                 try
                 {
@@ -383,9 +403,8 @@ class GAEPlatform extends Platform {
         curl_close($ch);
 
         $url = trim($response);
-        if ($url != "")
-        {
-            $logger->trace(LEVEL_INFO, 'Skipped resource upload ('.$type.') (id='.$id.', repo='.$repo.', fname='.$fname.', mimetype='.$mimetype.' <a href="http://mathunited2012.appspot.com'.$url.'">open</a>)');       
+        if ($url != "")    {
+            $logger->trace(LEVEL_INFO, 'Skipped resource upload (' . $type . ') (id=' . $id . ', repo=' . $repo . ', fname=' . $fname . ', mimetype=' . $mimetype . ' <a href="http://mathunited2012.appspot.com' . $url . '">open</a>)');
             return $url;
         }
         

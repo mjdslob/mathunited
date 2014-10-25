@@ -225,6 +225,33 @@ class Publisher {
         $pf->publishSubcomponent($comp, "", $this->logger);
     }
 
+    function openFile($fname) {
+        # Get text from file
+        $txt = file_get_contents($fname);
+
+        # Regular expression to match xml-model directive (optional space between
+        # starting <? and xml-model; can appear on multiple lines.
+        $pattern = "/<\?\s*xml-model.*?\?>/m";
+        $limit = -1; # Keep searching for more for safety. // TODO: could be = 1 as only one model should be specified
+        $count = 0; # Count number of replacements
+        
+
+        # Replace pattern with the empty string
+        $filtered_txt = preg_replace($pattern, "", $txt, $limit, $count);
+                
+        # Log if replacement was done, and set text in that case
+        if ($count > 0) {
+            //$msg = "DEBUG: Removed $count xml-model directives from $fname.";
+            //$this->logger->trace(LEVEL_ERROR, $msg);
+            #error_log("GenerateIndex::openFile: " . $msg);
+            $txt = $filtered_txt;
+        }
+
+        $txt = EntityConverter::convert_entities($txt);
+        $doc = new SimpleXMLElement($txt);
+        return $doc;
+    }
+
     //execute task. For specific tasks, override executeImpl()
     function publishThread($threadID, $targetID, $repo, $doDemo) {
         //generate an id for this publish
@@ -232,8 +259,8 @@ class Publisher {
         
         //read threads xml
         $baseURL = $repo['basePath'];
-        $threadsXMLstr = file_get_contents($baseURL.'leerlijnen/threads.xml');
-        $threads = new SimpleXMLElement($threadsXMLstr);
+        $threadsXMLstr = '/var/www'.$repo['threadsURL'];
+        $threads = $this->openFile($threadsXMLstr);
         $compids = array();
         
         foreach ($threads->xpath("/threads/thread[@id=\"$threadID\"]//contentref") as $ref) {
@@ -243,33 +270,9 @@ class Publisher {
         if(count($compids)==0)  throw new Exception("Thread $threadID does not contain any components");
         
         $compFiles = array();
-        $compsXMLstr = file_get_contents($baseURL.'leerlijnen/components.xml');
-        $comps = new SimpleXMLElement($compsXMLstr);
+        $compsXMLstr = '/var/www'.$repo['componentsURL'];
+        $comps = $this->openFile($compsXMLstr);
 
-        foreach($compids as $cc) {
-            $ref = $cc['ref'];
-            $compDef  = $comps->xpath("/mathunited/methods/method/components/component[@id=\"$ref\"]");
-            if($compDef && count($compDef)>0){
-                $compDef = $compDef[0];
-                $title = $compDef->title;
-                $title = (string)$title[0];
-                $subcomps = $compDef->xpath("subcomponents/subcomponent");
-                foreach($subcomps as $sc) {
-                    $subTitle = $sc->title;
-                    $subTitle = (string)$subTitle[0];
-                    $sref = $sc->file;
-                    $sref = (string)$sref[0];
-                    $sid = (string)$sc['id'];
-                    $compFiles[] = array('compId'=>$ref,
-                                        'fname' => $this->repo['basePath'].$sref,
-                                        'ref' => $sref,
-                                        'id'  => $sid,
-                                        'method' => $repo['id'],
-                                        'title' =>$title.' - '.$subTitle);
-                }
-            }
-        }
-        
         switch($targetID){
             case "threeships":$tspf = new ThreeShipsPlatform($publishId, $doDemo); break;
             case "mathunited":$tspf = new GAEPlatform($publishId); break;
@@ -279,10 +282,43 @@ class Publisher {
         }
         
         set_time_limit(0);  //prevent timeout
-        foreach($compFiles as $cf) {
-            $tspf->publishComponent($cf, $threadID, $this->logger);
-        }
+        foreach($compids as $cc) {
+            $ref = $cc['ref'];
+            $compDef  = $comps->xpath("/mathunited/methods/method/components/component[@id=\"$ref\"]");
+            $compId = $ref;
+            if($compDef && count($compDef)>0){
+                $compDef = $compDef[0];
+                $compFile = $compDef['file'];
+                $title = $compDef->title;
+                $title = (string)$title[0];
+                $subcomps = $compDef->xpath("subcomponents/subcomponent");
 
+                $tspf->publishComponentFile($compId, $compFile, $this->repo['basePath'], $this->repo['name'], $this->logger);
+                
+                foreach($subcomps as $sc) {
+                    $subCompFile= $sc->file;
+                    $subCompFile = (string)$subCompFile[0];
+                    $subCompId = (string)$sc['id'];
+
+                    $comp = array();
+                    $comp['method']=$this->repo['name'];
+                    $comp['compId']=$compId;
+                    $comp['compRef']=$compFile;
+                    $comp['subcompId']=$subCompId;
+                    $comp['subcompRef']=$subCompFile;
+                    $comp['pathbase']=$this->repo['basePath'];
+                    try{
+                        $tspf->publishSubcomponent($comp, "", $this->logger);
+                    } catch(Exception $e) {
+                        $msg = $e->getMessage();
+                        $this->logger->trace(LEVEL_ERROR, $msg);
+                        $this->logger->trace(LEVEL_ERROR, 'Publishing this subcomponent failt. Continuing publishing');
+                    }
+
+                }
+            }
+        }
+              
         $tspf->postPublish();
     }
 

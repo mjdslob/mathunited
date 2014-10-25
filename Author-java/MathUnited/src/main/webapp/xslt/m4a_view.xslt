@@ -557,6 +557,9 @@ indent="yes" encoding="utf-8"/>
         </xsl:choose>
     </div>
 </xsl:template>
+
+
+<xsl:template match="exercise[metadata/clone/@active='true']"/>
 <xsl:template match="exercise">
     <xsl:param name="options"/>
     <xsl:param name="is-open"/>
@@ -940,6 +943,8 @@ indent="yes" encoding="utf-8"/>
         </div>
    </div>
 </xsl:template>
+
+<xsl:template match="author-remark" mode="content" priority="10"/>
 
 <xsl:template match='block[@medium="web"]'><xsl:apply-templates/></xsl:template>
 

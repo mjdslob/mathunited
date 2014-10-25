@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -12,12 +14,18 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
+import mathunited.XSLTbean;
+
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 public class Component {
+    private final static Logger LOGGER = Logger.getLogger(Component.class.getName());
+	static {LOGGER.setLevel(Level.INFO);}
+	
     public List<SubComponent> subComponentList;
     String id;
     public String file;
@@ -64,32 +72,40 @@ public class Component {
         return componentMap;
     }
 
+    static public String getAttribute(String name, Node node) {
+    	NamedNodeMap map = node.getAttributes();
+    	Node attrNode = map.getNamedItem(name);
+    	return attrNode.getTextContent();
+    }
+    static public String getChild(String name, Node node) {
+    	NodeList list = node.getChildNodes();
+    	for(int ii=0; ii<list.getLength(); ii++) {
+    		Node nn = list.item(ii);
+    		if(nn.getNodeName().equals(name)) {
+    			return nn.getTextContent();
+    		}
+    	}
+    	return null;
+    }
     static public Component readComponent(String methodId, Node parent, XPath xpath) throws Exception {
+    	//mslo: removed the sequence of xpath-expressions, because it turns out to be too slow
+    	//studiovo has more than 800 components and processing took more than one minute!
         List<SubComponent> subList = new ArrayList<SubComponent>();
-        XPathExpression expr = xpath.compile("@id");
-        String compId = (String)expr.evaluate(parent, XPathConstants.STRING);
-        expr = xpath.compile("@file");
-        String compFile = (String)expr.evaluate(parent, XPathConstants.STRING);
-        expr = xpath.compile("title");
-        String comptitle = (String)expr.evaluate(parent, XPathConstants.STRING);
-        expr = xpath.compile("subtitle");
-        String compSubTitle = (String)expr.evaluate(parent, XPathConstants.STRING);
-        expr = xpath.compile("@number");
-        String compNumber = (String)expr.evaluate(parent, XPathConstants.STRING);
+ 	    String compId = getAttribute("id", parent);
+ 	    String compFile = getAttribute("file", parent);
+        String comptitle = getChild("title", parent);
+        String compSubTitle = getChild("subtitle", parent);
+ 	    String compNumber = getAttribute("number", parent);
         Component comp = new Component(compId, compFile, methodId, comptitle, compSubTitle, subList);
         comp.number = compNumber;
-        expr = xpath.compile("subcomponents/subcomponent");
+        XPathExpression expr = xpath.compile("subcomponents/subcomponent");
     	NodeList subsList = (NodeList)expr.evaluate(parent, XPathConstants.NODESET);
         for (int ii = 0; ii < subsList.getLength(); ii++) {
            Node subNode = subsList.item(ii);
-           expr = xpath.compile("file");
-           String subfile = (String)expr.evaluate(subNode, XPathConstants.STRING);
-           expr = xpath.compile("title");
-           String subtitle = (String)expr.evaluate(subNode, XPathConstants.STRING);
-           expr = xpath.compile("@id");
-           String subId = (String)expr.evaluate(subNode, XPathConstants.STRING);
-           expr = xpath.compile("@number");
-           String subNumber = (String)expr.evaluate(subNode, XPathConstants.STRING);
+           String subfile = getChild("file", subNode);
+           String subtitle = getChild("title", subNode);
+    	   String subId = getAttribute("id", subNode);
+    	   String subNumber = getAttribute("number", subNode);
            SubComponent sub = new SubComponent(subId, subtitle, subfile, subNumber);
            subList.add(sub );
         }
@@ -134,6 +150,7 @@ public class Component {
             nextId = subComponentList.get(index + 1).id;
         parameterMap.put("subcomponent_preceding_id", precId);
         parameterMap.put("subcomponent_following_id", nextId);
+        LOGGER.info(parameterMap.toString());
 	}
 }
 

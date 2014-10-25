@@ -6,14 +6,18 @@ import javax.servlet.ServletContext;
 import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.transform.Source;
+
 import org.xml.sax.InputSource;
 import org.xml.sax.helpers.XMLReaderFactory;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.XMLReader;
+
 import javax.xml.transform.sax.SAXSource;
+
 import java.net.URL;
 import java.io.*;
 import java.net.MalformedURLException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Map;
 
@@ -25,7 +29,7 @@ import org.xml.sax.SAXException;
 public class ContentResolver implements URIResolver {
     /** resolves uri from document(), include() and import() in stylesheet */
 	private final static Logger LOGGER = Logger.getLogger(XSLTbean.class.getName());
-
+	static {LOGGER.setLevel(Level.INFO);}
     ServletContext context;
     private String repo;
     private String parentId;
@@ -100,10 +104,8 @@ public class ContentResolver implements URIResolver {
                XMLReader xmlReader = XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
                xmlReader.setEntityResolver(entityResolver);
                SAXSource xmlSaxSource = new SAXSource(xmlReader, xmlSource);
-       LOGGER.info("MSLO: resolving success");
                return xmlSaxSource;
 	        }
-	        LOGGER.severe("- failed");
         }  catch(Exception e) {
             LOGGER.info("MSLO: resolving exception");
             e.printStackTrace();

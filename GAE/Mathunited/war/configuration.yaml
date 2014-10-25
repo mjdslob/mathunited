@@ -36,6 +36,11 @@ repos :
     path: content-ma/concept
     edit_permission: editor_m4a
     defaultVariant: m4a_view
+  m4a2015 :
+    id : m4a2015-2014-10-24
+    path: content-ma/malmberg
+    edit_permission: editor_m4a
+    defaultVariant: m4a_view
   m4a_en :
     id : m4a_en-2013-07-19
     path: content-ma/saba

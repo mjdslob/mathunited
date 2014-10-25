@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletConfig;
@@ -24,6 +25,7 @@ import mathunited.configuration.SubComponent;
 
 public class ViewServlet extends HttpServlet {
     private final static Logger LOGGER = Logger.getLogger(XSLTbean.class.getName());
+	static {LOGGER.setLevel(Level.INFO);}
     ServletContext context;
     
     @Override
@@ -43,7 +45,7 @@ public class ViewServlet extends HttpServlet {
              throws ServletException, IOException {
 
         try{
-            Configuration config = Configuration.getInstance(context);
+        	Configuration config = Configuration.getInstance(context);
             XSLTbean processor = new XSLTbean(context, config.getVariants());
 
             //read request parameters
@@ -85,6 +87,7 @@ public class ViewServlet extends HttpServlet {
             }
            	if(repo==null)
            		throw new Exception("Het verplichte argument 'repo' ontbreekt: "+repo);
+           	
             Repository repository = config.getRepos().get(repo);
             if(repository==null) {
                 throw new Exception("Onbekende repository: "+repo);
@@ -136,6 +139,7 @@ public class ViewServlet extends HttpServlet {
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             ContentResolver resolver = new ContentResolver(repo, sub.file, context);
             Source xmlSource = resolver.resolve(sub.file, "root");
+            
             processor.process(xmlSource, variant, parameterMap, resolver, byteStream);
             response.setContentType("text/html");
             

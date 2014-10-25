@@ -3,6 +3,7 @@ package mathunited.configuration;
 import java.io.StringReader;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import mathunited.GetTextFileServlet;
@@ -19,6 +20,7 @@ import com.google.appengine.api.datastore.Text;
 
 public class Repository {
     private final static Logger LOGGER = Logger.getLogger(XSLTbean.class.getName());
+    static {LOGGER.setLevel(Level.INFO);}
 	/** index of available components in this repository */
     private static Map<String, Map<String, Component>> componentMaps = new HashMap<String, Map<String, Component>>();
 	

@@ -16,6 +16,13 @@ class Config {
     //        'get_QTI_url' => 'http://mathunited.nl/view?repo=m4a&variant=m4a_view_pulseon&comp={#COMP}&subcomp={#SUBCOMP}'
             'get_QTI_url' => 'http://localhost:8080/MathUnited/view?repo=m4a&variant=m4a_view_pulseon&comp={#COMP}&subcomp={#SUBCOMP}'
         ),
+        'm4a2015' => array(
+            'id'=>'m4a2015-2014-10-24',
+            'paths'=>array(
+                ''
+                ),
+            'index_xsl'=>'../xslt/generate-index-ma.xslt'
+        ),
         'malmberg_pragma' => array(
             'id'=>'malmberg-2013-07-19',
             'paths'=>array(
@@ -58,6 +65,7 @@ class Config {
     static function getRepoConfig($repoName) {
         $conf = Config::$repo_data[$repoName];  //in php this is a copy, not a reference. So save to modify
         $confXML = Config::getRepoFromMathunited($repoName);
+        $conf['name'] = $repoName;
         $conf['basePath'] = (string)$confXML->path."/";
         $conf['componentsURL'] = (string)$confXML->componentsURL;
         $conf['threadsURL'] = (string)$confXML->threadsURL;
