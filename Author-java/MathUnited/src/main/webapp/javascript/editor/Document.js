@@ -144,7 +144,7 @@ define(['jquery', 'app/TinyMCE', 'app/ContextMenu',  'app/AlgebraKITSpecHandler'
                var elm = $(this);
                var target = elm.attr('href');
                elm.attr('href','#');
-               elm.attr('target', target);
+               elm.attr('url', target);
                elm.click(function() {
                     var goOn = true;
                     var isiPad = navigator.userAgent.match(/iPad/i) != null;
