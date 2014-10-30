@@ -22,9 +22,11 @@
 -->
 </xsl:template>
 <xsl:template match="subcomponent" mode="collect">
-   <subcomponent id="{@id}">
-       <xsl:apply-templates mode="collect"/>
-   </subcomponent>
+    <xsl:if test="not(contains(@id,'test')) and not(contains(@id,'context'))">
+        <subcomponent id="{@id}">
+            <xsl:apply-templates mode="collect"/>
+        </subcomponent>
+    </xsl:if>
 </xsl:template>
 
 <xsl:template match="subcomponent/file" mode="collect">
@@ -76,7 +78,15 @@
     </xsl:apply-templates>
 </xsl:template>
 
-<xsl:template match="explore | introduction | digest | application | extra |test | summary | exam | exercise | example | application | explanation" mode="included">
+<xsl:template match="exercise" mode="included">
+    <xsl:variable name="id" select="@id"/>
+    <xsl:if test="not(metadata/clone/@active='true')">
+        <xsl:element name="{name()}">
+            <xsl:attribute name="id"><xsl:value-of select="$id"/></xsl:attribute>
+        </xsl:element>
+    </xsl:if>
+</xsl:template>
+<xsl:template match="explore | introduction | digest | application | extra |test | summary | exam | example | application | explanation" mode="included">
     <xsl:variable name="id" select="@id"/>
     <xsl:element name="{name()}">
         <xsl:attribute name="id"><xsl:value-of select="$id"/></xsl:attribute>

@@ -240,13 +240,18 @@ class Overview {
         $subNode = $componentNode->addChild('subcomponents');
         $subDoc = $compDoc->subcomponents;
         for ($kk = 0; $kk < count($subDoc->subcomponent); $kk++) {
-            $s = $subDoc->subcomponent[$kk];
-            $sc = $subNode->addChild('subcomponent');
-            $sc->addAttribute('number', $s['number']);
-            $sc->addAttribute('id', $s['id']);
-            $sc->addChild('title', $s->title);
-            $sc->addChild('file', $cc["relativePath"] . (string) $s->file);
-        }
+             $s = $subDoc->subcomponent[$kk];
+            $fname = (string)$s->file;
+            //instaptoets, uitstaptoets en context mogen alleen voor Malmberg gepubliceerd worden
+            if($repo['name']==="malmberg" || 
+               (strpos($fname,"test")===FALSE && strpos($fname,"context")===FALSE)){
+                $sc = $subNode->addChild('subcomponent');
+                $sc->addAttribute('number', $s['number']);
+                $sc->addAttribute('id', $s['id']);
+                $sc->addChild('title', $s->title);
+                $sc->addChild('file', $cc["relativePath"] . (string) $s->file);
+            }
+       }
     }
 
     function isAcceptedComponent($cc, $repoFilter, $yearFilter) {

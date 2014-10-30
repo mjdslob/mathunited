@@ -96,10 +96,10 @@ class GAEPlatform extends Platform {
         $doc = $this->openFile($subcompFile, $logger);
 
         if($indexDoc!=null) {
-            $elm = $indexDoc->xpath("//component[@id='$compId']/subcomponent[@id='$subcompId']");
-            if(count($elm)>0) {
-                $indexBase = $elm[0];
-                $indexBase = (string)$indexBase['_base'];
+            $subCompIndexDoc = $indexDoc->xpath("//component[@id='$compId']/subcomponent[@id='$subcompId']");
+            if(count($subCompIndexDoc)>0) {
+                $subCompIndexDoc = $subCompIndexDoc[0];
+                $indexBase = (string)$subCompIndexDoc['_base'];
                 $doc->addAttribute('_base',$indexBase);
             }
             //add list of subcomponents to the xml
@@ -124,7 +124,16 @@ class GAEPlatform extends Platform {
             $fname = $base.$incId;
             $doc = $this->openFile($fname, $logger);
             //find references to resources in this document
-
+            //copy the number of elements (especially exercises) as attribute @_nr into the element
+            if($subCompIndexDoc!=null && isset($doc['id'])) {
+                $nrId = $doc['id'];
+                $nrElm = $subCompIndexDoc->xpath("//*[@id='$nrId']");
+                if(count($nrElm)>0){
+                    $nrElm = $nrElm[0];
+                    $doc['_nr']=(string)$nrElm['_nr'];
+                }
+            }
+            $elm = $indexDoc->xpath("//");
             $this->setTextrefs($compId, $doc, $indexDoc, $logger);
             $this->sendResourcesFromFile($doc, $subcompId, $repo, $logger, $base);
             //send the updated xml file

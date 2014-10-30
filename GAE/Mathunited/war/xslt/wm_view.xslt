@@ -499,7 +499,7 @@ indent="yes" encoding="utf-8" />
             <xsl:for-each select="exercisegroup[@level='normal']/exercise">
                 <div id="nav-ex-but-{@num}" num="{@num}" onclick="WM_toggleMenuExerciseGroup(this)">
                     <xsl:attribute name="class">menu-assignment-number active</xsl:attribute>
-                    <xsl:value-of select="@num"/>
+                    <xsl:value-of select="@num"/>a
                 </div>
             </xsl:for-each>
             </div>
@@ -541,9 +541,10 @@ indent="yes" encoding="utf-8" />
 <xsl:template match="exercise" mode="navigation">
    <xsl:param name="type"/>
    <div class="menu-item-div">
+       <xsl:variable name='num' select='@num'/>
        <div id="nav-ex-but-{@num}" num="{@num}" onclick="WM_toggleMenuExerciseGroup(this)">
            <xsl:attribute name="class">menu-assignment-number</xsl:attribute>
-           <xsl:value-of select="@num"/>
+           <xsl:value-of select="$num"/>a
            <xsl:if test="$type='difficult'">s</xsl:if>
        </div>
    </div>

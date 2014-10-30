@@ -39,7 +39,9 @@ extension-element-prefixes="exsl">
         <internal-meta>
             <subcomponents>
                 <xsl:for-each select="$indexDoc/index/component[@id=$comp]/subcomponent">
-                    <subcomponent id="{@id}" _nr="{@_nr}"/>
+                    <xsl:if test="not(contains(@id,'test')) and not(contains(@id,'context'))">
+                        <subcomponent id="{@id}" _nr="{@_nr}"/>
+                    </xsl:if>
                 </xsl:for-each>
             </subcomponents>
         </internal-meta>

@@ -523,7 +523,7 @@ indent="yes" encoding="utf-8"/>
             </xsl:otherwise>
         </xsl:choose>
         <div class="exercise-heading">
-            Opgave <xsl:value-of select="$number"/> <span class="opgave-title-span"><xsl:value-of select="title"/></span> <div class="opgave-label-button"/>
+            Opgave <xsl:value-of select="@_nr"/> <span class="opgave-title-span"><xsl:value-of select="title"/></span> <div class="opgave-label-button"/>
         </div>
         <div class="exercise-contents">
             <xsl:apply-templates mode="content">
