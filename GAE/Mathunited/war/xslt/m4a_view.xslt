@@ -493,7 +493,6 @@ indent="yes" encoding="utf-8"/>
                             </xsl:choose>
                         </xsl:with-param>
                         <xsl:with-param name="options" select="$options"/>
-                        <xsl:with-param name="number" select="@num"/>
                     </xsl:apply-templates>
                 </xsl:for-each>
             </xsl:when>
@@ -501,7 +500,6 @@ indent="yes" encoding="utf-8"/>
                 <xsl:for-each select="include">
                     <xsl:apply-templates select="document(concat($docbase,@filename))/exercise">
                         <xsl:with-param name="options" select="$options"/>
-                        <xsl:with-param name="number" select="@num"/>
                     </xsl:apply-templates>
                 </xsl:for-each>
             </xsl:otherwise>
@@ -512,7 +510,6 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="exercise">
     <xsl:param name="options"/>
     <xsl:param name="is-open"/>
-    <xsl:param name="number"/>
     <div>
         <xsl:choose>
             <xsl:when test="$is-open='true'">

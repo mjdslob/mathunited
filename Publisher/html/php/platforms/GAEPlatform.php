@@ -125,15 +125,13 @@ class GAEPlatform extends Platform {
             $doc = $this->openFile($fname, $logger);
             //find references to resources in this document
             //copy the number of elements (especially exercises) as attribute @_nr into the element
-            if($subCompIndexDoc!=null && isset($doc['id'])) {
-                $nrId = $doc['id'];
-                $nrElm = $subCompIndexDoc->xpath("//*[@id='$nrId']");
+            if($subCompIndexDoc!=null) {
+                $nrElm = $subCompIndexDoc->xpath("//*[@fname='$incId']");
                 if(count($nrElm)>0){
                     $nrElm = $nrElm[0];
                     $doc['_nr']=(string)$nrElm['_nr'];
                 }
             }
-            $elm = $indexDoc->xpath("//");
             $this->setTextrefs($compId, $doc, $indexDoc, $logger);
             $this->sendResourcesFromFile($doc, $subcompId, $repo, $logger, $base);
             //send the updated xml file
@@ -176,7 +174,6 @@ class GAEPlatform extends Platform {
             'text'=>rawurlencode($text),
             'repo'=>$repo
         );
-
         //url-ify the data for the POST
         $fields_string = '';
         foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }

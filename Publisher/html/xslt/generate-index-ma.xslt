@@ -75,21 +75,26 @@
     <xsl:param name="path"/>
     <xsl:apply-templates select="document(concat($path,@filename))" mode="included">
         <xsl:with-param name="path" select="$path"/>
+        <xsl:with-param name="fname" select="@filename"/>
     </xsl:apply-templates>
 </xsl:template>
 
 <xsl:template match="exercise" mode="included">
+    <xsl:param name="fname"/>
     <xsl:variable name="id" select="@id"/>
     <xsl:if test="not(metadata/clone/@active='true')">
         <xsl:element name="{name()}">
             <xsl:attribute name="id"><xsl:value-of select="$id"/></xsl:attribute>
+            <xsl:attribute name="fname"><xsl:value-of select="$fname"/></xsl:attribute>
         </xsl:element>
     </xsl:if>
 </xsl:template>
 <xsl:template match="explore | introduction | digest | application | extra |test | summary | exam | example | application | explanation" mode="included">
+    <xsl:param name="fname"/>
     <xsl:variable name="id" select="@id"/>
     <xsl:element name="{name()}">
         <xsl:attribute name="id"><xsl:value-of select="$id"/></xsl:attribute>
+        <xsl:attribute name="fname"><xsl:value-of select="$fname"/></xsl:attribute>
     </xsl:element>
 </xsl:template>
 
