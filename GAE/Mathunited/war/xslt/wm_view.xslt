@@ -216,7 +216,8 @@ indent="yes" encoding="utf-8" />
                         </div>
                     </div>
                 </div>
-                <div class="section-container" _base="{subcomponent/@_base}">
+                <div class="section-container">
+                   <xsl:attribute name="_base"><xsl:value-of select="subcomponent/@_base"/></xsl:attribute>
                    <xsl:apply-templates select="subcomponent/section"/>
                 </div>
             	<xsl:variable name="logoUrl"><xsl:choose>
@@ -541,10 +542,7 @@ indent="yes" encoding="utf-8" />
 <xsl:template match="exercise" mode="navigation">
    <xsl:param name="type"/>
    <div class="menu-item-div">
-       <xsl:variable name='num' select='@num'/>
-       <div id="nav-ex-but-{@num}" num="{@num}" onclick="WM_toggleMenuExerciseGroup(this)">
-           <xsl:attribute name="class">menu-assignment-number</xsl:attribute>
-           <xsl:value-of select="$num"/>a
+       <div id="nav-ex-but-{@num}" num="{@num}" class="menu-assignment-number" onclick="WM_toggleMenuExerciseGroup(this)">
            <xsl:if test="$type='difficult'">s</xsl:if>
        </div>
    </div>
