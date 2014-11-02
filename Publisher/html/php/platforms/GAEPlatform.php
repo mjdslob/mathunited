@@ -46,11 +46,11 @@ class GAEPlatform extends Platform {
         $logger->trace(LEVEL_INFO, 'send threads.xml for repo '.$repoID);        
         $error = !$this->sendFile('threads.xml', '', $repoID, $threadsXML, $logger);
         
-        $files = scandir("/data/".$repo['basePath'].'resultxml/');
+        $files = scandir($repo['basePath'].'resultxml/');
         foreach($files as $file) {
             if (!is_dir($file) && strtolower(substr($file, -4)) == '.xml') {
                 $logger->trace(LEVEL_INFO, 'sending '.$file.'...');
-                $this->sendXmlFile(basename($file, ".xml"), $repoID, file_get_contents("/data/".$repo['basePath'].'resultxml/'.$file), $logger, "result-structure");
+                $this->sendXmlFile(basename($file, ".xml"), $repoID, file_get_contents($repo['basePath'].'resultxml/'.$file), $logger, "result-structure");
             }
         }
     }
