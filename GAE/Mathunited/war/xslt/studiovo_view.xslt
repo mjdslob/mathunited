@@ -47,8 +47,8 @@ extension-element-prefixes="exsl">
     <xsl:choose>
       <xsl:when test="subcomponent/meta/param[@name='css-file']">
         <xsl:value-of select="subcomponent/meta/param[@name='css-file']"/>
-      </xsl:when>
-      <xsl:otherwise>basis_studiovo.css?v=37</xsl:otherwise>
+      </xsl:when>	
+      <xsl:otherwise>basis_studiovo.css?v=41</xsl:otherwise>
     </xsl:choose>
 </xsl:variable>
 <xsl:variable name="overviewRef"><xsl:value-of select="string('/auteur/math4all.html')"/></xsl:variable>
@@ -147,6 +147,15 @@ indent="yes" encoding="utf-8"/>
           }
 		);
     </script>
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	
+	  ga('create', 'UA-3488697-8', 'auto');
+	  ga('send', 'pageview');
+	</script>    
     <style>
         <xsl:if test="$menu_color">
 			#menubar { background-color:<xsl:value-of select="$menu_color"/>; }
@@ -404,7 +413,8 @@ indent="yes" encoding="utf-8"/>
         <xsl:apply-templates select="page" mode="content"/>
         <div class="page-navigator">
             <xsl:for-each select="page">
-                <div num="{position()}" onclick="javascript:togglePage(this)">
+            	<xsl:variable name="noreadspeaker"><xsl:choose><xsl:when test="@noreadspeaker=1">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></xsl:variable>
+                <div num="{position()}" onclick="javascript:togglePage(this)" noreadspeaker="{$noreadspeaker}">
                 	<xsl:attribute name="class">page-navigator-ref <xsl:if test="position() = 1">selected</xsl:if></xsl:attribute>
                 	<xsl:value-of select="position()"/>
                 </div>
