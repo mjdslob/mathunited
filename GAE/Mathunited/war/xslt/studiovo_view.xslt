@@ -349,6 +349,9 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="block">
     <xsl:param name="menuref"/>
     <div class="content-tab" id="{concat('tab-',$menuref,'-',position())}">
+    	<xsl:if test="@noreadspeaker=1">
+    		<xsl:attribute name="noreadspeaker">1</xsl:attribute>
+    	</xsl:if>
         <xsl:apply-templates mode="content"/>
     </div>
 </xsl:template>
