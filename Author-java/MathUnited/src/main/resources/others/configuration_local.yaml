@@ -13,6 +13,7 @@ variants :
   m4a_insert : {path: /xslt/m4a_insert.xslt}
   m4a_remove : {path: /xslt/m4a_remove.xslt}
   m4a_inverse : {path: /xslt/m4a_inverse.xslt}
+  malmberg_view : {path: /xslt/malmberg_view.xslt}
 
 roles :
   - admin
@@ -48,7 +49,7 @@ repos :
   malmberg :
     path: 
     edit_permission: editor_malmberg
-    defaultVariant: m4a_view
+    defaultVariant: malmberg_view
     componentsURL: /leerlijnen/components.xml
     threadsURL: /leerlijnen/threads.xml
     contentItems: m4a-content-items.xml

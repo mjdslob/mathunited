@@ -78,7 +78,7 @@ extension-element-prefixes="exsl">
     </xsl:choose>
 </xsl:variable>
 <xsl:variable name="cm2px" select="number(50)"/>
-<xsl:variable name="variant">m4a_view</xsl:variable>
+<xsl:variable name="variant">malmberg_view</xsl:variable>
 <xsl:variable name="arg_option">
     <xsl:choose>
         <xsl:when test="$option">&amp;option=<xsl:value-of select="$option"/></xsl:when>
@@ -414,7 +414,7 @@ indent="yes" encoding="utf-8"/>
             <span class="list-section-nr">
                 <a>
                     <xsl:attribute name="href">
-                        <xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',$subcomponents/subcomponent[number(@_nr)=$i]/@id,'&amp;variant=basis',$arg_parent,$arg_repo)"/>
+                        <xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',$subcomponents/subcomponent[number(@_nr)=$i]/@id,'&amp;variant=',$variant,$arg_parent,$arg_repo)"/>
                     </xsl:attribute>
                     <xsl:value-of select="$i"/>
                 </a>

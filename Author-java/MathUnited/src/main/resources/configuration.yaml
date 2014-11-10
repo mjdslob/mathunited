@@ -5,6 +5,7 @@ variants :
   studiovo_view : {path: /xslt/studiovo_view.xslt}
   wm_view : {path: /xslt/wm_view.xslt}
   m4a_view : {path: /xslt/m4a_view.xslt}
+  malmberg_view : {path: /xslt/malmberg_view.xslt}
   m4a_view_en : {path: /xslt/m4a_view_en.xslt}
   m4a_view_dedicon : {path: /xslt/m4a_view_dedicon.xslt}
   m4a_view_pulseon : {path: /xslt/m4a_view_pulseon.xslt}
@@ -48,7 +49,7 @@ repos :
   malmberg :
     path: 
     edit_permission: editor_malmberg
-    defaultVariant: m4a_view
+    defaultVariant: malmberg_view
     componentsURL: /leerlijnen/components.xml
     threadsURL: /leerlijnen/threads.xml
     contentItems: m4a-content-items.xml
