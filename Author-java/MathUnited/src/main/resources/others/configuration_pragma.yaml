@@ -51,6 +51,8 @@ repos :
     baseRepo : m4a
     edit_permission: editor_saba
     defaultVariant: m4a_view_saba
+    componentsURL: /index/m4a-engels/components.xml
+    threadsURL: /index/m4a-engels/threads.xml
   m4a_engels :
     path: content-ma/engels
     baseRepo : m4a

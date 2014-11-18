@@ -5,7 +5,6 @@ variants :
   studiovo_view : {path: /xslt/studiovo_view.xslt}
   wm_view : {path: /xslt/wm_view.xslt}
   m4a_view : {path: /xslt/m4a_view.xslt}
-  malmberg_view : {path: /xslt/malmberg_view.xslt}
   m4a_view_en : {path: /xslt/m4a_view_en.xslt}
   m4a_view_dedicon : {path: /xslt/m4a_view_dedicon.xslt}
   m4a_view_pulseon : {path: /xslt/m4a_view_pulseon.xslt}
@@ -14,6 +13,7 @@ variants :
   m4a_insert : {path: /xslt/m4a_insert.xslt}
   m4a_remove : {path: /xslt/m4a_remove.xslt}
   m4a_inverse : {path: /xslt/m4a_inverse.xslt}
+  malmberg_view : {path: /xslt/malmberg_view.xslt}
 
 roles :
   - admin
