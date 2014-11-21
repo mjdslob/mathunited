@@ -13,6 +13,7 @@ require_once("platforms/Platform.php");
 require_once("platforms/ThreeShipsPlatform.php");
 require_once("platforms/GAEPlatform.php");
 require_once("platforms/PulseOnPlatform.php");
+require_once("platforms/VOQTIPlatform.php");
 require_once("Logger.php");
 
 
@@ -37,6 +38,7 @@ class Publisher {
         include("Config.php");
         $this->logger = new Logger($this->loglevel, $this->repoID, false);
         try{
+            $this->logger->trace(LEVEL_INFO, "Start Publisher");
 
             if( isset($this->comm['cmd']) ) {
                 $cmd = $this->comm['cmd'];
@@ -175,6 +177,7 @@ class Publisher {
         
         switch($targetID){
             case "pulseon": $pf = new PulseOnPlatform($publishId, false); break;
+            case "vo": $pf = new VOQTIPlatform($publishId, false); break;
             default:
                 throw new Exception("Unknown target ID: $targetID");
                 break;
@@ -360,7 +363,6 @@ class Publisher {
     }
 
 }
-
 
 $pub = new Publisher();
 

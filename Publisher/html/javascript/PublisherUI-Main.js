@@ -9,6 +9,7 @@ WM_CMD_SHOW_THREADS2 = 8;
 WM_CMD_UPLOADQTI_SUBCOMPONENT = 9;
 WM_CMD_PUBLISH_COMPONENTFILE = 10;
 WM_CMD_LOAD_CONFIG_DATA = 11;
+WM_CMD_UPLOADVOQTI_SUBCOMPONENT = 12;
 
 //spec:
 // - method: url to methods-overview.xml file
@@ -21,7 +22,7 @@ function WM_Manager(spec) {
 //    this.methodURL = spec.methodURL;
     this.repo = spec.repo;
     this.thread = spec.thread;
-    this.publishURL = '/Publisher/htmlphp/Publisher.php';
+    this.publishURL = '/Publisher/php/Publisher.php';
     this.target = 'mathunited';
 }
 
@@ -86,10 +87,13 @@ WM_Manager.prototype.continueProcessing = function() {
      case WM_CMD_PUBLISH_SINGLE_THREAD:
           this.publishSingleThread(cmd.args);
           break;
-	 case WM_CMD_UPLOADQTI_SUBCOMPONENT:
+     case WM_CMD_UPLOADQTI_SUBCOMPONENT:
           this.uploadQTISubcomponent(cmd.args);
           break;
-      case WM_CMD_LOAD_CONFIG_DATA:
+     case WM_CMD_UPLOADVOQTI_SUBCOMPONENT:
+          this.uploadVOQTISubcomponent(cmd.args);
+          break;
+     case WM_CMD_LOAD_CONFIG_DATA:
           this.loadConfig();
           break;
 	 
@@ -342,6 +346,29 @@ WM_Manager.prototype.uploadQTI = function() {
     this.execute();
 };
 
+WM_Manager.prototype.uploadVOQTI = function() {
+    if(isBusyUploading) return;
+    isBusyUploading = true;    
+    $('#uploadVOQTI-button').addClass('disabled');
+    var _this = this;
+    var subcomp = $('.subcomponent.selected');
+    $(subcomp).each(function( index ) {
+        var elm = $(this);
+        var compParent = elm.parents('.component-container').first();
+        var compElm = $('.component', compParent).first();
+        var compId = compElm.attr('id');
+        var subcompId = elm.attr('id');
+        var comp = _this.modules[compId];
+        for(var ii=0; ii<comp.subcomponents.length;ii++){
+            var sc = comp.subcomponents[ii];
+            if(sc.id===subcompId){
+                _this.addCommand(new WM_Command(WM_CMD_UPLOADVOQTI_SUBCOMPONENT, {id: subcompId, compId: compId, ref: sc.file, repo: _this.repo, target:"vo"}));
+            }
+        }
+    });
+    this.execute();
+};
+
 WM_Manager.prototype.publishThread = function() {
     if(isBusyPublishing) return;
     isBusyPublishing = true;    
@@ -391,6 +418,21 @@ WM_Manager.prototype.publishSubcomponent = function(args) {
 };
 
 WM_Manager.prototype.uploadQTISubcomponent = function(args) {
+    var _this = this;
+    var elm = $('#'+args.id);
+    elm.addClass('processing');
+    $.post( this.publishURL, 
+           {id:args.id, compId: args.compId, ref:args.ref, repo: args.repo, user:'mslob',passwd:'test', cmd:'uploadQTISubcomponent', target:args.target},
+           function success(data, textStatus,jqXHR) {
+               elm.removeClass('processing');
+               elm.removeClass('selected');
+               elm.addClass('published');
+                _this.continueProcessing();
+           }
+    );
+};
+
+WM_Manager.prototype.uploadVOQTISubcomponent = function(args) {
     var _this = this;
     var elm = $('#'+args.id);
     elm.addClass('processing');
