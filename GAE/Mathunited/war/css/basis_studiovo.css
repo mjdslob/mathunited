@@ -920,6 +920,46 @@ table.answer td.label
 	background-color: #C1D8FA;
 }
 
+.fixedHead table tr td {
+	margin: 0 2px 2px 0;
+	padding: 2px;
+	background-color: #528BE0;
+	color: #fff;
+	text-align: left;
+	font-weight: bold;
+	width: 100px;
+	max-width: 100px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.fixedTable table tr td {
+	margin: 0 2px 2px 0;
+	padding: 2px;
+	background-color: #C1D8FA;
+}
+
+.fixedColumn .fixedTable table tr td {
+	margin: 0 2px 2px 0;
+	padding: 2px;
+	background-color: #528BE0;
+	font-weight: bold;
+	width: 100px;
+	max-width: 100px;
+}
+
+.fixedColumn .fixedTable table tr td a {
+	display: inline-block;
+	color: #fff;
+	width: 96px;
+	max-width: 96px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	line-height: 15px;
+}
+
 .grid.class-result th {
 	min-width: 60px;
 	max-width: 60px;

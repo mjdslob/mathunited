@@ -9,8 +9,9 @@
 <%@ page import="org.w3c.dom.Document" %>
 <html>
 <head>
-	<link rel="stylesheet" href="css/basis_studiovo.css?v=6" type="text/css"/>
+	<link rel="stylesheet" href="css/basis_studiovo.css?v=41" type="text/css"/>
     <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
+    <script type="text/javascript" src="javascript/jquery.fixedtable.js"></script>
     <script type="text/javascript" src="javascript/MathUnited_studiovo.js"></script>
 </head>
 <body class="backend-page">
@@ -77,7 +78,7 @@
 <h3>Voortgang <%= cls.id %></h3>
 
 <% if (results.size() > 0) { %>
-
+<div id="wrapper-div">
 <table class="grid class-result">
 <% 
 	boolean first = true;
@@ -87,19 +88,22 @@
 		ScoreGroup result = Utils.transformResultsTree(inputDoc, assignments);
 %>
 <% if (first) { %>
-	<tr>
-		<th class="first">&nbsp;</th>
+	<thead>
+		<tr>
+			<th class="first">&nbsp;</th>
 <%
     for (ScoreGroup group : result.groups) {
 %>
-		<th>
-			<%= group.title %>
-		</th>
+			<th>
+				<%= group.title %>
+			</th>
 <%
     }
 %>
-		<th class="last">&nbsp;</th>
-	</tr>
+			<th class="last">&nbsp;</th>
+		</tr>
+	</thead>
+	<tbody>
 <%
 	first = false; 
 } 
@@ -124,8 +128,22 @@
 <%
     }
 %>
+	</tbody>
 </table>
-
+</div>
+<script>
+$(".class-result").fixedTable({
+    width: 730,
+    height: 380,
+    fixedColumns: 1,
+    classHeader: "fixedHead",
+    classFooter: "fixedFoot",
+    classColumn: "fixedColumn",
+    fixedColumnWidth: 100,
+	columnWidth: 100,
+    outerId: "wrapper-div"
+});        
+</script>
 <% } else { %>
 	<div class="empty-text">Er hebben zich nog geen leerlingen aangemeld bij deze klas</div>
 <% } %>
