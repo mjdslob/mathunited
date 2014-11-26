@@ -86,11 +86,11 @@ define(['akitex/Main','jquery'], function(AKITMain, $) {
                 
                 
                 $('.algebrakit-test-config',parent).first().click(function() {
-                    var str = '<div class="akit-exercise" audience="">'
-                            + '  <div class="akit-main">'
-                            + '     <span class="akit-input-widget akit-init-open" solve=""/>'
+                    var str = '<div class="akit-exercise akit-init-open" audience="">'
+                            + '  <div class="akit-main akit-item">'
+                            + '     <span class="akit-input-widget" solve=""/>'
                             + '  </div>'
-                            + '</div>'
+                            + '</div>';
                     var elm = $(str);
                     var inp = $('.akit-input-widget',elm);
                     str = $('select.audience-select option:selected', parent).attr('value');
@@ -127,7 +127,8 @@ define(['akitex/Main','jquery'], function(AKITMain, $) {
                             }
                         }
                     });
-                    AKITMain.addExercise(dlg);
+                    
+                    AKITMain.addExercise({dom:dlg});
                 });
             });
             
