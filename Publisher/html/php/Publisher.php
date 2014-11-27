@@ -13,7 +13,6 @@ require_once("platforms/Platform.php");
 require_once("platforms/ThreeShipsPlatform.php");
 require_once("platforms/GAEPlatform.php");
 require_once("platforms/PulseOnPlatform.php");
-require_once("platforms/VOQTIPlatform.php");
 require_once("Logger.php");
 
 
@@ -177,7 +176,6 @@ class Publisher {
         
         switch($targetID){
             case "pulseon": $pf = new PulseOnPlatform($publishId, false); break;
-            case "vo": $pf = new VOQTIPlatform($publishId, false); break;
             default:
                 throw new Exception("Unknown target ID: $targetID");
                 break;

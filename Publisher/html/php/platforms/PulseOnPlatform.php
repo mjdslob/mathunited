@@ -13,7 +13,7 @@ class PulseOnPlatform extends Platform {
     //Upload QTI of a single component
     public function uploadQTIComponent($comp, $threadID, $logger) {
         $this->stderr = fopen('logs/stderr.log','a');
-        $logger->trace(LEVEL_INFO, 'uploading QTI of subcomponent '.$comp['id'].' to PulseOn');        
+        $logger->trace(LEVEL_INFO, 'uploading QTI of subcomponent '.$comp['id']);        
         
         $repo = $comp['method'];
         $compFile = $comp['fname'];
@@ -60,6 +60,7 @@ class PulseOnPlatform extends Platform {
         $asms = $doc->xpath("//assessment");
         foreach($asms as $asm){
             $id = (string)$asm['src'];
+	    $player = (string)$asm['player'];
             $ind = strpos($id, ' ');
             if($ind!==FALSE) {
                 throw new Exception("Assignment name '$id' contains spaces. This is not allowed.");
@@ -72,8 +73,15 @@ class PulseOnPlatform extends Platform {
                 $fileExists = false;
             }
             if($fileExists){
-                $logger->trace(LEVEL_INFO, 'uploading assessment (src='.$id.')');        
-                $getUrl = $this->sendAssessment($qtifname, $logger);
+		if ($player == 'vo') {
+	                $logger->trace(LEVEL_INFO, 'uploading assessment (src='.$id.') to StudioVO QTI system'); 
+                	$getUrl = $this->sendAssessmentVo($qtifname, $logger);
+
+		}
+		else {
+	                $logger->trace(LEVEL_INFO, 'uploading assessment (src='.$id.') to PulseOn QTI system'); 
+	                $getUrl = $this->sendAssessment($qtifname, $logger);
+		}
             } else {
                 $logger->trace(LEVEL_ERROR, "Missing QTI assessment: File ".$qtibase.$id." does not exist.");
             }
@@ -172,6 +180,42 @@ class PulseOnPlatform extends Platform {
             $response = curl_exec($ch);
             $ind = strpos($response, $name);
         }
+    }
+
+    private function sendAssessmentVo($fname, $logger) {
+        $curdir = getcwd();                //store current working directory
+        $ind = strrpos($fname, '/');       //and change working directory to location of qti-file
+        $name = substr($fname, $ind+1);    //in the filename
+        $ch = curl_init(); 
+	$fp = fopen($fname, 'r');
+	curl_setopt($ch, CURLOPT_URL, 'http://qti-player.appspot.com/services/putfile?repo=ster&id='.$name);
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+	    'Content-Length: '.filesize($fname),
+	    'Content-Type: application/octet-stream'
+	));
+	curl_setopt($ch, CURLOPT_POST, 1);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 86400); // 1 Day Timeout
+	curl_setopt($ch, CURLOPT_INFILE, $fp);
+	curl_setopt($ch, CURLOPT_BUFFERSIZE, 128);
+	curl_setopt($ch, CURLOPT_INFILESIZE, filesize($fname));
+
+        $response = curl_exec($ch);
+
+        if($response!=null && strncmp($response, 'error', 5)==0){
+            throw new Exception($response);
+        }
+        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	$errormsg = curl_error($ch);
+        curl_close($ch);
+        switch($code) {
+            case "200":
+                $logger->trace(LEVEL_INFO, "OK: return code: $code");
+                break;
+            default:
+                $logger->trace(LEVEL_INFO, "Not OK: return code: $code, message: $response");
+                break;
+        }
+        return $response;
     }
 
 }
