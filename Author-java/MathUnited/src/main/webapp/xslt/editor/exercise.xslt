@@ -320,6 +320,7 @@ extension-element-prefixes="exsl">
         <select class='item-palette-select'>
             <option value="default">Standaard</option>
             <option value="vergelijkingen">Vergelijkingen</option>
+            <option value="bovenbouw">Bovenbouw</option>
         </select><br/>
         <span class="algebrakit-spec-item">Antwoord modus:</span>
         <select class='algebrakit-mode-select'>

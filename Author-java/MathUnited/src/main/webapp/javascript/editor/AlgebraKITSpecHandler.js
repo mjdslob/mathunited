@@ -99,7 +99,7 @@ define(['akitex/Main','jquery'], function(AKITMain, $) {
                     if(str && str!=='default')  elm.attr('palette',str);
                     inp.attr('solve',$('input[name="solve"]', parent).val().trim());
                     str = $('select.algebrakit-mode-select option:selected', parent).attr('value');
-                    elm.attr('mode',str);
+                    inp.attr('mode',str);
                     str = $('select.algebrakit-hint-select option:selected', parent).attr('value');
                     if(str==='false')  elm.attr('show-hints',str);
                     
