@@ -200,6 +200,9 @@ ul.learningaspects li{
     height: 12px;
     cursor: pointer;
 }
+.ui-dialog .assessment-content {
+	overflow: hidden;
+}
 .assessment-wrapper iframe {
     display:none;
 }
