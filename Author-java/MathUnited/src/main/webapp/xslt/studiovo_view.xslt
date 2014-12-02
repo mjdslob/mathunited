@@ -448,7 +448,13 @@ indent="yes" encoding="utf-8"/>
 <!--  ******************** -->
 <xsl:template match="assessment" mode="content">
     <div class="assessment-wrapper">
-        <xsl:variable name="src" select="concat('http://qt-studiovo.pulseon.nl/qt/player.html?testId=',@src,'&amp;lang=nl-NL&amp;window=false')"/>
+    	<xsl:variable name="src">
+	        <xsl:choose>
+	            <xsl:when test="@player='vo'"><xsl:value-of select="concat('http://qti-player.appspot.com/render.jsp?repo=ster&amp;id=',@src)"/></xsl:when>
+	            <xsl:otherwise><xsl:value-of select="concat('http://qt-studiovo.pulseon.nl/qt/player.html?testId=',@src,'&amp;lang=nl-NL&amp;window=false')"/></xsl:otherwise>
+	        </xsl:choose>    
+        </xsl:variable>
+        
         <xsl:choose>
             <xsl:when test="@width"><xsl:attribute name="popup_width" select="@width"/></xsl:when>
             <xsl:otherwise><xsl:attribute name="popup_width" select="495"/></xsl:otherwise>
