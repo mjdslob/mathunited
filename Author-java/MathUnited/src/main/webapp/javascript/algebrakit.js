@@ -66,7 +66,9 @@ requirejs(['jquery', 'akitex/Main','touchpunch','mathjax'],
 function   ($, Main,touchpunch) {
     $('.akit-exercise').each(function() {
         try{
-            Main.addExercise(this);
+            Main.addExercise({
+                dom: this
+            });
         } catch(err) {
             alert(err.message);
         }
