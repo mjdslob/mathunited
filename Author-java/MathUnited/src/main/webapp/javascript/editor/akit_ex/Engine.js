@@ -19,7 +19,8 @@
 define(['jquery'], function($) {
 //    var engineUrl = 'http://mathunited.pragma-ade.nl:41080/AKIT_RemoteServer/Main';
 //    var engineUrl = 'http://localhost/AKIT_RemoteServer/Main';
-    var engineUrl = '/AKIT_RemoteServer/Main';
+//    var engineUrl = '/AKITServer/Main';
+    var engineUrl = 'http://akit-server-2014.appspot.com/Main';
     
     function variablesToString(varr) {
         if(!varr) return '{}';
@@ -86,7 +87,7 @@ define(['jquery'], function($) {
             if(spec.answer) params += '&answer='+encodeURIComponent(spec.answer);
             if(spec.mode)   params += '&mode='+spec.mode;
             if(spec.template) params += '&template='+encodeURIComponent(spec.template);
-            if(spec.solutionAttributes) params+='&attributes='+encodeURIComponent(spec.solutionAttributes);
+            if(spec.attributes) params+='&attributes='+encodeURIComponent(spec.attributes);
             
             $.post(engineUrl, params, 
                    function(data) {spec.callback(data);}
@@ -104,7 +105,7 @@ define(['jquery'], function($) {
          */
         getHint: function(spec) {
             var params = 'cmd=gethint&orgExpression='+encodeURIComponent(spec.orgExpression)+'&audience='+spec.audience+'&variables='+encodeURIComponent(variablesToString(spec.variables));
-            if(spec.solutionAttributes) params+='&attributes='+encodeURIComponent(spec.solutionAttributes);
+            if(spec.attributes) params+='&attributes='+encodeURIComponent(spec.attributes);
             $.post(engineUrl, params, 
                    function(data) {
                         //data = JSON.parse(data);

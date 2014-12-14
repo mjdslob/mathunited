@@ -164,7 +164,8 @@ define(["require", "akitex/Engine", "akitex/Derivation", "akitex/Palette", "akit
                         _this.isVirgin = false;
                         if (result.done) {
                             var v = null;
-                            _this.archiveInputField({exp:result.student.inputRendered, correct:true, done:true});
+                            _this.archiveInputField({exp:result.student.inputRendered, latex: inputStr, 
+                                                     correct:true, done:true});
                             var exportVar = template.attr('export');
                             if (exportVar) {
                                 //store result as variable, to be used in subsequent calculations
@@ -173,7 +174,8 @@ define(["require", "akitex/Engine", "akitex/Derivation", "akitex/Palette", "akit
                             _this.removeEditor();
                             whenDone({exportVar: v});
                         } else {
-                            _this.archiveInputField({exp:result.student.inputRendered, correct:true, done:false});
+                            _this.archiveInputField({exp:result.student.inputRendered, latex: inputStr,
+                                                     correct:true, done:false});
                             _this.clearInputField();
                             if (result.subDerivation) {
                                 _this.gen_template.attr('lastExpression', result.student.input);
@@ -186,7 +188,8 @@ define(["require", "akitex/Engine", "akitex/Derivation", "akitex/Palette", "akit
                         }
                     } else {
                         obj.isHintVisible = false;
-                        _this.archiveInputField({exp:result.student.inputRendered, correct:false, buggyDerivation: result.buggyDerivation});
+                        _this.archiveInputField({exp:result.student.inputRendered, latex: inputStr,
+                                                 correct:false, buggyDerivation: result.buggyDerivation});
                         _this.clearInputField();
                     }
                 }
@@ -333,6 +336,12 @@ define(["require", "akitex/Engine", "akitex/Derivation", "akitex/Palette", "akit
                         this.showBuggyResult(spec.buggyDerivation, $('.akit-buggy',elm));
                     }
                 }
+                //on click, copy the formula into the active editor
+                elm.click(function(){
+                    obj.editor.latex(spec.latex);
+                    obj.editor.focus();
+                });
+                
                 MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
                 this.archived = elm;
             },
@@ -353,7 +362,7 @@ define(["require", "akitex/Engine", "akitex/Derivation", "akitex/Palette", "akit
                 var templ_jq = this.gen_template;
                 var input = $('.akit-formula-editor', templ_jq);
                 var mathField = MathQuill.MathField(input[0], {
-                    //spaceBehavesLikeTab: true,
+                    spaceBehavesLikeTab: true,
                     handlers: {
                         enter: function() {
                             var latex = mathField.latex();

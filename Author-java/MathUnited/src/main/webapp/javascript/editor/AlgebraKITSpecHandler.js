@@ -31,7 +31,7 @@ define(['akitex/Main','jquery'], function(AKITMain, $) {
                     var val = $.trim(elm.val());
 
                     // Compulsory fields
-                    if (name == "solve") {
+                    if (name === "solve") {
                         if (!val) {
                             elm.addClass('wrong-input-line');
                         } else {
