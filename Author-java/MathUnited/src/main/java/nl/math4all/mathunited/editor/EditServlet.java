@@ -14,6 +14,7 @@ import nl.math4all.mathunited.resolvers.ContentResolver;
 import nl.math4all.mathunited.configuration.*;
 import nl.math4all.mathunited.configuration.SubComponent;
 import nl.math4all.mathunited.configuration.Component;
+import nl.math4all.mathunited.utils.LockManager;
 import nl.math4all.mathunited.utils.UserManager;
 import nl.math4all.mathunited.utils.Utils;
 import org.apache.commons.lang3.StringUtils;
@@ -190,7 +191,7 @@ public class EditServlet extends HttpServlet {
      * @throws Exception 
      */
     public String getLock(String username, String refbase) throws Exception {
-        return LockServlet.getInstance().getLock(username, refbase);
+        return LockManager.getInstance().getLock(username, refbase);
     }
     
     public boolean isMobile(String uaStr) {

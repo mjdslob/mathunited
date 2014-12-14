@@ -24,19 +24,12 @@ public class LockServlet extends HttpServlet {
     ServletContext context;
     Properties prop = new Properties();
 
-    static LockServlet INSTANCE = null;
-
-    public static LockServlet getInstance() {
-        return INSTANCE;
-    }
-    
     @Override
     public void init(ServletConfig config) throws ServletException {
         try{
             super.init(config);
             context = getServletContext();
             LOGGER.setLevel(Level.INFO);
-            INSTANCE = this;
         } catch(Exception e) {
             e.printStackTrace();
             LOGGER.log(Level.SEVERE, e.getMessage());
