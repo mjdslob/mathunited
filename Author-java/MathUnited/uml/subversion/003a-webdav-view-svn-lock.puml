@@ -1,0 +1,36 @@
+@startuml
+
+' Define the actors
+actor User
+box "Server" #LightGray
+    control Auteurstool as AUT
+    control "SVN Repo" as SVN
+end box
+actor "XML Editor" as XML
+
+title
+    Webdav view/SVN edit
+    Auteurstool locks first
+end title
+hide footbox
+User->AUT: Edit
+AUT->SVN: Lock
+activate SVN
+opt Parallel edit
+    XML->SVN: Lock
+    note over SVN
+        No one else
+        can lock
+    end note
+    SVN -[#red]x XML: No!
+end
+SVN -[#darkgreen]>o AUT: Yes!
+AUT -> User: Render
+User -> User: Edit
+User -> AUT: Save
+User -> AUT: Done
+AUT -> SVN: Commit/Unlock
+deactivate SVN
+@enduml
+
+

@@ -1,0 +1,29 @@
+@startuml
+
+' Define the actors
+actor User
+box "Server" #LightGray
+    control Auteurstool as AUT
+'    control "SVN Repo" as SVN
+end box
+
+title
+    Auteurstool
+    Edit pipeline
+    (huidig)
+end title
+hide footbox
+User -> AUT: Edit //id//
+AUT -[#white]>]: .
+AUT ->>]: touch lock.//id//
+AUT -> User: Render
+User -> User: edit
+User -> AUT: Save
+AUT ->]: Zip
+AUT <-]: Done
+AUT -> AUT: AJAX to XML
+AUT -> User: Render
+...
+User --> AUT: Lock timeout
+AUT -> AUT: rm lock.//id//
+@enduml

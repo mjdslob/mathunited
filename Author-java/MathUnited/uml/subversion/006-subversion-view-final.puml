@@ -1,0 +1,24 @@
+@startuml
+
+' Define the actors
+actor User as usr
+box "Server" #LightGray
+    control Auteurstool as aut
+    control "SVN Repo" as svn
+end box
+actor "XML Editor" as xml
+
+title
+    Working directory view
+end title
+hide footbox
+
+usr -> aut: Request view
+aut <-> svn: svn update
+xml <-> svn: svn update
+aut -> aut: xml to ajax
+aut -> usr: Render
+
+@enduml
+
+

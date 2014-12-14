@@ -1,0 +1,12 @@
+@startuml
+
+actor User
+actor "XML Editor" as XML
+box "Server" #LightGray
+    control Auteurstool as AUT
+    control "SVN Repo" as SVN
+end box
+
+
+
+@enduml

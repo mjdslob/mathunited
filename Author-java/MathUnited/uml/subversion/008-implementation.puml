@@ -1,0 +1,88 @@
+@startuml
+participant User as U
+participant MathUnited as MU
+participant LockManager as LM
+participant Timer
+participant SvnLock
+participant FileLock
+participant LockFile
+participant SVN
+
+MU -> MU: Startup
+MU -> LM: init
+activate LM
+LM -> LM: Check stale\nlock files
+LM -> LM: Add to locks\nmap
+LM -> Timer: Watch locks in map
+activate Timer
+Timer -> Timer: Check locks
+Timer -> Timer: Check locks
+note left of Timer
+Checks every
+15s if locks
+have a timestamp
+older than 60s.
+Deletes them.
+end note
+LM --> MU: Go on
+U -> MU: edit
+MU -> LM: getLock for\nuser and refbase
+LM -> LM: lock in map?
+alt yes
+    LM -> MU: username
+else no
+    alt Has subversion
+        LM -> SvnLock: create
+        activate SvnLock
+        LM -> SvnLock: acquire
+        SvnLock -> LockFile: remove
+        SvnLock <-> SVN: svn update //refbase//
+        SvnLock <-> SVN: svn lock *.xml
+        SvnLock -> LockFile: new with user
+        activate LockFile
+        SvnLock -> LM: ACK
+    else no svn
+        LM -> FileLock: create
+        activate FileLock
+        LM -> FileLock: aquire
+        FileLock -> LockFile: remove
+        FileLock -> LockFile: new with user
+        activate LockFile
+        FileLock -> LM: ACK
+    end alt
+    LM -> LM: add to map
+    LM -> MU: username
+end alt
+MU -> U: render
+U -> U: edits
+U -> MU: save
+MU -> MU: store in\nworking directory
+...
+U -> MU: refresh lock
+MU -> LM: getLock
+alt
+LM -> SvnLock: update timestamp
+else
+LM -> FileLock: update timestamp
+end alt
+...
+Timer -> Timer: detect timeout
+alt
+    Timer -> SvnLock: release
+    SvnLock -> SVN: svn add --parents //newFiles//
+    SvnLock -> SVN: svn commit //refbase// -m "Edit by //username//"
+    SvnLock -> SVB: svn unlock //lockedFiles//
+    SvnLock -> LockFile: remove
+    deactivate LockFile
+    Timer -> LM: remove lock from map
+    deactivate SvnLock
+else
+    Timer -> FileLock: release
+    FileLock -> LockFile: remove
+    deactivate LockFile
+    Timer -> LM: remove lock from map
+    deactivate FileLock
+end alt
+...
+
+@enduml

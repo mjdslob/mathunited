@@ -1,0 +1,46 @@
+@startuml
+
+' Define the actors
+actor User as usr
+box "Server" #LightGray
+    control Auteurstool as aut
+    control "SVN Repo" as svn
+end box
+actor "XML Editor" as xml
+
+title
+    Working directory edit
+end title
+hide footbox
+
+usr -> aut: Request edit
+aut <-> svn: svn update
+aut <-> svn: svn lock
+activate svn
+aut -> aut: xml to ajax
+aut -> usr: Render
+usr -> usr: Edit
+usr -> aut: Save
+aut -> aut: ajax to xml
+note over aut
+Create commit
+message with
+User ID and message
+that user added near
+save button.
+end note
+aut -> svn: svn commit
+aut -> aut: xml to ajax
+aut -> usr: Render
+usr -> usr: Edit
+...
+alt
+usr --> aut: End session
+else
+usr --> aut: Timeout
+end alt
+aut -> svn: unlock
+deactivate svn
+@enduml
+
+

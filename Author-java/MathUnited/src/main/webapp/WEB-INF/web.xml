@@ -31,7 +31,7 @@
     </servlet>
     <servlet>
         <servlet-name>refresh-lock</servlet-name>
-        <servlet-class>nl.math4all.mathunited.editor.RefreshLockServlet</servlet-class>
+        <servlet-class>nl.math4all.mathunited.editor.LockServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>process-item</servlet-name>

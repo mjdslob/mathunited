@@ -1,0 +1,31 @@
+variants : 
+  basis : {path: /xslt/m4a_view.xslt}
+  m4a_view : {path: /xslt/m4a_view.xslt}
+  m4a_editor : {path: /xslt/m4a_editor.xslt}
+  m4a_inverse : {path: /xslt/m4a_inverse.xslt}
+
+roles :
+  - admin
+  - editor_test
+  - editor_malmberg
+  
+repos :
+  malmberg :
+    path: 
+    edit_permission: editor_malmberg
+    defaultVariant: m4a_view
+    componentsURL: /leerlijnen/components.xml
+    threadsURL: /leerlijnen/threads.xml
+    contentItems: m4a-content-items.xml
+
+userFile : /opt/sw/mathplus/data/users_malmberg.yaml
+contentRoot : /opt/sw/mathplus/data/
+entitiesFile : /opt/sw/mathplus/data/entities.xml
+
+mail_host : localhost
+mail_smtp_port : 25
+mail_username :  
+mail_password :  
+admin_mail : m.slob@math4all.nl
+
+svnRepoRoot: /opt/sw/mathplus/repos/data-repo

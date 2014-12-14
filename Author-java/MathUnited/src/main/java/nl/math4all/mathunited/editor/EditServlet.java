@@ -16,6 +16,7 @@ import nl.math4all.mathunited.configuration.SubComponent;
 import nl.math4all.mathunited.configuration.Component;
 import nl.math4all.mathunited.utils.UserManager;
 import nl.math4all.mathunited.utils.Utils;
+import org.apache.commons.lang3.StringUtils;
 
 //mathunited.pragma-ade.nl/MathUnited/view?variant=basis&comp=m4a/xml/12hv-me0&subcomp=3&item=explore
 // - fixed parameters: variant, comp (component), subcomp (subcomponent).
@@ -85,12 +86,13 @@ public class EditServlet extends HttpServlet {
                     }
                 }
             }
-            if(repo==null) {
+
+            if (repo == null) {
                 throw new Exception("Er is geen archief geselecteerd.");
             }
             
             Repository baserepo = null;
-            if(repository.baseRepo!=null) {
+            if (repository.baseRepo != null) {
                 Map<String, Repository> repoMap = config.getRepos();
                 baserepo = repoMap.get(repository.baseRepo);
             }
@@ -143,15 +145,16 @@ public class EditServlet extends HttpServlet {
             parameterMap.put("component", component.getXML());
             parameterMap.put("repo-path", repository.getPath());
             parameterMap.put("baserepo-path", baserepo==null?"":baserepo.getPath());
-            String currentOwner = getLock(usettings.username, config.getContentRoot()+refbase);
-            if( currentOwner!=null ) {
+            String currentOwner = getLock(usettings.username, config.getContentRoot() + refbase);
+
+            if (currentOwner != null & !StringUtils.equals(currentOwner, usettings.username)) {
                 parameterMap.put("lock_owner", currentOwner);
             }
             
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             ContentResolver resolver = new ContentResolver(repository, context);
             
-            Source xmlSource = resolver.resolve(repository.getPath()+"/"+sub.file, "");
+            Source xmlSource = resolver.resolve(repository.getPath() + "/" + sub.file, "");
             String errStr = processor.process(xmlSource, variant, parameterMap, resolver, byteStream);
             response.setContentType("text/html");
             if(errStr.length()>0){
@@ -187,52 +190,7 @@ public class EditServlet extends HttpServlet {
      * @throws Exception 
      */
     public String getLock(String username, String refbase) throws Exception {
-        //lock file: refbase/lock
-        boolean allowed = true;
-        boolean create = false;
-        String userStr = null;
-        File lockFile = new File(refbase+"lock");
-        LOGGER.fine("getLock for user "+username+" and paragraph "+refbase);
-        
-        if(!lockFile.exists()) {
-            LOGGER.fine("Creating lock file for "+refbase);
-            create = true;
-        } else {
-            java.util.Date date = new java.util.Date();
-            long modified = lockFile.lastModified();
-            long current = date.getTime();
-            if(current-modified > MAX_LOCK_DURATION_SECONDS*1000) {
-                //steal lock
-                LOGGER.fine("Stealing lockfile for "+refbase+" (last modified "+((current-modified)/1000)+" seconds ago");
-                create = true;
-            } else {
-                //check if this is the same user
-                BufferedReader br = new BufferedReader(new FileReader(lockFile));
-                userStr = br.readLine();
-                if(userStr==null || userStr.isEmpty()) {
-                    //invalid lockfile. Probably changed manually.
-                    userStr = null;
-                    create = true;
-                } else {
-                    if(!username.equals(userStr)) {
-                        LOGGER.info("Editing not allowed: lock for "+refbase+" is currenlth owned by "+userStr);
-                        allowed = false;
-                    } else {
-                        LOGGER.fine("Refreshing timestamp on lock for "+refbase);
-                        lockFile.setLastModified(current);
-                        userStr=null;
-                    }
-                }
-            }
-        } 
-        
-        if(allowed && create) {
-            BufferedWriter out = new BufferedWriter(new FileWriter(lockFile));
-            out.write(username);
-            out.close();
-        }
-        
-        return userStr;
+        return LockServlet.getInstance().getLock(username, refbase);
     }
     
     public boolean isMobile(String uaStr) {

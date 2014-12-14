@@ -1,0 +1,29 @@
+@startuml
+
+' Define the actors
+actor User
+box "Server" #LightGray
+    control Auteurstool as AUT
+    control "SVN Repo" as SVN
+end box
+actor "XML Editor" as XML
+
+
+' Sequence in absence of webdav integration
+
+User ->  AUT : View
+opt Parallel edit
+    XML -> SVN: Commit
+end
+rnote over AUT
+    Up-to-date?
+end note
+AUT -> SVN: Checkout
+rnote over SVN
+    Slow..
+end note
+SVN -> AUT: Updates
+AUT --> User: Render
+
+
+@enduml

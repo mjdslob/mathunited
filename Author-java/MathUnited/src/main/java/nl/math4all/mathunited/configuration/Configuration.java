@@ -23,6 +23,7 @@ public class Configuration {
     public String mail_password;
     public String admin_mail;
     private String publicData = null;
+    public String svnRepoRoot;
     
     private static Configuration instance = null;
     
@@ -52,12 +53,9 @@ public class Configuration {
         System.out.println("CONFIG: " + output);
     }
     
-    public Configuration() { }//should not be used 
+    private Configuration() { }//should not be used
     
     public String getPublicData() {
-        if(publicData==null) {
-            
-        }
         return publicData;
     }
     public void setVariants(Map<String, TransformationSpec> variantMap) {this.variantMap = variantMap;}
@@ -72,5 +70,8 @@ public class Configuration {
     public String getContentRoot() {return this.contentRoot;}
     public void setEntitiesFile(String file) {this.entitiesFile = file;}
     public String getEntitiesFile() {return this.entitiesFile;}
-    
+    public String getSvnRepoRoot() {
+        return svnRepoRoot;
+    }
+    public void setSvnRepoRoot(String repoRoot) { this.svnRepoRoot = repoRoot; }
 }
