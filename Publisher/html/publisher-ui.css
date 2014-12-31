@@ -474,6 +474,17 @@ table tr td
 .choose-leerlijn:hover {
     background-color: #39516D;    
 }
+.choose-leerlijn-subject {
+    background-color: #39516D;
+    color:white;
+    padding:5px;
+    cursor: pointer;
+    margin:5px 0px;
+    font-weight: bold;
+}
+.choose-leerlijn-subject:hover {
+    background-color: #516885;    
+}
 /* ------------ */
 /* account      */
 /* ------------ */

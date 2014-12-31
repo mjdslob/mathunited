@@ -186,8 +186,10 @@ WM_Manager.prototype.loadMethodData = function(args) {
 WM_Manager.prototype.loadThreads = function(args) {
     var _this = this;
     this.roots = [];
-    $.get(this.threadURL,
-        function(xml) {
+    var url = this.threadURL + "?rnd=" + Math.random();
+    console.log(url);
+    $.get(url,
+        function (xml) {
             var threads = [];
             var sel;
             sel = $(xml).find('thread');
@@ -198,11 +200,14 @@ WM_Manager.prototype.loadThreads = function(args) {
                 var threadId = $(this).attr('id');
                 var thread = new WM_Thread({
                     id   : threadId,
-                    info : $(this).children('information').text(),
-                    title: $(this).children('title').text(),
+                    subject: $(this).children('subject').text(),
+                    info: $(this).children('information').text(),
+                    title: $(this).children('title').text(), 
                     type : $(this).children('schooltype').text(),
                     year : $(this).children('year').text()
                 });
+                if (thread.subject != '')
+                    _this.hasSubjects = true;
                 var p = $(this).children('threadsequence');
                 p.children('contentref').each(function() {
                     var ref = $(this).attr('ref');
@@ -282,11 +287,26 @@ WM_Manager.prototype.showThreads = function(args) {
 };
 
 WM_Manager.prototype.showThreads2 = function(args) {
-    var div = $('#'+args.parent);
+    var div = $('#' + args.parent);
+    var prevSubject = null;
+    var currentParent = div;
     for(var ii=0; ii<this.threads.length; ii++) {
         var th = this.threads[ii];
-        if(th) {
-            div.append("<div class='choose-leerlijn' onclick=\"javascript:chooseThread('"+args.page+"?thread_id="+th.id+"&repo="+this.repo+"',this)\">"+th.title+"</div>");
+        if (th) {
+            if (this.hasSubjects == true) {
+                currentParent = div.find('#subject_' + th.subject + ' .choose-leerlijn-subject-items');
+                if (currentParent.length == 0) {
+                    var subjectTitle = th.subject;
+                    if (subjectTitle == '')
+                        subjectTitle = 'Overige';
+                    var subjectBox = $("<div class='choose-leerlijn-subject' id='subject_" + th.subject + "' onclick=\"javascript:$(this).children(0).slideToggle()\">" + subjectTitle + "</div>");
+                    div.append(subjectBox);
+                    currentParent = $("<div class='choose-leerlijn-subject-items' style='display:none' />");
+                    subjectBox.append(currentParent);
+                }
+            }
+
+            currentParent.append("<div class='choose-leerlijn' onclick=\"javascript:chooseThread('" + args.page + "?thread_id=" + th.id + "&repo=" + this.repo + "',this)\">" + th.title + "</div>");
         }
     }
     
