@@ -240,17 +240,31 @@ WM_Manager.prototype.loadThreads = function(args) {
 
 WM_Manager.prototype.showComponents = function(args) {
     var div = $('#'+args.parent);
-    for(var ii=0; ii<this.threads.length; ii++) {
+    var currentParent = div;
+    for (var ii = 0; ii < this.threads.length; ii++) {
         var th = this.threads[ii];
         if(th) {
+            if (this.hasSubjects == true) {
+                currentParent = div.find('#subject_' + th.subject + ' .thread-subject-items');
+                if (currentParent.length == 0) {
+                    var subjectTitle = th.subject;
+                    if (subjectTitle == '')
+                        subjectTitle = 'Overige';
+                    var subjectBox = $("<div class='thread-subject' id='subject_" + th.subject + "' onclick=\"javascript:if (!$(this).find('.thread-subject-items').is(':visible')) { $(this).parent().find('.thread-subject-items').slideUp(); $(this).find('.thread-subject-items').slideDown() } \"><div class='thread-subject-title'>" + subjectTitle + "</div></div>");
+                    div.append(subjectBox);
+                    currentParent = $("<div class='thread-subject-items' style='display:none' />");
+                    subjectBox.append(currentParent);
+                }
+            }
+
             var threadElm = document.createElement('div');
             threadElm.className = 'thread-container';
             threadElm.id = th.id;
-            div.append(threadElm);
+            currentParent.append(threadElm);
             threadElm.innerHTML = 
                  '<div class="thread-meta">'
-                +'<div class="thread-title" onclick="javascript:showThread(this)">'+th.title+'</div>'
-                +'<div class="button-thread" onclick="toggleThread(this)">(alles)</div>'
+                +'<div class="thread-title" style="float: left" onclick="javascript:showThread(this)">'+th.title+'</div>'
+                +'<div class="button-thread" style="float: right" onclick="toggleThread(this)">(alles)</div>'
                 +'<div style="clear:left"></div></div><div class="thread-content">'
                 +'</div>';
             var threadContentElm = $('.thread-content',$(threadElm));
@@ -271,13 +285,27 @@ WM_Manager.prototype.showComponents = function(args) {
 
 WM_Manager.prototype.showThreads = function(args) {
     var div = $('#'+args.parent);
-    for(var ii=0; ii<this.threads.length; ii++) {
+    var currentParent = div;
+    for (var ii = 0; ii < this.threads.length; ii++) {
         var th = this.threads[ii];
         if(th) {
+            if (this.hasSubjects == true) {
+                currentParent = div.find('#subject_' + th.subject + ' .thread-subject-items');
+                if (currentParent.length == 0) {
+                    var subjectTitle = th.subject;
+                    if (subjectTitle == '')
+                        subjectTitle = 'Overige';
+                    var subjectBox = $("<div class='thread-subject' id='subject_" + th.subject + "' onclick=\"javascript:if (!$(this).find('.thread-subject-items').is(':visible')) { $(this).parent().find('.thread-subject-items').slideUp(); $(this).find('.thread-subject-items').slideDown() } \"><div class='thread-subject-title'>" + subjectTitle + "</div></div>");
+                    div.append(subjectBox);
+                    currentParent = $("<div class='thread-subject-items' style='display:none' />");
+                    subjectBox.append(currentParent);
+                }
+            }
+
             var threadElm = document.createElement('div');
             threadElm.className = 'thread';
             threadElm.id = 'thread-'+th.id;
-            div.append(threadElm);
+            currentParent.append(threadElm);
             threadElm.innerHTML = 
                 '<div class="thread-title" onclick="javascript:selectThread(this)">'+th.title+'</div><div style="clear:left"></div>';
         }
@@ -288,7 +316,6 @@ WM_Manager.prototype.showThreads = function(args) {
 
 WM_Manager.prototype.showThreads2 = function(args) {
     var div = $('#' + args.parent);
-    var prevSubject = null;
     var currentParent = div;
     for(var ii=0; ii<this.threads.length; ii++) {
         var th = this.threads[ii];
@@ -299,7 +326,8 @@ WM_Manager.prototype.showThreads2 = function(args) {
                     var subjectTitle = th.subject;
                     if (subjectTitle == '')
                         subjectTitle = 'Overige';
-                    var subjectBox = $("<div class='choose-leerlijn-subject' id='subject_" + th.subject + "' onclick=\"javascript:$(this).children(0).slideToggle()\">" + subjectTitle + "</div>");
+//                    var subjectBox = $("<div class='choose-leerlijn-subject' id='subject_" + th.subject + "' onclick=\"javascript:$(this).children(0).slideToggle()\">" + subjectTitle + "</div>");
+                    var subjectBox = $("<div class='choose-leerlijn-subject' id='subject_" + th.subject + "' onclick=\"javascript:if (!$(this).find('.choose-leerlijn-subject-items').is(':visible')) { $(this).parent().find('.choose-leerlijn-subject-items').slideUp(); $(this).find('.choose-leerlijn-subject-items').slideDown() } \"><div class='choose-leerlijn-subject-title'>" + subjectTitle + "</div></div>");
                     div.append(subjectBox);
                     currentParent = $("<div class='choose-leerlijn-subject-items' style='display:none' />");
                     subjectBox.append(currentParent);

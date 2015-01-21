@@ -203,6 +203,10 @@ ul.learningaspects li{
 .ui-dialog .assessment-content {
 	overflow: hidden;
 }
+.ui-dialog .ui-dialog-content {
+	padding: 6px 12px;
+}
+
 .assessment-wrapper iframe {
     display:none;
 }
