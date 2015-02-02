@@ -111,7 +111,7 @@ indent="yes" encoding="utf-8"/>
                 webFont: "",
                 imageFont: "",
                 undefinedFamily: "'Arial Unicode MS','sans-serif'",
-                scale: 80
+                scale: 100
             }
         });
     </script>
