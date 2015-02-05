@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<cloze-edit>
+    <cloze-edit-hint>Gebruik de namen zoals getoond in de afbeeling</cloze-edit-hint>
+    <cloze-edit-answers case-sensitive="no" palette="toetsjes">
+        <cloze-edit-answer state="yes">
+            <cloze-edit-answertext>badkamer</cloze-edit-answertext>
+        </cloze-edit-answer>
+        <cloze-edit-answer state="yes">
+            <cloze-edit-answertext>toilet</cloze-edit-answertext>
+        </cloze-edit-answer>
+        <cloze-edit-answer state="yes">
+            <cloze-edit-answertext>berging</cloze-edit-answertext>
+        </cloze-edit-answer>
+        <cloze-edit-answer state="yes">
+            <cloze-edit-answertext>balkon</cloze-edit-answertext>
+        </cloze-edit-answer>
+        <cloze-edit-answer state="no">
+            <cloze-edit-answertext>woonkamer</cloze-edit-answertext>
+            <cloze-edit-correction>De woonkamer is geen rechthoek; hij heeft, samen met de keuken, meer dan 4 hoeken.
+            </cloze-edit-correction>
+        </cloze-edit-answer>
+        <cloze-edit-answer state="no">
+            <cloze-edit-answertext>keuken</cloze-edit-answertext>
+            <cloze-edit-correction>De keuken is geen rechthoek; hij heeft, samen met de woonkamer, meer dan 4 hoeken.
+            </cloze-edit-correction>
+        </cloze-edit-answer>
+        <cloze-edit-answer state="no">
+            <cloze-edit-answertext>hobbyruimte</cloze-edit-answertext>
+            <cloze-edit-correction>De hobbyruimte is geen rechthoek; hij heeft weliswaar 4 hoeken, maar niet alle hoeken
+                zijn recht.
+            </cloze-edit-correction>
+        </cloze-edit-answer>
+        <cloze-edit-answer state="no">
+            <cloze-edit-answertext>entree</cloze-edit-answertext>
+            <cloze-edit-correction>De entree is geen rechthoek; hij heeft meer dan 4 hoeken.</cloze-edit-correction>
+        </cloze-edit-answer>
+    </cloze-edit-answers>
+</cloze-edit>

@@ -22,11 +22,11 @@ MU_Main.prototype.afterLoad = function() {
     this.view.hideLoadIcon();
     this.view.showThreadMenu(this.threads, threadId);
     this.showThread(threadId);
-}
+};
 
 MU_Main.prototype.showThread = function(id) {
     this.view.showThread(this.threads[id]);
-}
+};
 
 MU_Main.prototype.loadMethodData = function() {
     var _this=this;
@@ -80,7 +80,7 @@ MU_Main.prototype.loadMethodData = function() {
 
           }
     );
-}
+};
 
 MU_Main.prototype.loadThreads = function() {
     var _this = this;
@@ -110,4 +110,4 @@ MU_Main.prototype.loadThreads = function() {
         }
     );
 
-}
+};

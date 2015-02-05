@@ -20,35 +20,41 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
     var instances = {};
 
     var allowedTags = {
-        am:true,
-        text:true,
-        br:true,
-        table:true,
-        tr:true,
-        td:true,
-        quotation:true,
-        mark:true,
-        sup:true,
-        textref:true,
-        sheetref:true,
-        ol:true,
-        ul:true,
-        li:true,
-        p:true,
-        'author-remark':true,
+        am: true,
+        text: true,
+        br: true,
+        table: true,
+        tr: true,
+        td: true,
+        quotation: true,
+        mark: true,
+        sup: true,
+        textref: true,
+        sheetref: true,
+        ol: true,
+        ul: true,
+        li: true,
+        p: true,
+        'author-remark': true,
         keyword: true,
-        word: true
-
+        word: true,
+        cloze: true,
+        'cloze-answers': true,
+        'cloze-answer': true,
+        'cloze-hint': true,
+        'cloze-correction': true,
+        'cloze-answertext': true
     };
+
     function allowEditing(par) {
         var allowed = true;
         function m4a_check(elm){
             var tagname = elm.attr('tag');
             if(tagname.substr(0,2)==='m:') {
 
-            } else if(tagname in allowedTags) {
+            } else if (tagname in allowedTags) {
                 var v = allowedTags[tagname];
-                if(v!==true && v(elm)===false){
+                if (v !== true && v(elm) === false){
                     allowed = false;
                     console.log("Unsupported tag: "+tagname);
                     return false;
@@ -72,21 +78,24 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
     function onBeforeSetContent(obj) {
         var temp = $('<div>').html(obj.content);
 
-        //replace textrefs
+        // replace textrefs
         $('span[tag="textref"]',temp).each(function(){
-            var ref=$(this).attr('ref');
-            if(!ref) ref=$(this).attr('item');
+            var ref = $(this).attr('ref');
+            if (!ref) {
+                ref = $(this).attr('item');
+            }
             var elm = $('<span class="textref" ref="'+ref+'">'+$(this).text()+'</span>');
             $(this).replaceWith(elm);
         });
-        //replace sheetrefs
+
+        // replace sheetrefs
         $('span[tag="sheetref"]',temp).each(function(){
-            var ref=$(this).attr('item');
+            var ref = $(this).attr('item');
             var elm = $('<span class="sheetref" item="'+ref+'">'+$(this).text()+'</span>');
             $(this).replaceWith(elm);
         });
         
-        //replaces each am-container span to the ASCIIMathML code (between backquotes)
+        // replaces each am-container span to the ASCIIMathML code (between backquotes)
         var amContainerElm = $('span.am-container',temp);
         amContainerElm.each(function() {
             var am = $('span[tag="am"]',$(this) ).text();
@@ -211,14 +220,16 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
             script_url : 'javascript/tinymce/tinymce.jquery.js',
             content_css : "javascript/tinymce/content.css",
             external_plugins: {
-                "moxiemanager": "/moxiemanager/plugin.js", //note: moxiemanager is not part of the war-file, because it contains php
-                "m4a_keyword": "../tinymce_plugins/m4a_keyword/plugin.js",
-                "m4a_quotation":"../tinymce_plugins/m4a_quotation/plugin.js",
-                "m4a_textref":"../tinymce_plugins/m4a_textref/plugin.js",
-                "m4a_remark":"../tinymce_plugins/m4a_remark/plugin.js",
-                "m4a_image":"../tinymce_plugins/m4a_image/plugin.js",
-                "m4a_akit":"../tinymce_plugins/m4a_akit/plugin.js"
+                moxiemanager: "/moxiemanager/plugin.js", //note: moxiemanager is not part of the war-file, because it contains php
+                m4a_keyword: "../tinymce_plugins/m4a_keyword/plugin.js",
+                m4a_quotation: "../tinymce_plugins/m4a_quotation/plugin.js",
+                m4a_textref: "../tinymce_plugins/m4a_textref/plugin.js",
+                m4a_remark: "../tinymce_plugins/m4a_remark/plugin.js",
+                m4a_image: "../tinymce_plugins/m4a_image/plugin.js",
+                m4a_akit: "../tinymce_plugins/m4a_akit/plugin.js",
+                m4a_cloze: "../tinymce_plugins/m4a_cloze/plugin.js"
             },
+
             setup: function(ed) {
                 ed.on('BeforeSetContent', function(e) {
                     onBeforeSetContent(e);
@@ -229,12 +240,12 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
                 ed.on('remove', function(e) {
                     onRemove(e);
                 });          
-
             },
+
             // General options
             theme : "modern",
             plugins : "paste,fullscreen, table, link, charmap",
-            toolbar: "undo redo | bold italic | numlist bullist outdent indent | link unlink m4a_textref | m4a_keyword m4a_quotation m4a_remark | m4a_image m4a_akit | charmap",
+            toolbar: "undo redo | bold italic | numlist bullist outdent indent | link unlink m4a_textref | m4a_keyword m4a_quotation m4a_remark m4a_cloze | m4a_image m4a_akit | charmap",
             moxiemanager_rootpath: '/data/'+imagebase,
             //moxiemanager_path: '/logs',//imagebase+'/',
             relative_urls:false,
@@ -263,7 +274,8 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
             + "input[accept|alt|checked|disabled|maxlength|name|readonly|size|src|type|value],"
             + "kbd,label[for],legend,noscript,optgroup[label|disabled],option[disabled|label|selected|value],"
             + "q[cite],samp,select[disabled|multiple|name|size],small,"
-            + "textarea[cols|rows|disabled|name|readonly],tt,var,big"        
+            + "textarea[cols|rows|disabled|name|readonly],tt,var,big,"
+            + "span[*]"
        });
     } 
 

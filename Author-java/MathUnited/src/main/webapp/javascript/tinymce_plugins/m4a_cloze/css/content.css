@@ -1,0 +1,23 @@
+span[tag='cloze'] {
+    color: rgb(0,256,256);
+    font-weight: bold;
+    border: 1px #808080 solid;
+}
+
+span[tag='cloze-answer']::before {
+    content: '[';
+}
+
+span[tag='cloze-answer']::after {
+    content: ']';
+}
+
+span[tag='cloze-comment'] {
+    font-style: italic;
+}
+
+span[tag='cloze-hint'] {
+    font-weight: bold;
+    font-style: italic;
+    background-color: #ffff99;
+}

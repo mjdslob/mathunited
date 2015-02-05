@@ -24,14 +24,17 @@ extension-element-prefixes="exsl">
         <xsl:apply-templates select="@* | node()" mode="paragraph"/>
     </div>
 </xsl:template>
+
 <xsl:template match="@*" mode="paragraph">
     <xsl:copy/>
 </xsl:template>
+
 <xsl:template match="*" mode="paragraph-span">
     <span tag="{name()}">
         <xsl:apply-templates select="@* | node()" mode="paragraph-span"/>
     </span>
 </xsl:template>
+
 <xsl:template match="@* | text()" mode="paragraph-span">
     <xsl:copy/>
 </xsl:template>
@@ -96,7 +99,36 @@ extension-element-prefixes="exsl">
     </xsl:choose>
 </xsl:template>
 
-<xsl:template match="sheetref" mode="paragraph">
+    <!-- Cloze edits -->
+
+    <xsl:template match="cloze" mode="paragraph">
+        <span tag="cloze" class="cloze"><xsl:apply-templates select="@* | node()" mode="paragraph"/></span>
+    </xsl:template>
+
+    <xsl:template match="cloze-answers" mode="paragraph">
+        <span tag="cloze-answers" class="cloze-answers"><xsl:apply-templates select="@* | node()" mode="paragraph"/></span>
+    </xsl:template>
+
+    <xsl:template match="cloze-answer" mode="paragraph">
+        <span tag="cloze-answer" class="cloze-answer"><xsl:apply-templates select="@* | node()" mode="paragraph"/></span>
+    </xsl:template>
+
+    <xsl:template match="cloze-answertext" mode="paragraph">
+        <span tag="cloze-answertext" class="cloze-answertext"><xsl:apply-templates select="@* | node()" mode="paragraph"/></span>
+    </xsl:template>
+
+    <xsl:template match="cloze-correction" mode="paragraph">
+        <span tag="cloze-correction" class="cloze-correction"><xsl:apply-templates select="@* | node()" mode="paragraph"/></span>
+    </xsl:template>
+
+    <xsl:template match="cloze-hint" mode="paragraph">
+        <span tag="cloze-hint" class="cloze-hint"><xsl:apply-templates select="@* | node()" mode="paragraph"/></span>
+    </xsl:template>
+
+
+    <!-- Others -->
+
+    <xsl:template match="sheetref" mode="paragraph">
     <span tag="sheetref"><xsl:apply-templates select="@* | node()" mode="paragraph"/></span>
 </xsl:template>
 <xsl:template match="sheetref" mode="editor">

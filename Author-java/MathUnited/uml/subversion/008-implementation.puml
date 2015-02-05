@@ -71,7 +71,7 @@ alt
     Timer -> SvnLock: release
     SvnLock -> SVN: svn add --parents //newFiles//
     SvnLock -> SVN: svn commit //refbase// -m "Edit by //username//"
-    SvnLock -> SVB: svn unlock //lockedFiles//
+    SvnLock -> SVN: svn unlock //lockedFiles//
     SvnLock -> LockFile: remove
     deactivate LockFile
     Timer -> LM: remove lock from map

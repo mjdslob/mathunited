@@ -1,6 +1,7 @@
 package nl.math4all.mathunited.utils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -96,6 +97,19 @@ public class SvnLock extends Lock {
 
             // Commit will unlock
             SvnUtils.svn(false, "commit", refbase, "-m", "Changes by user " + username + ".");
+
+            // Commit images
+            File imagedir = new File(refbase, "../images");
+            if (imagedir.exists()) {
+                try {
+                    String imagepath = imagedir.getCanonicalPath();
+                    SvnUtils.svn(false, "add", "--force", imagepath);
+                    SvnUtils.svn(false, "commit", imagepath, "-m", "Changed images by user " + username + ".");
+                } catch (IOException e) {
+                    // Warn, but ignore errors
+                    LOGGER.warning("Failed to add images: " + e.getMessage());
+                }
+            }
 
             // Explicitly unlock files in case no changes were made
             if (lockedFiles.length > 0) {

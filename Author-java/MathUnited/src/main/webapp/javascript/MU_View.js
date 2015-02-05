@@ -10,7 +10,7 @@ MU_View.prototype.showThread = function(thread) {
     //add dynamic behavior
     //--------------------
     this.createWidgets();
-}
+};
 
 MU_View.prototype.showThreadMenu = function(threads,selectedId) {
    var parent = $('#choose-thread-container');
@@ -34,11 +34,11 @@ MU_View.prototype.showThreadMenu = function(threads,selectedId) {
            $(this).removeClass('mu-thread-item-active');
        });
    }
-}
+};
 
 MU_View.prototype.removeThreadElements = function() {
     $('#component-widget > *').remove();   //remove old contents
-}
+};
 
 MU_View.prototype.createThreadElements = function(thread) {
     var n = thread.components.length;
@@ -73,7 +73,7 @@ MU_View.prototype.createThreadElements = function(thread) {
     
     parent.css('display','block');
 //    $('#components-container').accordion();
-}
+};
 
 MU_View.prototype.showLoadIcon = function(parentId) {
     var parent=$('#'+parentId);
@@ -82,11 +82,12 @@ MU_View.prototype.showLoadIcon = function(parentId) {
 //    loadIcon.css('top','30px');
 //    loadIcon.css('left','200px');
     this.loadIcon = loadIcon;
-}
+};
+
 MU_View.prototype.hideLoadIcon = function() {
     this.loadIcon.remove();
     this.loadIcon = null;
-}
+};
 
 MU_View.prototype.createWidgets = function() {
     var par = $('#component-widget');
@@ -120,10 +121,12 @@ MU_View.prototype.createWidgets = function() {
             innerElm.html(html);
             innerElm.fadeIn(300);
         });
-    })
+    });
+
     sub_cont.css('min-height', par.height()+'px');
 
     //set default
     innerElm.html($('#components-container .header:first-child').next('div').html());
     $('#components-container .header:first-child').addClass('mu-selected');
-}
+};
+
