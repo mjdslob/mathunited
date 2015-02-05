@@ -503,11 +503,15 @@ function toggleMovie(elm) {
     if (index == -1) {
         var player = null;
         var id = $("video", movie).attr('id');
+        var attr = $("video", movie).attr('width');
+        var width = 500;
+        if (typeof attr !== typeof undefined && attr !== false)
+        	width = parseInt(attr) + 24; // 24 is padding (2x12)
         movie.toggleClass('visible');
 
         var dialog = movie.dialog({
             autoOpen: false,
-            width: 500,
+            width: width,
             beforeClose: function (event, ui) {
                 $('#' + id)[0].pause();
             }

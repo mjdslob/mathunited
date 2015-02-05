@@ -10,6 +10,7 @@
 
 function WM_Thread(spec) {
     this.id = spec.id;
+    this.subject = spec.subject;
     this.info = spec.info;
     this.title = spec.title;
     this.type = spec.type;
