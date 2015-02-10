@@ -462,7 +462,7 @@ indent="yes" encoding="utf-8"/>
         <xsl:choose>
             <xsl:when test="@display='popup'">
                 <div class="assessment-button">
-                    <span class="assessment-label" onclick="javascript:toggleAssessment(this, '{$src}')"><xsl:value-of select="@label"/></span>
+                    <span class="assessment-label" onclick="javascript:toggleAssessment(this, '{$src}&amp;logintoken=' + encodeURIComponent(logintoken))"><xsl:value-of select="@label"/></span>
                     <span class="assessment-label-text"><xsl:apply-templates mode="content"/></span>
                 </div>
             </xsl:when>
