@@ -118,6 +118,7 @@ public class Component {
         	if (sc.id.equals(subComp)) {
                 parameterMap.put("subcomponent_number", sc.number);
                 parameterMap.put("subcomponent_title", sc.title);
+                parameterMap.put("subcomponent_id", sc.id);
                 parameterMap.put("subcomponent_index", Integer.toString(index));
                 break;
         	}

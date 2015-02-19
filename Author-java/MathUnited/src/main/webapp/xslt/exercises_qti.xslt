@@ -17,12 +17,12 @@ extension-element-prefixes="exsl">
     <xsl:param name="nr"/>
 
     <xsl:variable name="response-id">RESPONSE_<xsl:value-of select="generate-id()"/></xsl:variable>
-    <xsl:variable name="asm-id" select="concat($subcomponent/@id,'-',generate-id())"/>
+    <xsl:variable name="asm-id" select="concat($subcomponent_id,'-',generate-id())"/>
     <qti:assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1" 
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
                 xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 imsqti_v2p1.xsd" 
                 identifier="{$asm-id}" 
-                title="{concat($parsed_component/component/title,' - ', $subcomponent/title,' - Opgave ',$nr)}" adaptive="false" timeDependent="false">
+                title="{concat($component_title,' - ', $subcomponent_title,' - Opgave ',$nr)}" adaptive="false" timeDependent="false">
         <qti:responseDeclaration identifier="{concat('RESPONSE_',generate-id(single-item/item))}" cardinality="single" baseType="string">
             <qti:correctResponse><qti:value>
                 <xsl:apply-templates select="single-item/item/answer/node()" mode="text-only"/>
@@ -64,12 +64,12 @@ extension-element-prefixes="exsl">
     <xsl:param name="nr"/>
 
     <xsl:variable name="response-id">RESPONSE_<xsl:value-of select="generate-id()"/></xsl:variable>
-    <xsl:variable name="asm-id" select="concat($subcomponent/@id,'-',generate-id())"/>
+    <xsl:variable name="asm-id" select="concat($subcomponent_id,'-',generate-id())"/>
     <qti:assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1" 
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
                 xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 imsqti_v2p1.xsd" 
                 identifier="{$asm-id}" 
-                title="{concat($parsed_component/component/title,' - ', $subcomponent/title,' - Opgave ',$nr)}" adaptive="false" timeDependent="false">
+                title="{concat($component_title,' - ', $subcomponent_title,' - Opgave ',$nr)}" adaptive="false" timeDependent="false">
         <xsl:for-each select="multi-item/items/item">
             <qti:responseDeclaration identifier="{concat('RESPONSE_',generate-id())}" cardinality="single" baseType="string">
                 <qti:correctResponse><qti:value>

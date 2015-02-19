@@ -58,12 +58,17 @@
       <artifactId>mail</artifactId>
       <version>1.4.7</version>
     </dependency>
-    <dependency>
+    <!--<dependency>
       <groupId>net.sf.saxon</groupId>
       <artifactId>Saxon9pe</artifactId>
       <version>9.4.0.6</version>
-  </dependency>
-  <dependency>
+  </dependency>-->
+      <dependency>
+          <groupId>net.sf.saxon</groupId>
+          <artifactId>Saxon-HE</artifactId>
+          <version>9.6.0-4</version>
+      </dependency>
+      <dependency>
 	<groupId>org.apache.commons</groupId>
 	<artifactId>commons-io</artifactId>
     <version>1.3.2</version>
@@ -98,6 +103,7 @@
       </plugin>
     </plugins>
     <resources>
+        <!--
       <resource>
         <targetPath>${project.build.directory}/MathUnited-1/WEB-INF/lib</targetPath>
         <filtering>false</filtering>
@@ -109,6 +115,7 @@
           <exclude>**/*.properties</exclude>
         </excludes>
       </resource>
+      -->
       <resource>
         <targetPath>${project.build.directory}/classes</targetPath>
         <filtering>false</filtering>

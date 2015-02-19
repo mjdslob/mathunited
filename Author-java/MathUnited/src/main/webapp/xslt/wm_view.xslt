@@ -17,9 +17,19 @@ extension-element-prefixes="exsl">
 <xsl:param name="parent"/> <!-- eg.: mathunited.nl/wiskundemenu/WM_overview.html -->
 <xsl:param name="is_mobile"/>
 <xsl:param name="level"/>
-<xsl:param name="component"/>
-<xsl:variable name="parsed_component" select="saxon:parse($component)"/>
-<xsl:variable name="subcomponent" select="$parsed_component/component/subcomponents/subcomponent[@id=$subcomp]"/>
+    <xsl:param name="component_id"/>
+    <xsl:param name="component_number"/>
+    <xsl:param name="component_file"/>
+    <xsl:param name="component_title"/>
+    <xsl:param name="component_subtitle"/>
+    <xsl:param name="subcomponent_number"/>
+    <xsl:param name="subcomponent_title"/>
+    <xsl:param name="subcomponent_index"/>
+    <xsl:param name="subcomponent_count"/>
+    <xsl:param name="subcomponent_id"/>
+    <xsl:param name="subcomponent_preceding_id"/>
+    <xsl:param name="subcomponent_following_id"/>
+
 <xsl:param name="repo"/>
 <xsl:param name="repo-path"/>
 <xsl:param name="baserepo-path"/>
@@ -201,7 +211,7 @@ indent="yes" encoding="utf-8" />
     <xsl:choose>
         <xsl:when test="string-length($ws_id) gt 0">
             <div class="pageDiv-for-worksheet">
-                <div class="worksheet-title">Werkblad bij <xsl:value-of select="$parsed_component/component/title"/> &gt; <xsl:value-of select="$subcomponent/title"/></div>
+                <div class="worksheet-title">Werkblad bij <xsl:value-of select="$component_title"/> &gt; <xsl:value-of select="$subcomponent_title"/></div>
                 <xsl:apply-templates select="subcomponent//exercise[@num=$ws_id]" mode="worksheet"/>    
             </div>
         </xsl:when>
@@ -212,10 +222,10 @@ indent="yes" encoding="utf-8" />
                         <div class="grid_1">
                             <div class="logo-header-div"/>
                             <div class="prev-subcomponent">
-                                <xsl:if test="count($subcomponent/preceding-sibling::subcomponent) gt 0">
+                                <xsl:if test="number($subcomponent_index) gt 0">
                                     <a>
                                         <xsl:attribute name="href">
-                                            <xsl:value-of select="concat('/MathUnited/view?comp=',$comp,'&amp;subcomp=',$subcomponent/preceding-sibling::subcomponent[1]/@id,$arg_parent,'&amp;variant=basis_wm&amp;item=1')"/>
+                                            <xsl:value-of select="concat('/MathUnited/view?comp=',$comp,'&amp;subcomp=',$subcomponent_preceding_id,$arg_parent,'&amp;variant=basis_wm&amp;item=1')"/>
                                         </xsl:attribute>
                                         &lt;
                                     </a>
@@ -224,13 +234,13 @@ indent="yes" encoding="utf-8" />
                         </div>
                         <div class="headingContentDiv grid_6">
                             <span class="headingDiv-content">
-                                <xsl:value-of select="$parsed_component/component/@number"/>.<xsl:value-of select="$subcomponent/@number"/>&#160;
-                                <xsl:value-of select="$subcomponent/title"/>
+                                <xsl:value-of select="$component_number"/>.<xsl:value-of select="$subcomponent_number"/>&#160;
+                                <xsl:value-of select="$subcomponent_title"/>
                             </span>
-                            <xsl:if test="count($subcomponent/following-sibling::subcomponent) > 0">
+                            <xsl:if test="number($subcomponent_index) > 0">
                                 <span id="next-subcomponent">
                                     <a>
-                                        <xsl:attribute name="href" select="concat('/MathUnited/view?comp=',$comp,'&amp;subcomp=',$subcomponent/following-sibling::subcomponent[1]/@id,$arg_parent,'&amp;variant=basis_wm&amp;item=1')"/>
+                                        <xsl:attribute name="href" select="concat('/MathUnited/view?comp=',$comp,'&amp;subcomp=',$subcomponent_following_id,$arg_parent,'&amp;variant=basis_wm&amp;item=1')"/>
                                         &gt;
                                     </a>
                                 </span>
@@ -243,7 +253,7 @@ indent="yes" encoding="utf-8" />
                             </a> > 
                             <a class="navigatie">
                                 <xsl:attribute name="href"><xsl:value-of select="$overviewRef"/></xsl:attribute>
-                                <xsl:value-of select="$parsed_component/component/title"/>
+                                <xsl:value-of select="$component_title"/>
                             </a>
                         </div>
                     </div>

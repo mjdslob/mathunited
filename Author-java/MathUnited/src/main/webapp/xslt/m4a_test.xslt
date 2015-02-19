@@ -22,10 +22,17 @@
     <xsl:param name="repo"/>
     <xsl:param name="repo-path"/>
     <xsl:param name="baserepo-path"/>
-    <xsl:param name="component"/>
     <xsl:param name="lock_owner"/>
-    <xsl:variable name="parsed_component" select="saxon:parse($component)"/>
-    <xsl:variable name="subcomponent" select="$parsed_component/component/subcomponents/subcomponent[@id=$subcomp]"/>
+    <xsl:param name="component_id"/>
+    <xsl:param name="component_number"/>
+    <xsl:param name="component_file"/>
+    <xsl:param name="component_title"/>
+    <xsl:param name="component_subtitle"/>
+    <xsl:param name="subcomponent_number"/>
+    <xsl:param name="subcomponent_title"/>
+    <xsl:param name="subcomponent_index"/>
+    <xsl:param name="subcomponent_count"/>
+    <xsl:param name="subcomponent_id"/>
     <xsl:param name="refbase"/> <!-- used for includes: base path. Includes final / -->
 
     <xsl:include href="mathml/to-asciimathml.xslt"/>
