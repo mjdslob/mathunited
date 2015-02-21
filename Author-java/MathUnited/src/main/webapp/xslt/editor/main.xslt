@@ -141,7 +141,7 @@ MSLO 2 juni 2014: keep cals:table intact
     </table>
 </xsl:template>
 
-<xsl:template match="tr|th|tbody|col|colgroup" mode="editor">
+<xsl:template match="tr|tbody|col|colgroup" mode="editor">
     <xsl:copy>
          <xsl:attribute name="tag" select="name()"/>
          <xsl:apply-templates select="@*|node()" mode="editor"/>

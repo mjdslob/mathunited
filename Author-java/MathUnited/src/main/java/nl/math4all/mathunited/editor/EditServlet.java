@@ -146,6 +146,7 @@ public class EditServlet extends HttpServlet {
             parameterMap.put("component", component.getXML());
             parameterMap.put("repo-path", repository.getPath());
             parameterMap.put("baserepo-path", baserepo==null?"":baserepo.getPath());
+            component.addToParameterMap(parameterMap, subcomp);
             String currentOwner = getLock(usettings.username, config.getContentRoot() + refbase);
 
             if (currentOwner != null & !StringUtils.equals(currentOwner, usettings.username)) {

@@ -57,7 +57,7 @@
             <internal-meta>
                 <subcomponents>
                     <xsl:for-each select="$indexDoc/index/component[@id=$comp]/subcomponent">
-                        <subcomponent id="{@id}" _nr="{@_nr}"/>
+                        <subcomponent id="{@id}" nr="{@_nr}"/>
                     </xsl:for-each>
                 </subcomponents>
             </internal-meta>
@@ -366,7 +366,7 @@
                 <span class="list-section-nr">
                     <a class="_warn_if_doc_changed_">
                         <xsl:attribute name="href">
-                            <xsl:value-of select="concat('edit?comp=',$comp,'&amp;subcomp=',$subcomponents/subcomponent[number(@_nr)=$i]/@id,'&amp;variant=',$variant,$arg_parent,$arg_repo,'&amp;thread=',$thread)"/>
+                            <xsl:value-of select="concat('edit?comp=',$comp,'&amp;subcomp=',$subcomponents/subcomponent[number(@nr)=$i]/@id,'&amp;variant=',$variant,$arg_parent,$arg_repo,'&amp;thread=',$thread)"/>
                         </xsl:attribute>
                         <xsl:value-of select="$i"/>
                     </a>

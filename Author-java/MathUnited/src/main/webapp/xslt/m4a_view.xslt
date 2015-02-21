@@ -46,7 +46,7 @@ extension-element-prefixes="exsl">
             <subcomponents>
                 <xsl:for-each select="$indexDoc/index/component[@id=$comp]/subcomponent">
                     <xsl:if test="not(contains(@id,'test')) and not(contains(@id,'context'))">
-                        <subcomponent id="{@id}" _nr="{@_nr}"/>
+                        <subcomponent id="{@id}" nr="{@_nr}"/>
                     </xsl:if>
                 </xsl:for-each>
             </subcomponents>
@@ -422,7 +422,7 @@ indent="yes" encoding="utf-8"/>
             <span class="list-section-nr">
                 <a>
                     <xsl:attribute name="href">
-                        <xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',$subcomponents/subcomponent[number(@_nr)=number($i)]/@id,'&amp;variant=',$variant,$arg_parent,$arg_repo)"/>
+                        <xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',$subcomponents/subcomponent[number(@nr)=number($i)]/@id,'&amp;variant=',$variant,$arg_parent,$arg_repo)"/>
                     </xsl:attribute>
                     <xsl:value-of select="$i"/>
                 </a>
