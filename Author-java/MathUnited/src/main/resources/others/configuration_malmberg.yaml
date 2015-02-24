@@ -19,9 +19,9 @@ repos :
     threadsURL: /leerlijnen/threads.xml
     contentItems: m4a-content-items.xml
 
-userFile : /opt/sw/mathplus/data/users_malmberg.yaml
-contentRoot : /opt/sw/mathplus/data/
-entitiesFile : /opt/sw/mathplus/data/entities.xml
+userFile : /opt/sw/mathplus/conf/users_malmberg.yaml
+contentRoot : /opt/data/mathplus/
+entitiesFile : /opt/data/mathplus/entities.xml
 
 mail_host : localhost
 mail_smtp_port : 25
@@ -29,4 +29,4 @@ mail_username :
 mail_password :  
 admin_mail : m.slob@math4all.nl
 
- 
+svnRepoRoot: /opt/data/svn/mathplus
