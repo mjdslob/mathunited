@@ -85,7 +85,8 @@ define(['akitex/Main','jquery'], function(AKITMain, $) {
                 chooseSelectedItem('algebrakit-hint-select', tag, 'show-hints', 'true', true);
                 
                 
-                $('.algebrakit-test-config',parent).first().click(function() {
+                $('.algebrakit-test-config',parent).first().unbind('click').click(function() {
+                    debugger;
                     var str = '<div class="akit-exercise akit-init-open" audience="">'
                             + '  <div class="akit-main akit-item">'
                             + '     <span class="akit-input-widget" solve=""/>'
