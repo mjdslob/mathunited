@@ -102,27 +102,27 @@ extension-element-prefixes="exsl">
     <!-- Cloze edits -->
 
     <xsl:template match="cloze" mode="paragraph">
-        <span tag="cloze" class="cloze"><xsl:apply-templates select="@* | node()" mode="paragraph"/></span>
+        <span tag="cloze"><xsl:apply-templates select="@* | node()" mode="paragraph"/></span>
     </xsl:template>
 
     <xsl:template match="cloze-answers" mode="paragraph">
-        <span tag="cloze-answers" class="cloze-answers"><xsl:apply-templates select="@* | node()" mode="paragraph"/></span>
+        <span tag="cloze-answers"><xsl:apply-templates select="@* | node()" mode="paragraph"/></span>
     </xsl:template>
 
     <xsl:template match="cloze-answer" mode="paragraph">
-        <span tag="cloze-answer" class="cloze-answer"><xsl:apply-templates select="@* | node()" mode="paragraph"/></span>
+        <span tag="cloze-answer"><xsl:apply-templates select="@* | node()" mode="paragraph"/></span>
     </xsl:template>
 
     <xsl:template match="cloze-answertext" mode="paragraph">
-        <span tag="cloze-answertext" class="cloze-answertext"><xsl:apply-templates select="@* | node()" mode="paragraph"/></span>
+        <span tag="cloze-answertext"><xsl:apply-templates select="@* | node()" mode="paragraph"/></span>
     </xsl:template>
 
     <xsl:template match="cloze-correction" mode="paragraph">
-        <span tag="cloze-correction" class="cloze-correction"><xsl:apply-templates select="@* | node()" mode="paragraph"/></span>
+        <span tag="cloze-correction"><xsl:apply-templates select="@* | node()" mode="paragraph"/></span>
     </xsl:template>
 
     <xsl:template match="cloze-hint" mode="paragraph">
-        <span tag="cloze-hint" class="cloze-hint"><xsl:apply-templates select="@* | node()" mode="paragraph"/></span>
+        <span tag="cloze-hint"><xsl:apply-templates select="@* | node()" mode="paragraph"/></span>
     </xsl:template>
 
 

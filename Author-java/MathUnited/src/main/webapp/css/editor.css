@@ -808,7 +808,7 @@ input.wrong-input-line {
     color:rgb(150,150,150);
 }
 
-.cloze {
+span[tag='cloze'] {
     border: 1px #808080 solid;
     color: #808080;
 }
