@@ -8,20 +8,13 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.spec.AlgorithmParameterSpec;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -29,19 +22,18 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import mathunited.configuration.Repository;
+import mathunited.model.Score;
+import mathunited.model.ScoreGroup;
+import mathunited.model.Student;
+import mathunited.model.StudentList;
+
 import org.apache.commons.codec.binary.Base64;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-
-import sun.misc.BASE64Encoder;
-import mathunited.configuration.Repository;
-import mathunited.model.Score;
-import mathunited.model.ScoreGroup;
-import mathunited.model.Student;
-import mathunited.model.StudentList;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -52,7 +44,6 @@ import com.google.appengine.api.datastore.Text;
 import com.google.appengine.labs.repackaged.org.json.JSONArray;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
-import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
 
 public class Utils {
 	
@@ -84,9 +75,9 @@ public class Utils {
      *     >
      * >
      */
-    public static void getEindExamenSiteResults(HashMap<Integer, Integer> eindExamenSiteItems, StudentList students, Map<String, Map<Integer, Score>> results) throws Exception {
+    public static void getEindExamenSiteResults(HashMap<Integer, Integer> eindExamenSiteItems, StudentList students, Map<String, Map<String, Score>> results) throws Exception {
     	for (Student student : students.items) {
-    		Map<Integer, Score> userResults = new HashMap<Integer, Score>();
+    		Map<String, Score> userResults = new HashMap<String, Score>();
     		getEindExamenSiteResults(eindExamenSiteItems, student.userId, userResults);
     		results.put(student.userId, userResults);
 		}
@@ -95,7 +86,7 @@ public class Utils {
     /**
      * Returns scores of a student in the results parameter
      */
-    public static void getEindExamenSiteResults(HashMap<Integer, Integer> eindExamenSiteItems, String userid, Map<Integer, Score> results) throws Exception 
+    public static void getEindExamenSiteResults(HashMap<Integer, Integer> eindExamenSiteItems, String userid, Map<String, Score> results) throws Exception 
     {
     	// construct input json E.g. {"userid":"sanderbons","assignmentids":[6507,6503,3978]}
     	JSONObject json = new JSONObject();
@@ -115,7 +106,7 @@ public class Utils {
     		JSONObject assignment = assignments.getJSONObject(i);
     		int id = assignment.getInt("id");
     		Score score = new Score();
-    		score.id = id;
+    		score.id = Integer.toString(id);
     		String scoreString = assignment.getString("score");
     		if (!scoreString.equals("null"))
     			score.score = Integer.parseInt(scoreString);
@@ -130,11 +121,57 @@ public class Utils {
     			score.total = eindExamenSiteItems.get(id);
     			score.made = false;
     		}
+    		results.put(Integer.toString(id), score);
+    	}
+    }
+    
+    /**
+     * Returns scores of a student in the results parameter
+     */
+    public static void getQtiPlayerResults(HashMap<String, Integer> items, String userid, Map<String, Score> results) throws Exception 
+    {
+    	// construct input json E.g. {"userid":"dnote","repo":"ster","assignmentids":["EC-VMBO34-T9-Dtoets.zip","EC-VMBO34B-T1-Dtoets.zip","AK_HV123_ThemaBevolkingRuimte_Immigratie_Stap6.zip"]}
+    	JSONObject json = new JSONObject();
+    	json.put("userid", userid);
+    	json.put("repo", "ster");
+    	JSONArray array = new JSONArray();
+    	for (String id : items.keySet()) {
+        	array.put(id);
+		}
+    	json.put("assignmentids", array);
+    	// execute webservice
+    	JSONObject result = executeHttpPostResult("https://qti-player.appspot.com/services/GetUserResults", json);
+    	// returns {"assignments":[{"id":"EC-VMBO34-T9-Dtoets.zip","score":"0","total":"1"},{"id":"EC-VMBO34B-T1-Dtoets.zip","score":"1","total":"1"},{"id":"AK_HV123_ThemaBevolkingRuimte_Immigratie_Stap6.zip","score":"1","total":"2"}]}
+    	// get result json
+    	if (result.has("status") && result.getInt("status") == -1)
+    		throw new Exception(result.getString("message"));
+    	JSONArray assignments = result.getJSONArray("assignments");
+    	
+    	for (int i = 0; i < assignments.length(); i++)
+    	{
+    		JSONObject assignment = assignments.getJSONObject(i);
+    		String id = assignment.getString("id");
+    		Score score = new Score();
+    		score.id = id;
+    		String scoreString = assignment.getString("score");
+    		if (!scoreString.equals("null"))
+    			score.score = Integer.parseInt(scoreString);
+       		String totalString = assignment.getString("total");
+    		if (!totalString.equals("null"))
+    		{
+    			score.total = Integer.parseInt(totalString);
+    			score.made = true;
+    		}
+    		else
+    		{
+    			score.total = items.get(id);
+    			score.made = false;
+    		}
     		results.put(id, score);
     	}
     }
     
-    public static void processGroup(Element inputElem, Document outputDoc, Element outElement, Map<Integer, Score> results, Score total, Score uniqueTotal, ArrayList<Integer> countedItemIds) throws JSONException
+    public static void processGroup(Element inputElem, Document outputDoc, Element outElement, Map<String, Score> results, Score total, Score uniqueTotal, ArrayList<String> countedItemIds) throws JSONException
     {
     	Score groupTotal = new Score();
 		NodeList childNodes = inputElem.getChildNodes();
@@ -158,14 +195,16 @@ public class Utils {
     	total.total += groupTotal.total;
     }
 
-    public static void processItem(Element itemElem, Document outputDoc, Element groupElem, Map<Integer, Score> results, Score total, Score unique, ArrayList<Integer> countedItemIds) throws JSONException
+    public static void processItem(Element itemElem, Document outputDoc, Element groupElem, Map<String, Score> results, Score total, Score unique, ArrayList<String> countedItemIds) throws JSONException
     {
-		int id = Integer.parseInt(itemElem.getAttribute("id"));
+		String id = itemElem.getAttribute("id");
+		String source = itemElem.getAttribute("source");
 		Score score = results.get(id);
 		if (score != null)
 		{
 			Element assignmentElem = outputDoc.createElement("assignment"); 
-    		assignmentElem.setAttribute("id", 	 Integer.toString(id));
+    		assignmentElem.setAttribute("id", 	 id);
+    		assignmentElem.setAttribute("source",source);
     		assignmentElem.setAttribute("title", itemElem.getAttribute("title"));
     		assignmentElem.setAttribute("score", Integer.toString(score.score));
     		assignmentElem.setAttribute("total", Integer.toString(score.total));
@@ -259,13 +298,32 @@ public class Utils {
 		return result;
 	}
 
+	/**
+	 * Returns the items that apply to the Studio VO qti player from the xml document and put them in a map consisting of:
+	 * assignmentid, maximum score
+	 */
+	public static HashMap<String, Integer> getQtiPlayerItems(Document inputDoc) {
+		HashMap<String, Integer> result = new HashMap<String, Integer>();
+		NodeList itemNodes = inputDoc.getElementsByTagName("item");
+		for (int i=0; i < itemNodes.getLength(); i++)
+		{
+			Element itemElem = (Element)itemNodes.item(i);
+			if (itemElem.getAttribute("source").equals("qti"))
+			{
+				String id = itemElem.getAttribute("id");
+				int total = Integer.parseInt(itemElem.getAttribute("total"));
+				result.put(id, total);
+			}
+		}
+		return result;
+	}
 	/** 
 	 * Converts the result retrieved from the external site to a structured xml document of which the structure is 
 	 * determined by the result-structure xml as published for the given thread 
 	 * @throws ParserConfigurationException 
 	 * @throws JSONException 
 	 */
-	public static Document transformResults(Document inputDoc, Map<Integer, Score> results) throws ParserConfigurationException, JSONException {
+	public static Document transformResults(Document inputDoc, Map<String, Score> results) throws ParserConfigurationException, JSONException {
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
@@ -275,7 +333,7 @@ public class Utils {
 		copyMetaElements(inputDoc, outputDoc, rootElement);
 		
 		Score uniqueTotal = new Score();
-		Utils.processGroup(inputDoc.getDocumentElement(), outputDoc, rootElement, results, new Score(), uniqueTotal, new ArrayList<Integer>());
+		Utils.processGroup(inputDoc.getDocumentElement(), outputDoc, rootElement, results, new Score(), uniqueTotal, new ArrayList<String>());
 		rootElement.setAttribute("uniqueScore", Integer.toString(uniqueTotal.score));
 		rootElement.setAttribute("uniqueTotal", Integer.toString(uniqueTotal.total));
 		
@@ -312,17 +370,17 @@ public class Utils {
 	 * @throws ParserConfigurationException 
 	 * @throws JSONException 
 	 */
-	public static ScoreGroup transformResultsTree(Document inputDoc, Map<Integer, Score> results) throws ParserConfigurationException, JSONException {
+	public static ScoreGroup transformResultsTree(Document inputDoc, Map<String, Score> results) throws ParserConfigurationException, JSONException {
 		ScoreGroup output = new ScoreGroup();
 		Score uniqueTotal = new Score();
-		Utils.processGroupTree(inputDoc.getDocumentElement(), output, results, new Score(), uniqueTotal, new ArrayList<Integer>());
+		Utils.processGroupTree(inputDoc.getDocumentElement(), output, results, new Score(), uniqueTotal, new ArrayList<String>());
 		output.score = uniqueTotal.score;
 		output.total = uniqueTotal.total;
 		
 		return output;
 	}
 	
-    public static void processGroupTree(Element inputElem, ScoreGroup output, Map<Integer, Score> results, Score total, Score uniqueTotal, ArrayList<Integer> countedItemIds) throws JSONException
+    public static void processGroupTree(Element inputElem, ScoreGroup output, Map<String, Score> results, Score total, Score uniqueTotal, ArrayList<String> countedItemIds) throws JSONException
     {
     	Score groupTotal = new Score();
 		NodeList childNodes = inputElem.getChildNodes();
@@ -346,9 +404,9 @@ public class Utils {
     	total.total += groupTotal.total;
     }
     
-    public static void processItemTree(Element itemElem, ScoreGroup output, Map<Integer, Score> results, Score total, Score unique, ArrayList<Integer> countedItemIds) throws JSONException
+    public static void processItemTree(Element itemElem, ScoreGroup output, Map<String, Score> results, Score total, Score unique, ArrayList<String> countedItemIds) throws JSONException
     {
-		int id = Integer.parseInt(itemElem.getAttribute("id"));
+		String id = itemElem.getAttribute("id");
 		Score score = results.get(id);
 		if (score != null)
 		{

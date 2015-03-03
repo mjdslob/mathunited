@@ -67,7 +67,7 @@
     
 	HashMap<Integer, Integer> eindExamenSiteItems = Utils.getEindExamenSiteItems(inputDoc);
 	
-    HashMap<String, Map<Integer, Score>> results = new HashMap<String, Map<Integer, Score>>();
+    HashMap<String, Map<String, Score>> results = new HashMap<String, Map<String, Score>>();
 	Utils.getEindExamenSiteResults(eindExamenSiteItems, students, results);
 %>
 
@@ -82,9 +82,9 @@
 <table class="grid class-result">
 <% 
 	boolean first = true;
-    for (Map.Entry<String, Map<Integer, Score>> entry : results.entrySet()) {
+    for (Map.Entry<String, Map<String, Score>> entry : results.entrySet()) {
     	User student = User.load(entry.getKey(), repository);
-    	Map<Integer, Score> assignments = entry.getValue();
+    	Map<String, Score> assignments = entry.getValue();
 		ScoreGroup result = Utils.transformResultsTree(inputDoc, assignments);
 %>
 <% if (first) { %>

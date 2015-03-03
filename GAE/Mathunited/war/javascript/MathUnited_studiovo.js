@@ -605,7 +605,8 @@ function toggleParentPopup(data) {
         autoOpen: false,
         width: 785,
         position: position,
-        close: function(event,ui) { 
+        close: function(event,ui) {
+        	$(content).find('iframe').attr("src", "about:blank");
         	if (viewid == "") { // refresh result frame after closing popup, but only if teacher is viewing, in that case viewid != ""
 	        	var src = $('iframe.result-frame').attr('src');
 	        	var idx = src.lastIndexOf("&itemid=");

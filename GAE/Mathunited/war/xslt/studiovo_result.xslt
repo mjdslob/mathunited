@@ -263,9 +263,15 @@ extension-element-prefixes="exsl">
 </xsl:template>
 <xsl:template match='assignment' mode='assignment'>
 	<xsl:variable name="locItemId"><xsl:number level="any" /></xsl:variable>
+	<xsl:variable name="iframeUrl">
+		<xsl:choose>
+			<xsl:when test="@source = 'es'">http://www.eindexamensite.nl/iframe-page.html?tx_iframequestion_pi1%5Bquestion%5D=<xsl:value-of select="@id" />&amp;userid=<xsl:value-of select="$viewid" />&amp;template=1|<xsl:value-of select="$locItemId" />|<xsl:value-of select="$viewid" /></xsl:when>
+			<xsl:when test="@source = 'qti'">https://qti-player.appspot.com/render.jsp?repo=ster&amp;id=<xsl:value-of select="@id" />&amp;logintoken=<xsl:value-of select="encode-for-uri($logintoken)" />&amp;viewid=<xsl:value-of select="$viewid" />|<xsl:value-of select="$locItemId" />|<xsl:value-of select="$viewid" /></xsl:when>
+		</xsl:choose>
+	</xsl:variable>
 	<div class="item" id="assignment_{$locItemId}" testitemid="{$itemid}">
 		<div class="title popup-wrapper">
-  	       <span class="result-popup-label" onclick="javascript:sendToggleParentPopup('http://www.eindexamensite.nl/iframe-page.html?tx_iframequestion_pi1%5Bquestion%5D={@id}&amp;userid={$viewid}&amp;template=1|{$locItemId}|{$viewid}')"><xsl:value-of select="@title"/></span>
+  	       <span class="result-popup-label" onclick="javascript:sendToggleParentPopup('{$iframeUrl}')"><xsl:value-of select="@title"/></span>
 		</div>
 		<div>
 			<xsl:attribute name="class">

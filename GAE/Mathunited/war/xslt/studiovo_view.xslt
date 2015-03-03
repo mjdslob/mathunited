@@ -244,7 +244,7 @@ indent="yes" encoding="utf-8"/>
     <xsl:attribute name="title">
         <xsl:value-of select="@title"/>
     </xsl:attribute>
-    <iframe width="750" height="450"></iframe>
+    <iframe width="750" height="550"></iframe>
 </div>
 </body>
 </html>

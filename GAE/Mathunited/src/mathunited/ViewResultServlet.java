@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -20,6 +21,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -35,7 +38,9 @@ import mathunited.utils.UserException;
 import mathunited.utils.Utils;
 
 import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 
+import com.google.appengine.labs.repackaged.org.json.JSONArray;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
 @SuppressWarnings("serial")
@@ -178,14 +183,25 @@ public class ViewResultServlet extends HttpServlet {
         XSLTbean processor = new XSLTbean(context, config.getResultVariants());
 
         Document inputDoc = Utils.getResultStrucureXml(repository, "result-structure/" + threadid);
+
+        // TEST CODE
+//        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+//  	    DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+//  	    InputSource is = new InputSource(context.getResourceAsStream("/sources_studiovo/result-test.xml"));
+//  	    inputDoc = dBuilder.parse(is);
+  	    // END TEST CODE
         
     	HashMap<Integer, Integer> eindExamenSiteItems = Utils.getEindExamenSiteItems(inputDoc);
+    	HashMap<String, Integer> qtiPlayerItems = Utils.getQtiPlayerItems(inputDoc);
         
     	if (viewid == null || viewid.equals(""))
     		viewid = userid;
     	
-        Map<Integer, Score> results = new HashMap<Integer, Score>();
-   		Utils.getEindExamenSiteResults(eindExamenSiteItems, viewid, results);
+        Map<String, Score> results = new HashMap<String, Score>();
+        if (eindExamenSiteItems.size() > 0)
+        	Utils.getEindExamenSiteResults(eindExamenSiteItems, viewid, results);
+        if (qtiPlayerItems.size() > 0)
+        	Utils.getQtiPlayerResults(qtiPlayerItems, viewid, results);
 		Document outputDoc = Utils.transformResults(inputDoc, results);
 		
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
@@ -200,7 +216,13 @@ public class ViewResultServlet extends HttpServlet {
         ServletOutputStream os = response.getOutputStream();
         os.write(result);
 
-        os.println("<!--");
+    	os.println("<!--");
+        os.println("eindExamenSiteItems count: " + eindExamenSiteItems.size() + "; result count: " + results.size() + "; ");
+        os.println("returned values:");
+        for (Map.Entry<String, Score> entry : results.entrySet()) {
+        	os.println(entry.getKey() + " : " + entry.getValue().score + "/" + entry.getValue().total);
+    	}
+        
     	TransformerFactory tf = TransformerFactory.newInstance();
     	Transformer transformer = tf.newTransformer();
     	transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
