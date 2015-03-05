@@ -44,6 +44,8 @@ public class SvnLock extends Lock {
         // Update
         try {
             SvnUtils.svn(true, "update", refbase);
+            File imagedir = new File(refbase, "../images");
+            SvnUtils.svn(false, "update", imagedir.toString());
         } catch (SvnException e) {
             throw new LockException("Could not update " + refbase, e);
         }

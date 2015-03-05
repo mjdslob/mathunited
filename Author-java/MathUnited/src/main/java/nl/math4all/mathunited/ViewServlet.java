@@ -13,6 +13,7 @@ import nl.math4all.mathunited.resolvers.ContentResolver;
 import nl.math4all.mathunited.configuration.*;
 import nl.math4all.mathunited.configuration.SubComponent;
 import nl.math4all.mathunited.configuration.Component;
+import nl.math4all.mathunited.utils.SvnUtils;
 import nl.math4all.mathunited.utils.Utils;
 
 //mathunited.pragma-ade.nl/MathUnited/view?variant=basis&comp=m4a/xml/12hv-me0&subcomp=3&item=explore
@@ -156,7 +157,17 @@ public class ViewServlet extends HttpServlet {
             if(repoPath.length()>0) {
                 repoPath=repoPath+"/";
             }
-            parameterMap.put("refbase", repoPath+sub.file.substring(0, ind+1));
+
+            String refbase = repoPath + sub.file.substring(0, ind+1);
+            if (SvnUtils.hasSubversion()) {
+                // Update to latest version
+                File contentRoot = new File(Configuration.getInstance().getContentRoot());
+                File refpath = new File(contentRoot, refbase);
+                SvnUtils.svn(true, "update", refpath.toString());
+                File imagedir = new File(refpath, "../images");
+                SvnUtils.svn(false, "update", imagedir.toString());
+            }
+            parameterMap.put("refbase", refbase);
             parameterMap.put("component", component.getXML());
             component.addToParameterMap(parameterMap, subcomp);
             parameterMap.put("repo-path", repository.getPath());
@@ -167,10 +178,11 @@ public class ViewServlet extends HttpServlet {
             
             Source xmlSource = resolver.resolve(repository.getPath()+"/"+sub.file, "");
             String errStr = processor.process(xmlSource, variant, parameterMap, resolver, byteStream);
+
             response.setContentType("text/html");
             if(errStr.length()>0){
                 PrintWriter writer = response.getWriter();
-                String resultStr = "<html><head></head><body>"+errStr+"</body></html>";
+                String resultStr = "<html><head></head><body>" + errStr + "</body></html>";
                 writer.println(resultStr);
             } else {
                 byte[] result = byteStream.toByteArray();
