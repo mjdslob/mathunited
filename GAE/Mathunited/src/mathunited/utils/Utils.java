@@ -77,9 +77,12 @@ public class Utils {
      */
     public static void getEindExamenSiteResults(HashMap<Integer, Integer> eindExamenSiteItems, StudentList students, Map<String, Map<String, Score>> results) throws Exception {
     	for (Student student : students.items) {
-    		Map<String, Score> userResults = new HashMap<String, Score>();
+    		Map<String, Score> userResults = results.get(student.userId);
+    		if (userResults == null) {
+    			userResults = new HashMap<String, Score>();
+        		results.put(student.userId, userResults);
+    		}
     		getEindExamenSiteResults(eindExamenSiteItems, student.userId, userResults);
-    		results.put(student.userId, userResults);
 		}
     }
 
@@ -125,6 +128,25 @@ public class Utils {
     	}
     }
     
+    /**
+     * Returns scores of multiple students in the results parameter. The result is a map consisting of:
+     * Map<"userid", 
+     *     Map<assignmentid,
+     *     		Score{score, total, made}
+     *     >
+     * >
+     */
+    public static void getQtiPlayerResults(HashMap<String, Integer> eindExamenSiteItems, StudentList students, Map<String, Map<String, Score>> results) throws Exception {
+    	for (Student student : students.items) {
+    		Map<String, Score> userResults = results.get(student.userId);
+    		if (userResults == null) {
+    			userResults = new HashMap<String, Score>();
+        		results.put(student.userId, userResults);
+    		}
+    		getQtiPlayerResults(eindExamenSiteItems, student.userId, userResults);
+		}
+    }
+
     /**
      * Returns scores of a student in the results parameter
      */

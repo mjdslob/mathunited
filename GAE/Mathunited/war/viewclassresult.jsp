@@ -65,10 +65,11 @@
     
     org.w3c.dom.Document inputDoc = Utils.getResultStrucureXml(repository, "result-structure/" + threadid);
     
-	HashMap<Integer, Integer> eindExamenSiteItems = Utils.getEindExamenSiteItems(inputDoc);
-	
     HashMap<String, Map<String, Score>> results = new HashMap<String, Map<String, Score>>();
+	HashMap<Integer, Integer> eindExamenSiteItems = Utils.getEindExamenSiteItems(inputDoc);
 	Utils.getEindExamenSiteResults(eindExamenSiteItems, students, results);
+	HashMap<String, Integer> qtiPlayerItems = Utils.getQtiPlayerItems(inputDoc);
+	Utils.getQtiPlayerResults(qtiPlayerItems, students, results);
 %>
 
 <% if (studentremoved) { %>
