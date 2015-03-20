@@ -63,7 +63,7 @@ define(["require", "akitex/Engine", "akitex/Derivation", "akitex/Palette", "akit
                         activeCell = new Cell({
                             key          : [],
                             answerVariable : obj.solutionModel.answerVariable,
-                            lead           : null,
+                            lead           : obj.template.attr('solve'),
                             parent         : null,
                             parentDOM      : $('.akit-cell-container',dom).first(),
                             exerciseItem   : obj,
@@ -145,7 +145,6 @@ define(["require", "akitex/Engine", "akitex/Derivation", "akitex/Palette", "akit
                 //in .akit-input-widget .akit-exercise-submit
                 var submitTemplate = template.attr('submit');
                 function callback(result) {
-                    debugger;
                     obj.solutionState = result.state;
                     if (result.exerciseStatus==='NO_MATCH') {
                         activeCell.addInput(result.inputRendered, inputStr, null, 'NO_MATCH');
@@ -204,6 +203,7 @@ define(["require", "akitex/Engine", "akitex/Derivation", "akitex/Palette", "akit
             },
             
             getHint: function(level) {
+                debugger;
                 if (this.finished  || !this.showHints) return;
                 if (!level) level = 1;
 
@@ -225,18 +225,16 @@ define(["require", "akitex/Engine", "akitex/Derivation", "akitex/Palette", "akit
                     cell  : activeCell,
                     akitVersion: spec.akitVersion,
                     callback      : function(result) {
+                        var cell = rootCell;
                         if(result.key!==undefined) {
-                            var cell = rootCell.getCell(result.key,true);
-                            if(cell){
-                                cell.lead = result.expression;
-                                obj.setActiveCell(cell);
-                                activeCell=cell;
-                                cell.setHint({
-                                    wkhint: result
-                                });
-                            }
-
+                            cell = rootCell.getCell(result.key,true);
                         }
+                        cell.lead = result.expression;
+                        obj.setActiveCell(cell);
+                        activeCell=cell;
+                        cell.setHint({
+                            wkhint: result
+                        });
                     }
                 });                    
             },
