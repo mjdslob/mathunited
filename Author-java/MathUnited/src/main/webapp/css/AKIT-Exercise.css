@@ -1,0 +1,106 @@
+/*
+Copyright (C) 2013 Martijn Slob <m.slob@math4all.nl>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+/* 
+    Created on : Dec 7, 2013, 11:02:20 AM
+    Author     : Martijn Slob <m.slob@math4all.nl>
+*/
+
+.MathJax_Preview {display:none;}
+.exercise-wrapper {font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; width:590px; position:relative; margin:15px 0px;padding:5px;}
+.exercise-label {padding:5px 10px; float:left; width:40px;}
+.akit-exercise {padding:0px 10px 0px 0px; float:left; width:100%;}
+.akit-item {display:none;}
+.akit-item.akit-gen-hint {background-color:rgb(230,230,230); color:inherit; border:1px solid rgb(200,200,200); border-radius:4px;padding:5px; margin:3px 0px; position:relative; left:-6px;}
+.akit-item.active {display:block; margin-bottom: 40px;}
+.akit-input-expression {padding: 4px 10px; border-radius:2px;}
+.akit-input-expression:hover {background-color:rgb(200,200,200);}
+.akit-script {display:none;}
+.akit-exercise-submit {display:none;}
+.akit-icon-success {background-image: url('../sources_akit/Success-icon.png');}
+.akit-icon-error {background-image: url('../sources_akit/Delete-icon.png'); cursor:pointer;}
+.akit-icon-correct {background-image: url('../sources_akit/Success-icon-bw.png'); cursor:pointer;}
+.akit-button-notebook {background-image: url('../sources_akit/Paste-icon.png'); width:16px; height:16px; margin:0px 5px 0px 10px; position:relative; top:4px; display:inline-block;}
+.akit-button-notebook:hover {position:relative; top:6px; left:1px;}
+.akit-result-icon {width:24px; height:24px; margin:0px 5px 0px 0px; position:relative; top:8px; display:inline-block;}
+.akit-new-input-separator {margin:10px;}
+.akit-input-widget {display:none;}
+.akit-input-row-2 { background-color:#E1EAEC;  border-radius:2px; color:#3c3c3c;}
+.akit-input-label {margin:0 0 3px 35px; display:none;}
+.left-margin {width:1px; background-color:darkred; position:absolute; left:60px; height:100%;}
+.akit-input-cell .akit-cell-placeholder {display:none;}
+.akit-input-cell.active > .akit-cell-placeholder {display:block; margin-top:20px;}
+.akit-cell-placeholder .akit-placeholder-icon {color:#0B99BC; padding-left:5px;}
+.akit-cell-placeholder .akit-placeholder-expression {display:inline-block;width:100px; margin-left:25px; border-bottom:1px dashed gray; background-color:rgb(230,240,256);}
+
+.akit-input-cell {
+    border-radius: 3px;
+}
+.akit-input-cell .akit-input-cell {
+    background-color:transparent;
+    padding:5px 10px;
+    margin:3px 0px;
+}
+.akit-input-cell .akit-input-cell .akit-input-cell {
+    background-color:rgb(240,240,240);
+    border: 2px solid rgb(220,220,220);
+    margin-left:10px;
+}
+.akit-input-cell .akit-input-cell .akit-input-cell .akit-input-cell {
+    background-color:rgb(230,230,230);
+    border: 2px solid rgb(210,210,210);
+    margin-left:10px;
+}
+.akit-input-cell .akit-input-cell .akit-input-cell .akit-input-cell .akit-input-cell{
+    background-color:rgb(240,240,240);
+    border: 2px solid rgb(210,210,210);
+    margin-left:10px;
+}
+.akit-hint-button {display:none;position:absolute; right:5px; background-color:#FCDF15; padding:5px; border-radius:3px; z-index:2;}
+.akit-hint-container {margin-top:10px;}
+.akit-hint-detail {padding:5px 0px 5px 0px; color:green; display:none}
+.akit-hint-main {padding-left:0px; color:#0B99BC; font-weight:bold; }
+.akit-cell-footer .akit-hint-main {font-weight:normal; }
+.akit-buggy {display: block; margin:10px 0px 0px 41px; color:#d40e52;}
+.akit-item-msg {display: inline-block; margin-left:20px; color:rgb(0,150,0);}
+.akit-evaluationfeedback {padding-left:0px; color:green; margin-left:41px;}
+.akit-formula-editor {background-color: #E1EAEC; color:#3c3c3c; min-width:300px; padding:8px 16px; border-radius:2px;}
+div.formulaeditorpalette {display:none;z-index:10;position:relative;background-color:#FCDF15;border:1px solid #FCDF15;border-radius:2px;margin:15px 0 5px 0px; padding-bottom:4px;}
+div.formulaeditorpalette.visible {display:block;}
+div.palette-keypad {float:left; position:relative;}
+div.palette-funckeys {float:right; width:50px;position:relative;background-color:#FCDF15;}
+div.palette-row {width:auto; overflow:hidden;}
+div.palette-button {display:block; float:left; width:25px; height:20px; padding:5px 5px; margin:5px; text-align:center;background-color:white;box-shadow:0px 4px rgba(0, 0, 0, 0.2);cursor:pointer;border-radius:3px;}                
+div.palette-button:hover {background-color:rgb(220,220,220) !important;}
+div.palette-button-inner {display:inline-block;width:100%; height:100%;}                
+div.palette-button.palette-button-backspace {background: #b0b0b0 url('../sources_akit/backspace_small.png') no-repeat; background-position: center center;}
+div.palette-button.palette-button-enter {color:white; background-color: darkblue;}
+div.palette-button.palette-button-operator {/*background-color:#FFF0F5;*/}
+div.palette-button.palette-button-variable {background-color:rgb(200,200,256);font-style:italic;}
+div.palette-button.palette-button-func {background-color:#B0B0B0; }
+div.palette-button.palette-button-integral {font-size: 0.5em;}
+div.palette-button.palette-button-sqrt .MathJax {position:relative; top:-5px;}
+
+.hint-toggle-button {color:rgb(150,150,150);font-size:0.8em;}
+
+div.formulaeditorpalette.touch-device {position:fixed; right:0; bottom:0px;border:none; background-color:transparent; margin:0; padding:0; width:100%;}
+div.formulaeditorpalette.touch-device div.palette-keypad {background-color:#D8D8D8;  width:100%; max-width:900px;}
+div.formulaeditorpalette.touch-device .akit-hint-button {position:relative; width:8%; right:0; background-color:#FCDF15;}
+.touch-device div.palette-keypad {background-color:#E1EAEC;}
+.touch-device div.palette-button {font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; font-weight: lighter; width:4%; height:30px; padding:5px 1%; margin:5px 1%; font-size:1.2em; vertical-align: middle;}                
+.touch-device div.palette-button.palette-button-integral {font-size: 0.7em;}
+.touch-device div.palette-button.palette-button-enter {width: 8%;}
+.akit-exercise .touch-device  textarea {display:none;} //to get rid of extra iPad caret
