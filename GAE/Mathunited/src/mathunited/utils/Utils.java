@@ -77,9 +77,12 @@ public class Utils {
      */
     public static void getEindExamenSiteResults(HashMap<Integer, Integer> eindExamenSiteItems, StudentList students, Map<String, Map<String, Score>> results) throws Exception {
     	for (Student student : students.items) {
-    		Map<String, Score> userResults = new HashMap<String, Score>();
+    		Map<String, Score> userResults = results.get(student.userId);
+    		if (userResults == null) {
+    			userResults = new HashMap<String, Score>();
+        		results.put(student.userId, userResults);
+    		}
     		getEindExamenSiteResults(eindExamenSiteItems, student.userId, userResults);
-    		results.put(student.userId, userResults);
 		}
     }
 
@@ -88,86 +91,109 @@ public class Utils {
      */
     public static void getEindExamenSiteResults(HashMap<Integer, Integer> eindExamenSiteItems, String userid, Map<String, Score> results) throws Exception 
     {
-    	// construct input json E.g. {"userid":"sanderbons","assignmentids":[6507,6503,3978]}
-    	JSONObject json = new JSONObject();
-    	json.put("userid", userid);
-    	JSONArray array = new JSONArray();
-    	for (Integer id : eindExamenSiteItems.keySet()) {
-        	array.put(id);
-		}
-    	json.put("assignmentids", array);
-    	// execute webservice
-    	JSONObject result = executeHttpPostResult("http://www.eindexamensite.nl/GetUserResults/services.html", json);
-    	// get result json
-    	JSONArray assignments = result.getJSONArray("assignments");
-    	
-    	for (int i = 0; i < assignments.length(); i++)
-    	{
-    		JSONObject assignment = assignments.getJSONObject(i);
-    		int id = assignment.getInt("id");
-    		Score score = new Score();
-    		score.id = Integer.toString(id);
-    		String scoreString = assignment.getString("score");
-    		if (!scoreString.equals("null"))
-    			score.score = Integer.parseInt(scoreString);
-       		String totalString = assignment.getString("total");
-    		if (!totalString.equals("null"))
-    		{
-    			score.total = Integer.parseInt(totalString);
-    			score.made = true;
-    		}
-    		else
-    		{
-    			score.total = eindExamenSiteItems.get(id);
-    			score.made = false;
-    		}
-    		results.put(Integer.toString(id), score);
+    	if (eindExamenSiteItems.size() > 0) {
+	    	// construct input json E.g. {"userid":"sanderbons","assignmentids":[6507,6503,3978]}
+	    	JSONObject json = new JSONObject();
+	    	json.put("userid", userid);
+	    	JSONArray array = new JSONArray();
+	    	for (Integer id : eindExamenSiteItems.keySet()) {
+	        	array.put(id);
+			}
+	    	json.put("assignmentids", array);
+	    	// execute webservice
+	    	JSONObject result = executeHttpPostResult("http://www.eindexamensite.nl/GetUserResults/services.html", json);
+	    	// get result json
+	    	JSONArray assignments = result.getJSONArray("assignments");
+	    	
+	    	for (int i = 0; i < assignments.length(); i++)
+	    	{
+	    		JSONObject assignment = assignments.getJSONObject(i);
+	    		int id = assignment.getInt("id");
+	    		Score score = new Score();
+	    		score.id = Integer.toString(id);
+	    		String scoreString = assignment.getString("score");
+	    		if (!scoreString.equals("null"))
+	    			score.score = Integer.parseInt(scoreString);
+	       		String totalString = assignment.getString("total");
+	    		if (!totalString.equals("null"))
+	    		{
+	    			score.total = Integer.parseInt(totalString);
+	    			score.made = true;
+	    		}
+	    		else
+	    		{
+	    			score.total = eindExamenSiteItems.get(id);
+	    			score.made = false;
+	    		}
+	    		results.put(Integer.toString(id), score);
+	    	}
     	}
     }
     
+    /**
+     * Returns scores of multiple students in the results parameter. The result is a map consisting of:
+     * Map<"userid", 
+     *     Map<assignmentid,
+     *     		Score{score, total, made}
+     *     >
+     * >
+     */
+    public static void getQtiPlayerResults(HashMap<String, Integer> eindExamenSiteItems, StudentList students, Map<String, Map<String, Score>> results) throws Exception {
+    	for (Student student : students.items) {
+    		Map<String, Score> userResults = results.get(student.userId);
+    		if (userResults == null) {
+    			userResults = new HashMap<String, Score>();
+        		results.put(student.userId, userResults);
+    		}
+    		getQtiPlayerResults(eindExamenSiteItems, student.userId, userResults);
+		}
+    }
+
     /**
      * Returns scores of a student in the results parameter
      */
     public static void getQtiPlayerResults(HashMap<String, Integer> items, String userid, Map<String, Score> results) throws Exception 
     {
-    	// construct input json E.g. {"userid":"dnote","repo":"ster","assignmentids":["EC-VMBO34-T9-Dtoets.zip","EC-VMBO34B-T1-Dtoets.zip","AK_HV123_ThemaBevolkingRuimte_Immigratie_Stap6.zip"]}
-    	JSONObject json = new JSONObject();
-    	json.put("userid", userid);
-    	json.put("repo", "ster");
-    	JSONArray array = new JSONArray();
-    	for (String id : items.keySet()) {
-        	array.put(id);
-		}
-    	json.put("assignmentids", array);
-    	// execute webservice
-    	JSONObject result = executeHttpPostResult("https://qti-player.appspot.com/services/GetUserResults", json);
-    	// returns {"assignments":[{"id":"EC-VMBO34-T9-Dtoets.zip","score":"0","total":"1"},{"id":"EC-VMBO34B-T1-Dtoets.zip","score":"1","total":"1"},{"id":"AK_HV123_ThemaBevolkingRuimte_Immigratie_Stap6.zip","score":"1","total":"2"}]}
-    	// get result json
-    	if (result.has("status") && result.getInt("status") == -1)
-    		throw new Exception(result.getString("message"));
-    	JSONArray assignments = result.getJSONArray("assignments");
-    	
-    	for (int i = 0; i < assignments.length(); i++)
-    	{
-    		JSONObject assignment = assignments.getJSONObject(i);
-    		String id = assignment.getString("id");
-    		Score score = new Score();
-    		score.id = id;
-    		String scoreString = assignment.getString("score");
-    		if (!scoreString.equals("null"))
-    			score.score = Integer.parseInt(scoreString);
-       		String totalString = assignment.getString("total");
-    		if (!totalString.equals("null"))
-    		{
-    			score.total = Integer.parseInt(totalString);
-    			score.made = true;
-    		}
-    		else
-    		{
-    			score.total = items.get(id);
-    			score.made = false;
-    		}
-    		results.put(id, score);
+    	if (items.size() > 0) {
+	    	// construct input json E.g. {"userid":"dnote","repo":"ster","assignmentids":["EC-VMBO34-T9-Dtoets.zip","EC-VMBO34B-T1-Dtoets.zip","AK_HV123_ThemaBevolkingRuimte_Immigratie_Stap6.zip"]}
+	    	JSONObject json = new JSONObject();
+	    	json.put("userid", userid);
+	    	json.put("repo", "ster");
+	    	JSONArray array = new JSONArray();
+	    	for (String id : items.keySet()) {
+	        	array.put(id);
+			}
+	    	json.put("assignmentids", array);
+	    	// execute webservice
+	    	JSONObject result = executeHttpPostResult("https://qti-player.appspot.com/services/GetUserResults", json);
+	    	// returns {"assignments":[{"id":"EC-VMBO34-T9-Dtoets.zip","score":"0","total":"1"},{"id":"EC-VMBO34B-T1-Dtoets.zip","score":"1","total":"1"},{"id":"AK_HV123_ThemaBevolkingRuimte_Immigratie_Stap6.zip","score":"1","total":"2"}]}
+	    	// get result json
+	    	if (result.has("status") && result.getInt("status") == -1)
+	    		throw new Exception(result.getString("message"));
+	    	JSONArray assignments = result.getJSONArray("assignments");
+	    	
+	    	for (int i = 0; i < assignments.length(); i++)
+	    	{
+	    		JSONObject assignment = assignments.getJSONObject(i);
+	    		String id = assignment.getString("id");
+	    		Score score = new Score();
+	    		score.id = id;
+	    		String scoreString = assignment.getString("score");
+	    		if (!scoreString.equals("null"))
+	    			score.score = Integer.parseInt(scoreString);
+	       		String totalString = assignment.getString("total");
+	    		if (!totalString.equals("null"))
+	    		{
+	    			score.total = Integer.parseInt(totalString);
+	    			score.made = true;
+	    		}
+	    		else
+	    		{
+	    			score.total = items.get(id);
+	    			score.made = false;
+	    		}
+	    		results.put(id, score);
+	    	}
     	}
     }
     

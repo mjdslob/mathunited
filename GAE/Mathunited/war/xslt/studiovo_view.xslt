@@ -119,6 +119,7 @@ indent="yes" encoding="utf-8"/>
     <script type="text/javascript">
     	var logintoken = "";
     	var userrole = "";
+    	var schoolcode = "";
     	$.receiveMessage(
 		  function(e){
 		  	if (e.data.indexOf('readspeaker.com') == -1) // hack, origin filtering does not seem to work so message from readspeaker are received
@@ -135,6 +136,9 @@ indent="yes" encoding="utf-8"/>
 			    		userrole = "student";
 			    	else if ('<xsl:value-of select="$requesturl"/>'.indexOf('&amp;role=employee') > -1)
 			    		userrole = "employee";
+			    	var idx = '<xsl:value-of select="$requesturl"/>'.indexOf('&amp;schoolcode=');
+			    	if (idx > -1)
+			    		schoolcode = '<xsl:value-of select="$requesturl"/>'.substring(idx + 12);
 			    	// END OF TEST CODE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			    }
 			 }
@@ -368,7 +372,7 @@ indent="yes" encoding="utf-8"/>
 </xsl:template>
 
 <xsl:template match="result" mode="content">
-	<iframe class="result-frame" ontab='$(this).attr("src", "/viewresult?repo={$repo}&amp;threadid={@layout}&amp;logintoken=" + encodeURIComponent(logintoken) + "&amp;userrole=" + userrole)' src="/iframeloading.html"></iframe>
+	<iframe class="result-frame" ontab='$(this).attr("src", "/viewresult?repo={$repo}&amp;threadid={@layout}&amp;logintoken=" + encodeURIComponent(logintoken) + "&amp;userrole=" + userrole + "&amp;schoolcode=" + schoolcode)' src="/iframeloading.html"></iframe>
 </xsl:template>
 
 <xsl:template match="textref" mode="content">

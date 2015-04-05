@@ -110,9 +110,15 @@ public class ViewResultServlet extends HttpServlet {
            	String userid = Utils.userIdFromLoginToken(logintoken);
            	parameterMap.put("userid", userid);
            	String userrole = Utils.userRoleFromLoginToken(logintoken);
+           	// TESTCODE testcode which enables us to vary the role we are using to register
            	if (parameterMap.containsKey("userrole") && parameterMap.get("userrole").length() > 0)
-           		userrole = parameterMap.get("userrole"); // testcode which enables us to vary the role we are using to register
+           		userrole = parameterMap.get("userrole"); 
+           	// END TESTCODE 
            	String schoolcode = Utils.userSchoolFromLoginToken(logintoken);
+           	// TESTCODE testcode which enables us to vary the school we are using to register
+           	if (parameterMap.containsKey("schoolcode") && parameterMap.get("schoolcode").length() > 0)
+           		schoolcode = parameterMap.get("schoolcode"); 
+           	// END TESTCODE 
 
             //ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             response.setContentType("text/html");
