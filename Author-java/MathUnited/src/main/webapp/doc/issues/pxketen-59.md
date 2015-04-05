@@ -5,4 +5,4 @@ PXKETEN-59 XML Editor in auteustool
 
 - Meer beschrijvende error meldingen dan alleen @@@ XML Editor @@@ (open)
 
-- Versienummer in WAR 
+- Versienummer in WAR (klaar)

@@ -47,13 +47,16 @@ Non-local communicatie: alleen met http://cdn.mathjax.org/mathjax/latest/
 Gebruik van de MathJax CDN server valt onder de TOS op http://www.mathjax.org/mathjax-cdn-terms-of-service.html
 
 Mathjax kan ook lokaal worden gedraaid.
-    
+
+Er zweefde nog een http:// ipv https:// rond, dit zou het laden van MathJax verhinderen als 
+de webapp over http wordt geladen.
 
 # Acties
 
 - Voeg timing toe aan SVN commando's (open)
 
-- Verwijder bust=v29 van URI naar MathJax
+- Verwijder bust=v29 van URI naar MathJax (-)
 
-- Maak MathJax lokaal beschikbaar (open)
+- Maak MathJax lokaal beschikbaar (klaar)
 
+- Verwijder non-https laadt punten (klaar)

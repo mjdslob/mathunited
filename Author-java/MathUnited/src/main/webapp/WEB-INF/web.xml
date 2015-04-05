@@ -74,6 +74,10 @@
         <servlet-class>nl.math4all.mathunited.SetRepoServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>version</servlet-name>
+        <servlet-class>nl.math4all.mathunited.VersionServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>encodeBase64</servlet-name>
         <servlet-class>nl.math4all.mathunited.GeogebraGenerator</servlet-class>
     </servlet>
@@ -176,6 +180,10 @@
     <servlet-mapping>
         <servlet-name>getitemtemplates</servlet-name>
         <url-pattern>/get-itemtemplates</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>version</servlet-name>
+        <url-pattern>/version</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
