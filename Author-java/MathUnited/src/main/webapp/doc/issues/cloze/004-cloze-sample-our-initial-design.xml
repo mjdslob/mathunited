@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<cloze type="algebrakit" audience="basis" evaluate="exact">
+    <cloze-answer score="100%">millimeters</cloze-answer>
+    <cloze-answer score="100%">mm</cloze-answer>
+    <cloze-answer score="50%">duizendste meter</cloze-answer>
+</cloze>

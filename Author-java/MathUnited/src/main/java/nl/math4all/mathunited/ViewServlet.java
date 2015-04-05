@@ -59,6 +59,7 @@ public class ViewServlet extends HttpServlet {
                    parameterMap.put(pname, pvalArr[0]);
                 }
             }
+
             if(isMobile(request.getHeader("user-agent"))) {
                 parameterMap.put("is_mobile", "true");
             } else {
@@ -154,7 +155,7 @@ public class ViewServlet extends HttpServlet {
             // supply path to subcomponent to xslt. Might be needed when resolving other xml-documents
             int ind = sub.file.lastIndexOf('/');
             String repoPath = repository.getPath();
-            if(repoPath.length()>0) {
+            if (repoPath.length() > 0) {
                 repoPath=repoPath+"/";
             }
 
