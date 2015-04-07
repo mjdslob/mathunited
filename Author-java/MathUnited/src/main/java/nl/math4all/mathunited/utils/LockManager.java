@@ -8,6 +8,7 @@ import org.apache.commons.io.filefilter.IOFileFilter;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -35,7 +36,7 @@ public class LockManager {
     }
 
     /** Lock locations to user and timestamp information. */
-    Map<String, Lock> locks = new HashMap<>();
+    ConcurrentHashMap<String, Lock> locks = new ConcurrentHashMap<>();
 
     /**
      * Timer for cleaning stale locks.
@@ -76,26 +77,28 @@ public class LockManager {
     private class LockTimeoutChecker implements Runnable {
         @Override
         public void run() {
-            synchronized (locks) {
-                try {
-                    final long now = System.currentTimeMillis();
-                    Iterator<Lock> it = locks.values().iterator();
-                    while (it.hasNext()) {
-                        Lock lock = it.next();
-                        LOGGER.info("Checking " + lock.refbase + " dt = " + (now - lock.timestamp));
-                        if (now - lock.timestamp > MAX_LOCK_DURATION_MS) {
-                            try {
-                                lock.release();
-                            } catch (LockException e) {
-                                LOGGER.warning("Error while releasing lock: " + e.getMessage());
-                            }
-                            it.remove();
+            try {
+                final long now = System.currentTimeMillis();
+
+                Iterator<Map.Entry<String,Lock>> it = locks.entrySet().iterator();
+
+                while (it.hasNext()) {
+                    Map.Entry<String,Lock> entry = it.next();
+                    Lock lock = entry.getValue();
+
+                    LOGGER.info("Checking " + lock.refbase + " dt = " + (now - lock.timestamp));
+                    if (now - lock.timestamp > MAX_LOCK_DURATION_MS) {
+                        try {
+                            lock.release();
+                        } catch (LockException e) {
+                            LOGGER.warning("Error while releasing lock: " + e.getMessage());
                         }
+                        locks.remove(entry.getKey());
                     }
-                } catch (Exception t) {
-                    // Catch any thing to prevent a lock-down
-                    LOGGER.warning("!!! CAUGHT UNEXPECTED EXCEPTION: " + t.getMessage());
                 }
+            } catch (Exception t) {
+                // Catch any thing to prevent a lock-down
+                LOGGER.warning("!!! CAUGHT UNEXPECTED EXCEPTION: " + t.getMessage());
             }
         }
     }
@@ -128,30 +131,34 @@ public class LockManager {
      */
     public String getLock(String username, String refbase) {
         LOGGER.info("Requesting lock for user " + username + " for path '" + refbase + "'");
-        // Check if refbase is being locked already
-        Lock lockData = locks.get(refbase);
-        if (lockData != null) {
-            if (Objects.equals(lockData.username, username)) {
-                LOGGER.info("Updating lock timestamp for " + refbase + ", user " + username);
-                lockData.touch();
-            } else {
-                LOGGER.info("Editing not allowed: lock for " + refbase + " is currently owned by " + lockData.username);
+
+        // Put in synchronized block because there is time between checking existing lock and adding new
+        synchronized (locks) {
+            // Check if refbase is being locked already
+            Lock lockData = locks.get(refbase);
+            if (lockData != null) {
+                if (Objects.equals(lockData.username, username)) {
+                    LOGGER.info("Updating lock timestamp for " + refbase + ", user " + username);
+                    lockData.touch();
+                } else {
+                    LOGGER.info("Editing not allowed: lock for " + refbase + " is currently owned by " + lockData.username);
+                }
+                return lockData.username;
             }
-            return lockData.username;
-        }
 
-        // Create lock
-        LOGGER.info("Creating new lock on " + refbase + " for user " + username);
+            // Create lock
+            LOGGER.info("Creating new lock on " + refbase + " for user " + username);
 
-        try {
-            Lock lock = newLock(refbase, username);
-            lock.aquire();
-            locks.put(refbase, lock);
+            try {
+                Lock lock = newLock(refbase, username);
+                lock.aquire();
+                locks.put(refbase, lock);
 
-            LOGGER.info("Lock was created succesfully");
-        } catch (LockException e) {
-            LOGGER.info("Could not create lock, assuming locked by XML editor: " + e.getMessage());
-            return "@@@ XML EDITOR @@@";
+                LOGGER.info("Lock was created succesfully");
+            } catch (LockException e) {
+                LOGGER.info("Could not create lock, assuming locked by XML editor: " + e.getMessage());
+                return "@@@" + e.getMessage();
+            }
         }
 
         // Return username

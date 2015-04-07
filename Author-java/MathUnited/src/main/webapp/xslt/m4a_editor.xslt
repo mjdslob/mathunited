@@ -28,6 +28,7 @@
     <xsl:param name="component"/>
     <xsl:param name="dopreprocess"/>
     <xsl:param name="lock_owner"/>
+    <xsl:param name="lock_errormsg"/>
 
     <xsl:param name="component_id"/>
     <xsl:param name="component_number"/>
@@ -299,6 +300,16 @@
                                 momenteel bewerkt wordt door de auteur met username '<xsl:value-of select="$lock_owner"/>'.
                             </div>
                         </xsl:if>
+                        <xsl:if test="$lock_errormsg">
+                            <div id="locked-message">
+                                Het is nu niet mogelijk deze paragraaf te bewerken, omdat de paragraaf
+                                niet gelockt kon worden op de server voor versie beheer. Neemt u
+                                aub contact op met Meyke Bos met een kopie van de volgende foutmelding:
+                                <pre>
+                                    <xsl:value-of select="$lock_errormsg" />
+                                </pre>
+                            </div>
+                        </xsl:if>
                         <xsl:if test="$lockstatus='lock'">
                             <div id="locked-message">
                                 Het is niet meer mogelijk deze paragraaf te bewerken via de auteurstool. Indien u toch 
@@ -307,7 +318,7 @@
                         </xsl:if> 
                     </div>
                     
-                    <xsl:if test="not(string-length($lock_owner)>0) and not($lockstatus='lock')">
+                    <xsl:if test="not(string-length($lock_owner)>0) and not(string-length($lock_errormsg)>0) and not($lockstatus='lock')">
                       <div class="footer">
                         <div id="commit-button">
                             <div id="commit-button-image"/>

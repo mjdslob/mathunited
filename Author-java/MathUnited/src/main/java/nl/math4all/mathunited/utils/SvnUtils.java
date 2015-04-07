@@ -1,14 +1,12 @@
 package nl.math4all.mathunited.utils;
 
 import nl.math4all.mathunited.configuration.Configuration;
-import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.DefaultExecuteResultHandler;
-import org.apache.commons.exec.DefaultExecutor;
-import org.apache.commons.exec.Executor;
+import org.apache.commons.exec.*;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.logging.Logger;
@@ -54,26 +52,38 @@ public class SvnUtils {
         }
 
         LOGGER.info("Command line = '''" + cmd + "'''.");
+        long tic = System.currentTimeMillis();
 
         // Execute in child process
         DefaultExecuteResultHandler resultHandler = new DefaultExecuteResultHandler();
         Executor executor = new DefaultExecutor();
 
+        // Capture output
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        PumpStreamHandler streamHandler = new PumpStreamHandler(bos);
+        executor.setStreamHandler(streamHandler);
+
         try {
             executor.execute(cmd, resultHandler);
             resultHandler.waitFor();
         } catch (Exception ex) {
-            String message = "Error executing '''" + cmd + "''': " + ex.getMessage();
+            String message = "Error executing '''" + cmd + "''': " + ex.getMessage() + "\n" + bos.toString();
             if (exceptions) {
                 throw new SvnException(message, ex);
             } else {
                 LOGGER.warning(message);
             }
         }
+        finally {
+            long toc = System.currentTimeMillis();
+            LOGGER.info("'" + cmd + "' took " + (toc - tic) + " ms.");
+        }
 
         // Return exit code
         if (resultHandler.getExitValue() != 0) {
-            String message = "Error executing '''" + cmd + "''': Return values was " + resultHandler.getExitValue();
+            String message = "Error executing '''" + cmd
+                    + "''': Return value was " + resultHandler.getExitValue() + "\n"
+                    + bos.toString();
             if (exceptions) {
                 throw new SvnException(message);
             } else {

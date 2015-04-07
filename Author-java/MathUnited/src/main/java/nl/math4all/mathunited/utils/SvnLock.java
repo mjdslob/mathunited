@@ -47,7 +47,7 @@ public class SvnLock extends Lock {
             File imagedir = new File(refbase, "../images");
             SvnUtils.svn(false, "update", imagedir.toString());
         } catch (SvnException e) {
-            throw new LockException("Could not update " + refbase, e);
+            throw new LockException("Could not update " + refbase + ": " + e.getMessage());
         }
 
         // Create new persistent lock file
@@ -65,8 +65,8 @@ public class SvnLock extends Lock {
         try {
             // Lock files
             SvnUtils.svn(true, lockedFiles, "lock");
-        } catch (Exception e) {
-            throw new LockException("Could not acquire lock", e);
+        } catch (SvnException e) {
+            throw new LockException("Could not acquire lock: " + e.getMessage());
         }
     }
 
@@ -82,20 +82,12 @@ public class SvnLock extends Lock {
         newFileSet.removeAll(Arrays.asList(lockedFiles));
         String[] newFiles = newFileSet.toArray(new String[0]);
 
-        System.out.println("Release:: locked files: ");
-        for (String f : lockedFiles) {
-            System.out.println("-- " + f);
-        }
-
-        System.out.println("Release:: new files: ");
-        for (String f : newFiles) {
-            System.out.println("-- " + f);
-        }
-
         // Commit the files the files
         try {
             // Add new files (ignore errors, add missing parent directories)
-            SvnUtils.svn(false, newFiles, "add", "--parents");
+            if (newFiles != null && newFiles.length > 0) {
+                SvnUtils.svn(false, newFiles, "add", "--parents");
+            }
 
             // Commit will unlock
             SvnUtils.svn(false, "commit", refbase, "-m", "Changes by user " + username + ".");

@@ -150,7 +150,11 @@ public class EditServlet extends HttpServlet {
             String currentOwner = getLock(usettings.username, config.getContentRoot() + refbase);
 
             if (currentOwner != null & !StringUtils.equals(currentOwner, usettings.username)) {
-                parameterMap.put("lock_owner", currentOwner);
+                if (currentOwner.startsWith("@@@")) {
+                    parameterMap.put("lock_errormsg", currentOwner.substring(3));
+                } else {
+                    parameterMap.put("lock_owner", currentOwner);
+                }
             }
             
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
@@ -159,6 +163,7 @@ public class EditServlet extends HttpServlet {
             Source xmlSource = resolver.resolve(repository.getPath() + "/" + sub.file, "");
             String errStr = processor.process(xmlSource, variant, parameterMap, resolver, byteStream);
             response.setContentType("text/html");
+
             if(errStr.length()>0){
                 PrintWriter writer = response.getWriter();
                 String resultStr = "<html><head></head><body>"+errStr+"</body></html>";

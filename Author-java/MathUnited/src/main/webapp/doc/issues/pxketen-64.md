@@ -53,7 +53,7 @@ de webapp over http wordt geladen.
 
 # Acties
 
-- Voeg timing toe aan SVN commando's (open)
+- Voeg timing toe aan SVN commando's (klaar)
 
 - Verwijder bust=v29 van URI naar MathJax (-)
 
