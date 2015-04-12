@@ -41,6 +41,7 @@ public class FileManager {
         LOGGER.log(Level.FINE, "getBackupFolder: subFolder={0}, result={1}", new Object[]{subFolder, fname});
         return new File(fname);
     }
+    /*
     private static File getSubcompFolder(String subFolder, Repository repo) {
         Configuration config = Configuration.getInstance();
         String fname = config.getContentRoot();
@@ -52,7 +53,9 @@ public class FileManager {
         LOGGER.log(Level.FINE, "getSubcompFolder: subFolder={0}, result={1}", new Object[]{subFolder, fname});
         return new File(fname);
     }
-    
+    */
+
+    /*
     public static void log(String subFolder, String username, File zipFile, Repository repo) throws Exception {
         File compFile = getBackupFolder(subFolder, repo).getParentFile();
         File logFile = new File(compFile, "log.xml");
@@ -65,6 +68,7 @@ public class FileManager {
         bw.write("<log user='"+username+"'>"+shortName+"</log>\n");
         bw.close();
     }
+    */
     
     public static boolean backupFolderExists(String subFolder, Repository repo) throws Exception {
         File subcompFolder = getBackupFolder(subFolder, repo);
@@ -72,10 +76,11 @@ public class FileManager {
     }
     /** creates a zip-file containing all xml files (not images or other resources) 
      *  and stores it in _history/...
-     * @param subcompFolder: folder of the subcomponent
+     * /@param subcompFolder: folder of the subcomponent
      * @param repo:
      * @return The created zip file
      */
+    /*
     public static File backupSubcomponent(String name, String subFolder, Repository repo) throws Exception {
         File backupFolder = getBackupFolder(subFolder, repo);
         File subcompFolder = getSubcompFolder(subFolder, repo);
@@ -119,7 +124,9 @@ public class FileManager {
         
         return fzip;
     }
-    
+    */
+
+    /*
     public static void copyFile(File sourceFile, File destFile) throws IOException {
         if(!destFile.exists()) {
             destFile.createNewFile();
@@ -142,7 +149,9 @@ public class FileManager {
             }
         }
     }
+    */
 
+    /*
     public static String getChecksum(File filename) throws Exception {
        InputStream fis =  new FileInputStream(filename);
 
@@ -165,7 +174,8 @@ public class FileManager {
        }
        return sb.toString();
     }
-    
+    */
+
     static public void writeToFile(String fname, Node node, Repository repo) throws Exception {        
         DOMImplementationRegistry registry = DOMImplementationRegistry.newInstance();
         DOMImplementationLS impl = (DOMImplementationLS)registry.getDOMImplementation("LS");

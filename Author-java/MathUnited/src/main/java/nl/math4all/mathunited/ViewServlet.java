@@ -108,6 +108,7 @@ public class ViewServlet extends HttpServlet {
             if(repository.baseRepo!=null) {
                 baserepo = repoMap.get(repository.baseRepo);
             }
+
             //get default variant for this repo or get it from the url
             if(variant==null) {
                 variant = repository.defaultVariant;

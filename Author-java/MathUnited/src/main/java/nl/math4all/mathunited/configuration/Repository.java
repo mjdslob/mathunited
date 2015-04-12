@@ -17,17 +17,44 @@ public class Repository {
     public String componentsURL;
     public String threadsURL;
     public String contentItems;
-    
+
+    private static Map<String, Component> componentMap = null;
+    private static long componentMtime = 0L;
+
+    /**
+     * Reset the component map, so it will be re-read the next time it is requested
+     */
+    public static void resetComponentMap() {
+        componentMap = null;
+    }
+
+    /**
+     * Read the component if it has not been read yet, or return a cached copy.
+     *
+     * @return The component map
+     * @throws Exception
+     */
     public Map<String, Component> readComponentMap() throws Exception {
+
         Configuration config = Configuration.getInstance();
-        File f = new File(config.contentRoot+this.getPath()+"/leerlijnen/components.xml");
+        File f = new File(config.contentRoot + this.getPath() + "/leerlijnen/components.xml");
+
+        if (componentMap != null && f.lastModified() <= componentMtime) {
+            return componentMap;
+        }
+
+
 //        File f = new File("/var/www/html/index/studiovo/components.xml");
         if(!f.exists() && this.baseRepo!=null && !this.baseRepo.isEmpty()) {
             Repository baseRepo = config.getRepos().get(this.baseRepo);
+
             f = new File(config.contentRoot+baseRepo.getPath()+"/leerlijnen/components.xml");
         }
         FileInputStream is = new FileInputStream(f);
-        Map<String, Component> componentMap = Component.getComponentMap(new InputSource(is));
+
+        componentMap = Component.getComponentMap(new InputSource(is));
+        componentMtime = f.lastModified();
+
         is.close();
 
         return componentMap;

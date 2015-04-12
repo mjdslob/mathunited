@@ -104,23 +104,14 @@ public class ProcessItemServlet extends HttpServlet {
             if(repository.baseRepo!=null) {
                 baserepo = repoMap.get(repository.baseRepo);
             }
-            
-            //read components. To be moved to init()
-            File f = new File(config.contentRoot+repository.getPath()+"/leerlijnen/components.xml");
-//            File f = new File("/var/www/html/index/studiovo/components.xml");
-            if(!f.exists() && !repository.baseRepo.isEmpty()) {
-                Repository baseRepo = config.getRepos().get(repository.baseRepo);
-                f = new File(config.contentRoot+baseRepo.getPath()+"/leerlijnen/components.xml");
-            }
-            FileInputStream is = new FileInputStream(f);
-            componentMap = Component.getComponentMap(new InputSource(is));
-            
+
+            // Read components. To be moved to init()
+            componentMap = repository.readComponentMap();
             Component component = componentMap.get(comp);
-            if(component==null) {
-                throw new Exception("Er bestaat geen component met id '"+comp+"'");
+            if (component == null) {
+                throw new Exception("Er bestaat geen component met id '" + comp + "'");
             }
-            
-            
+
             //if subcomp is not an integer, it will be interpreted as the index of the subcomponent.
             //note: this implies that an id of a subcomponent can not be an integer!
             try{

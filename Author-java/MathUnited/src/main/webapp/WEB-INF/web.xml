@@ -93,6 +93,14 @@
         <servlet-name>RestoreBackupServlet</servlet-name>
         <servlet-class>nl.math4all.mathunited.editor.RestoreBackupServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>svn-update</servlet-name>
+        <servlet-class>nl.math4all.mathunited.editor.SvnUpdateServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>svn-status</servlet-name>
+        <servlet-class>nl.math4all.mathunited.editor.SvnStatusServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>view</servlet-name>
         <url-pattern>/view</url-pattern>
@@ -184,6 +192,14 @@
     <servlet-mapping>
         <servlet-name>version</servlet-name>
         <url-pattern>/version</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>svn-update</servlet-name>
+        <url-pattern>/svn-update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>svn-status</servlet-name>
+        <url-pattern>/svn-status</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

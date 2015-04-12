@@ -51,9 +51,18 @@ public class EditServlet extends HttpServlet {
              throws ServletException, IOException {
 
         try{
+            //long tic = System.currentTimeMillis();
+            //System.out.printf("#### Edit. Request received. %d ms%n", System.currentTimeMillis() - tic); tic = System.currentTimeMillis();
+
             Configuration config = Configuration.getInstance();
+            //System.out.printf("#### Config obtained. %d ms%n", System.currentTimeMillis() - tic); tic = System.currentTimeMillis();
+
             UserSettings usettings = UserManager.isLoggedIn(request,response);
+            //System.out.printf("#### UserSettings obtained. %d ms%n", System.currentTimeMillis() - tic); tic = System.currentTimeMillis();
+
             Repository repository = Utils.getRepository(request);
+            //System.out.printf("#### Repository obtained. %d ms%n", System.currentTimeMillis() - tic); tic = System.currentTimeMillis();
+
             String comp = Utils.readParameter("comp", true, request);
             String subcomp = Utils.readParameter("subcomp", true, request);
             String variant = Utils.readParameter("variant", true, request);
@@ -74,6 +83,8 @@ public class EditServlet extends HttpServlet {
                 parameterMap.put("is_mobile", "false");
             }
 
+            //System.out.printf("#### Processed parameters. %d ms%n", System.currentTimeMillis() - tic); tic = System.currentTimeMillis();
+
             
             //find out which repository to use
             //try to get repo from cookie
@@ -91,20 +102,28 @@ public class EditServlet extends HttpServlet {
             if (repo == null) {
                 throw new Exception("Er is geen archief geselecteerd.");
             }
-            
+
+            //System.out.printf("#### Repo selected. %d ms%n", System.currentTimeMillis() - tic); tic = System.currentTimeMillis();
+
             Repository baserepo = null;
             if (repository.baseRepo != null) {
                 Map<String, Repository> repoMap = config.getRepos();
                 baserepo = repoMap.get(repository.baseRepo);
             }
 
+            //System.out.printf("#### BaseRepo obtained. %d ms%n", System.currentTimeMillis() - tic); tic = System.currentTimeMillis();
+
+
             //read components. To be moved to init()
             componentMap = repository.readComponentMap();
+            //System.out.printf("#### Component map. %d ms%n", System.currentTimeMillis() - tic); tic = System.currentTimeMillis();
+
             Component component = componentMap.get(comp);
             if(component==null) {
                 throw new Exception("Er bestaat geen component met id '"+comp+"'");
             }
-                        
+            //System.out.printf("#### Component selected. %d ms%n", System.currentTimeMillis() - tic); tic = System.currentTimeMillis();
+
             //if subcomp is not an integer, it will be interpreted as the index of the subcomponent.
             //note: this implies that an id of a subcomponent can not be an integer!
             try{
@@ -116,7 +135,8 @@ public class EditServlet extends HttpServlet {
             } catch(NumberFormatException exc) {
                 
             }
-            
+            //System.out.printf("#### SubComponent obtained. %d ms%n", System.currentTimeMillis() - tic); tic = System.currentTimeMillis();
+
             
             // find subcomponent, previous and following
             SubComponent sub=null, nextSub=null, prevSub=null;
@@ -132,22 +152,36 @@ public class EditServlet extends HttpServlet {
             if(sub==null) {
                 throw new Exception("Er bestaat geen subcomponent met id '"+subcomp+"'");
             }
-            
+
+            //System.out.printf("#### SubComponent selected. %d ms%n", System.currentTimeMillis() - tic); tic = System.currentTimeMillis();
+
+
             // supply path to subcomponent to xslt. Might be needed when resolving other xml-documents
             int ind = sub.file.lastIndexOf('/');
             String refbase;
             String basePath = repository.getPath();
-            if(basePath.isEmpty()) refbase = sub.file.substring(0, ind+1);
-            else refbase = repository.getPath()+"/"+sub.file.substring(0, ind+1);
-            
+            if (basePath.isEmpty()) {
+                refbase = sub.file.substring(0, ind+1);
+            } else {
+                refbase = repository.getPath() + "/" + sub.file.substring(0, ind+1);
+            }
+
+            //System.out.printf("#### refbase. %d ms%n", System.currentTimeMillis() - tic); tic = System.currentTimeMillis();
+
+
             parameterMap.put("componentsURL", repository.componentsURL);
             parameterMap.put("threadsURL", repository.threadsURL);
             parameterMap.put("refbase", refbase);
             parameterMap.put("component", component.getXML());
             parameterMap.put("repo-path", repository.getPath());
-            parameterMap.put("baserepo-path", baserepo==null?"":baserepo.getPath());
+            parameterMap.put("baserepo-path", baserepo == null ? "" : baserepo.getPath());
+            //System.out.printf("#### refbase. %d ms%n", System.currentTimeMillis() - tic); tic = System.currentTimeMillis();
+
             component.addToParameterMap(parameterMap, subcomp);
+            //System.out.printf("#### Parameter. %d ms%n", System.currentTimeMillis() - tic); tic = System.currentTimeMillis();
+
             String currentOwner = getLock(usettings.username, config.getContentRoot() + refbase);
+            //System.out.printf("#### Get lock. %d ms%n", System.currentTimeMillis() - tic); tic = System.currentTimeMillis();
 
             if (currentOwner != null & !StringUtils.equals(currentOwner, usettings.username)) {
                 if (currentOwner.startsWith("@@@")) {
@@ -156,12 +190,25 @@ public class EditServlet extends HttpServlet {
                     parameterMap.put("lock_owner", currentOwner);
                 }
             }
+
+            //System.out.printf("#### Parametermap & lock created. %d ms%n", System.currentTimeMillis() - tic); tic = System.currentTimeMillis();
+
             
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+            //System.out.printf("#### Byte stream created. %d ms%n", System.currentTimeMillis() - tic); tic = System.currentTimeMillis();
+
             ContentResolver resolver = new ContentResolver(repository, context);
-            
+            //System.out.printf("#### Resolver created. %d ms%n", System.currentTimeMillis() - tic); tic = System.currentTimeMillis();
+
+
             Source xmlSource = resolver.resolve(repository.getPath() + "/" + sub.file, "");
+            //System.out.printf("#### xml source resolved. %d ms%n", System.currentTimeMillis() - tic); tic = System.currentTimeMillis();
+
+
             String errStr = processor.process(xmlSource, variant, parameterMap, resolver, byteStream);
+            //System.out.printf("#### XML processed. %d ms%n", System.currentTimeMillis() - tic); tic = System.currentTimeMillis();
+            
+            
             response.setContentType("text/html");
 
             if(errStr.length()>0){
@@ -174,6 +221,8 @@ public class EditServlet extends HttpServlet {
                 ServletOutputStream os = response.getOutputStream();
                 os.write(result);
             }
+
+            //System.out.printf("#### Response written. %d ms%n", System.currentTimeMillis() - tic); tic = System.currentTimeMillis();
 
         }
         catch (Exception e) {
