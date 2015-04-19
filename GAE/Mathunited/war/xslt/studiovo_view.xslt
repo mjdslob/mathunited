@@ -32,6 +32,7 @@ extension-element-prefixes="exsl">
     
 <xsl:variable name="cm2px" select="number(50)"/>
 <xsl:variable name="menu_color" select="subcomponent/meta/param[@name='menu-color']"/>
+<xsl:variable name="background_color" select="assignments/meta/param[@name='background-color']"/>
 <xsl:variable name="variant">studiovo_view</xsl:variable>
 <xsl:variable name="intraLinkPrefix">
     <xsl:choose>
@@ -161,6 +162,9 @@ indent="yes" encoding="utf-8"/>
 	  ga('send', 'pageview');
 	</script>    
     <style>
+        <xsl:if test="$background_color">
+    		body { background-color: <xsl:value-of select="$background_color"/>; }
+        </xsl:if>
         <xsl:if test="$menu_color">
 			#menubar { background-color:<xsl:value-of select="$menu_color"/>; }
         </xsl:if>
