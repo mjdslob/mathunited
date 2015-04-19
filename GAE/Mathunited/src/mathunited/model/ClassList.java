@@ -1,7 +1,6 @@
 package mathunited.model;
 
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 import mathunited.configuration.Repository;
 
@@ -17,7 +16,7 @@ import com.google.appengine.api.datastore.Query.FilterPredicate;
 
 public class ClassList extends Base {
 	
-	private static final Logger log = Logger.getLogger(ClassList.class.getName());
+	//private static final Logger log = Logger.getLogger(ClassList.class.getName());
 	
 	public ArrayList<Class> items = new ArrayList<Class>();
 	

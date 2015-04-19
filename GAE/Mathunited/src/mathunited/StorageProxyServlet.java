@@ -1,18 +1,26 @@
 package mathunited;
 
-import java.io.*;
-import java.net.*;
-
-import javax.servlet.*;
-import javax.servlet.http.*;
-
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Map;
-import java.util.HashMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 public class StorageProxyServlet extends HttpServlet {
-    ServletContext context;
+
+	private static final long serialVersionUID = -4417747590607632582L;
+	
+	ServletContext context;
     private final static Logger LOGGER = Logger.getLogger(XSLTbean.class.getName());
     
     @Override
@@ -22,7 +30,8 @@ public class StorageProxyServlet extends HttpServlet {
 
         try{
             //read request parameters
-            Map<String, String[]> paramMap = request.getParameterMap();
+            @SuppressWarnings("unchecked")
+			Map<String, String[]> paramMap = request.getParameterMap();
             String[] strarr = paramMap.get("cmd");
             if(strarr==null || strarr.length==0) {
                 throw new Exception("No command supplied");

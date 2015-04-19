@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -21,8 +20,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -38,9 +35,7 @@ import mathunited.utils.UserException;
 import mathunited.utils.Utils;
 
 import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 
-import com.google.appengine.labs.repackaged.org.json.JSONArray;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
 @SuppressWarnings("serial")
@@ -67,7 +62,8 @@ public class ViewResultServlet extends HttpServlet {
             Configuration config = Configuration.getInstance(context);
             
             //read request parameters
-            Map<String, String[]> paramMap = request.getParameterMap();
+            @SuppressWarnings("unchecked")
+			Map<String, String[]> paramMap = request.getParameterMap();
             Map<String, String> parameterMap = new HashMap<String, String>();
             for(Map.Entry<String, String[]> entry : paramMap.entrySet()) {
                 String pname = entry.getKey();

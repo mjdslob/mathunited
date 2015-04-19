@@ -24,7 +24,10 @@ import mathunited.configuration.Repository;
 import mathunited.configuration.SubComponent;
 
 public class ViewServlet extends HttpServlet {
-    private final static Logger LOGGER = Logger.getLogger(XSLTbean.class.getName());
+
+	private static final long serialVersionUID = -5304896314263881051L;
+	
+	private final static Logger LOGGER = Logger.getLogger(XSLTbean.class.getName());
 	static {LOGGER.setLevel(Level.INFO);}
     ServletContext context;
     
@@ -49,7 +52,8 @@ public class ViewServlet extends HttpServlet {
             XSLTbean processor = new XSLTbean(context, config.getVariants());
 
             //read request parameters
-            Map<String, String[]> paramMap = request.getParameterMap();
+            @SuppressWarnings("unchecked")
+			Map<String, String[]> paramMap = request.getParameterMap();
             Map<String, String> parameterMap = new HashMap<String, String>();
             for(Map.Entry<String, String[]> entry : paramMap.entrySet()) {
                 String pname = entry.getKey();
@@ -139,7 +143,7 @@ public class ViewServlet extends HttpServlet {
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             ContentResolver resolver = new ContentResolver(repo, sub.file, context);
             Source xmlSource = resolver.resolve(sub.file, "root");
-            
+
             processor.process(xmlSource, variant, parameterMap, resolver, byteStream);
             response.setContentType("text/html");
             

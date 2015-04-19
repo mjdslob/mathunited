@@ -1,14 +1,16 @@
 package mathunited;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.StringReader;
 import java.io.Writer;
-import java.net.URLDecoder;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,17 +18,21 @@ import javax.servlet.http.HttpServletResponse;
 import mathunited.configuration.Configuration;
 import mathunited.configuration.Repository;
 
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import com.google.appengine.api.datastore.*;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 
 public class PutResourceServlet extends HttpServlet {
-	    private final static Logger LOGGER = Logger.getLogger(PutResourceServlet.class.getName());
+
+	private static final long serialVersionUID = 9027963867326909149L;
+	
+		private final static Logger LOGGER = Logger.getLogger(PutResourceServlet.class.getName());
 		private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
    	    ServletContext context;
 		

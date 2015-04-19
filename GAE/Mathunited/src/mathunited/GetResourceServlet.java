@@ -1,16 +1,13 @@
 package mathunited;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.StringReader;
 import java.io.Writer;
-import java.net.URLDecoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,13 +22,15 @@ import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.Text;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 
 public class GetResourceServlet extends HttpServlet {
-        private final static Logger LOGGER = Logger.getLogger(GetResourceServlet.class.getName());
+
+	private static final long serialVersionUID = -2773787622214162347L;
+		
+		private final static Logger LOGGER = Logger.getLogger(GetResourceServlet.class.getName());
         private final BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 		private final BlobInfoFactory infoFactory = new BlobInfoFactory();
 	    private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
