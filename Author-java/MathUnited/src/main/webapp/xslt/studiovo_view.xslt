@@ -32,6 +32,7 @@ extension-element-prefixes="exsl">
 
 <xsl:variable name="cm2px" select="number(50)"/>
 <xsl:variable name="menu_color" select="subcomponent/meta/param[@name='menu-color']"/>
+<xsl:variable name="background_color" select="subcomponent/meta/param[@name='background-color']"/>
 <xsl:variable name="variant">studiovo_view</xsl:variable>
 <xsl:variable name="intraLinkPrefix">
     <xsl:choose>
@@ -119,6 +120,7 @@ indent="yes" encoding="utf-8"/>
     <script type="text/javascript">
     	var logintoken = "";
     	var userrole = "";
+    	var schoolcode = "";
     	$.receiveMessage(
 		  function(e){
 		  	if (e.data.indexOf('readspeaker.com') == -1) // hack, origin filtering does not seem to work so message from readspeaker are received
@@ -135,6 +137,9 @@ indent="yes" encoding="utf-8"/>
 			    		userrole = "student";
 			    	else if ('<xsl:value-of select="$requesturl"/>'.indexOf('&amp;role=employee') > -1)
 			    		userrole = "employee";
+			    	var idx = '<xsl:value-of select="$requesturl"/>'.indexOf('&amp;schoolcode=');
+			    	if (idx > -1)
+			    		schoolcode = '<xsl:value-of select="$requesturl"/>'.substring(idx + 12);
 			    	// END OF TEST CODE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			    }
 			 }
@@ -157,6 +162,9 @@ indent="yes" encoding="utf-8"/>
 	  ga('send', 'pageview');
 	</script>    
     <style>
+        <xsl:if test="$background_color">
+    		body { background-color: <xsl:value-of select="$background_color"/>; }
+        </xsl:if>
         <xsl:if test="$menu_color">
 			#menubar { background-color:<xsl:value-of select="$menu_color"/>; }
         </xsl:if>
@@ -244,7 +252,7 @@ indent="yes" encoding="utf-8"/>
     <xsl:attribute name="title">
         <xsl:value-of select="@title"/>
     </xsl:attribute>
-    <iframe width="750" height="450"></iframe>
+    <iframe width="750" height="550"></iframe>
 </div>
 </body>
 </html>
@@ -268,6 +276,24 @@ indent="yes" encoding="utf-8"/>
             <xsl:with-param name="menuref" select="concat('explore-',$pos)"></xsl:with-param>
         </xsl:apply-templates>
     </div>
+</xsl:template>
+
+<xsl:template match="link" mode="navigation">
+	<div class="menu-hierarchy">
+		<div class="menu-item">
+			<a class="menu-link">
+				<xsl:attribute name="href">
+					<xsl:value-of select="url"/>
+				</xsl:attribute>
+				<xsl:if test="target">
+					<xsl:attribute name="target">
+						<xsl:value-of select="target"/>
+					</xsl:attribute>
+				</xsl:if>
+				<xsl:value-of select="title"/>
+			</a>
+		</div>
+	</div>
 </xsl:template>
 
 <!-- explore, exercises can be remove -->
@@ -322,6 +348,23 @@ indent="yes" encoding="utf-8"/>
     </div>
 </xsl:template>
 
+<xsl:template match="fragment/link" mode="navigation">
+    <xsl:param name="menuref"/>
+    <div class="submenu-item" id="{concat($menuref,'-',position())}"  
+            tabid="{concat('tab-',$menuref,'-',position())}">
+        <a class="menu-link">
+			<xsl:attribute name="href">
+				<xsl:value-of select="url"/>
+			</xsl:attribute>
+			<xsl:if test="target">
+				<xsl:attribute name="target">
+					<xsl:value-of select="target"/>
+				</xsl:attribute>
+			</xsl:if>
+			<xsl:value-of select="title"/>
+        </a>
+    </div>
+</xsl:template>
 
 <!--  ******************* -->
 <!--   CONTENT STRUCTURE  -->
@@ -355,6 +398,7 @@ indent="yes" encoding="utf-8"/>
         <xsl:apply-templates mode="content"/>
     </div>
 </xsl:template>
+
 <!--xsl:template match="block" mode="content">
     <xsl:apply-templates mode="content"/>
 </xsl:template-->
@@ -368,7 +412,7 @@ indent="yes" encoding="utf-8"/>
 </xsl:template>
 
 <xsl:template match="result" mode="content">
-	<iframe class="result-frame" ontab='$(this).attr("src", "/viewresult?repo={$repo}&amp;threadid={@layout}&amp;logintoken=" + encodeURIComponent(logintoken) + "&amp;userrole=" + userrole)' src="/iframeloading.html"></iframe>
+	<iframe class="result-frame" ontab='$(this).attr("src", "/viewresult?repo={$repo}&amp;threadid={@layout}&amp;logintoken=" + encodeURIComponent(logintoken) + "&amp;userrole=" + userrole + "&amp;schoolcode=" + schoolcode)' src="/iframeloading.html"></iframe>
 </xsl:template>
 
 <xsl:template match="textref" mode="content">

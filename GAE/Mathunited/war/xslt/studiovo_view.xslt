@@ -32,7 +32,7 @@ extension-element-prefixes="exsl">
     
 <xsl:variable name="cm2px" select="number(50)"/>
 <xsl:variable name="menu_color" select="subcomponent/meta/param[@name='menu-color']"/>
-<xsl:variable name="background_color" select="assignments/meta/param[@name='background-color']"/>
+<xsl:variable name="background_color" select="subcomponent/meta/param[@name='background-color']"/>
 <xsl:variable name="variant">studiovo_view</xsl:variable>
 <xsl:variable name="intraLinkPrefix">
     <xsl:choose>
@@ -278,6 +278,24 @@ indent="yes" encoding="utf-8"/>
     </div>
 </xsl:template>
 
+<xsl:template match="link" mode="navigation">
+	<div class="menu-hierarchy">
+		<div class="menu-item">
+			<a class="menu-link">
+				<xsl:attribute name="href">
+					<xsl:value-of select="url"/>
+				</xsl:attribute>
+				<xsl:if test="target">
+					<xsl:attribute name="target">
+						<xsl:value-of select="target"/>
+					</xsl:attribute>
+				</xsl:if>
+				<xsl:value-of select="title"/>
+			</a>
+		</div>
+	</div>
+</xsl:template>
+
 <!-- explore, exercises can be remove -->
 <xsl:template match="explore" mode="navigation">
     <xsl:variable name="pos" select="position()"/>
@@ -330,6 +348,23 @@ indent="yes" encoding="utf-8"/>
     </div>
 </xsl:template>
 
+<xsl:template match="fragment/link" mode="navigation">
+    <xsl:param name="menuref"/>
+    <div class="submenu-item" id="{concat($menuref,'-',position())}"  
+            tabid="{concat('tab-',$menuref,'-',position())}">
+        <a class="menu-link">
+			<xsl:attribute name="href">
+				<xsl:value-of select="url"/>
+			</xsl:attribute>
+			<xsl:if test="target">
+				<xsl:attribute name="target">
+					<xsl:value-of select="target"/>
+				</xsl:attribute>
+			</xsl:if>
+			<xsl:value-of select="title"/>
+        </a>
+    </div>
+</xsl:template>
 
 <!--  ******************* -->
 <!--   CONTENT STRUCTURE  -->
@@ -363,6 +398,7 @@ indent="yes" encoding="utf-8"/>
         <xsl:apply-templates mode="content"/>
     </div>
 </xsl:template>
+
 <!--xsl:template match="block" mode="content">
     <xsl:apply-templates mode="content"/>
 </xsl:template-->
