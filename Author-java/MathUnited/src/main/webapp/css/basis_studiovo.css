@@ -10,7 +10,7 @@ html {
    position:relative;
 }
 body {
-   background-color:black;
+   background-color: #aaa;
 }
 .clear-fix {
     clear: both;
