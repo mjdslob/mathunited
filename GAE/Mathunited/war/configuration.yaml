@@ -17,6 +17,9 @@ variants :
   
 resultVariants :
   studiovo_result: {path: /xslt/studiovo_result.xslt}
+  
+loginVariants :
+  studiovo_login: {path: /xslt/studiovo_login.xslt}
 
 roles :
   - admin
@@ -53,6 +56,7 @@ repos :
     edit_permission: 
     defaultVariant: studiovo_view
     defaultResultVariant: studiovo_result
+    defaultLoginVariant: studiovo_login
   studiovo_kennisbank :
     id : studiovo-kennisbank-2013-12-29
     path: content-studiovo/kennisbank

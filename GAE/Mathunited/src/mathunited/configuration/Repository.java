@@ -29,6 +29,7 @@ public class Repository {
     public String defaultVariant;
     public String baseRepo;
     public String defaultResultVariant;
+    public String defaultLoginVariant;
     
     public static void clearCache() {
     	componentMaps.clear();

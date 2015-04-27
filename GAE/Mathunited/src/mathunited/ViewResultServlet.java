@@ -95,6 +95,14 @@ public class ViewResultServlet extends HttpServlet {
                     throw new Exception("Geef aan welke layout (defaultResultVariant setting of variant parameter) gebruikt dient te worden");
                 }
             }
+            
+            String loginVariant = parameterMap.get("loginVariant");
+            if(loginVariant==null) {
+            	loginVariant = repository.defaultLoginVariant;
+                if(loginVariant==null || loginVariant.isEmpty()) {
+                    throw new Exception("Geef aan welke login layout (defaultLoginVariant setting of loginVariant parameter) gebruikt dient te worden");
+                }
+            }
 
             String threadid = parameterMap.get("threadid");
            	if(threadid==null)
@@ -128,7 +136,8 @@ public class ViewResultServlet extends HttpServlet {
             
             // show results page immediately for registered students or entree accounts
             if (userid == null || userid.isEmpty())
-            	response.sendRedirect("/loginmessage.html?v=" + VERSION);
+            	renderLoginMessagePage(repository, threadid, loginVariant, viewid, response);
+//            	response.sendRedirect("/loginmessage.html?v=" + VERSION);
             else if (user != null && user.isTeacher() && viewid == null)
             	response.sendRedirect("/viewclasses.jsp?logintoken=" +  URLEncoder.encode(logintoken, "UTF-8") + "&repo=" + repo + "&threadid=" + threadid);
             else if ((user != null && user.isRegistered()) || userrole == null || userrole.isEmpty() || userrole.equals("affiliate")) {
@@ -177,6 +186,29 @@ public class ViewResultServlet extends HttpServlet {
             throw new ServletException(e);
         }
 
+    }
+    
+    private void renderLoginMessagePage(Repository repository, String threadid, String variant, String viewid, HttpServletResponse response) throws Exception 
+    {
+        Configuration config = Configuration.getInstance(context);
+        XSLTbean processor = new XSLTbean(context, config.getLoginVariants());
+
+        Document inputDoc = Utils.getResultStrucureXml(repository, "result-structure/" + threadid);
+        
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+//      ContentResolver resolver = new ContentResolver(repo, sub.file, context);
+        ContentResolver resolver = null;
+        Map<String, String> parameterMap = new HashMap<String, String>();
+        processor.process(new DOMSource(inputDoc), variant, parameterMap, resolver, byteStream);
+        response.setContentType("text/html");
+        
+        byte[] result = byteStream.toByteArray();
+//        response.setContentLength(result.length);
+        ServletOutputStream os = response.getOutputStream();
+        os.write(result);
+
+        os.flush();
+        os.close();
     }
     
     private void renderResultPage(Repository repository, String threadid, String variant, String userid, String viewid, HttpServletResponse response, Map<String, String> parameterMap) throws Exception

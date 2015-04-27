@@ -11,6 +11,7 @@ import org.yaml.snakeyaml.*;
 public class Configuration {
     private Map<String, TransformationSpec> variantMap;
     private Map<String, TransformationSpec> resultVariantMap;
+    private Map<String, TransformationSpec> loginVariantMap;
     private Map<String, Repository> repoMap;
     private List<String> rolesList;
     private String userfile;
@@ -31,6 +32,7 @@ public class Configuration {
             TypeDescription configDescription = new TypeDescription(Configuration.class);
             configDescription.putMapPropertyType("variants", String.class, TransformationSpec.class);
             configDescription.putMapPropertyType("resultVariants", String.class, TransformationSpec.class);
+            configDescription.putMapPropertyType("loginVariants", String.class, TransformationSpec.class);
             configDescription.putMapPropertyType("repos", String.class, Repository.class);
             constructor.addTypeDescription(configDescription);
             Yaml yaml = new Yaml(constructor);
@@ -57,8 +59,10 @@ public class Configuration {
     
     public void setVariants(Map<String, TransformationSpec> variantMap) {this.variantMap = variantMap;}
     public void setResultVariants(Map<String, TransformationSpec> resultVariantMap) {this.resultVariantMap = resultVariantMap;}
+    public void setLoginVariants(Map<String, TransformationSpec> loginVariantMap) {this.loginVariantMap = loginVariantMap;}
     public Map<String, TransformationSpec> getVariants() { return variantMap; }
     public Map<String, TransformationSpec> getResultVariants() { return resultVariantMap; }
+    public Map<String, TransformationSpec> getLoginVariants() { return loginVariantMap; }
     public void setRepos(Map<String, Repository> repos) {this.repoMap = repos;}
     public Map<String, Repository> getRepos() {return this.repoMap;}
     public void setUserFile(String f) {this.userfile = f;}

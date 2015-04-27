@@ -10,7 +10,7 @@ html {
    position:relative;
 }
 body {
-   background-color:black;
+   background-color: #aaa;
 }
 .clear-fix {
     clear: both;
@@ -881,6 +881,15 @@ table.answer td.label
 .result-page .busy {
 	text-align: center;
 }
+
+/*---------------------------*/
+/* login-page                */
+/*---------------------------*/
+.login-page
+{
+	background-color: #fff;
+}
+
 
 .result-frame {
 	width: 100%;
