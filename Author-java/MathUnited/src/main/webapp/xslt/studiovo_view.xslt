@@ -107,12 +107,7 @@ indent="yes" encoding="utf-8"/>
             },
             jax: ["input/MathML","input/AsciiMath"],
             "HTML-CSS": {
-                availableFonts: [],
-                preferredFont: "TeX",
-                webFont: "",
-                imageFont: "",
-                undefinedFamily: "'Arial Unicode MS','sans-serif'",
-                scale: 100
+                scale: 90
             }
         });
     </script>
