@@ -95,6 +95,7 @@ define(["require","jquery"], function(require, $) {
                 if(this.parent) this.parent.addChild(this);
                 this.key = spec.key;
                 this.lead = spec.lead;
+                lastHintChecksum = null;
                 return this;
             },
             getContainer_jq: function() {return cellContainer_jq;},
@@ -133,10 +134,13 @@ define(["require","jquery"], function(require, $) {
             // - spec.html 
             // - spec.wkhint
             setHint: function(spec) {
-                var hintMain, hintDetail;
+                var hintMain, hintDetail, exprMathML;
                 if(spec.html) hintMain = spec.html;
                 else hintMain = spec.wkhint.hintMain;
-                if(spec.wkhint) hintDetail = spec.wkhint.hintDetail;
+                if(spec.wkhint) {
+                    hintDetail = spec.wkhint.hintDetail;
+                    exprMathML = spec.wkhint.expressionRendered;
+                }
 
                 var msg = hintMain;
                 if(!msg) msg=hintDetail;
@@ -156,7 +160,10 @@ define(["require","jquery"], function(require, $) {
                     jq_hint.html(hintDetail);
                     jq_hint.css('display','inline-block');
                 } else jq_hint.html('');
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub, container[0]]);
+                if(exprMathML) {
+                    $('.akit-input-elm .akit-input-expression', cellContainer_jq).last().html(exprMathML);
+                }
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, this.dom[0]]);
                 jq_sd.animate({opacity:1},500);
                 jq_hint.animate({opacity:1},500);
             },
