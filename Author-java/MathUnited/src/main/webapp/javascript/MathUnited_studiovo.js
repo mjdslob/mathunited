@@ -609,10 +609,10 @@ function toggleParentPopup(data) {
         	$(content).find('iframe').attr("src", "about:blank");
         	if (viewid == "") { // refresh result frame after closing popup, but only if teacher is viewing, in that case viewid != ""
 	        	var src = $('iframe.result-frame').attr('src');
-	        	var idx = src.lastIndexOf("?itemid=");
+	        	var idx = src.lastIndexOf("&itemid=");
 	        	if (idx > -1)
 	        		src = src.substr(0, idx);
-	        	src += "?itemid=" + itemid;
+	        	src += "&itemid=" + itemid;
 	        	$('iframe.result-frame').attr('src', src);
 	        }
         }
