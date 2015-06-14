@@ -104,6 +104,15 @@ public class ViewServlet extends HttpServlet {
                 }
             }
             
+            // -- BEGIN HACK --
+            // Would be better to use the same repo for the qti player, but to prevent republishing all qti content for now translate the basic repo 
+            // to the qti repo name (DdJ 14-06-2015)
+            if (repo.equals("studiovo"))
+                parameterMap.put("qtirepo", "ster");
+            else if (repo.equals("studiovo_concept"))
+            	parameterMap.put("qtirepo", "studiovo_concept");
+            // -- END HACK --
+            
             Component component = repository.getComponent(comp);
             if(component==null) {
                 throw new Exception("Er bestaat geen component met id '"+comp+"'");

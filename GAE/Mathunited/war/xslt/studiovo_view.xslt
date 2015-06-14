@@ -18,6 +18,7 @@ extension-element-prefixes="exsl">
 <xsl:param name="id"/>
 <xsl:param name="repo"/>
 <xsl:param name="repo-path"/>
+<xsl:param name="qtirepo"/>
 <xsl:param name="baserepo-path"/>
 <xsl:param name="requesturl"/>
 <xsl:param name="component_id"/>
@@ -489,7 +490,7 @@ indent="yes" encoding="utf-8"/>
     <div class="assessment-wrapper">
     	<xsl:variable name="src">
 	        <xsl:choose>
-	            <xsl:when test="@player='vo'"><xsl:value-of select="concat('http://qti-player.appspot.com/render.jsp?repo=ster&amp;id=',@src)"/></xsl:when>
+	            <xsl:when test="@player='vo'"><xsl:value-of select="concat('http://qti-player.appspot.com/render.jsp?repo=',$qtirepo,'&amp;id=',@src)"/></xsl:when>
 	            <xsl:otherwise><xsl:value-of select="concat('http://qt-studiovo.pulseon.nl/qt/player.html?testId=',@src,'&amp;lang=nl-NL&amp;window=false')"/></xsl:otherwise>
 	        </xsl:choose>    
         </xsl:variable>

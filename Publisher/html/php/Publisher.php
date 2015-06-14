@@ -12,12 +12,15 @@ define('MAX_TIME_LIMIT',60);
 require_once("platforms/Platform.php");
 require_once("platforms/ThreeShipsPlatform.php");
 require_once("platforms/GAEPlatform.php");
+require_once("platforms/VOPlatform.php");
 require_once("platforms/PulseOnPlatform.php");
+require_once("platforms/VOQtiPlatform.php");
 require_once("Logger.php");
 
 
 class Publisher {
    var $loglevel = LEVEL_INFO;
+   var $targetID;
    var $repoID;
    var $logger;
    var $callback;      //not null if dynamic scripting callback is used
@@ -46,10 +49,11 @@ class Publisher {
             if(!$this->login()) throw new Exception('Login failed');
 
             if( isset($this->comm['target']) ) {
-                $targetID = $this->comm['target'];
+                $this->targetID = $this->comm['target'];
             } else {
-                $targetID = "all";
+                $this->targetID = "all";
             }
+            $this->logger->trace(LEVEL_INFO, "Platform targetID: " . $this->targetID);
 
             $baseURL = false;
             if( isset($this->comm['repo']) ) {
@@ -91,7 +95,7 @@ class Publisher {
                         $compRef = $this->comm['compRef'];
                     } else throw new Exception('No component filename given');
 
-                    $this->publishComponentFile($targetID, $compId, $compRef, $this->repoID);
+                    $this->publishComponentFile($this->targetID, $compId, $compRef, $this->repoID);
                     $this->logger->trace(LEVEL_INFO, "Finished publishing component file $compId");
                     break;
                     
@@ -109,7 +113,7 @@ class Publisher {
                         $subCompRef = $this->comm['subcompRef'];
                     } else throw new Exception('No subcomponent filename given');
 
-                    $this->publishSubcomponent($targetID, $subcompId, $compId, $subCompRef, $compRef, $this->repoID);
+                    $this->publishSubcomponent($this->targetID, $subcompId, $compId, $subCompRef, $compRef, $this->repoID);
                     $this->logger->trace(LEVEL_INFO, "Finished publishing subcomponent $subcompId");
                     break;
                     
@@ -118,7 +122,7 @@ class Publisher {
                         $threadID = $this->comm['thread'];
                     } else throw new Exception('No thread id given');
 
-                    $this->publishThread($threadID, $targetID, $this->repo, false);
+                    $this->publishThread($threadID, $this->targetID, $this->repo, false);
                     $this->logger->trace(LEVEL_INFO, "Finished publishing thread $threadID");
                     break;
                 case "uploadQTISubcomponent":
@@ -132,7 +136,7 @@ class Publisher {
                         $compRef = $this->comm['ref'];
                     } else throw new Exception('No component ref given');
 
-                    $this->uploadQTIComponent($targetID, $subcompId, $compId, $compRef, $this->repoID);
+                    $this->uploadQTIComponent($this->targetID, $subcompId, $compId, $compRef, $this->repoID);
                     $this->logger->trace(LEVEL_INFO, "Finished uploading QTI subcomponent $subcompId");
                     break;
             }  
@@ -152,11 +156,22 @@ class Publisher {
             return "{success: false, msg:\"$msg\"}";
         }
     }
+	
+	function getPlatform() {
+        //generate an id for this publish
+        $publishId = date(DATE_RFC822);
+		switch ($this->targetID) {
+			case "vo": 
+				return new VOPlatform($publishId, false);
+			default: 
+				return new GAEPlatform($publishId, false);
+		}
+	}
     
     function publishOverview(){ 
         //generate an id for this publish
         $publishId = date(DATE_RFC822);
-        $pf = new GAEPlatform($publishId, false);
+		$pf = $this->getPlatform();
         $threadURL = 'http://localhost'.$this->repo['threadsURL'];
         $this->logger->trace(LEVEL_INFO, 'threads url: '.$threadURL); 
         $componentsURL = 'http://localhost'.$this->repo['componentsURL'];
@@ -176,8 +191,10 @@ class Publisher {
         
         switch($targetID){
             case "pulseon": $pf = new PulseOnPlatform($publishId, false); break;
+            case "mathunited": $pf = new PulseOnPlatform($publishId, false); break;
+            case "vo": $pf = new VOQtiPlatform($publishId, false); break;
             default:
-                throw new Exception("Unknown target ID: $targetID");
+                throw new Exception("uploadQTIComponent: Unknown target ID: $targetID");
                 break;
         }
         
@@ -197,8 +214,9 @@ class Publisher {
         switch($targetID){
             case "threeships":$pf = new ThreeShipsPlatform($publishId, false); break;
             case "mathunited":$pf = new GAEPlatform($publishId); break;
+            case "vo":$pf = new VOPlatform($publishId); break;
             default:
-                throw new Exception('Unknown target ID');
+                throw new Exception("publishComponentFile: Unknown target ID $targetID");
                 break;
         }
         $pf->publishComponentFile($compId, $compRef, $this->repo['basePath'], $compRepo, $this->logger);
@@ -211,8 +229,9 @@ class Publisher {
         switch($targetID){
             case "threeships":$pf = new ThreeShipsPlatform($publishId, false); break;
             case "mathunited":$pf = new GAEPlatform($publishId); break;
+            case "vo":$pf = new VOPlatform($publishId); break;
             default:
-                throw new Exception('Unknown target ID');
+                throw new Exception("publishSubcomponent: Unknown target ID $targetID");
                 break;
         }
         
@@ -277,8 +296,9 @@ class Publisher {
         switch($targetID){
             case "threeships":$tspf = new ThreeShipsPlatform($publishId, $doDemo); break;
             case "mathunited":$tspf = new GAEPlatform($publishId); break;
+            case "vo":$tspf = new VOPlatform($publishId); break;
             default:
-                throw new Exception('Unknown target ID');
+                throw new Exception("publishThread: Unknown target ID: $targetID");
                 break;
         }
         
