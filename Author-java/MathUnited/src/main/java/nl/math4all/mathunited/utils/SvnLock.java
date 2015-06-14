@@ -64,7 +64,7 @@ public class SvnLock extends Lock {
         // Lock the files
         try {
             // Lock files
-            SvnUtils.svn(true, lockedFiles, "lock");
+            SvnUtils.svn(false, lockedFiles, "lock");
         } catch (SvnException e) {
             throw new LockException("Could not acquire lock: " + e.getMessage());
         }

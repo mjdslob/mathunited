@@ -1,6 +1,7 @@
 package nl.math4all.mathunited.editor;
 
 import nl.math4all.mathunited.configuration.Configuration;
+import nl.math4all.mathunited.utils.Utils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -9,10 +10,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
@@ -83,22 +81,36 @@ public class SvnStatusServlet extends HttpServlet {
 
         if (lock.tryLock()) {
             try {
-                writer.println("=== PERFORMING GLOBAL SVN UPDATE on " + config.getContentRoot());
+                String svnPath = config.getContentRoot();
+                String path = parameterMap.get("path");
+                if (path != null && !path.isEmpty()) {
+                    File newPath = new File(svnPath, path);
+                    if (Utils.isSubDirectory(new File(svnPath), newPath)) {
+                        svnPath = newPath.getCanonicalPath();
+                    } else {
+                        writer.println("=== ILLEGAL REPO PATH " + newPath);
+                        throw new Exception("Illegal svn path " + newPath);
+                    }
+                }
+                writer.println("=== SVN STATUS on " + svnPath);
 
                 /*
                 String[] commands = {"svn", "status", config.getContentRoot()};
                 Process process = Runtime.getRuntime().exec(commands);
                 */
 
-                ProcessBuilder pb = new ProcessBuilder("svn", "status", config.getContentRoot());
+                ProcessBuilder pb = new ProcessBuilder("svn", "status", svnPath);
                 pb.redirectErrorStream(true);
+                LOGGER.log(Level.INFO, "--- svn-status command = '" + pb.command() + "'.");
                 Process process = pb.start();
                 BufferedReader is = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 String line;
                 while ((line = is.readLine()) != null) {
                     writer.println(line);
                 }
-
+            }
+            catch (Exception e) {
+                LOGGER.log(Level.WARNING, e.getMessage());
             }
             finally {
                 lock.unlock();

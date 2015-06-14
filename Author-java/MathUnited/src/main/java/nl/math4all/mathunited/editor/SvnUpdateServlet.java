@@ -1,9 +1,6 @@
 package nl.math4all.mathunited.editor;
 
 import nl.math4all.mathunited.configuration.*;
-import nl.math4all.mathunited.utils.SvnException;
-import nl.math4all.mathunited.utils.SvnUtils;
-import nl.math4all.mathunited.utils.UserManager;
 import nl.math4all.mathunited.utils.Utils;
 
 import javax.servlet.ServletConfig;
@@ -14,9 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
@@ -45,6 +40,7 @@ public class SvnUpdateServlet extends HttpServlet {
     }
 
     private static Lock lock = new ReentrantLock();
+    private List<String> outputLines = new LinkedList<>();
 
     @Override
     public void doGet(HttpServletRequest request,
@@ -85,22 +81,39 @@ public class SvnUpdateServlet extends HttpServlet {
 
         if (lock.tryLock()) {
             try {
-                writer.println("=== PERFORMING GLOBAL SVN UPDATE on " + config.getContentRoot());
+                String svnPath = config.getContentRoot();
+                String path = parameterMap.get("path");
+                if (path != null && !path.isEmpty()) {
+                    File newPath = new File(svnPath, path);
+                    if (Utils.isSubDirectory(new File(svnPath), newPath)) {
+                        svnPath = newPath.getCanonicalPath();
+                    } else {
+                        writer.println("=== ILLEGAL REPO PATH " + newPath);
+                        throw new Exception("Illegal svn path " + newPath);
+                    }
+                }
+                writer.println("=== PERFORMING GLOBAL SVN UPDATE on " + svnPath);
 
                 /*
                 String[] commands = {"svn", "status", config.getContentRoot()};
                 Process process = Runtime.getRuntime().exec(commands);
                 */
 
-                ProcessBuilder pb = new ProcessBuilder("svn", "update", config.getContentRoot());
+                outputLines.clear();
+
+                ProcessBuilder pb = new ProcessBuilder("svn", "update", "--accept", "mine-full", svnPath);
                 pb.redirectErrorStream(true);
+                LOGGER.log(Level.INFO, "--- svn-update command = '" + pb.command() + "'.");
                 Process process = pb.start();
                 BufferedReader is = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 String line;
                 while ((line = is.readLine()) != null) {
+                    outputLines.add(line);
                     writer.println(line);
                 }
-
+            }
+            catch (Exception e) {
+                LOGGER.log(Level.WARNING, e.getMessage());
             }
             finally {
                 lock.unlock();
@@ -108,6 +121,10 @@ public class SvnUpdateServlet extends HttpServlet {
         } else {
             writer.println("!!! SVN UPDATE on " + config.getContentRoot() + " is already in progress");
             writer.println("!!! Not doing anything");
+            writer.println("--- Messages from svn update so far:");
+            for (String line : outputLines) {
+                writer.println(line);
+            }
         }
     }
 

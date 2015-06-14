@@ -1,5 +1,7 @@
 package nl.math4all.mathunited.utils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,5 +65,21 @@ public class Utils {
         }
         return repository;
     }
-    
+
+    public static boolean isSubDirectory(File base, File child)
+            throws IOException {
+        base = base.getCanonicalFile();
+        child = child.getCanonicalFile();
+
+        File parentFile = child;
+        while (parentFile != null) {
+            if (base.equals(parentFile)) {
+                return true;
+            }
+            parentFile = parentFile.getParentFile();
+        }
+
+        return false;
+    }
+
 }
