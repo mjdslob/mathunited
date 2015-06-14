@@ -52,6 +52,13 @@ repos :
     defaultVariant: m4a_view_en
   studiovo :
     id : studiovo-2013-07-19
+    path: content-studiovo/publish
+    edit_permission: 
+    defaultVariant: studiovo_view
+    defaultResultVariant: studiovo_result
+    defaultLoginVariant: studiovo_login
+  studiovo_concept :
+    id : studiovo-2013-07-19
     path: content-studiovo/concept
     edit_permission: 
     defaultVariant: studiovo_view
