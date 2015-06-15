@@ -278,25 +278,25 @@ $(document).ready(function () {
 
     /* Movie stuff ------------------------------------------------------------------------------*/
 
-    var player = $(".movie_jplayer").jPlayer({
-        ready: function () {
-            var src = $(this).attr('src');
-            $(this).jPlayer("setMedia", {
-                //m4v: src,
-                //ogv: "http://www.jplayer.org/video/ogv/Big_Buck_Bunny_Trailer.ogv",
-                webmv: src
-                //poster: "http://www.jplayer.org/video/poster/Big_Buck_Bunny_Trailer_480x270.png"
-            });
-        },
-        swfPath: "javascript/Jplayer.swf",
-        //		supplied: "webmv, ogv, m4v",
-        supplied: "webmv",
-        size: {
-            width: "320px",
-            height: "180px",
-            cssClass: "jp-video-360p"
-        }
-    });
+//    var player = $(".movie_jplayer").jPlayer({
+//        ready: function () {
+//            var src = $(this).attr('src');
+//            $(this).jPlayer("setMedia", {
+//                //m4v: src,
+//                //ogv: "http://www.jplayer.org/video/ogv/Big_Buck_Bunny_Trailer.ogv",
+//                webmv: src
+//                //poster: "http://www.jplayer.org/video/poster/Big_Buck_Bunny_Trailer_480x270.png"
+//            });
+//        },
+//        swfPath: "javascript/Jplayer.swf",
+//        //		supplied: "webmv, ogv, m4v",
+//        supplied: "webmv",
+//        size: {
+//            width: "320px",
+//            height: "180px",
+//            cssClass: "jp-video-360p"
+//        }
+//    });
     //$(".jplayer_inspector").jPlayerInspector({jPlayer:player});
     
     $(".item-next").click(function () { nextItem(this) });
