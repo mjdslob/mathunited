@@ -4,38 +4,43 @@
  */
 
 //This is a stub for the actual AlgebraKIT-engine which runs on the server.
-define(['jquery'], function($) {
+define(['jquery'], function ($) {
 //    var engineUrl = 'http://mathunited.pragma-ade.nl:41080/AKIT_RemoteServer/Main';
-//    var engineUrl = 'http://localhost/AKIT_RemoteServer/Main';
+    var engineUrl = 'http://localhost/AKITServer/Main';
 //    var engineUrl = '/AKITServer/Main';
-    var engineUrl = 'http://akit-server-2014.appspot.com/Main';
+//    var engineUrl = 'http://akit-server-2014.appspot.com/Main';
     var engineVersionUrl = 'http://{VERSION}.akit-server-2014.appspot.com/Main';
     function variablesToString(varr) {
-        if(!varr) return '{}';
+        if (!varr)
+            return '{}';
         var str = '{';
         var first = true;
-        for(var name in varr) {
-            if(varr.hasOwnProperty(name)) {
+        for (var name in varr) {
+            if (varr.hasOwnProperty(name)) {
                 var def = varr[name];
-                if(first) first = false; else str+=',';
-                str+=name+':='+def.definition;
+                if (first)
+                    first = false;
+                else
+                    str += ',';
+                str += name + ':=' + def.definition;
             }
         }
-        str+='}';
+        str += '}';
         return str;
-    };
-    
+    }
+    ;
+
     return {
         //setExerciseFn: callback to provide exercise data. Necessary as communication is asynchrounous.
-        getExercise: function(audience, exercisePrefix, setExerciseFn) {
+        getExercise: function (audience, exercisePrefix, setExerciseFn) {
             var date = new Date();
-            if(exercisePrefix){
-                var params = 'cmd=getrandomassignment&asm='+exercisePrefix+'&audience='+audience+'&nocache='+date.toString();
+            if (exercisePrefix) {
+                var params = 'cmd=getrandomassignment&asm=' + exercisePrefix + '&audience=' + audience + '&nocache=' + date.toString();
             } else {
-                var params = 'cmd=getrandomassignment&audience='+audience+'&nocache='+date.toString();
+                var params = 'cmd=getrandomassignment&audience=' + audience + '&nocache=' + date.toString();
             }
-            $.get(engineUrl, params, 
-                   function(data) {
+            $.get(engineUrl, params,
+                    function (data) {
                         //data = JSON.parse(data);
                         var exIntro = data.asm;
                         exIntro = exIntro.replace(/"/g, '"');
@@ -43,20 +48,19 @@ define(['jquery'], function($) {
                             intro: exIntro,
                             outExpression: data.out
                         });
-                   }
+                    }
             );
         },
-        executeScript: function(script,audience, callback) {
-            var params = 'cmd=execute&script='+encodeURIComponent(script)+'&audience='+audience;
-            $.post(engineUrl, params, 
-                   function(data) {
+        executeScript: function (script, audience, callback) {
+            var params = 'cmd=execute&script=' + encodeURIComponent(script) + '&audience=' + audience;
+            $.post(engineUrl, params,
+                    function (data) {
                         //data = JSON.parse(data);
                         callback(data);
-                   }
+                    }
             );
-            
+
         },
-        
         /**
          * spec:
          * - inputExpression: student input in AsciiMathML
@@ -68,21 +72,26 @@ define(['jquery'], function($) {
          * - attributes     : string
          * - callback       : callback after evaluation: function(data), where data is response of server
          */
-        checkAnswer: function(spec) {
-            var params = 'cmd=evaluate&expression='+encodeURIComponent(JSON.stringify(spec.expression))
-                                +'&model='+encodeURIComponent(JSON.stringify(spec.model));
-            
-            if(spec.state) params += '&state='+encodeURIComponent(JSON.stringify(spec.state));
-            if(spec.key) params += '&derivationKey='+encodeURIComponent(JSON.stringify(spec.key));
-            var url = engineUrl;
-            if(spec.akitVersion) url = engineVersionUrl.replace("{VERSION}", spec.akitVersion);
-            $.post(url, params, 
-                   function(data) {
-                       spec.callback(data);
-                   }
-            ).fail(function(){alert('Er is een fout opgetreden');});;
-        },
+        checkAnswer: function (spec) {
+            var params = 'cmd=evaluate&expression=' + encodeURIComponent(JSON.stringify(spec.expression))
+                    + '&model=' + encodeURIComponent(JSON.stringify(spec.model));
 
+            if (spec.state)
+                params += '&state=' + encodeURIComponent(JSON.stringify(spec.state));
+            if (spec.key)
+                params += '&derivationKey=' + encodeURIComponent(JSON.stringify(spec.key));
+            var url = engineUrl;
+            if (spec.akitVersion)
+                url = engineVersionUrl.replace("{VERSION}", spec.akitVersion);
+            $.post(url, params,
+                    function (data) {
+                        spec.callback(data);
+                    }
+            ).fail(function () {
+                alert('Er is een fout opgetreden');
+            });
+            ;
+        },
         //note: audience is not used
         /**
          * spec:
@@ -92,33 +101,33 @@ define(['jquery'], function($) {
          * - attributes     : string
          * - callback       : callback after evaluation: function(data), where data is response of server
          */
-        getHint: function(spec) {
-            var params = 'cmd=gethint&model='+encodeURIComponent(JSON.stringify(spec.model));
-            if(spec.state) params+='&state='+encodeURIComponent(JSON.stringify(spec.state));
-            if(spec.cell) {
-                params+='&derivationKey='+encodeURIComponent(JSON.stringify(spec.cell.key));
-                if(spec.cell.lead) params+='&exp='+encodeURIComponent(spec.cell.lead);
+        getHint: function (spec) {
+            var params = 'cmd=gethint&model=' + encodeURIComponent(JSON.stringify(spec.model));
+            if (spec.state)
+                params += '&state=' + encodeURIComponent(JSON.stringify(spec.state));
+            if (spec.cell) {
+                params += '&derivationKey=' + encodeURIComponent(JSON.stringify(spec.cell.key));
             }
-            
+
             var url = engineUrl;
-            if(spec.akitVersion) url = engineVersionUrl.replace("{VERSION}", spec.akitVersion);
-            $.post(url, params, 
-                   function(data) {
+            if (spec.akitVersion)
+                url = engineVersionUrl.replace("{VERSION}", spec.akitVersion);
+            $.post(url, params,
+                    function (data) {
                         spec.callback(data);
-                   }
+                    }
             );
         },
-
         /** spec:
          *      expression 
-                audience 
-                answer 
-                variables 
-                mode 
-                attributes 
-                akitVersion
-        */
-        getSolutionModelFromExpr: function(spec) {
+         audience 
+         answer 
+         variables 
+         mode 
+         attributes 
+         akitVersion
+         */
+        getSolutionModelFromExpr: function (spec) {
             var params = 'cmd=getsolutionmodel_fromexpr&audience='+spec.audience
                 +'&expression='+encodeURIComponent(spec.expression);
             if(spec.answer) params+='&answer='+encodeURIComponent(spec.answer);
@@ -135,9 +144,9 @@ define(['jquery'], function($) {
                 }
             );
         }
-        
+
     };
-  }
+}
 );
 
 
