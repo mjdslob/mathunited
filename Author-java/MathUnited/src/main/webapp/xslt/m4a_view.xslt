@@ -148,7 +148,6 @@ indent="yes" encoding="utf-8"/>
 
 <!--skip clone exercises -->
 <xsl:template match="exercises/include[document(concat($docbase,@filename))//exercise/metadata/clone[@active='true']]" mode="filter-clone">
-    <xsl:message>MSLO: filtering <xsl:value-of select="@filename"/></xsl:message>
 </xsl:template>
 
 <xsl:template match="exercises/include" mode="numbering">

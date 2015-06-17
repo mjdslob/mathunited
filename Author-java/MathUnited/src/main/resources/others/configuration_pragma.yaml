@@ -41,6 +41,12 @@ repos :
     defaultVariant: m4a_view
     componentsURL: /index/malmberg/components.xml
     threadsURL: /index/malmberg/threads.xml
+  mathplus :
+    path: content-ma/malmberg
+    edit_permission: editor_m4a
+    defaultVariant: m4a_view
+    componentsURL: /index/malmberg/components.xml
+    threadsURL: /index/malmberg/threads.xml
   m4a_concept_alt :
     path: content-ma/concept_alt
     baseRepo : m4a
