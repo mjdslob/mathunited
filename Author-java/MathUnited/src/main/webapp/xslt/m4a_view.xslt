@@ -137,11 +137,19 @@ indent="yes" encoding="utf-8"/>
 <!--   PRE PROCESS      -->
 <!--   **************** -->
 <xsl:template match="/">
+    <xsl:variable name="xml-filtered">
+        <xsl:apply-templates mode="filter-clone"/>
+    </xsl:variable>
     <xsl:variable name="xml">
-        <xsl:apply-templates mode="numbering"/>
+        <xsl:apply-templates select="$xml-filtered" mode="numbering"/>
     </xsl:variable>
     <xsl:apply-templates select="$xml" mode="process"/>
 </xsl:template>
+
+<!--skip clone exercises -->
+<xsl:template match="exercises/include[document(concat($docbase,@filename))//exercise/metadata/clone[@active='true']]" mode="filter-clone">
+</xsl:template>
+
 <xsl:template match="exercises/include" mode="numbering">
     <include>
         <xsl:attribute name="filename" select="@filename"/>
@@ -162,6 +170,11 @@ indent="yes" encoding="utf-8"/>
 </xsl:template>
 
 
+<xsl:template match="@*|node()" mode="filter-clone">
+    <xsl:copy>
+        <xsl:apply-templates select="@*|node()" mode="filter-clone"/>
+    </xsl:copy>
+</xsl:template>
 <xsl:template match="@*|node()" mode="numbering">
     <xsl:copy>
         <xsl:apply-templates select="@*|node()" mode="numbering"/>

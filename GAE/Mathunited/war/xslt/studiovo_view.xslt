@@ -18,6 +18,7 @@ extension-element-prefixes="exsl">
 <xsl:param name="id"/>
 <xsl:param name="repo"/>
 <xsl:param name="repo-path"/>
+<xsl:param name="qtirepo"/>
 <xsl:param name="baserepo-path"/>
 <xsl:param name="requesturl"/>
 <xsl:param name="component_id"/>
@@ -32,6 +33,7 @@ extension-element-prefixes="exsl">
     
 <xsl:variable name="cm2px" select="number(50)"/>
 <xsl:variable name="menu_color" select="subcomponent/meta/param[@name='menu-color']"/>
+<xsl:variable name="background_color" select="subcomponent/meta/param[@name='background-color']"/>
 <xsl:variable name="variant">studiovo_view</xsl:variable>
 <xsl:variable name="intraLinkPrefix">
     <xsl:choose>
@@ -106,12 +108,7 @@ indent="yes" encoding="utf-8"/>
             },
             jax: ["input/MathML","input/AsciiMath"],
             "HTML-CSS": {
-                availableFonts: [],
-                preferredFont: "TeX",
-                webFont: "",
-                imageFont: "",
-                undefinedFamily: "'Arial Unicode MS','sans-serif'",
-                scale: 100
+                scale: 90
             }
         });
     </script>
@@ -161,6 +158,9 @@ indent="yes" encoding="utf-8"/>
 	  ga('send', 'pageview');
 	</script>    
     <style>
+        <xsl:if test="$background_color">
+    		body { background-color: <xsl:value-of select="$background_color"/>; }
+        </xsl:if>
         <xsl:if test="$menu_color">
 			#menubar { background-color:<xsl:value-of select="$menu_color"/>; }
         </xsl:if>
@@ -274,6 +274,24 @@ indent="yes" encoding="utf-8"/>
     </div>
 </xsl:template>
 
+<xsl:template match="link" mode="navigation">
+	<div class="menu-hierarchy">
+		<div class="menu-item">
+			<a class="menu-link">
+				<xsl:attribute name="href">
+					<xsl:value-of select="url"/>
+				</xsl:attribute>
+				<xsl:if test="target">
+					<xsl:attribute name="target">
+						<xsl:value-of select="target"/>
+					</xsl:attribute>
+				</xsl:if>
+				<xsl:value-of select="title"/>
+			</a>
+		</div>
+	</div>
+</xsl:template>
+
 <!-- explore, exercises can be remove -->
 <xsl:template match="explore" mode="navigation">
     <xsl:variable name="pos" select="position()"/>
@@ -326,6 +344,23 @@ indent="yes" encoding="utf-8"/>
     </div>
 </xsl:template>
 
+<xsl:template match="fragment/link" mode="navigation">
+    <xsl:param name="menuref"/>
+    <div class="submenu-item" id="{concat($menuref,'-',position())}"  
+            tabid="{concat('tab-',$menuref,'-',position())}">
+        <a class="menu-link">
+			<xsl:attribute name="href">
+				<xsl:value-of select="url"/>
+			</xsl:attribute>
+			<xsl:if test="target">
+				<xsl:attribute name="target">
+					<xsl:value-of select="target"/>
+				</xsl:attribute>
+			</xsl:if>
+			<xsl:value-of select="title"/>
+        </a>
+    </div>
+</xsl:template>
 
 <!--  ******************* -->
 <!--   CONTENT STRUCTURE  -->
@@ -359,6 +394,7 @@ indent="yes" encoding="utf-8"/>
         <xsl:apply-templates mode="content"/>
     </div>
 </xsl:template>
+
 <!--xsl:template match="block" mode="content">
     <xsl:apply-templates mode="content"/>
 </xsl:template-->
@@ -454,7 +490,7 @@ indent="yes" encoding="utf-8"/>
     <div class="assessment-wrapper">
     	<xsl:variable name="src">
 	        <xsl:choose>
-	            <xsl:when test="@player='vo'"><xsl:value-of select="concat('http://qti-player.appspot.com/render.jsp?repo=ster&amp;id=',@src)"/></xsl:when>
+	            <xsl:when test="@player='vo'"><xsl:value-of select="concat('http://qti-player.appspot.com/render.jsp?repo=',$qtirepo,'&amp;id=',@src)"/></xsl:when>
 	            <xsl:otherwise><xsl:value-of select="concat('http://qt-studiovo.pulseon.nl/qt/player.html?testId=',@src,'&amp;lang=nl-NL&amp;window=false')"/></xsl:otherwise>
 	        </xsl:choose>    
         </xsl:variable>

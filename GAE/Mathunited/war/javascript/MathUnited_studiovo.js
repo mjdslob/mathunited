@@ -278,25 +278,25 @@ $(document).ready(function () {
 
     /* Movie stuff ------------------------------------------------------------------------------*/
 
-    var player = $(".movie_jplayer").jPlayer({
-        ready: function () {
-            var src = $(this).attr('src');
-            $(this).jPlayer("setMedia", {
-                //m4v: src,
-                //ogv: "http://www.jplayer.org/video/ogv/Big_Buck_Bunny_Trailer.ogv",
-                webmv: src
-                //poster: "http://www.jplayer.org/video/poster/Big_Buck_Bunny_Trailer_480x270.png"
-            });
-        },
-        swfPath: "javascript/Jplayer.swf",
-        //		supplied: "webmv, ogv, m4v",
-        supplied: "webmv",
-        size: {
-            width: "320px",
-            height: "180px",
-            cssClass: "jp-video-360p"
-        }
-    });
+//    var player = $(".movie_jplayer").jPlayer({
+//        ready: function () {
+//            var src = $(this).attr('src');
+//            $(this).jPlayer("setMedia", {
+//                //m4v: src,
+//                //ogv: "http://www.jplayer.org/video/ogv/Big_Buck_Bunny_Trailer.ogv",
+//                webmv: src
+//                //poster: "http://www.jplayer.org/video/poster/Big_Buck_Bunny_Trailer_480x270.png"
+//            });
+//        },
+//        swfPath: "javascript/Jplayer.swf",
+//        //		supplied: "webmv, ogv, m4v",
+//        supplied: "webmv",
+//        size: {
+//            width: "320px",
+//            height: "180px",
+//            cssClass: "jp-video-360p"
+//        }
+//    });
     //$(".jplayer_inspector").jPlayerInspector({jPlayer:player});
     
     $(".item-next").click(function () { nextItem(this) });
@@ -606,13 +606,20 @@ function toggleParentPopup(data) {
         width: 785,
         position: position,
         close: function(event,ui) {
-        	$(content).find('iframe').attr("src", "about:blank");
+        	$(content).find('.content-tab.selected iframe').attr("src", "about:blank");
         	if (viewid == "") { // refresh result frame after closing popup, but only if teacher is viewing, in that case viewid != ""
 	        	var src = $('iframe.result-frame').attr('src');
 	        	var idx = src.lastIndexOf("&itemid=");
 	        	if (idx > -1)
 	        		src = src.substr(0, idx);
-	        	src += "&itemid=" + itemid;
+	        	idx = src.lastIndexOf("?itemid=");
+	        	if (idx > -1)
+	        		src = src.substr(0, idx);
+	        	if (src.indexOf("?") > -1)
+	        		src += "&";
+	        	else
+	        		src += "?";
+	        	src += "itemid=" + itemid;
 	        	$('iframe.result-frame').attr('src', src);
 	        }
         }

@@ -1,19 +1,23 @@
 package mathunited;
 
-import java.io.*;
-import java.net.*;
-
-import javax.servlet.*;
-import javax.servlet.http.*;
-
-import java.util.logging.Logger;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLDecoder;
 import java.util.logging.Level;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.logging.Logger;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
-
-import mathunited.configuration.Component;
 
 
 //mathunited.pragma-ade.nl/MathUnited/view?variant=basis&comp=m4a/xml/12hv-me0&subcomp=3&item=explore
@@ -21,7 +25,10 @@ import mathunited.configuration.Component;
 // - other parameters are just passed to xslt
 
 public class GeogebraGenerator extends HttpServlet {
-    private final static Logger LOGGER = Logger.getLogger(GeogebraGenerator.class.getName());
+
+	private static final long serialVersionUID = 8160691505447446635L;
+	
+	private final static Logger LOGGER = Logger.getLogger(GeogebraGenerator.class.getName());
     String ggbSource   = "www.geogebra.org/web/4.2/web/web.nocache.js";
 
     @Override

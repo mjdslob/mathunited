@@ -5,16 +5,22 @@
 
 package mathunited;
 
-import com.google.appengine.api.blobstore.BlobstoreService;
-import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 
 public class GetBlobURLServlet extends HttpServlet {
 
-    public GetBlobURLServlet()  {
+	private static final long serialVersionUID = -1185194851400641339L;
+
+	public GetBlobURLServlet()  {
         blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     }
 

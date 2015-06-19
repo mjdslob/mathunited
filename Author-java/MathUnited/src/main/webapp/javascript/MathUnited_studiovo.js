@@ -605,13 +605,21 @@ function toggleParentPopup(data) {
         autoOpen: false,
         width: 785,
         position: position,
-        close: function(event,ui) { 
+        close: function(event,ui) {
+        	$(content).find('.content-tab.selected iframe').attr("src", "about:blank");
         	if (viewid == "") { // refresh result frame after closing popup, but only if teacher is viewing, in that case viewid != ""
 	        	var src = $('iframe.result-frame').attr('src');
 	        	var idx = src.lastIndexOf("&itemid=");
 	        	if (idx > -1)
 	        		src = src.substr(0, idx);
-	        	src += "&itemid=" + itemid;
+	        	idx = src.lastIndexOf("?itemid=");
+	        	if (idx > -1)
+	        		src = src.substr(0, idx);
+	        	if (src.indexOf("?") > -1)
+	        		src += "&";
+	        	else
+	        		src += "?";
+	        	src += "itemid=" + itemid;
 	        	$('iframe.result-frame').attr('src', src);
 	        }
         }

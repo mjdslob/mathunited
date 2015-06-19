@@ -3,7 +3,7 @@
  *
  */
 
-define(['jquery','akitex/StepPanel','akitex/Parser'], function($, StepPanel, AKITParser) {
+define(['jquery', 'akitex/StepPanel', 'akitex/Parser'], function ($, StepPanel, AKITParser) {
     function Derivation(xml) {
         function ParseStepXML(stepElm) {
             var step = null;
@@ -13,23 +13,24 @@ define(['jquery','akitex/StepPanel','akitex/Parser'], function($, StepPanel, AKI
             var elm = stepElm.attributes;
             var att = elm.getNamedItem("level");
             var level = -1;
-            if(att) {
+            if (att) {
                 level = att.value;
             }
             var att = elm.getNamedItem("type");
             var type;
-            if(att) {
+            if (att) {
                 type = att.value;
-            } else type = 'normal';
-            
+            } else
+                type = 'normal';
+
             var visible = true;
             att = elm.getNamedItem('visible');
-            if(att) {
-                visible = (att.value!='false');
+            if (att) {
+                visible = (att.value != 'false');
             }
             var id = -1;
             att = elm.getNamedItem('id');
-            if(att) {
+            if (att) {
                 id = att.value;
             }
             var outExp = null;
@@ -40,13 +41,13 @@ define(['jquery','akitex/StepPanel','akitex/Parser'], function($, StepPanel, AKI
             var text = null;
             var name = null;
 
-            while(ind<stepElm.childNodes.length){
+            while (ind < stepElm.childNodes.length) {
                 elm = stepElm.childNodes[ind];
-                if(elm.nodeType!=1) {
+                if (elm.nodeType != 1) {
                     ind++;
                     continue;
                 }
-                switch(elm.nodeName) {
+                switch (elm.nodeName) {
                     case "outExp":
                         outExp = elm;
                         break;
@@ -61,14 +62,16 @@ define(['jquery','akitex/StepPanel','akitex/Parser'], function($, StepPanel, AKI
                         break;
                     case "stepList":
                         stepList = [];
-                        for(var ii=0;ii<elm.childNodes.length;ii++) {
-                            if(elm.childNodes[ii].nodeType==1) stepList.push( ParseStepXML(elm.childNodes[ii]));
+                        for (var ii = 0; ii < elm.childNodes.length; ii++) {
+                            if (elm.childNodes[ii].nodeType == 1)
+                                stepList.push(ParseStepXML(elm.childNodes[ii]));
                         }
                         break;
                     case "afterList":
                         afterList = [];
-                        for(var ii=0;ii<elm.childNodes.length;ii++) {
-                            if(elm.childNodes[ii].nodeType==1) afterList.push( ParseStepXML(elm.childNodes[ii]));
+                        for (var ii = 0; ii < elm.childNodes.length; ii++) {
+                            if (elm.childNodes[ii].nodeType == 1)
+                                afterList.push(ParseStepXML(elm.childNodes[ii]));
                         }
                         break;
                     case "text":
@@ -79,69 +82,76 @@ define(['jquery','akitex/StepPanel','akitex/Parser'], function($, StepPanel, AKI
                 ind++;
             }
             step = {
-                id:id,
+                id: id,
                 shortDescr: shortDescr,
                 hint: hint,
                 renderedOutExpression: outExp,
                 stepList: stepList,
                 afterStepList: afterList,
-                text:text,
+                text: text,
                 visible: visible,
-                level:level,
-                name:name,
-                type:type
+                level: level,
+                name: name,
+                type: type
             }
             return step;
-        };
+        }
+        ;
 
         //searches currently only on first level, no inner steps
         function getFirstStep(StepNode) {
-            if(StepNode) {
-                if(StepNode.shortDescr!=null) return StepNode;
-                if(StepNode.stepList!=null){
-                    for(var ii=0; ii<StepNode.stepList.length; ii++) {
+            if (StepNode) {
+                if (StepNode.shortDescr != null)
+                    return StepNode;
+                if (StepNode.stepList != null) {
+                    for (var ii = 0; ii < StepNode.stepList.length; ii++) {
                         //if(StepNode.stepList[ii].shortDescr!=null) return StepNode.stepList[ii];
                         var ss = getFirstStep(StepNode.stepList[ii]);
-                        if(ss!=null) return ss;
+                        if (ss != null)
+                            return ss;
                     }
                 }
             }
             return null;
         }
-        
+
         function findBuggyStep(stepElm) {
-            if(stepElm.type==='buggyrule') return stepElm;
-            else if(stepElm.stepList) {
-                for(var ii=0; ii<stepElm.stepList.length; ii++) {
+            if (stepElm.type === 'buggyrule')
+                return stepElm;
+            else if (stepElm.stepList) {
+                for (var ii = 0; ii < stepElm.stepList.length; ii++) {
                     var s = findBuggyStep(stepElm.stepList[ii]);
-                    if(s) return s;
+                    if (s)
+                        return s;
                 }
             }
             return null;
         }
-        
+
         var dom = $.parseXML(xml);
-        if(dom) dom = dom.childNodes[0];
-        if(dom) var step = ParseStepXML(dom);
+        if (dom)
+            dom = dom.childNodes[0];
+        if (dom)
+            var step = ParseStepXML(dom);
 
         return {
-            show: function(parent) {
-                if(dom){
+            show: function (parent) {
+                if (dom) {
                     new StepPanel(step, parent[0]);
                 }
             },
-            getHint: function(parent,level) {
+            getHint: function (parent, level) {
                 var _this = this;
                 var node = getFirstStep(step);
-                if(node!==null && node.hint && node.hint.textContent) {
+                if (node !== null && node.hint && node.hint.textContent) {
                     AKITParser.parse(node.hint, parent[0]);
                     return true;
                 }
                 return false;
             },
-            getShortDescr: function(parent) {
+            getShortDescr: function (parent) {
                 var node = getFirstStep(step);
-                if(node===null) {
+                if (node === null) {
                     parent.html("Er is geen hint beschikbaar.");
                     return false;
                 } else {
@@ -149,16 +159,16 @@ define(['jquery','akitex/StepPanel','akitex/Parser'], function($, StepPanel, AKI
                     return true;
                 }
             },
-            isEmpty: function() {
-                return getFirstStep(step)==null;
+            isEmpty: function () {
+                return getFirstStep(step) == null;
             },
-            getExplanation: function(parent) {
+            getExplanation: function (parent) {
                 var _this = this;
                 var node = getFirstStep(step);
-                if(node===null) {
+                if (node === null) {
                     parent.html("Er is geen hint beschikbaar.");
                 } else {
-                    if(node.step && node.stepList.length>0){
+                    if (node.step && node.stepList.length > 0) {
                         var panel = new StepPanel(node, parent[0]);
                         $('.outExpression', parent).css('display', 'none');
                         panel.showExplanation();
@@ -166,28 +176,28 @@ define(['jquery','akitex/StepPanel','akitex/Parser'], function($, StepPanel, AKI
                     }
                     return false;
                     /*
-                    if(level===2){
-                        var panel = new StepPanel(node, parent[0]);
-                        $('.outExpression',parent).css('display','none');
-                        panel.showExplanation();
-                    } else {
-                        AKITParser.parse(node.shortDescr, parent[0]);
-                        var butt = $('<span class="hint-toggle-button"> (meer) </span>');
-                        parent.append(butt);
-                        butt.click(function() {
-                           parent.empty();
-                           _this.getHint(parent,2);
-                        });
-                    }
-                    */
+                     if(level===2){
+                     var panel = new StepPanel(node, parent[0]);
+                     $('.outExpression',parent).css('display','none');
+                     panel.showExplanation();
+                     } else {
+                     AKITParser.parse(node.shortDescr, parent[0]);
+                     var butt = $('<span class="hint-toggle-button"> (meer) </span>');
+                     parent.append(butt);
+                     butt.click(function() {
+                     parent.empty();
+                     _this.getHint(parent,2);
+                     });
+                     }
+                     */
                 }
             },
-            getBuggyStep: function() {
+            getBuggyStep: function () {
                 var buggyStep = findBuggyStep(step);
                 return buggyStep;
             }
         };
-        
+
     }
     return (Derivation);
 });

@@ -1,14 +1,15 @@
 <?php
 require_once("Logger.php");
 require_once("EntityConverter.php");
-class GAEPlatform extends Platform {
-    private $putTextURL = "http://mathunited2012.appspot.com/puttextfile";
-    private $putResultXmlURL = "http://mathunited2012.appspot.com/putxmlfile";
-    private $resourceGetBlobUrl = "http://mathunited2012.appspot.com/getbloburl";
-    private $getResourceUrl= "http://mathunited2012.appspot.com/getresourceurl";
+class VOPlatform extends Platform {
+    private $baseURL = "http://stercollecties-concept.appspot.com";
+    private $putTextURL = "http://stercollecties-concept.appspot.com/puttextfile";
+    private $putResultXmlURL = "http://stercollecties-concept.appspot.com/putxmlfile";
+    private $resourceGetBlobUrl = "http://stercollecties-concept.appspot.com/getbloburl";
+    private $getResourceUrl= "http://stercollecties-concept.appspot.com/getresourceurl";
     
     //constructor 
-    public function GAEPlatform($publishId) {
+    public function VOPlatform($publishId) {
         $this->publishId = $publishId;
     }
 
@@ -385,7 +386,7 @@ class GAEPlatform extends Platform {
         $url = trim($response);
         if ($url != "")
         {
-            $logger->trace(LEVEL_INFO, 'Skipped resource upload ('.$type.') (id='.$id.', repo='.$repo.', fname='.$fname.', mimetype='.$mimetype.' <a href="http://mathunited2012.appspot.com'.$url.'">open</a>)');       
+            $logger->trace(LEVEL_INFO, 'Skipped resource upload ('.$type.') (id='.$id.', repo='.$repo.', fname='.$fname.', mimetype='.$mimetype.' <a href="'.$this->baseURL.$url.'">open</a>)');       
             return $url;
         }
         
@@ -415,7 +416,7 @@ class GAEPlatform extends Platform {
         if($response!=null && strncmp($response, 'error', 5)==0){
             throw new Exception($response);
         }
-        $logger->trace(LEVEL_INFO, 'Uploaded resource ('.$type.') (id='.$id.', repo='.$repo.', fname='.$fname.', mimetype='.$mimetype.' <a href="http://mathunited2012.appspot.com'.$response.'">open</a>)');       
+        $logger->trace(LEVEL_INFO, 'Uploaded resource ('.$type.') (id='.$id.', repo='.$repo.', fname='.$fname.', mimetype='.$mimetype.' <a href="'.$this->baseURL.$response.'">open</a>)');       
         curl_close($ch);
         return $response;
     }

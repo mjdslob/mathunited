@@ -23,6 +23,7 @@ function WM_Manager(spec) {
     this.thread = spec.thread;
     this.publishURL = '/Publisher/php/Publisher.php';
     this.target = 'mathunited';
+	this.baseURL = spec.baseURL;
 }
 
 WM_Manager.prototype.init = function() {
@@ -54,8 +55,9 @@ WM_Manager.prototype.continueProcessing = function() {
        this.setMessage('');
        isBusyPublishing=false;
 	   isBusyUploading=false;
-       $('#publish-button').removeClass('disabled');
+       $('publish-button').removeClass('disabled');
        $('#publish-button-2').removeClass('disabled');
+	   $('#uploadQTI-button').removeClass('disabled');
        return;
    }
    var cmd = this.CallStack.pop();
@@ -270,11 +272,16 @@ WM_Manager.prototype.showComponents = function(args) {
             var threadContentElm = $('.thread-content',$(threadElm));
             for(var jj=0; jj<th.modules.length;jj++) {
                 var mod=th.modules[jj];
-                var compElm = $('<div class="component-container"><div class="component" id="'+mod.id+'" onclick="javascript:toggleComponent(this)">'+mod.name+'</div></div>');
+                var compElm = $('<div class="component-container"><div class="component" id="'+mod.id+'" onclick="javascript:toggleComponent(this)">'+mod.name+'</div>'
+				+'</div>'
+				+'</div>');
                 threadContentElm.append(compElm);
                 for(var kk=0; kk<mod.subcomponents.length;kk++) {
                     var subComp = mod.subcomponents[kk];
-                    compElm.append($('<div class="subcomponent-container"><div class="subcomponent" onclick="javascript:toggleSubcomponent(this)" id="'+subComp.id+'">'+subComp.title+'</div></div>'));
+                    compElm.append($('<div class="subcomponent-container"><div class="subcomponent" onclick="javascript:toggleSubcomponent(this)" id="'+subComp.id+'">'+subComp.title+'</div>'
+					+'<a class="subcomponent-link" href="' + this.baseURL + '/view?repo=' + this.repo + '&comp=' + mod.id + '&subcomp=' + subComp.id + '" class="button-thread" style="float: right" target="_blank">open</a>'
+					+'<div style="clear:left"></div>'
+					+'</div>'));
                 }
             }
         }
@@ -342,11 +349,13 @@ WM_Manager.prototype.showThreads2 = function(args) {
 };
 
 
-WM_Manager.prototype.publish = function() {
+WM_Manager.prototype.publish = function(target) {
     if(isBusyPublishing) return;
     isBusyPublishing = true;    
     $('#publish-button').addClass('disabled');
     var _this = this;
+	if (!target) target = _this.target; // use default target if not passed in parameter
+	console.log("publish target: " + target);
     var subcomp = $('.subcomponent.selected');
     $(subcomp).each(function( index ) {
         var elm = $(this);
@@ -358,20 +367,22 @@ WM_Manager.prototype.publish = function() {
         for(var ii=0; ii<comp.subcomponents.length;ii++){
             var sc = comp.subcomponents[ii];
             if(sc.id===subcompId){
-                _this.addCommand(new WM_Command(WM_CMD_PUBLISH_SUBCOMPONENT, {subcompId: subcompId, compId: compId, subcompRef: sc.file, compRef: comp.file, repo: _this.repo, target:_this.target}));
+                _this.addCommand(new WM_Command(WM_CMD_PUBLISH_SUBCOMPONENT, {subcompId: subcompId, compId: compId, subcompRef: sc.file, compRef: comp.file, repo: _this.repo, target: target}));
             }
         }
-        _this.addCommand(new WM_Command(WM_CMD_PUBLISH_COMPONENTFILE, {compId: compId, compRef: comp.file, repo: _this.repo, target:_this.target}));
+        _this.addCommand(new WM_Command(WM_CMD_PUBLISH_COMPONENTFILE, {compId: compId, compRef: comp.file, repo: _this.repo, target: target}));
         
     });
     this.execute();
 };
 
-WM_Manager.prototype.uploadQTI = function() {
+WM_Manager.prototype.uploadQTI = function(target) {
     if(isBusyUploading) return;
     isBusyUploading = true;    
     $('#uploadQTI-button').addClass('disabled');
     var _this = this;
+	if (!target) target = _this.target; // use default target if not passed in parameter
+	console.log("publish target: " + target);
     var subcomp = $('.subcomponent.selected');
     $(subcomp).each(function( index ) {
         var elm = $(this);
@@ -383,7 +394,7 @@ WM_Manager.prototype.uploadQTI = function() {
         for(var ii=0; ii<comp.subcomponents.length;ii++){
             var sc = comp.subcomponents[ii];
             if(sc.id===subcompId){
-                _this.addCommand(new WM_Command(WM_CMD_UPLOADQTI_SUBCOMPONENT, {id: subcompId, compId: compId, ref: sc.file, repo: _this.repo, target:"pulseon"}));
+                _this.addCommand(new WM_Command(WM_CMD_UPLOADQTI_SUBCOMPONENT, {id: subcompId, compId: compId, ref: sc.file, repo: _this.repo, target:target}));
             }
         }
     });
@@ -454,7 +465,7 @@ WM_Manager.prototype.uploadQTISubcomponent = function(args) {
     );
 };
 
-WM_Manager.prototype.publishOverview = function(repo, elmid) {
+WM_Manager.prototype.publishOverview = function(repo, elmid, target) {
     var _this = this;
     var elm = $('#'+elmid);
     if(elm.hasClass('processing')) {
@@ -462,7 +473,7 @@ WM_Manager.prototype.publishOverview = function(repo, elmid) {
     }
     elm.addClass('processing');
     $.post( this.publishURL, 
-           {repo: repo, user:'mslob',passwd:'test', cmd:'publishOverview'},
+           {repo: repo, user:'mslob',passwd:'test', cmd:'publishOverview', target: target},
            function success(data, textStatus,jqXHR) {
                elm.removeClass('processing');
                 _this.continueProcessing();

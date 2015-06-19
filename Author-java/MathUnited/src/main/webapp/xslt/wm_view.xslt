@@ -258,7 +258,8 @@ indent="yes" encoding="utf-8" />
                         </div>
                     </div>
                 </div>
-                <div class="section-container" _base="{subcomponent/@_base}">
+                <div class="section-container">
+                   <xsl:attribute name="_base"><xsl:value-of select="subcomponent/@_base"/></xsl:attribute>
                    <xsl:apply-templates select="subcomponent/section"/>
                 </div>
 <!--                

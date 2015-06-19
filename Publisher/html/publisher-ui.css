@@ -56,6 +56,13 @@ a, a:hover
 a:hover
 { text-decoration: none;}
 
+.blink { animation: blink 1s steps(5, start) infinite; }
+@keyframes blink {
+    to {
+        visibility: hidden;
+    }
+}
+
 .left
 { float: left;
   width: auto;
@@ -100,11 +107,17 @@ ol li
 { background: #025587;
   height: 240px;}
 
+.concept #header {
+  background: #D43300;
+}
+
 #logo
 { width: 825px;
   position: relative;
   height: 168px;
-  background: #025587 url(logo.png) no-repeat;}
+  background-image: url(logo.png);
+  background-repeat: no-repeat;
+}
 
 #logo #logo_text 
 { position: absolute; 
@@ -340,6 +353,13 @@ table tr td
 }
 .subcomponent {
     padding:3px 0px 3px 20px;
+	float: left;
+	width: 498px;
+}
+.subcomponent-link {
+	float: right;
+	width: 58px;
+	text-align: right;
 }
 .subcomponent.processing {
     background-color:red !important;

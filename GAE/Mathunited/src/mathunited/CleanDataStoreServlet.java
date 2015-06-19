@@ -1,25 +1,32 @@
 package mathunited;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.StringReader;
 import java.io.Writer;
-import java.net.URLDecoder;
+
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.appengine.api.datastore.*;
+
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
 
 
 public class CleanDataStoreServlet extends HttpServlet {
 
-        @Override
-	    public void doGet (  HttpServletRequest request, HttpServletResponse response)
-	             throws ServletException, IOException {
+	private static final long serialVersionUID = 7448591788669617325L;
+
+	@Override
+    public void doGet (  HttpServletRequest request, HttpServletResponse response)
+             throws ServletException, IOException {
 		   
     	try{
 			response.addHeader("Content-Type", "text/html");
@@ -34,7 +41,9 @@ public class CleanDataStoreServlet extends HttpServlet {
    	        BlobstoreService blobstore = BlobstoreServiceFactory.getBlobstoreService();
 
 	        Key repoKey = KeyFactory.createKey("Repository", repo);
-   	        Entity repoEntity = datastore.get(repoKey); //throws Exception if not found (nonexistent repo)
+   	       
+	        @SuppressWarnings("unused")
+			Entity repoEntity = datastore.get(repoKey); //throws Exception if not found (nonexistent repo)
    	        
    			Query q = new Query("TextFile").setAncestor(repoKey);
    			PreparedQuery pq = datastore.prepare(q);

@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import mathunited.GetTextFileServlet;
 import mathunited.XSLTbean;
 
 import org.xml.sax.InputSource;
@@ -30,6 +29,7 @@ public class Repository {
     public String defaultVariant;
     public String baseRepo;
     public String defaultResultVariant;
+    public String defaultLoginVariant;
     
     public static void clearCache() {
     	componentMaps.clear();

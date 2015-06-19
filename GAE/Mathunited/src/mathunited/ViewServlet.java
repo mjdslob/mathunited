@@ -24,7 +24,10 @@ import mathunited.configuration.Repository;
 import mathunited.configuration.SubComponent;
 
 public class ViewServlet extends HttpServlet {
-    private final static Logger LOGGER = Logger.getLogger(XSLTbean.class.getName());
+
+	private static final long serialVersionUID = -5304896314263881051L;
+	
+	private final static Logger LOGGER = Logger.getLogger(XSLTbean.class.getName());
 	static {LOGGER.setLevel(Level.INFO);}
     ServletContext context;
     
@@ -49,7 +52,8 @@ public class ViewServlet extends HttpServlet {
             XSLTbean processor = new XSLTbean(context, config.getVariants());
 
             //read request parameters
-            Map<String, String[]> paramMap = request.getParameterMap();
+            @SuppressWarnings("unchecked")
+			Map<String, String[]> paramMap = request.getParameterMap();
             Map<String, String> parameterMap = new HashMap<String, String>();
             for(Map.Entry<String, String[]> entry : paramMap.entrySet()) {
                 String pname = entry.getKey();
@@ -100,6 +104,15 @@ public class ViewServlet extends HttpServlet {
                 }
             }
             
+            // -- BEGIN HACK --
+            // Would be better to use the same repo for the qti player, but to prevent republishing all qti content for now translate the basic repo 
+            // to the qti repo name (DdJ 14-06-2015)
+            if (repo.equals("studiovo"))
+                parameterMap.put("qtirepo", "ster");
+            else if (repo.equals("studiovo_concept"))
+            	parameterMap.put("qtirepo", "studiovo_concept");
+            // -- END HACK --
+            
             Component component = repository.getComponent(comp);
             if(component==null) {
                 throw new Exception("Er bestaat geen component met id '"+comp+"'");
@@ -139,7 +152,7 @@ public class ViewServlet extends HttpServlet {
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             ContentResolver resolver = new ContentResolver(repo, sub.file, context);
             Source xmlSource = resolver.resolve(sub.file, "root");
-            
+
             processor.process(xmlSource, variant, parameterMap, resolver, byteStream);
             response.setContentType("text/html");
             

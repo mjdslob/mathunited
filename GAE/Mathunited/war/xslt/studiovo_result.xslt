@@ -16,6 +16,7 @@ extension-element-prefixes="exsl">
 <xsl:param name="id"/>
 <xsl:param name="repo"/>
 <xsl:param name="repo-path"/>
+<xsl:param name="qtirepo"/>
 <xsl:param name="baserepo-path"/>
 <xsl:param name="logintoken" />
 <xsl:param name="userid" />
@@ -266,7 +267,7 @@ extension-element-prefixes="exsl">
 	<xsl:variable name="iframeUrl">
 		<xsl:choose>
 			<xsl:when test="@source = 'es'">http://www.eindexamensite.nl/iframe-page.html?tx_iframequestion_pi1%5Bquestion%5D=<xsl:value-of select="@id" />&amp;userid=<xsl:value-of select="$viewid" />&amp;template=1|<xsl:value-of select="$locItemId" />|<xsl:value-of select="$viewid" /></xsl:when>
-			<xsl:when test="@source = 'qti'">https://qti-player.appspot.com/render.jsp?repo=ster&amp;id=<xsl:value-of select="@id" />&amp;logintoken=<xsl:value-of select="encode-for-uri($logintoken)" />&amp;viewid=<xsl:value-of select="$viewid" />|<xsl:value-of select="$locItemId" />|<xsl:value-of select="$viewid" /></xsl:when>
+			<xsl:when test="@source = 'qti'">https://qti-player.appspot.com/render.jsp?repo=<xsl:value-of select="$qtirepo" />&amp;id=<xsl:value-of select="@id" />&amp;logintoken=<xsl:value-of select="encode-for-uri($logintoken)" />&amp;viewid=<xsl:value-of select="$viewid" />|<xsl:value-of select="$locItemId" />|<xsl:value-of select="$viewid" /></xsl:when>
 		</xsl:choose>
 	</xsl:variable>
 	<div class="item" id="assignment_{$locItemId}" testitemid="{$itemid}">

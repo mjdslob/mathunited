@@ -1,30 +1,31 @@
 package mathunited;
 
-import com.google.appengine.api.datastore.*;
-
-import javax.servlet.ServletContext;
-import javax.xml.transform.URIResolver;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.transform.Source;
-
-import org.xml.sax.InputSource;
-import org.xml.sax.helpers.XMLReaderFactory;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.XMLReader;
-
-import javax.xml.transform.sax.SAXSource;
-
-import java.net.URL;
-import java.io.*;
-import java.net.MalformedURLException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.Map;
+
+import javax.servlet.ServletContext;
+import javax.xml.transform.Source;
+import javax.xml.transform.URIResolver;
+import javax.xml.transform.sax.SAXSource;
 
 import mathunited.configuration.Configuration;
 import mathunited.configuration.Repository;
 
-import org.xml.sax.SAXException;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
+
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Text;
 
 public class ContentResolver implements URIResolver {
     /** resolves uri from document(), include() and import() in stylesheet */

@@ -18,15 +18,10 @@ public class Repository {
     public String threadsURL;
     public String contentItems;
 
-    private static Map<String, Component> componentMap = null;
+    //componentMap cannot be static as this servlet can be used for multiple
+    //repositories on the same server (e.g. Math4All, Wageningse Methode)
+    private Map<String, Component> componentMap = null;
     private static long componentMtime = 0L;
-
-    /**
-     * Reset the component map, so it will be re-read the next time it is requested
-     */
-    public static void resetComponentMap() {
-        componentMap = null;
-    }
 
     /**
      * Read the component if it has not been read yet, or return a cached copy.

@@ -36,7 +36,13 @@ repos :
     componentsURL: /index/math4all/components.xml
     threadsURL: /index/math4all/threads.xml
   m4a2015 :
-    path: content-ma/concept
+    path: content-ma/malmberg
+    edit_permission: editor_m4a
+    defaultVariant: m4a_view
+    componentsURL: /index/malmberg/components.xml
+    threadsURL: /index/malmberg/threads.xml
+  mathplus :
+    path: content-ma/malmberg
     edit_permission: editor_m4a
     defaultVariant: m4a_view
     componentsURL: /index/malmberg/components.xml

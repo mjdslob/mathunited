@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -21,8 +20,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -38,9 +35,7 @@ import mathunited.utils.UserException;
 import mathunited.utils.Utils;
 
 import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 
-import com.google.appengine.labs.repackaged.org.json.JSONArray;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
 @SuppressWarnings("serial")
@@ -67,7 +62,8 @@ public class ViewResultServlet extends HttpServlet {
             Configuration config = Configuration.getInstance(context);
             
             //read request parameters
-            Map<String, String[]> paramMap = request.getParameterMap();
+            @SuppressWarnings("unchecked")
+			Map<String, String[]> paramMap = request.getParameterMap();
             Map<String, String> parameterMap = new HashMap<String, String>();
             for(Map.Entry<String, String[]> entry : paramMap.entrySet()) {
                 String pname = entry.getKey();
@@ -91,12 +87,29 @@ public class ViewResultServlet extends HttpServlet {
             if(repository==null) {
                 throw new Exception("Onbekende repository: "+repo);
             }
+            
+            // -- BEGIN HACK --
+            // Would be better to use the same repo for the qti player, but to prevent republishing all qti content for now translate the basic repo 
+            // to the qti repo name (DdJ 14-06-2015)
+            if (repo.equals("studiovo"))
+                parameterMap.put("qtirepo", "ster");
+            else if (repo.equals("studiovo_concept"))
+            	parameterMap.put("qtirepo", "studiovo_concept");
+            // -- END HACK --
 
             String variant = parameterMap.get("variant");
             if(variant==null) {
                 variant = repository.defaultResultVariant;
                 if(variant==null || variant.isEmpty()) {
                     throw new Exception("Geef aan welke layout (defaultResultVariant setting of variant parameter) gebruikt dient te worden");
+                }
+            }
+            
+            String loginVariant = parameterMap.get("loginVariant");
+            if(loginVariant==null) {
+            	loginVariant = repository.defaultLoginVariant;
+                if(loginVariant==null || loginVariant.isEmpty()) {
+                    throw new Exception("Geef aan welke login layout (defaultLoginVariant setting of loginVariant parameter) gebruikt dient te worden");
                 }
             }
 
@@ -132,7 +145,8 @@ public class ViewResultServlet extends HttpServlet {
             
             // show results page immediately for registered students or entree accounts
             if (userid == null || userid.isEmpty())
-            	response.sendRedirect("/loginmessage.html?v=" + VERSION);
+            	renderLoginMessagePage(repository, threadid, loginVariant, viewid, response);
+//            	response.sendRedirect("/loginmessage.html?v=" + VERSION);
             else if (user != null && user.isTeacher() && viewid == null)
             	response.sendRedirect("/viewclasses.jsp?logintoken=" +  URLEncoder.encode(logintoken, "UTF-8") + "&repo=" + repo + "&threadid=" + threadid);
             else if ((user != null && user.isRegistered()) || userrole == null || userrole.isEmpty() || userrole.equals("affiliate")) {
@@ -181,6 +195,29 @@ public class ViewResultServlet extends HttpServlet {
             throw new ServletException(e);
         }
 
+    }
+    
+    private void renderLoginMessagePage(Repository repository, String threadid, String variant, String viewid, HttpServletResponse response) throws Exception 
+    {
+        Configuration config = Configuration.getInstance(context);
+        XSLTbean processor = new XSLTbean(context, config.getLoginVariants());
+
+        Document inputDoc = Utils.getResultStrucureXml(repository, "result-structure/" + threadid);
+        
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+//      ContentResolver resolver = new ContentResolver(repo, sub.file, context);
+        ContentResolver resolver = null;
+        Map<String, String> parameterMap = new HashMap<String, String>();
+        processor.process(new DOMSource(inputDoc), variant, parameterMap, resolver, byteStream);
+        response.setContentType("text/html");
+        
+        byte[] result = byteStream.toByteArray();
+//        response.setContentLength(result.length);
+        ServletOutputStream os = response.getOutputStream();
+        os.write(result);
+
+        os.flush();
+        os.close();
     }
     
     private void renderResultPage(Repository repository, String threadid, String variant, String userid, String viewid, HttpServletResponse response, Map<String, String> parameterMap) throws Exception

@@ -32,6 +32,10 @@ public class Component {
         this.methodId = methodId;
     }
 
+    public String toString() {
+        return "(Component "+id+")";
+    }
+    
     static Map<String, Component> getComponentMap(InputSource xmlSource ) throws Exception {
         Map<String, Component> componentMap = new HashMap<String, Component>();
 

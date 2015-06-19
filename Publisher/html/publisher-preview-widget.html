@@ -8,8 +8,8 @@
         <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
         <link rel="stylesheet" href="publisher-ui.css" type="text/css" />
         <script type="text/javascript" src="javascript/PublisherUI-Main.js"></script>
-        <link rel="stylesheet" type="text/css" href="WiskundeMenu.css" title="style" />
         <script type="text/javascript" src="javascript/WiskundeMenu.js"></script>
+        <link rel="stylesheet" type="text/css" href="WiskundeMenu.css" title="style" />
  <script type="text/javascript">
      function gup(name) {
         name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
@@ -47,11 +47,14 @@
      wm = new WM_Manager({
 //        methodURL:  baseFolder[method]+'components.xml',
 //        threadsURL: baseFolder[method]+'threads.xml',
-        methodId :  method,
+        methodId: method,
         threadId :  gup('thread_id'),
+        repo :  method,
+        thread :  gup('thread_id'),
         show_thread_chooser: false,
         viewURL  :  viewURL[method]
-     })
+     });
+     debugger;
      wm.init();
   </script>
   <style type="text/css">
