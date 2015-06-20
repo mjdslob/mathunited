@@ -366,6 +366,9 @@ ol {
     margin:15px auto 15px auto;
     display:inline-block;
 }
+.figureDiv img {
+    max-width: 500px;
+}
 .figureDiv.right {
     margin:0px 0px 15px 0px;
     float:right;
