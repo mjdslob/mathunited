@@ -138,7 +138,7 @@ define(['jquery','actions/OptionalContentItem','actions/OptionalMenuItem','actio
         if (!!cur.onShowMenu) menu = cur.onShowMenu(e, menu);
 
         $.each(cur.bindings, function(id, func) {
-          $('#'+id, menu).bind('click', function(e) {
+          $('#'+id, menu).on('click', function(e) {
             hide();
             func(trigger, currentTarget);
           });
@@ -243,7 +243,23 @@ define(['jquery','actions/OptionalContentItem','actions/OptionalMenuItem','actio
                                'item5': function(t) {callAction(t, 'item5');},
                                'item6': function(t) {callAction(t, 'item6');},
                                'item7': function(t) {callAction(t, 'item7');},
-                               'item8': function(t) {callAction(t, 'item8');}
+                               'item8': function(t) {callAction(t, 'item8');},
+                                'item9': function(t) {callAction(t, 'item9');},
+                                'item10': function(t) {callAction(t, 'item10');},
+                                'item11': function(t) {callAction(t, 'item11');},
+                                'item12': function(t) {callAction(t, 'item12');},
+                                'item13': function(t) {callAction(t, 'item13');},
+                                'item14': function(t) {callAction(t, 'item14');},
+                                'item15': function(t) {callAction(t, 'item15');},
+                                'item16': function(t) {callAction(t, 'item16');},
+                                'item17': function(t) {callAction(t, 'item17');},
+                                'item18': function(t) {callAction(t, 'item18');},
+                                'item19': function(t) {callAction(t, 'item19');},
+                                'item20': function(t) {callAction(t, 'item20');},
+                                'item21': function(t) {callAction(t, 'item21');},
+                                'item22': function(t) {callAction(t, 'item22');},
+                                'item23': function(t) {callAction(t, 'item23');},
+                                'item24': function(t) {callAction(t, 'item24');}
                             }
                         });
                     }
