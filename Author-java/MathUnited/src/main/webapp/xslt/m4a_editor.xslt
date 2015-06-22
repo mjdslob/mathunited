@@ -304,7 +304,7 @@
                             <div id="locked-message">
                                 Het is nu niet mogelijk deze paragraaf te bewerken, omdat de paragraaf
                                 niet gelockt kon worden op de server voor versie beheer. Neemt u
-                                aub contact op met Meyke Bos met een kopie van de volgende foutmelding:
+                                aub contact op met <a href="mailto:supportteam@sanoma.com">supportteam@sanoma.com</a> met een kopie van de volgende foutmelding:
                                 <pre>
                                     <xsl:value-of select="$lock_errormsg" />
                                 </pre>
@@ -313,7 +313,8 @@
                         <xsl:if test="$lockstatus='lock'">
                             <div id="locked-message">
                                 Het is niet meer mogelijk deze paragraaf te bewerken via de auteurstool. Indien u toch 
-                                nog een wijziging wilt (laten) uitvoeren, neem dan contact op met Meyke Bos.
+                                nog een wijziging wilt (laten) uitvoeren, neem dan contact op
+                                met <a href="mailto:supportteam@sanoma.com">supportteam@sanoma.com</a>.
                             </div>
                         </xsl:if> 
                     </div>
