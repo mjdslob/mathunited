@@ -21,7 +21,7 @@ public class Repository {
     //componentMap cannot be static as this servlet can be used for multiple
     //repositories on the same server (e.g. Math4All, Wageningse Methode)
     private Map<String, Component> componentMap = null;
-    private static long componentMtime = 0L;
+    private long componentMtime = 0L;
 
     /**
      * Read the component if it has not been read yet, or return a cached copy.
