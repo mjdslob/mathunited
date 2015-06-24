@@ -465,6 +465,9 @@ indent="yes" encoding="utf-8"/>
     <h2 class="section-title">Inleiding</h2>
     <xsl:apply-templates/>
 </xsl:template>
+<xsl:template match="introduction" mode="content">
+    <xsl:apply-templates mode="content"/>
+</xsl:template>
 <xsl:template match="explanation">
     <h2 class="section-title">Uitleg</h2>
     <div class="explanation">
