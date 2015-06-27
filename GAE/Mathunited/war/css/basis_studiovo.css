@@ -226,6 +226,13 @@ ul.learningaspects li{
     display:block;
 }
 
+.toets-wrapper iframe {
+    display:none;
+}
+.toets-wrapper iframe.visible {
+    display:block;
+}
+
 iframe {
     border:0;
 }

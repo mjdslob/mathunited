@@ -536,6 +536,53 @@ indent="yes" encoding="utf-8"/>
     </div>
 </xsl:template>
 
+<!--  ******************** -->
+<!--   EXERCISES (TVDD)    -->
+<!--  ******************** -->
+<xsl:template match="toets" mode="content">
+    <div class="toets-wrapper">
+    	<xsl:variable name="src">
+	    	<xsl:value-of select="concat('http://toetsvandedag.studiopabo.nl/thematoets.jsp?frame=1&amp;group=',@groupid)"/>
+        </xsl:variable>
+        
+        <xsl:choose>
+            <xsl:when test="@width"><xsl:attribute name="popup_width" select="@width"/></xsl:when>
+            <xsl:otherwise><xsl:attribute name="popup_width" select="800"/></xsl:otherwise>
+        </xsl:choose>    
+        <xsl:choose>
+            <xsl:when test="@display='popup'">
+                <div class="assessment-button">
+                    <span class="assessment-label" onclick="javascript:toggleToets(this, '{$src}&amp;logintoken=' + encodeURIComponent(logintoken))"><xsl:value-of select="@label"/></span>
+                    <span class="assessment-label-text"><xsl:apply-templates mode="content"/></span>
+                </div>
+            </xsl:when>
+            <xsl:otherwise>
+                <p><xsl:apply-templates mode="content"/></p>
+            </xsl:otherwise>
+        </xsl:choose>
+        <div class="toets-content">
+        <iframe>
+            <xsl:if test="not(@display='popup')">
+                <xsl:attribute name="class">visible</xsl:attribute>
+            </xsl:if>
+            <xsl:attribute name="style">
+                <xsl:choose>
+                    <xsl:when test="@width">width:<xsl:value-of select="@width"/>px;</xsl:when>
+                    <xsl:otherwise><xsl:attribute name="width">width:800px;</xsl:attribute></xsl:otherwise>
+                </xsl:choose><xsl:choose>
+                    <xsl:when test="@height">height:<xsl:value-of select="@height"/>px;</xsl:when>
+                    <xsl:otherwise>height:620px;</xsl:otherwise>
+                </xsl:choose>
+            </xsl:attribute>
+            <xsl:if test="not(@display='popup')">
+                <xsl:attribute name="src" select="$src"/>
+            </xsl:if>
+            <xsl:apply-templates mode="content"/>
+        </iframe>
+        </div>
+    </div>
+</xsl:template>
+
 <!-- overrule default in content.xslt: images are in folder of xml content -->
 <xsl:template match="resource" mode="content" priority="2">
    <xsl:variable name="width" select="number(substring-before(width,'cm'))*$cm2px"/>
