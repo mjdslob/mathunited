@@ -278,25 +278,25 @@ $(document).ready(function () {
 
     /* Movie stuff ------------------------------------------------------------------------------*/
 
-    var player = $(".movie_jplayer").jPlayer({
-        ready: function () {
-            var src = $(this).attr('src');
-            $(this).jPlayer("setMedia", {
-                //m4v: src,
-                //ogv: "http://www.jplayer.org/video/ogv/Big_Buck_Bunny_Trailer.ogv",
-                webmv: src
-                //poster: "http://www.jplayer.org/video/poster/Big_Buck_Bunny_Trailer_480x270.png"
-            });
-        },
-        swfPath: "javascript/Jplayer.swf",
-        //		supplied: "webmv, ogv, m4v",
-        supplied: "webmv",
-        size: {
-            width: "320px",
-            height: "180px",
-            cssClass: "jp-video-360p"
-        }
-    });
+//    var player = $(".movie_jplayer").jPlayer({
+//        ready: function () {
+//            var src = $(this).attr('src');
+//            $(this).jPlayer("setMedia", {
+//                //m4v: src,
+//                //ogv: "http://www.jplayer.org/video/ogv/Big_Buck_Bunny_Trailer.ogv",
+//                webmv: src
+//                //poster: "http://www.jplayer.org/video/poster/Big_Buck_Bunny_Trailer_480x270.png"
+//            });
+//        },
+//        swfPath: "javascript/Jplayer.swf",
+//        //		supplied: "webmv, ogv, m4v",
+//        supplied: "webmv",
+//        size: {
+//            width: "320px",
+//            height: "180px",
+//            cssClass: "jp-video-360p"
+//        }
+//    });
     //$(".jplayer_inspector").jPlayerInspector({jPlayer:player});
     
     $(".item-next").click(function () { nextItem(this) });
@@ -582,6 +582,27 @@ function toggleAssessment(elm, src) {
     else
         popupDialogs[index].dialog('open');
 }
+
+function toggleToets(elm, src) {
+    var parent = $(elm).parents('.toets-wrapper').first();
+    var asm = $('div.toets-content', parent);
+    asm.css('width', parent.attr('popup_width') + 'px');
+    var index = popupElements.indexOf(elm);
+    if (index == -1) {
+        var dialog = asm.dialog({
+            autoOpen: false,
+            width: parseFloat(parent.attr('popup_width')) + 25
+        });
+        popupElements.push(elm);
+        popupDialogs.push(dialog);
+        var frame = $('iframe', asm);
+        frame.attr('src', src);
+        dialog.dialog('open');
+    }
+    else
+        popupDialogs[index].dialog('open');
+}
+
 function toggleSlider(elm) {
     var parent = $(elm).parents('.slider-wrapper').first();
     var content = $('.slider-content', parent).first();

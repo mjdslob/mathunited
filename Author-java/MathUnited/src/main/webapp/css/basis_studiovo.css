@@ -226,6 +226,13 @@ ul.learningaspects li{
     display:block;
 }
 
+.toets-wrapper iframe {
+    display:none;
+}
+.toets-wrapper iframe.visible {
+    display:block;
+}
+
 iframe {
     border:0;
 }
@@ -881,6 +888,15 @@ table.answer td.label
 .result-page .busy {
 	text-align: center;
 }
+
+/*---------------------------*/
+/* login-page                */
+/*---------------------------*/
+.login-page
+{
+	background-color: #fff;
+}
+
 
 .result-frame {
 	width: 100%;

@@ -117,6 +117,19 @@ public class ViewServlet extends HttpServlet {
                 }
             }
             
+            // -- BEGIN HACK --
+            // Would be better to use the same repo for the qti player, but to prevent republishing all qti content for now translate the basic repo 
+            // to the qti repo name (DdJ 14-06-2015)
+            switch (repo) {
+                case "studiovo":
+                    parameterMap.put("qtirepo", "ster");
+                    break;
+                case "studiovo_concept":
+                    parameterMap.put("qtirepo", "studiovo_concept");
+                    break;
+            }
+            // -- END HACK --
+            
             //read components. To be moved to init()
             componentMap = repository.readComponentMap();
             Component component = componentMap.get(comp);
