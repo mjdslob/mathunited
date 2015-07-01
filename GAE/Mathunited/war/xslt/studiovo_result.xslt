@@ -28,7 +28,7 @@ extension-element-prefixes="exsl">
     
 <xsl:variable name="cm2px" select="number(50)"/>
 <xsl:variable name="menu_color" select="assignments/meta/param[@name='menu-color']"/>
-<xsl:variable name="cssfile">basis_studiovo.css?v=37</xsl:variable>
+<xsl:variable name="cssfile">basis_studiovo.css?v=42</xsl:variable>
 <xsl:variable name="overviewRef"><xsl:value-of select="string('/auteur/math4all.html')"/></xsl:variable>
 <xsl:variable name="_cross_ref_as_links_" select="true()"/>
 <xsl:variable name="_sheetref_as_links_" select="true()"/>
@@ -266,8 +266,9 @@ extension-element-prefixes="exsl">
 	<xsl:variable name="locItemId"><xsl:number level="any" /></xsl:variable>
 	<xsl:variable name="iframeUrl">
 		<xsl:choose>
-			<xsl:when test="@source = 'es'">http://www.eindexamensite.nl/iframe-page.html?tx_iframequestion_pi1%5Bquestion%5D=<xsl:value-of select="@id" />&amp;userid=<xsl:value-of select="$viewid" />&amp;template=1|<xsl:value-of select="$locItemId" />|<xsl:value-of select="$viewid" /></xsl:when>
-			<xsl:when test="@source = 'qti'">https://qti-player.appspot.com/render.jsp?repo=<xsl:value-of select="$qtirepo" />&amp;id=<xsl:value-of select="@id" />&amp;logintoken=<xsl:value-of select="encode-for-uri($logintoken)" />&amp;viewid=<xsl:value-of select="$viewid" />|<xsl:value-of select="$locItemId" />|<xsl:value-of select="$viewid" /></xsl:when>
+			<xsl:when test="@source = 'es'"  >http://www.eindexamensite.nl/iframe-page.html?tx_iframequestion_pi1%5Bquestion%5D=<xsl:value-of select="@id" />&amp;userid=<xsl:value-of select="$viewid" />&amp;template=1|<xsl:value-of select="$locItemId" />|<xsl:value-of select="$viewid" /></xsl:when>
+			<xsl:when test="@source = 'qti'" >https://qti-player.appspot.com/render.jsp?repo=<xsl:value-of select="$qtirepo" />&amp;id=<xsl:value-of select="@id" />&amp;logintoken=<xsl:value-of select="encode-for-uri($logintoken)" />&amp;viewid=<xsl:value-of select="$viewid" />|<xsl:value-of select="$locItemId" />|<xsl:value-of select="$viewid" /></xsl:when>
+			<xsl:when test="@source = 'tvdd'">http://toetsvandedag.studiopabo.nl/themaresultaat.jsp?frame=1&amp;group=<xsl:value-of select="@id" />&amp;logintoken=<xsl:value-of select="encode-for-uri($logintoken)" />&amp;viewid=<xsl:value-of select="$viewid" />|<xsl:value-of select="$locItemId" />|<xsl:value-of select="$viewid" /></xsl:when>
 		</xsl:choose>
 	</xsl:variable>
 	<div class="item" id="assignment_{$locItemId}" testitemid="{$itemid}">

@@ -50,7 +50,7 @@ extension-element-prefixes="exsl">
       <xsl:when test="subcomponent/meta/param[@name='css-file']">
         <xsl:value-of select="subcomponent/meta/param[@name='css-file']"/>
       </xsl:when>	
-      <xsl:otherwise>basis_studiovo.css?v=41</xsl:otherwise>
+      <xsl:otherwise>basis_studiovo.css?v=42</xsl:otherwise>
     </xsl:choose>
 </xsl:variable>
 <xsl:variable name="overviewRef"><xsl:value-of select="string('/auteur/math4all.html')"/></xsl:variable>
@@ -248,7 +248,7 @@ indent="yes" encoding="utf-8"/>
     <xsl:attribute name="title">
         <xsl:value-of select="@title"/>
     </xsl:attribute>
-    <iframe width="750" height="550"></iframe>
+    <iframe width="800" height="620"></iframe>
 </div>
 </body>
 </html>
