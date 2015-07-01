@@ -34,12 +34,12 @@ extension-element-prefixes="exsl">
 <xsl:variable name="lang">nl</xsl:variable>
 
 <!--   /////////////////////////////////////////////   -->
-<!--  Specific for GAE (do not copy from auteurssite): -->
+<!--  Specific for auteurssite):                       -->
 <!--   /////////////////////////////////////////////   -->
-<xsl:variable name="host_type">GAE</xsl:variable>
-<xsl:variable name="docbase"></xsl:variable>
-<xsl:variable name="urlbase"><xsl:value-of select="concat('http://mathunited.pragma-ade.nl:41080/data/',$refbase)"/></xsl:variable>
-<xsl:variable name="urlprefix">/</xsl:variable>
+<xsl:variable name="host_type">auteur</xsl:variable>
+<xsl:variable name="docbase" select="$refbase"></xsl:variable>
+<xsl:variable name="urlbase"><xsl:value-of select="concat('/data/',$refbase)"/></xsl:variable>
+<xsl:variable name="urlprefix"></xsl:variable>
 <!--   /////////////////////////////////////////////   -->
 <!--   /////////////////////////////////////////////   -->
 

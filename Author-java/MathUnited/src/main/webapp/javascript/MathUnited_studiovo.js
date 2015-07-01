@@ -624,7 +624,7 @@ function toggleParentPopup(data) {
     }
     var dialog = content.dialog({
         autoOpen: false,
-        width: 785,
+        width: 824,
         position: position,
         close: function(event,ui) {
         	$(content).find('.content-tab.selected iframe').attr("src", "about:blank");
