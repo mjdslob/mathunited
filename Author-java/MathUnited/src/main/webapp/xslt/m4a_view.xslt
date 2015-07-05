@@ -475,9 +475,14 @@ indent="yes" encoding="utf-8"/>
     <h2 class="section-title">Context</h2>
     <xsl:apply-templates/>
 </xsl:template>
+<!-- this 'introduction' exists within <subcomponent> -->
 <xsl:template match="introduction">
     <h2 class="section-title">Inleiding</h2>
     <xsl:apply-templates/>
+</xsl:template>
+<!-- this 'introduction' is the root element of an xml-file which is included -->
+<xsl:template match="introduction" mode="content">
+    <xsl:apply-templates mode="content"/>
 </xsl:template>
 <xsl:template match="explanation">
     <h2 class="section-title">Uitleg</h2>

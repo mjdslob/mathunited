@@ -236,6 +236,7 @@ public class ViewResultServlet extends HttpServlet {
         
     	HashMap<Integer, Integer> eindExamenSiteItems = Utils.getEindExamenSiteItems(inputDoc);
     	HashMap<String, Integer> qtiPlayerItems = Utils.getQtiPlayerItems(inputDoc);
+    	HashMap<String, Integer> tvddItems = Utils.getTvddItems(inputDoc);
         
     	if (viewid == null || viewid.equals(""))
     		viewid = userid;
@@ -245,6 +246,8 @@ public class ViewResultServlet extends HttpServlet {
         	Utils.getEindExamenSiteResults(eindExamenSiteItems, viewid, results);
         if (qtiPlayerItems.size() > 0)
         	Utils.getQtiPlayerResults(qtiPlayerItems, viewid, results);
+        if (tvddItems.size() > 0)
+        	Utils.getTvddResults(tvddItems, viewid, results);
 		Document outputDoc = Utils.transformResults(inputDoc, results);
 		
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();

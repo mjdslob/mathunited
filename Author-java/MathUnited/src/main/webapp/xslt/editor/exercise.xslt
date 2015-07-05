@@ -310,6 +310,7 @@ extension-element-prefixes="exsl">
     <div class="algebrakit-spec-wrapper">
         <span class="algebrakit-spec-item">Doelgroep:</span>
         <select class='audience-select'>
+            <option value="rekenen">rekenen</option>
             <option value="onderbouw">onderbouw</option>
             <option value="havo-a">havo-a</option>
             <option value="havo-b">havo-b</option>

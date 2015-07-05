@@ -226,6 +226,13 @@ ul.learningaspects li{
     display:block;
 }
 
+.toets-wrapper iframe {
+    display:none;
+}
+.toets-wrapper iframe.visible {
+    display:block;
+}
+
 iframe {
     border:0;
 }
@@ -802,7 +809,7 @@ table.answer td.label
 .result-page .totals .score
 {
 	width: 40px;
-	padding-left: 10px;
+	text-align: right;
 }
 
 .result-page .group .percentage
@@ -859,7 +866,7 @@ table.answer td.label
 	float: right;
 	margin-right: 54px;
 	margin-top: 1px;
-	width: 41px;
+	width: 51px;
 	line-height: 22px;
 }
 
@@ -881,6 +888,15 @@ table.answer td.label
 .result-page .busy {
 	text-align: center;
 }
+
+/*---------------------------*/
+/* login-page                */
+/*---------------------------*/
+.login-page
+{
+	background-color: #fff;
+}
+
 
 .result-frame {
 	width: 100%;

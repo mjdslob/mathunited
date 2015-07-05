@@ -18,6 +18,7 @@ extension-element-prefixes="exsl">
 <xsl:param name="id"/>
 <xsl:param name="repo"/>
 <xsl:param name="repo-path"/>
+<xsl:param name="qtirepo"/>
 <xsl:param name="baserepo-path"/>
 <xsl:param name="requesturl"/>
 <xsl:param name="component_id"/>
@@ -489,7 +490,7 @@ indent="yes" encoding="utf-8"/>
     <div class="assessment-wrapper">
     	<xsl:variable name="src">
 	        <xsl:choose>
-	            <xsl:when test="@player='vo'"><xsl:value-of select="concat('http://qti-player.appspot.com/render.jsp?repo=ster&amp;id=',@src)"/></xsl:when>
+	            <xsl:when test="@player='vo'"><xsl:value-of select="concat('http://qti-player.appspot.com/render.jsp?repo=',$qtirepo,'&amp;id=',@src)"/></xsl:when>
 	            <xsl:otherwise><xsl:value-of select="concat('http://qt-studiovo.pulseon.nl/qt/player.html?testId=',@src,'&amp;lang=nl-NL&amp;window=false')"/></xsl:otherwise>
 	        </xsl:choose>    
         </xsl:variable>
@@ -529,6 +530,53 @@ indent="yes" encoding="utf-8"/>
             <!--
             <xsl:attribute name="src" select="concat('http://qt-demo.pulseon.nl/qt/player.html?testId=0k2xWZR1aR33tx_9MP-_qXbIXncQzNnCAWsbUDdY8BQ','&amp;lang=nl-NL&amp;window=',$dowindow)"/>
             -->        
+            <xsl:apply-templates mode="content"/>
+        </iframe>
+        </div>
+    </div>
+</xsl:template>
+
+<!--  ******************** -->
+<!--   EXERCISES (TVDD)    -->
+<!--  ******************** -->
+<xsl:template match="toets" mode="content">
+    <div class="toets-wrapper">
+    	<xsl:variable name="src">
+	    	<xsl:value-of select="concat('http://toetsvandedag.studiopabo.nl/thematoets.jsp?frame=1&amp;group=',@groupid)"/>
+        </xsl:variable>
+        
+        <xsl:choose>
+            <xsl:when test="@width"><xsl:attribute name="popup_width" select="@width"/></xsl:when>
+            <xsl:otherwise><xsl:attribute name="popup_width" select="800"/></xsl:otherwise>
+        </xsl:choose>    
+        <xsl:choose>
+            <xsl:when test="@display='popup'">
+                <div class="assessment-button">
+                    <span class="assessment-label" onclick="javascript:toggleToets(this, '{$src}&amp;logintoken=' + encodeURIComponent(logintoken))"><xsl:value-of select="@label"/></span>
+                    <span class="assessment-label-text"><xsl:apply-templates mode="content"/></span>
+                </div>
+            </xsl:when>
+            <xsl:otherwise>
+                <p><xsl:apply-templates mode="content"/></p>
+            </xsl:otherwise>
+        </xsl:choose>
+        <div class="toets-content">
+        <iframe>
+            <xsl:if test="not(@display='popup')">
+                <xsl:attribute name="class">visible</xsl:attribute>
+            </xsl:if>
+            <xsl:attribute name="style">
+                <xsl:choose>
+                    <xsl:when test="@width">width:<xsl:value-of select="@width"/>px;</xsl:when>
+                    <xsl:otherwise><xsl:attribute name="width">width:800px;</xsl:attribute></xsl:otherwise>
+                </xsl:choose><xsl:choose>
+                    <xsl:when test="@height">height:<xsl:value-of select="@height"/>px;</xsl:when>
+                    <xsl:otherwise>height:620px;</xsl:otherwise>
+                </xsl:choose>
+            </xsl:attribute>
+            <xsl:if test="not(@display='popup')">
+                <xsl:attribute name="src" select="$src"/>
+            </xsl:if>
             <xsl:apply-templates mode="content"/>
         </iframe>
         </div>

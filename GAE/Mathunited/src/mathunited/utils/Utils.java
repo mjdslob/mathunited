@@ -197,6 +197,53 @@ public class Utils {
     	}
     }
     
+    /**
+     * Returns scores of a student in the results parameter
+     */
+    public static void getTvddResults(HashMap<String, Integer> items, String userid, Map<String, Score> results) throws Exception 
+    {
+    	if (items.size() > 0) {
+	    	// construct input json E.g. {"userid":"dnote","repo":"ster","assignmentids":["EC-VMBO34-T9-Dtoets.zip","EC-VMBO34B-T1-Dtoets.zip","AK_HV123_ThemaBevolkingRuimte_Immigratie_Stap6.zip"]}
+	    	JSONObject json = new JSONObject();
+	    	json.put("userid", userid);
+	    	JSONArray array = new JSONArray();
+	    	for (String id : items.keySet()) {
+	        	array.put(id);
+			}
+	    	json.put("groupids", array);
+	    	// execute webservice
+	    	JSONObject result = executeHttpPostResult("http://toetsvandedag.studiopabo.nl/services/GetUserResults", json);
+	    	// returns {"assignments":[{"id":"EC-VMBO34-T9-Dtoets.zip","score":"0","total":"1"},{"id":"EC-VMBO34B-T1-Dtoets.zip","score":"1","total":"1"},{"id":"AK_HV123_ThemaBevolkingRuimte_Immigratie_Stap6.zip","score":"1","total":"2"}]}
+	    	// get result json
+	    	if (result.has("status") && result.getInt("status") == -1)
+	    		throw new Exception(result.getString("message"));
+	    	JSONArray assignments = result.getJSONArray("scores");
+	    	
+	    	for (int i = 0; i < assignments.length(); i++)
+	    	{
+	    		JSONObject assignment = assignments.getJSONObject(i);
+	    		String id = assignment.getString("id");
+	    		Score score = new Score();
+	    		score.id = id;
+	    		String scoreString = assignment.getString("score");
+	    		if (!scoreString.equals("null"))
+	    			score.score = Integer.parseInt(scoreString);
+	       		String totalString = assignment.getString("total");
+	    		if (!totalString.equals("null"))
+	    		{
+	    			score.total = Integer.parseInt(totalString);
+	    			score.made = true;
+	    		}
+	    		else
+	    		{
+	    			score.total = items.get(id);
+	    			score.made = false;
+	    		}
+	    		results.put(id, score);
+	    	}
+    	}
+    }
+        
     public static void processGroup(Element inputElem, Document outputDoc, Element outElement, Map<String, Score> results, Score total, Score uniqueTotal, ArrayList<String> countedItemIds) throws JSONException
     {
     	Score groupTotal = new Score();
@@ -343,6 +390,27 @@ public class Utils {
 		}
 		return result;
 	}
+	
+	/**
+	 * Returns the items that apply to the Studio VO toets van de dag site from the xml document and put them in a map consisting of:
+	 * groupid, maximum score (always 100 anyways)
+	 */
+	public static HashMap<String, Integer> getTvddItems(Document inputDoc) {
+		HashMap<String, Integer> result = new HashMap<String, Integer>();
+		NodeList itemNodes = inputDoc.getElementsByTagName("item");
+		for (int i=0; i < itemNodes.getLength(); i++)
+		{
+			Element itemElem = (Element)itemNodes.item(i);
+			if (itemElem.getAttribute("source").equals("tvdd"))
+			{
+				String id = itemElem.getAttribute("id");
+				int total = Integer.parseInt(itemElem.getAttribute("total"));
+				result.put(id, total);
+			}
+		}
+		return result;
+	}
+	
 	/** 
 	 * Converts the result retrieved from the external site to a structured xml document of which the structure is 
 	 * determined by the result-structure xml as published for the given thread 

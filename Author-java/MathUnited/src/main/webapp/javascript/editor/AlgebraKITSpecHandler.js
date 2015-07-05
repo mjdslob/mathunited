@@ -86,7 +86,6 @@ define(['akitex/Main','jquery'], function(AKITMain, $) {
                 
                 
                 $('.algebrakit-test-config',parent).first().unbind('click').click(function() {
-                    debugger;
                     var str = '<div class="akit-exercise akit-init-open" audience="">'
                             + '  <div class="akit-main akit-item">'
                             + '     <span class="akit-input-widget" solve=""/>'

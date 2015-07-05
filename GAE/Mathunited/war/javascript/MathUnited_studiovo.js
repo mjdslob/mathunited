@@ -582,6 +582,27 @@ function toggleAssessment(elm, src) {
     else
         popupDialogs[index].dialog('open');
 }
+
+function toggleToets(elm, src) {
+    var parent = $(elm).parents('.toets-wrapper').first();
+    var asm = $('div.toets-content', parent);
+    asm.css('width', parent.attr('popup_width') + 'px');
+    var index = popupElements.indexOf(elm);
+    if (index == -1) {
+        var dialog = asm.dialog({
+            autoOpen: false,
+            width: parseFloat(parent.attr('popup_width')) + 25
+        });
+        popupElements.push(elm);
+        popupDialogs.push(dialog);
+        var frame = $('iframe', asm);
+        frame.attr('src', src);
+        dialog.dialog('open');
+    }
+    else
+        popupDialogs[index].dialog('open');
+}
+
 function toggleSlider(elm) {
     var parent = $(elm).parents('.slider-wrapper').first();
     var content = $('.slider-content', parent).first();
@@ -603,7 +624,7 @@ function toggleParentPopup(data) {
     }
     var dialog = content.dialog({
         autoOpen: false,
-        width: 785,
+        width: 824,
         position: position,
         close: function(event,ui) {
         	$(content).find('.content-tab.selected iframe').attr("src", "about:blank");
