@@ -61,9 +61,10 @@ public class SvnUpdateServlet extends HttpServlet {
                 parameterMap.put(pname, pvalArr[0]);
             }
         }
+
         // Find out which repository to use, so we force a logged in user
         // try to get repo from cookie
-        String repo = parameterMap.get("repo");
+        String repo = null; // parameterMap.get("repo");
         Cookie[] cookieArr = request.getCookies();
         if(cookieArr != null) {
             for(Cookie c:cookieArr) {

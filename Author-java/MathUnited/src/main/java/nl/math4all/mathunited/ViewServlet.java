@@ -69,11 +69,13 @@ public class ViewServlet extends HttpServlet {
             String comp = Utils.readParameter("comp", true, request);
             String subcomp = Utils.readParameter("subcomp", true, request);
 
-            // find out which repository to use
+            // Find out which repository to use, so we force a logged in user
             // try to get repo from cookie
-            String repo = parameterMap.get("repo");
+            String repo = null; // parameterMap.get("repo");
+
             Cookie[] cookieArr = request.getCookies();
-            if(cookieArr != null) {
+
+            if (cookieArr != null) {
                 for(Cookie c:cookieArr) {
                     if(c.getName().equals("REPO")) {
                         repo = c.getValue();
@@ -81,22 +83,15 @@ public class ViewServlet extends HttpServlet {
                     }
                 }
             }
-            String variant = parameterMap.get("variant");
+
             if (repo == null) {
-                //try to get repo from variant (hack to prevent problems with old urls...)
-                if (variant != null) {
-                    if (variant.equals("basis_wm") || variant.equals("wm_view")) {
-                        repo = "wm";
-                    } else if (variant.equals("basis") || variant.equals("m4a_view")) {
-                        repo = "m4a";
-                    } else if (variant.equals("basis_studiovo") || variant.equals("studiovo_view")) {
-                        repo = "studiovo";
-                    }
-                    System.out.println("Setting repo from variant: " + repo);
-                }
-            	if(repo==null)
-                    throw new Exception("Het verplichte argument 'repo' ontbreekt: "+repo);
+                response.getWriter().println("!!! NOT LOGGED IN");
+                return;
             }
+
+
+            String variant = parameterMap.get("variant");
+
 
             Map<String, Repository> repoMap = config.getRepos();
             Repository repository = repoMap.get(repo);
@@ -110,9 +105,9 @@ public class ViewServlet extends HttpServlet {
             }
 
             //get default variant for this repo or get it from the url
-            if(variant==null) {
+            if (variant==null) {
                 variant = repository.defaultVariant;
-                if(variant==null || variant.isEmpty()) {
+                if (variant==null || variant.isEmpty()) {
                     throw new Exception("Geef aan welke layout gebruikt dient te worden");
                 }
             }
