@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<result>
+	<meta>
+		<param name="menu-color">#057C9A</param>
+		<param name="banner-image">
+			<resource>
+				<name>kop.png</name>
+			</resource>
+		</param>
+		<param name="title">Studio Economie B jaar 3/4</param>
+	</meta>
+	<group title="Wat is economie">
+		<group title="Examenvragen">
+			<item title="BB 2011-1 Vraag 11" id="3898" source="es" total="1" />
+			<item title="QTI vraag" id="EC-VMBO34B-T1-Dtoets.zip" source="qti" total="22" />
+			<item title="BB 2011-1 Vraag 13" id="3900" source="es" total="1" />
+			<item title="BB 2012-1 Vraag 1" id="9070" source="es" total="1" />
+			<item title="BB 2012-1 Vraag 2" id="9071" source="es" total="1" />
+			<item title="BB 2012-1 Vraag 21" id="9090" source="es" total="1" />
+			<item title="BB 2012-1 Vraag 31" id="9100" source="es" total="1" />
+			<item title="BB 2013-1 Vraag 7" id="3898" source="es" total="1" />
+			<item title="BB 2013-1 Vraag 15" id="13890" source="es" total="1" />
+			<item title="BB 2013-1 Vraag 26" id="13901" source="es" total="2" />
+		</group>
+	</group>
+</result>

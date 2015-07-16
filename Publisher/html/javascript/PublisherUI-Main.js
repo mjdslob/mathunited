@@ -21,7 +21,7 @@ function WM_Manager(spec) {
 //    this.methodURL = spec.methodURL;
     this.repo = spec.repo;
     this.thread = spec.thread;
-    this.publishURL = '/Publisher/php/Publisher.php';
+    this.publishURL = '/Publisher/html/php/Publisher.php';
     this.target = 'mathunited';
 	this.baseURL = spec.baseURL;
 }
@@ -55,7 +55,7 @@ WM_Manager.prototype.continueProcessing = function() {
        this.setMessage('');
        isBusyPublishing=false;
 	   isBusyUploading=false;
-       $('publish-button').removeClass('disabled');
+       $('.publish-button').removeClass('disabled');
        $('#publish-button-2').removeClass('disabled');
 	   $('#uploadQTI-button').removeClass('disabled');
        return;
@@ -352,7 +352,7 @@ WM_Manager.prototype.showThreads2 = function(args) {
 WM_Manager.prototype.publish = function(target) {
     if(isBusyPublishing) return;
     isBusyPublishing = true;    
-    $('#publish-button').addClass('disabled');
+    $('.publish-button').addClass('disabled');
     var _this = this;
 	if (!target) target = _this.target; // use default target if not passed in parameter
 	console.log("publish target: " + target);

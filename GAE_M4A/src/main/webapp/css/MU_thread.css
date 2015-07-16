@@ -1,0 +1,130 @@
+/*--------------*/
+/* jquery stuff */
+/*--------------*/
+#components-container {
+    width  : 350px;
+}
+#subcomponent-container {
+    width  : 348px;
+    margin-left:0px;
+    background-color:rgb(230,230,230);
+}
+#subcomponent-container .subcomponent-header {
+    margin: 5px 0px 5px 20px;
+    font-weight: bold;
+    color:#CC0000;
+}
+#subcomponent-container li{
+    margin:10px 0px 10px 0px;
+}
+#subcomponent-container a{
+    color : inherit;
+    text-decoration:none;
+}
+.mu-subcomponent-inactive{
+    color : gray;
+}
+
+#subcomponent-container a:hover{
+    color : #CC0000;
+}
+#components-container .header .ui-icon {
+    float:left;
+    margin: 2px 5px;
+}
+#components-container .header  {
+    width:350px;
+    text-align:left;
+    height:26px;
+    padding-top:4px;
+}
+.mu-header-inactive {
+    color:gray;
+}
+#thread-info {
+    margin: 20px 20px 20px 0px;
+}
+#components-container .mu-selected {
+    background-color:rgb(230,230,230);
+    font-weight:bold;
+}
+#components-container .mu-active {
+    color: #CC0000;
+    font-weight:bold;
+}
+/*--------------*/
+/* page markup  */
+/*--------------*/
+.shadow-ul {
+   background: url('../sources/shadow-ul.png');
+   width:600px;
+   height:600px;
+   position:absolute;
+   top:0px; left:0px;
+   z-index:-1;
+}
+.shadow-lr {
+   background: url('../sources/shadow-lr.png');
+   width:600px;
+   height:600px;
+   position:absolute;
+   bottom:0px; right:0px;
+   z-index:-1;
+}
+html, body {
+   margin:0; padding:0;
+   width:100%;
+   font: 15px/20px arial,sans-serif;
+   line-height:1.5em;
+   color:#333366;
+}
+html {
+   background: url('../sources/background_rep.png');
+}
+body {
+   background-color:transparent;
+}
+.top-margin {
+    height:40px;
+}
+div#page {
+    background-color:white;
+    padding-top:20px;
+    min-height:700px;
+}
+#thread-info {
+    height:50px;
+}
+.header-text {
+    color:#333366;
+    padding:20px 0px 20px 0px;
+    font-size:38px;
+/*    margin-left:-60px;*/
+    position:relative;
+    left:-60px;
+    font-family: Arial Black;
+}
+.load-icon {
+   background-image: url('../sources/ajax-loader.gif');
+   height:31px;
+   width:31px;
+   position:relative;
+}
+
+#choose-thread-container,#left-menu-container {
+    background-color: #666699;
+    color:white;
+    padding: 10px 0px 0px 10px;
+    min-height:200px;
+}
+#choose-thread-container .mu-thread-menu-item {
+    font-weight: bold;
+    padding: 10px 0px 10px 0px;
+}
+
+#choose-thread-container .mu-thread-menu-item.mu-thread-item-active {
+    color: #FF8888;
+}
+#choose-thread-container .mu-thread-menu-item.mu-thread-item-selected {
+    color: #FFB518;
+}
