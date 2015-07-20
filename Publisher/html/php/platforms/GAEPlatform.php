@@ -2,10 +2,14 @@
 require_once("Logger.php");
 require_once("EntityConverter.php");
 class GAEPlatform extends Platform {
-    private $putTextURL = "http://mathunited2012.appspot.com/puttextfile";
-    private $putResultXmlURL = "http://mathunited2012.appspot.com/putxmlfile";
-    private $resourceGetBlobUrl = "http://mathunited2012.appspot.com/getbloburl";
-    private $getResourceUrl= "http://mathunited2012.appspot.com/getresourceurl";
+//    private $putTextURL = "http://mathunited2012.appspot.com/puttextfile";
+//    private $putResultXmlURL = "http://mathunited2012.appspot.com/putxmlfile";
+//    private $resourceGetBlobUrl = "http://mathunited2012.appspot.com/getbloburl";
+//    private $getResourceUrl= "http://mathunited2012.appspot.com/getresourceurl";
+    private $putTextURL = "http://math4allview.appspot.com/puttextfile";
+    private $putResultXmlURL = "http://math4allview.appspot.com/putxmlfile";
+    private $resourceGetBlobUrl = "http://math4allview.appspot.com/getbloburl";
+    private $getResourceUrl= "http://math4allview.appspot.com/getresourceurl";
     
     //constructor 
     public function GAEPlatform($publishId) {
@@ -239,8 +243,11 @@ class GAEPlatform extends Platform {
             
             if($fileExists){
                 $exif_type = exif_imagetype($imagefname);
+                $ext = pathinfo($imagefname, PATHINFO_EXTENSION);
                 if($exif_type){
                     $mimetype = image_type_to_mime_type($exif_type);
+                } else if($ext!=undefined && $ext=="svg") {
+                    $mimetype = "image/svg+xml";
                 } else {
                     $mimetype = "application/octet-stream";
                 }

@@ -1,0 +1,87 @@
+.multi-item-items .item {
+   /*width:100%;*/
+   padding:0px 0px 0px 0px;
+   margin:8px 0px 8px 30px;
+}
+.single-item .item {
+   width:100%;
+   padding:0px 0px 0px 0px;
+   margin:0px 0px 8px 00px;
+}
+.item-label {
+   width:30px;
+   position:absolute;
+   left:-30px; top:0px;
+   font-weight: bold;
+}
+.item {
+    position:relative;
+}
+.item-content {
+    position:relative;
+}
+.item-itemcontent {
+}
+.single-item .subintro, .single-item .itemintro {
+    margin:0px 0px 20px 0px;
+}
+.multi-item .subintro, .multi-item .itemintro {
+    margin:20px 0px 20px 0px;
+    position:relative;
+    left:-30px;
+}
+
+.multi-item .item:first-of-type .subintro, .multi-item .item:first-of-type .itemintro {
+    margin:0px 0px 20px 0px;
+}
+/*---------------------------*/
+/* WIDGET: meerkeuzevraag    */
+/*---------------------------*/
+.choice-exercise-label {
+    width:12px;
+    height:12px;
+    float:left;
+    border:1px solid rgb(100,100,100);
+    clear:left;
+    margin-right:10px;
+    float:left;
+    position:relative;
+    top:2px;
+}
+.choice-exercise-label.good-answer {
+    background-color:green;
+}
+.choice-exercise-label.wrong-answer {
+    background-color:red;
+}
+.choice-exercise-content {
+    float:left;
+    width:600px;
+}
+.choice-exercise-content p{
+    margin:0;
+}
+.choice-exercise-option {
+}
+.exercise-completed {
+    display:none;
+}
+.exercise-completed.show {
+    display:block;
+}
+.item-completed {
+    display:none;
+    width:66px;
+    height:52px;
+    float:right;
+}
+.item-completed.show {
+    display:block;
+    background-image: url('../sources_studiovo/knoppen-uit_11.png');
+}
+.item-completed.show:hover {
+    background-image: url('../sources_studiovo/knoppen-active_11.png');
+}
+.item-completed.show:active {
+    background-image: url('../sources_studiovo/knoppen-hoover_11.png');
+}
