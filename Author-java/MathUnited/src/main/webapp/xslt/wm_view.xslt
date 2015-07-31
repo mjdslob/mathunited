@@ -237,7 +237,7 @@ indent="yes" encoding="utf-8" />
                                 <xsl:value-of select="$component_number"/>.<xsl:value-of select="$subcomponent_number"/>&#160;
                                 <xsl:value-of select="$subcomponent_title"/>
                             </span>
-                            <xsl:if test="number($subcomponent_index) > 0">
+                            <xsl:if test="number($subcomponent_index) lt (number($subcomponent_count)-1)">
                                 <span id="next-subcomponent">
                                     <a>
                                         <xsl:attribute name="href" select="concat('/MathUnited/view?comp=',$comp,'&amp;subcomp=',$subcomponent_following_id,$arg_parent,'&amp;variant=basis_wm&amp;item=1')"/>
@@ -328,7 +328,7 @@ indent="yes" encoding="utf-8" />
     <xsl:apply-templates mode="content"/>
 </xsl:template>
 
-<xsl:template match="theory[@type!='important']" mode="content">
+<xsl:template match="theory[not(@type='important' or type='important-no-icon')]" mode="content">
     <xsl:if test="$item!='answers'">
         <div class="container_12 clearfix theory">
             <div class="margin-left-1"/>
@@ -338,18 +338,29 @@ indent="yes" encoding="utf-8" />
         </div>
     </xsl:if>
 </xsl:template>
-<xsl:template match="theory[@type='important']" mode="content">
+<xsl:template match="theory[@type='important' or @type='important-no-icon']" mode="content">
     <xsl:if test="$item!='answers'">
         <div class="container_12 clearfix theory-important">
-            <div class="margin-left-1">
-                <div class="theory-icon"/> 
-            </div>
+            <div class="margin-left-1"><xsl:if test="@type='important'">
+                    <div class="theory-icon"/> 
+                </xsl:if></div>
             <div class="grid_11 prefix_1">
                 <xsl:apply-templates select="*" mode="content"/>
             </div>
         </div>
     </xsl:if>
 </xsl:template>
+<xsl:template match="linkingtext" mode="content">
+    <xsl:if test="$item!='answers'">
+        <div class="container_12 clearfix theory">
+            <div class="margin-left-1"/>
+            <div class="grid_11 prefix_1">
+                <xsl:apply-templates select="*" mode="content"/>
+            </div>
+        </div>
+    </xsl:if>
+</xsl:template>
+
 <xsl:template match="example" mode="content">
     <xsl:if test="$item!='answers'">
         <div class="container_12 clearfix example">
