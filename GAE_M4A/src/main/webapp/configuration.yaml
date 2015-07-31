@@ -35,7 +35,7 @@ repos :
     edit_permission: 
     defaultVariant: wm_view
   m4a :
-    id : m4a-2013-07-19
+    id : m4a-2015-07-20
     path: content-ma/concept
     edit_permission: editor_m4a
     defaultVariant: m4a_view
