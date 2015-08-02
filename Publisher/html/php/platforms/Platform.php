@@ -49,6 +49,9 @@ abstract class Platform {
                 case 'png':
                     $mime = 'image/png';
                     break;
+                case 'svg':
+                    $mime = 'image/svg';
+                    break;
                 case 'jpg':
                     $mime = 'image/jpeg';
                     break;

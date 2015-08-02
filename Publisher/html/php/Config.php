@@ -6,15 +6,22 @@ class Config {
         'm4a' => array(
             'id'=>'m4a',
             'paths'=>array(
-                'vb/','va/','v3/',
+                'vd/', 'vb/','va/','v3/',
                 'hv/',
                 'h3/',
                 'ha/',
-                'hb/'
+                'hb/', 'hd/'
                 ),
             'index_xsl'=>'../xslt/generate-index-ma.xslt',
     //        'get_QTI_url' => 'http://mathunited.nl/view?repo=m4a&variant=m4a_view_pulseon&comp={#COMP}&subcomp={#SUBCOMP}'
             'get_QTI_url' => 'http://localhost:8080/MathUnited/view?repo=m4a&variant=m4a_view_pulseon&comp={#COMP}&subcomp={#SUBCOMP}'
+        ),
+        'm4a2015' => array(
+            'id'=>'m4a2015-2015-07-15',
+            'paths'=>array(
+                ''
+                ),
+            'index_xsl'=>'../xslt/generate-index-ma.xslt'
         ),
         'malmberg' => array(
             'id'=>'malmberg-2013-07-19',
