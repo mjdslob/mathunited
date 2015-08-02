@@ -1,8 +1,8 @@
-﻿<!DOCTYPE HTML>
+﻿ <!DOCTYPE HTML>
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Studio VO Publisher CONCEPT</title>
+        <title>Studio VO Publisher LIVE</title>
         <link type="text/css" href="javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="stylesheet" />
         <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
         <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
@@ -17,10 +17,10 @@
             viewURL['studiovo'] = '/MathUnited/view?parent=localhost/Publisher/html/publisher-studiovo.html&variant=basis_studiovo';
             viewURL['wm'] = '/MathUnited/view?parent=localhost/Publisher/html/publisher-wm.html&variant=basis_wm&item=1';
             wm = new WM_Manager({
-                methodURL:  '/data/content-studiovo/concept/leerlijnen/components.xml',
-                threadsURL: '/data/content-studiovo/concept/leerlijnen/threads.xml',
-                repo :'studiovo_concept',
-				baseURL: 'http://stercollecties-concept.appspot.com'
+                methodURL:  '/data/content-studiovo/live/leerlijnen/components.xml',
+                threadsURL: '/data/content-studiovo/live/leerlijnen/threads.xml',
+                repo :'studiovo',
+                baseURL: 'http://stercollecties.appspot.com'
             });
             $(document).ready(function() {
                 wm.init();
@@ -30,7 +30,7 @@
         </script>
     </head>
     <body>
-        <div id="main" class="concept">
+        <div id="main">
             <div id="dialog">
                 <form name="loginform" id="login-form" action="" method="post">
                     <div id="login-message"></div>
@@ -47,7 +47,7 @@
                 <!-- class="logo_colour", allows you to change the colour of the text -->
                 <h1><a href="index.html">Studio<span
                 class="logo_colour">VO</span></a></h1>
-                <h2>Content Publisher <span style="font-weight: bold">CONCEPT</span> <a href="publisher-studiovo.html">go to live publisher</a></h2>
+                <h2>Content Publisher <b>LIVE</b> <a href="publisher-studiovo.html">go to concept publisher</a></h2>
                 </div>
                 <div id="account-info">
                     <div id="info-logged-in">
@@ -93,15 +93,15 @@
                         <p>Indien u nieuwe componenten heeft aangemaakt, dient u 'Ververs overzichten' te activeren. De auteurstool 
                            zal dan de beschikbare componenten indexeren.</p>
                         <div class="button" id="ververs-overzicht-button" style="width:150px">
-                            <a href="/Publisher/php/GenerateIndex.php?repo=studiovo_concept">Ververs overzichten</a>
+                            <a href="/Publisher/php/GenerateIndex.php?repo=studiovo">Ververs overzichten</a>
                         </div>
                         <p>De index van beschikbare componenten en leerlijnen dient ook gepubliceerd te worden. Dat doet u via de knop 
                         'Publiceer overzichten'</p>
                         <div class="button" id="publish-overview-button-1" style="width:150px">
-                            <a href="javascript:wm.publishOverview('studiovo_concept','publish-overview-button-1','vo');">Publiceer overzichten</a>
+                            <a href="javascript:wm.publishOverview('studiovo','publish-overview-button-1', 'vo');">Publiceer overzichten</a>
                         </div>
 
-                        <p>Bekijk <a href="http://ontwikkel.scalamedia.nl/Publisher/php/pulseon_content_overview.php?repo=studiovo_concept">hier</a> een overzicht van alle beschikbare content voor import in PulseOn</p>
+                        <p>Bekijk <a href="http://ontwikkel.scalamedia.nl/Publisher/php/pulseon_content_overview.php?repo=studiovo">hier</a> een overzicht van alle beschikbare content voor import in PulseOn</p>
 
                     </div>
                 </div>
@@ -117,7 +117,7 @@
                         <p>
                             Bekijk hier het lesmateriaal wanneer u deze aan het bewerken bent.
                         </p>
-                        <iframe src="publisher-preview-widget.html?thread_id=studiovo-ned-1&repo=studiovo_concept" id="wiskundemenu-iframe" class="wiskundemenu-iframe"></iframe>
+                        <iframe src="publisher-preview-widget.html?thread_id=studiovo-ned-1&repo=studiovo" id="wiskundemenu-iframe" class="wiskundemenu-iframe"></iframe>
                     </div>
                 </div>
                 <!--
