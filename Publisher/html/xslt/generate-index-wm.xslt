@@ -34,6 +34,9 @@
 
 <xsl:template match="subcomponent" mode="collect">
    <subcomponent id="{@id}">
+       <xsl:if test="@exercise-start-nr">
+           <xsl:attribute name="exercise-start-nr"><xsl:value-of select="@exercise-start-nr"/></xsl:attribute>
+       </xsl:if>
        <xsl:apply-templates mode="collect"/>
    </subcomponent>
 </xsl:template>
@@ -139,8 +142,12 @@
 <xsl:template match="subcomponent" mode="pass5">
     <xsl:copy>
         <xsl:choose>
+            <!-- last paragraph (generally 'Extra Opgaven' after 'Eindpunt' restart with 1 -->
             <xsl:when test="count(following-sibling::subcomponent)=0">
                 <xsl:attribute name="_base">1</xsl:attribute>
+            </xsl:when>
+            <xsl:when test="@exercise-start-nr">
+                <xsl:attribute name="_base"><xsl:value-of select="@exercise-start-nr"/></xsl:attribute>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:attribute name="_base"><xsl:value-of select="1+sum(preceding-sibling::subcomponent/@_size)"/></xsl:attribute>

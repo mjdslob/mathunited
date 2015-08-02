@@ -417,7 +417,7 @@ ol li p, ul li p {float:none !important;}
 
 table {clear:left;}
 .remark {
-    margin:20px 0px 20px 20px;
+/*    margin:20px 0px 20px 20px;*/
     position:relative;
 }
 .remark-icon {
@@ -512,7 +512,7 @@ table.tabulate {
     width:520px;
 }
 table.tabulate p {
-    width:auto;
+    width:auto !important;
 }
 .exercisechoice {
     position:relative;
