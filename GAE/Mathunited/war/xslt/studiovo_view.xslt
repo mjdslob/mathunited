@@ -436,7 +436,7 @@ indent="yes" encoding="utf-8"/>
                         <xsl:if test="@target">
                             <xsl:attribute name="target"><xsl:value-of select="@target"/></xsl:attribute>
                         </xsl:if>
-                        <xsl:attribute name="href"><xsl:value-of select="concat('view?comp=',$_comp,'&amp;subcomp=',$_subcomp,'&amp;variant=',$variant)"/></xsl:attribute>
+                        <xsl:attribute name="href"><xsl:value-of select="concat('view?comp=',$_comp,'&amp;subcomp=',$_subcomp,'&amp;variant=',$variant,'&amp;repo=',$repo)"/></xsl:attribute>
                         <xsl:value-of select="."/>
 
                     </a>
