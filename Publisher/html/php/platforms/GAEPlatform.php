@@ -16,6 +16,34 @@ class GAEPlatform extends Platform {
         $this->publishId = $publishId;
     }
 
+  function openFile($fname, $logger) {
+        # Get text from file
+        $txt = file_get_contents($fname);
+        if($txt===false) {
+            throw new Exception("Could not open file $fname");
+        }
+        # Regular expression to match xml-model directive (optional space between
+        # starting <? and xml-model; can appear on multiple lines.
+        $pattern = "/<\?\s*xml-model.*?\?>/m";
+        $limit = -1; # Keep searching for more for safety. // TODO: could be = 1 as only one model should be specified
+        $count = 0; # Count number of replacements
+        
+        # Replace pattern with the empty string
+        $filtered_txt = preg_replace($pattern, "", $txt, $limit, $count);
+                
+        # Log if replacement was done, and set text in that case
+        if ($count > 0) {
+            //$msg = "DEBUG: Removed $count xml-model directives from $fname.";
+            //$logger->trace(LEVEL_ERROR, $msg);
+            #error_log("GenerateIndex::openFile: " . $msg);
+            $txt = $filtered_txt;
+        }
+        
+        $txt = EntityConverter::convert_entities($txt);
+        $doc = new SimpleXMLElement($txt);
+        return $doc;
+    }
+    
     public function publishOverview($repoID, $repo, $logger, $threadsXML, $componentsXML) {
         $logger->trace(LEVEL_INFO, 'send components.xml for repo '.$repoID);        
         $error = !$this->sendFile('components.xml', '', $repoID, $componentsXML, $logger);
@@ -56,35 +84,25 @@ class GAEPlatform extends Platform {
 
         //create base path
         $subcompFile = $pathbase.$subcompRef;
-        
         $ind = strrpos($subcompFile, '/');
         $base = '';
         if($ind > 0) {
             $base = substr($subcompFile, 0, $ind+1);
         }
+        $doc = $this->openFile($subcompFile, $logger);
         
+        $subCompIndexDoc = null;
         //read index file containing numbering information
-        $txt = file_get_contents($base.'../index.xml');
-        if($txt===false) {
-            $logger->trace(LEVEL_ERROR, "index.xml for Component $compRef does not exist");
-            $indexDoc = null;
-        } else {
-            $txt = EntityConverter::convert_entities($txt);
-            $indexDoc = new SimpleXMLElement($txt);
-        }
-
-        $txt = file_get_contents($subcompFile);
-        if($txt===false) throw new Exception("Subcomponent $subcompFile does not exist");
-
-        $txt = EntityConverter::convert_entities($txt);
-        $doc = new SimpleXMLElement($txt);
-
+        $indexDoc = $this->openFile($base.'../index.xml', $logger);
         if($indexDoc!=null) {
-            $elm = $indexDoc->xpath("//component[@id='$compId']/subcomponent[@id='$subcompId']");
-            if(count($elm)>0) {
-                $indexBase = $elm[0];
-                $indexBase = (string)$indexBase['_base'];
+            $subCompIndexDoc = $indexDoc->xpath("//component[@id='$compId']/subcomponent[@id='$subcompId']");
+            if(count($subCompIndexDoc)>0) {
+                $subCompIndexDoc = $subCompIndexDoc[0];
+                $indexBase = (string)$subCompIndexDoc['_base'];
                 $doc->addAttribute('_base',$indexBase);
+            } else {
+                $logger->trace(LEVEL_ERROR, "Could not find subcomponent $subcompId");
+                $subCompIndexDoc = null;
             }
             //add list of subcomponents to the xml
             $elm1 = $doc->addChild('internal-meta');
@@ -101,17 +119,21 @@ class GAEPlatform extends Platform {
         $this->sendFile($subcompRef, "", $repo, $doc->asXML(), $logger);
 
         //also post containing includes
-        $main = new SimpleXMLElement($txt);
-        $incs = $main->xpath("//include");
+        $incs = $doc->xpath("//include");
         foreach($incs as $inc) {
             $incId = (string)$inc['filename'];
             $fname = $base.$incId;
-            $txt = file_get_contents($fname);
-            if($txt===false) throw new Exception("File $fname does not exist");
-            $txt = EntityConverter::convert_entities($txt);
+            $doc = $this->openFile($fname, $logger);
 
             //find references to resources in this document
-            $doc = new SimpleXMLElement($txt);
+            //copy the number of elements (especially exercises) as attribute @_nr into the element
+            if($subCompIndexDoc!=null) {
+                $nrElm = $subCompIndexDoc->xpath("//*[@fname='$incId']");
+                if(count($nrElm)>0){
+                    $nrElm = $nrElm[0];
+                    $doc['_nr']=(string)$nrElm['_nr'];
+                }
+            }
 
             $this->setTextrefs($compId, $doc, $indexDoc, $logger);
             $this->sendResourcesFromFile($doc, $subcompId, $repo, $logger, $base);
