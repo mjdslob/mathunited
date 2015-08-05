@@ -155,7 +155,7 @@ indent="yes" encoding="utf-8"/>
 <!-- hook to preprocess content-files (exercises, explanation, etc) before passing to the generic content.xslt -->
 <xsl:template match="*" mode="ma-content">
     <xsl:variable name="xml-filtered">
-        <xsl:apply-templates mode="filter-content"/>
+        <xsl:apply-templates select="." mode="filter-content"/>
     </xsl:variable>
     <xsl:apply-templates select="$xml-filtered" mode="content"/>
 </xsl:template>
