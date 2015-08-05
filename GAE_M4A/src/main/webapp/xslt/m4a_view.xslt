@@ -116,10 +116,13 @@ indent="yes" encoding="utf-8"/>
 
 <!-- hook to preprocess content-files (exercises, explanation, etc) before passing to the generic content.xslt -->
 <xsl:template match="*" mode="ma-content">
+    <xsl:param name="options"/>
     <xsl:variable name="xml-filtered">
         <xsl:apply-templates select="." mode="filter-content"/>
     </xsl:variable>
-    <xsl:apply-templates select="$xml-filtered" mode="content"/>
+    <xsl:apply-templates select="$xml-filtered" mode="content">
+        <xsl:with-param name="options" select="$options"/>
+    </xsl:apply-templates>
 </xsl:template>
 
 <!-- m4a-only: small picture should always be put to the right -->
