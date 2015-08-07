@@ -410,7 +410,7 @@ ol {
 .stepaligntable td p {
     width: auto;
 }
-table.wm-default-table tr td p {
+table.wm-default-table tr td p,  .stepaligntable p  {
     width:auto !important;
 }
 ol li p, ul li p {float:none !important;}

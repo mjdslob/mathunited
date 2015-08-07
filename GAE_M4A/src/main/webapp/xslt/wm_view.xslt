@@ -290,7 +290,7 @@ indent="yes" encoding="utf-8" />
     <xsl:apply-templates mode="content"/>
 </xsl:template>
 
-<xsl:template match="theory[not(@type or @type='important' or type='important-no-icon')]" mode="content">
+<xsl:template match="theory[not(@type) or not(@type='important' or type='important-no-icon')]" mode="content">
     <xsl:if test="$item!='answers'">
         <div class="container_12 clearfix theory">
             <div class="margin-left-1"/>
