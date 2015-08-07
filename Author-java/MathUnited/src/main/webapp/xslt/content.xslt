@@ -418,7 +418,8 @@ extension-element-prefixes="exsl">
 </xsl:template>
 <xsl:template match="m:*" mode="content">
     <xsl:element name="{local-name()}">
-        <xsl:apply-templates  mode="content"/>
+        <xsl:apply-templates select="@*[name()!='scriptlevel']" mode="content"/>
+        <xsl:apply-templates mode="content"/>
     </xsl:element>
 </xsl:template>
 
