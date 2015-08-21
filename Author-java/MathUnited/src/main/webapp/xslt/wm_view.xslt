@@ -328,7 +328,7 @@ indent="yes" encoding="utf-8" />
     <xsl:apply-templates mode="content"/>
 </xsl:template>
 
-<xsl:template match="theory[not(@type) or not(@type='important' or type='important-no-icon')]" mode="content">
+<xsl:template match="theory[not(@type) or not(@type='important' or @type='important-no-icon')]" mode="content">
     <xsl:if test="$item!='answers'">
         <div class="container_12 clearfix theory">
             <div class="margin-left-1"/>
@@ -364,8 +364,11 @@ indent="yes" encoding="utf-8" />
 <xsl:template match="example" mode="content">
     <xsl:if test="$item!='answers'">
         <div class="container_12 clearfix example">
-            <div class="margin-left-1"/>
+            <div class="margin-left-1">
+                <div class="example-icon"/> 
+            </div>
             <div class="prefix_1 grid_11">
+                <b>Voorbeeld:</b><br/>
                 <xsl:apply-templates select="*" mode="content"/>
             </div>
         </div>
@@ -378,6 +381,7 @@ indent="yes" encoding="utf-8" />
                 <div class="remark-icon"/> 
             </div>
             <div class="grid_11 prefix_1">
+                <b>Opmerking:</b><br/>
                 <xsl:apply-templates select="*" mode="content"/>
             </div>
         </div>
@@ -387,7 +391,14 @@ indent="yes" encoding="utf-8" />
     <xsl:if test="$item!='answers'">
         <div class="container_12 clearfix intermezzo">
             <div class="margin-left-1">
-                <div class="intermezzo-icon"/> 
+                <xsl:choose>
+                    <xsl:when test="@type='history'">
+                        <div class="history-icon"/> 
+                    </xsl:when>
+                    <xsl:when test="@type='nicetoknow'">
+                        <div class="nicetoknow-icon"/> 
+                    </xsl:when>
+                </xsl:choose>
             </div>
             <div class="prefix_1 grid_11">
                 <xsl:apply-templates select="*" mode="content"/>
@@ -484,6 +495,15 @@ indent="yes" encoding="utf-8" />
                                 <xsl:if test="exercise[position()=$currentPos]/@icon='exclamation'">
                                     <div class="exclamation-icon"/> 
                                 </xsl:if>
+                                <xsl:if test="exercise[position()=$currentPos]/@icon='geen C'">
+                                    <div class="geen-C-icon"/> 
+                                </xsl:if>
+                                <xsl:if test="exercise[position()=$currentPos]/@icon='optional'">
+                                    <div class="optional-icon"/> 
+                                </xsl:if>
+                                <xsl:if test="exercise[position()=$currentPos]/@icon='computer'">
+                                    <div class="calculator-icon"/> 
+                                </xsl:if>
                             </div>
                         </div>    
                     </xsl:for-each>
@@ -515,6 +535,15 @@ indent="yes" encoding="utf-8" />
                         </xsl:if>
                         <xsl:if test="@icon='exclamation'">
                             <div class="exclamation-icon"/> 
+                        </xsl:if>
+                        <xsl:if test="@icon='geen C'">
+                            <div class="geen-C-icon"/> 
+                        </xsl:if>
+                        <xsl:if test="@icon='optional'">
+                            <div class="optional-icon"/> 
+                        </xsl:if>
+                        <xsl:if test="@icon='computer'">
+                            <div class="calculator-icon"/> 
                         </xsl:if>
                     </div>
                 </xsl:otherwise>
