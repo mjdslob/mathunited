@@ -134,18 +134,16 @@ indent="yes" encoding="utf-8"/>
     </xsl:copy>
 </xsl:template>
 
-
-
 <xsl:template match="exercises/include" mode="numbering">
     <include>
         <xsl:attribute name="filename" select="@filename"/>
-        <xsl:attribute name="num" select="1+count(preceding::explore/include)+count(preceding-sibling::include)+count(preceding::exercises/include)+count(preceding::exercises/block[@medium='web']/include)"/>
+        <xsl:attribute name="num" select="1+count(preceding-sibling::include)+count(preceding::exercises/include)+count(preceding::exercises/block[@medium='web']/include)"/>
     </include>
 </xsl:template>
 <xsl:template match="exercises/block[@medium='web']/include" mode="numbering">
     <include>
         <xsl:attribute name="filename" select="@filename"/>
-        <xsl:attribute name="num" select="1+count(preceding-sibling::include)+count(preceding::explore/include)+count(preceding::exercises/block[@medium='web']/include)"/>
+        <xsl:attribute name="num" select="1+count(preceding-sibling::include)+count(preceding::exercises/block[@medium='web']/include)"/>
     </include>
 </xsl:template>
 <xsl:template match="examples/include" mode="numbering">
@@ -441,7 +439,7 @@ indent="yes" encoding="utf-8"/>
     <xsl:for-each select="include">
         <xsl:apply-templates select="document(concat($docbase,@filename))/exercise">
             <xsl:with-param name="options" select="$options"/>
-            <xsl:with-param name="number" select="position()"/>
+            <xsl:with-param name="number" select="concat('V', position())"/>
             <xsl:with-param name="is-open">true</xsl:with-param>
         </xsl:apply-templates>
     </xsl:for-each>
@@ -512,7 +510,6 @@ indent="yes" encoding="utf-8"/>
     <h2 class="section-title">Examenopgaven</h2>
     <xsl:apply-templates/>
 </xsl:template>
-
 
 <xsl:template match="include">
     <xsl:param name="options"/>

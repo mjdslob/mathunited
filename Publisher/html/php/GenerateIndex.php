@@ -17,7 +17,6 @@ function handleError($errno, $errstr, $errfile, $errline, array $errcontext)
 
     throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
 }
-
 set_error_handler('handleError');
 
 class Overview {
@@ -88,17 +87,28 @@ try{
     }
 
     function openFile($fname) {
+        # Get text from file
         $txt = file_get_contents($fname);
-        /*
-        $ii0 = strpos($txt, '<?xml-model');
-        if($ii0!==false) {
-            $this->logger->trace(LEVEL_ERROR, "DEBUG: $fname");
-            $ii1 = strpos($txt,'?>',$ii0);
-            if($ii1!==false) {
-                $txt = substr($txt,0,$ii0).substr($txt,$ii1);
-            }
+        if($txt===false) {
+            throw new Exception("Could not open file $fname");
         }
-        */
+        # Regular expression to match xml-model directive (optional space between
+        # starting <? and xml-model; can appear on multiple lines.
+        $pattern = "/<\?\s*xml-model.*?\?>/m";
+        $limit = -1; # Keep searching for more for safety. // TODO: could be = 1 as only one model should be specified
+        $count = 0; # Count number of replacements
+        
+        # Replace pattern with the empty string
+        $filtered_txt = preg_replace($pattern, "", $txt, $limit, $count);
+                
+        # Log if replacement was done, and set text in that case
+        if ($count > 0) {
+            //$msg = "DEBUG: Removed $count xml-model directives from $fname.";
+            //$logger->trace(LEVEL_ERROR, $msg);
+            #error_log("GenerateIndex::openFile: " . $msg);
+            $txt = $filtered_txt;
+        }
+        
         $txt = EntityConverter::convert_entities($txt);
         $doc = new SimpleXMLElement($txt);
         return $doc;
