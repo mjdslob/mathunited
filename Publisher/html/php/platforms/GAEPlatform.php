@@ -277,6 +277,7 @@ class GAEPlatform extends Platform {
                 {
                     $getUrl = $this->sendResource($imagefname, $compId, $correctedId, $repo, $type, $mimetype, $logger);
                     $imgId->name = $getUrl; //put the direct URL in the xml
+                    $imgId->orgname = $id;
                 }
                 catch(Exception $e)
                 {
