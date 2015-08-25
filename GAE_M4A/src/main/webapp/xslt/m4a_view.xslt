@@ -133,6 +133,14 @@ indent="yes" encoding="utf-8"/>
         <xsl:apply-templates select="*" mode="filter-content"/>
     </xsl:copy>
 </xsl:template>
+<xsl:template match="resource[contains(orgname,'.png') and string-length(width)=0]" mode="filter-content">
+    <xsl:copy>
+        <xsl:apply-templates select="@*" mode="filter-content"/>
+        <width>4cm</width>
+        <xsl:apply-templates select="*[name() != 'width']" mode="filter-content"/>
+    </xsl:copy>
+</xsl:template>
+<xsl:template match="*[@medium='paper']" priority='10' mode="filter-content"/>
 
 <xsl:template match="exercises/include" mode="numbering">
     <include>

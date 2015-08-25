@@ -146,9 +146,17 @@ indent="yes" encoding="utf-8"/>
     <xsl:apply-templates select="$xml" mode="process"/>
 </xsl:template>
 
-<!--skip clone exercises -->
-<xsl:template match="exercises/include[document(concat($docbase,@filename))//exercise/metadata/clone[@active='true']]" mode="filter">
+<!--skip clone exercises 
+[document(concat($docbase,@filename))/exercise/metadata/clone[@active='true']]-->
+<xsl:template match="exercises/include" mode="filter">
+    <xsl:if test="not(exists(document(concat($docbase,@filename))//exercise/metadata/clone[@active='true']))">
+        <xsl:copy>
+            <xsl:apply-templates select="@*|node()" mode="filter"/>
+        </xsl:copy>
+    </xsl:if>
+    
 </xsl:template>
+
 <!--skip content that is explicitly not intended for math4all -->
 <xsl:template match="*[@publishing-platforms!='math4all']" mode="filter"></xsl:template>
 
@@ -171,8 +179,14 @@ indent="yes" encoding="utf-8"/>
         <xsl:apply-templates select="*" mode="filter-content"/>
     </xsl:copy>
 </xsl:template>
-
-
+<xsl:template match="resource[contains(name,'.png') and string-length(width)=0]" mode="filter-content">
+    <xsl:copy>
+        <xsl:apply-templates select="@*" mode="filter-content"/>
+        <width>4cm</width>
+        <xsl:apply-templates select="*[name() != 'width']" mode="filter-content"/>
+    </xsl:copy>
+</xsl:template>
+<xsl:template match="*[@medium='paper']" priority='10' mode="filter-content"/>
 
 <xsl:template match="exercises/include" mode="numbering">
     <include>
