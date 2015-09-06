@@ -268,7 +268,7 @@ indent="yes" encoding="utf-8"/>
    <div class="balk">
        <xsl:call-template name="list-section-nrs">
            <xsl:with-param name="i"><xsl:value-of select="number(1)"/></xsl:with-param>
-           <xsl:with-param name="count"><xsl:value-of select="$subcomponent_count)"/></xsl:with-param>
+           <xsl:with-param name="count"><xsl:value-of select="$subcomponent_count"/></xsl:with-param>
            <xsl:with-param name="highlight"><xsl:value-of select="1+number($subcomponent_index)"/></xsl:with-param>
            <xsl:with-param name="subcomponents" select="subcomponent/internal-meta/subcomponents"/>
        </xsl:call-template>
@@ -416,7 +416,7 @@ indent="yes" encoding="utf-8"/>
         </xsl:otherwise>
     </xsl:choose>
     
-    <xsl:if test="number($i) lt number($count)">
+    <xsl:if test="number($i) &lt; number($count)">
         <xsl:call-template name="list-section-nrs">
            <xsl:with-param name="i"><xsl:value-of select="$i+1"/></xsl:with-param>
            <xsl:with-param name="count"><xsl:value-of select="$count"/></xsl:with-param>
@@ -612,7 +612,7 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="explanation" mode="navigation">
     <xsl:variable name="explnum" select="count(preceding-sibling::explanation)+1"/>
     <xsl:choose>
-        <xsl:when test="count(preceding-sibling::explanation)+count(following-sibling::explanation) gt 0">
+        <xsl:when test="count(preceding-sibling::explanation)+count(following-sibling::explanation) > 0">
            <div class="menu-item-div" item="explanation">
                <a>
                     <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefix,'explanation&amp;num=',$explnum)"/></xsl:attribute>
@@ -632,7 +632,7 @@ indent="yes" encoding="utf-8"/>
                <a>
                     <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefix,'explanation')"/></xsl:attribute>
                     <xsl:choose>
-                        <xsl:when test="$itemInner='explanation' and not(number($num) gt 1)">
+                        <xsl:when test="$itemInner='explanation' and not(number($num) > 1)">
                             <xsl:attribute name="id">selected-menu-item</xsl:attribute>
                             <div class="menu-item-dot-wrapper"><div class="menu-item-dot"/></div>
                         </xsl:when><xsl:otherwise>
@@ -734,7 +734,7 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="extra" mode="navigation">
     <xsl:variable name="explnum" select="count(preceding-sibling::extra)+1"/>
     <xsl:choose>
-        <xsl:when test="count(preceding-sibling::extra)+count(following-sibling::extra) gt 0">
+        <xsl:when test="count(preceding-sibling::extra)+count(following-sibling::extra) > 0">
            <div class="menu-item-div" item="extra">
                <a>
                     <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefix,'extra&amp;num=',$explnum)"/></xsl:attribute>
@@ -754,7 +754,7 @@ indent="yes" encoding="utf-8"/>
                <a>
                     <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefix,'extra')"/></xsl:attribute>
                     <xsl:choose>
-                        <xsl:when test="$itemInner='extra' and not(number($num) gt 1)">
+                        <xsl:when test="$itemInner='extra' and not(number($num) > 1)">
                             <xsl:attribute name="id">selected-menu-item</xsl:attribute>
                             <div class="menu-item-dot-wrapper"><div class="menu-item-dot"/></div>
                         </xsl:when><xsl:otherwise>

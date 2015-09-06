@@ -1,49 +1,18 @@
 <?php
 require_once("Logger.php");
 require_once("EntityConverter.php");
-class GAEPlatform extends Platform {
-//    private $putTextURL = "http://mathunited2012.appspot.com/puttextfile";
-//    private $putResultXmlURL = "http://mathunited2012.appspot.com/putxmlfile";
-//    private $resourceGetBlobUrl = "http://mathunited2012.appspot.com/getbloburl";
-//    private $getResourceUrl= "http://mathunited2012.appspot.com/getresourceurl";
-    private $putTextURL = "http://math4allview.appspot.com/puttextfile";
-    private $putResultXmlURL = "http://math4allview.appspot.com/putxmlfile";
-    private $resourceGetBlobUrl = "http://math4allview.appspot.com/getbloburl";
-    private $getResourceUrl= "http://math4allview.appspot.com/getresourceurl";
+class VOPlatformConcept extends Platform {
+    private $baseURL = "http://stercollecties-concept.appspot.com";
+    private $putTextURL = "http://stercollecties-concept.appspot.com/puttextfile";
+    private $putResultXmlURL = "http://stercollecties-concept.appspot.com/putxmlfile";
+    private $resourceGetBlobUrl = "http://stercollecties-concept.appspot.com/getbloburl";
+    private $getResourceUrl= "http://stercollecties-concept.appspot.com/getresourceurl";
     
     //constructor 
-    public function GAEPlatform($publishId) {
+    public function VOPlatformConcept($publishId) {
         $this->publishId = $publishId;
     }
 
-  function openFile($fname, $logger) {
-        # Get text from file
-        $txt = file_get_contents($fname);
-        if($txt===false) {
-            throw new Exception("Could not open file $fname");
-        }
-        # Regular expression to match xml-model directive (optional space between
-        # starting <? and xml-model; can appear on multiple lines.
-        $pattern = "/<\?\s*xml-model.*?\?>/m";
-        $limit = -1; # Keep searching for more for safety. // TODO: could be = 1 as only one model should be specified
-        $count = 0; # Count number of replacements
-        
-        # Replace pattern with the empty string
-        $filtered_txt = preg_replace($pattern, "", $txt, $limit, $count);
-                
-        # Log if replacement was done, and set text in that case
-        if ($count > 0) {
-            //$msg = "DEBUG: Removed $count xml-model directives from $fname.";
-            //$logger->trace(LEVEL_ERROR, $msg);
-            #error_log("GenerateIndex::openFile: " . $msg);
-            $txt = $filtered_txt;
-        }
-        
-        $txt = EntityConverter::convert_entities($txt);
-        $doc = new SimpleXMLElement($txt);
-        return $doc;
-    }
-    
     public function publishOverview($repoID, $repo, $logger, $threadsXML, $componentsXML) {
         $logger->trace(LEVEL_INFO, 'send components.xml for repo '.$repoID);        
         $error = !$this->sendFile('components.xml', '', $repoID, $componentsXML, $logger);
@@ -84,25 +53,35 @@ class GAEPlatform extends Platform {
 
         //create base path
         $subcompFile = $pathbase.$subcompRef;
+        
         $ind = strrpos($subcompFile, '/');
         $base = '';
         if($ind > 0) {
             $base = substr($subcompFile, 0, $ind+1);
         }
-        $doc = $this->openFile($subcompFile, $logger);
         
-        $subCompIndexDoc = null;
         //read index file containing numbering information
-        $indexDoc = $this->openFile($base.'../index.xml', $logger);
+        $txt = file_get_contents($base.'../index.xml');
+        if($txt===false) {
+            $logger->trace(LEVEL_ERROR, "index.xml for Component $compRef does not exist");
+            $indexDoc = null;
+        } else {
+            $txt = EntityConverter::convert_entities($txt);
+            $indexDoc = new SimpleXMLElement($txt);
+        }
+
+        $txt = file_get_contents($subcompFile);
+        if($txt===false) throw new Exception("Subcomponent $subcompFile does not exist");
+
+        $txt = EntityConverter::convert_entities($txt);
+        $doc = new SimpleXMLElement($txt);
+
         if($indexDoc!=null) {
-            $subCompIndexDoc = $indexDoc->xpath("//component[@id='$compId']/subcomponent[@id='$subcompId']");
-            if(count($subCompIndexDoc)>0) {
-                $subCompIndexDoc = $subCompIndexDoc[0];
-                $indexBase = (string)$subCompIndexDoc['_base'];
+            $elm = $indexDoc->xpath("//component[@id='$compId']/subcomponent[@id='$subcompId']");
+            if(count($elm)>0) {
+                $indexBase = $elm[0];
+                $indexBase = (string)$indexBase['_base'];
                 $doc->addAttribute('_base',$indexBase);
-            } else {
-                $logger->trace(LEVEL_ERROR, "Could not find subcomponent $subcompId");
-                $subCompIndexDoc = null;
             }
             //add list of subcomponents to the xml
             $elm1 = $doc->addChild('internal-meta');
@@ -119,21 +98,17 @@ class GAEPlatform extends Platform {
         $this->sendFile($subcompRef, "", $repo, $doc->asXML(), $logger);
 
         //also post containing includes
-        $incs = $doc->xpath("//include");
+        $main = new SimpleXMLElement($txt);
+        $incs = $main->xpath("//include");
         foreach($incs as $inc) {
             $incId = (string)$inc['filename'];
             $fname = $base.$incId;
-            $doc = $this->openFile($fname, $logger);
+            $txt = file_get_contents($fname);
+            if($txt===false) throw new Exception("File $fname does not exist");
+            $txt = EntityConverter::convert_entities($txt);
 
             //find references to resources in this document
-            //copy the number of elements (especially exercises) as attribute @_nr into the element
-            if($subCompIndexDoc!=null) {
-                $nrElm = $subCompIndexDoc->xpath("//*[@fname='$incId']");
-                if(count($nrElm)>0){
-                    $nrElm = $nrElm[0];
-                    $doc['_nr']=(string)$nrElm['_nr'];
-                }
-            }
+            $doc = new SimpleXMLElement($txt);
 
             $this->setTextrefs($compId, $doc, $indexDoc, $logger);
             $this->sendResourcesFromFile($doc, $subcompId, $repo, $logger, $base);
@@ -265,11 +240,8 @@ class GAEPlatform extends Platform {
             
             if($fileExists){
                 $exif_type = exif_imagetype($imagefname);
-                $ext = pathinfo($imagefname, PATHINFO_EXTENSION);
                 if($exif_type){
                     $mimetype = image_type_to_mime_type($exif_type);
-                } else if($ext!=undefined && $ext=="svg") {
-                    $mimetype = "image/svg+xml";
                 } else {
                     $mimetype = "application/octet-stream";
                 }
@@ -277,7 +249,6 @@ class GAEPlatform extends Platform {
                 {
                     $getUrl = $this->sendResource($imagefname, $compId, $correctedId, $repo, $type, $mimetype, $logger);
                     $imgId->name = $getUrl; //put the direct URL in the xml
-                    $imgId->orgname = $id;
                 }
                 catch(Exception $e)
                 {
@@ -415,7 +386,7 @@ class GAEPlatform extends Platform {
         $url = trim($response);
         if ($url != "")
         {
-            $logger->trace(LEVEL_INFO, 'Skipped resource upload ('.$type.') (id='.$id.', repo='.$repo.', fname='.$fname.', mimetype='.$mimetype.' <a href="http://mathunited2012.appspot.com'.$url.'">open</a>)');       
+            $logger->trace(LEVEL_INFO, 'Skipped resource upload ('.$type.') (id='.$id.', repo='.$repo.', fname='.$fname.', mimetype='.$mimetype.' <a href="'.$this->baseURL.$url.'">open</a>)');       
             return $url;
         }
         
@@ -445,7 +416,7 @@ class GAEPlatform extends Platform {
         if($response!=null && strncmp($response, 'error', 5)==0){
             throw new Exception($response);
         }
-        $logger->trace(LEVEL_INFO, 'Uploaded resource ('.$type.') (id='.$id.', repo='.$repo.', fname='.$fname.', mimetype='.$mimetype.' <a href="http://mathunited2012.appspot.com'.$response.'">open</a>)');       
+        $logger->trace(LEVEL_INFO, 'Uploaded resource ('.$type.') (id='.$id.', repo='.$repo.', fname='.$fname.', mimetype='.$mimetype.' <a href="'.$this->baseURL.$response.'">open</a>)');       
         curl_close($ch);
         return $response;
     }

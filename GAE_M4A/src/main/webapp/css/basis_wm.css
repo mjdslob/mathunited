@@ -108,6 +108,7 @@ iframe {
 }
 .headingDiv .prev-subcomponent {
     min-height:1px;
+    padding-bottom: 1px;
 }
 .headingDiv .prev-subcomponent a {
     font-weight:bold;
@@ -407,18 +408,47 @@ ol {
     background: transparent url('../sources_wm/letop.png') no-repeat center top;
     background-size: 40px 40px;
 }
+.geen-C-icon {
+    float:left;
+    height:40px;
+    width:40px;
+    margin:25px 0px 0px 6px;
+    background: transparent url('../sources_wm/geen_C.png') no-repeat center top;
+    background-size: 40px 40px;
+}
+.optional-icon {
+    float:left;
+    height:40px;
+    width:40px;
+    margin:25px 0px 0px 6px;
+    background: transparent url('../sources_wm/optional.png') no-repeat center top;
+    background-size: 40px 40px;
+}
 .stepaligntable td p {
     width: auto;
 }
-table.wm-default-table tr td p {
+table.wm-default-table tr td p,  .stepaligntable p  {
     width:auto !important;
 }
 ol li p, ul li p {float:none !important;}
 
 table {clear:left;}
 .remark {
-    margin:20px 0px 20px 20px;
+/*    margin:20px 0px 20px 20px;*/
     position:relative;
+}
+.remark .grid_11, .example .grid_11 {
+    margin-bottom:20px;
+}
+
+.example-icon {
+    margin:30px 0px 20px 0px;
+    float:left;
+    height:40px;
+    width:40px;
+    padding:0px 14px 0px 0px;
+    background: transparent url('../sources_wm/clipbord.png') no-repeat center top;
+    background-size: 40px 40px;
 }
 .remark-icon {
     margin:30px 0px 20px 0px;
@@ -426,20 +456,29 @@ table {clear:left;}
     height:40px;
     width:40px;
     padding:0px 14px 0px 0px;
-    background: transparent url('../sources_wm/lampje.png') no-repeat center top;
+    background: transparent url('../sources_wm/remark.png') no-repeat center top;
     background-size: 40px 40px;
 }
 .intermezzo {
     position:relative;
     padding: 0px 0px 5px 0px;
 }
-.intermezzo-icon {
+.history-icon {
     margin:0px 0px 20px 0px;
     float:left;
     height:40px;
     width:40px;
     padding:0px 14px 0px 0px;
     background: transparent url('../sources_wm/kasteel.png') no-repeat center top;
+    background-size: 40px 40px;
+}
+.nicetoknow-icon {
+    margin:0px 0px 20px 0px;
+    float:left;
+    height:40px;
+    width:40px;
+    padding:0px 14px 0px 0px;
+    background: transparent url('../sources_wm/paperclip.png') no-repeat center top;
     background-size: 40px 40px;
 }
 .intermezzo-left {
@@ -468,6 +507,7 @@ table {clear:left;}
 .example {
     position:relative;
     padding: 15px 0px 5px 0px;
+    min-height:50px;
 }
 .example-heading {
     font-weight: bold;
@@ -512,7 +552,7 @@ table.tabulate {
     width:520px;
 }
 table.tabulate p {
-    width:auto;
+    width:auto !important;
 }
 .exercisechoice {
     position:relative;
@@ -527,7 +567,7 @@ table.tabulate p {
 .exercise {
     padding-bottom:10px;
     position:relative;
-    min-height:30px;
+    min-height:100px;
 }
 .exercise-heading-wrapper {
     /*position:relative;
@@ -605,7 +645,7 @@ exercise-heading-wrapper .exercise-heading.active {
     background-color: #C8C8E6;
 }
 .icon-container {
-    margin-top:40px;
+    margin-top:15px;
     position:absolute;
 }
 .icon-container.active .worksheet-icon {

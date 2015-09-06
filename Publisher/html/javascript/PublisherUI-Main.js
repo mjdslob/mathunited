@@ -21,7 +21,7 @@ function WM_Manager(spec) {
 //    this.methodURL = spec.methodURL;
     this.repo = spec.repo;
     this.thread = spec.thread;
-    this.publishURL = '/Publisher/html/php/Publisher.php';
+    this.publishURL = '/Publisher/php/Publisher.php';
     this.target = 'mathunited';
 	this.baseURL = spec.baseURL;
 }
@@ -472,6 +472,7 @@ WM_Manager.prototype.publishOverview = function(repo, elmid, target) {
         return;
     }
     elm.addClass('processing');
+    console.log("POST: " + this.publishURL + " " + JSON.stringify({ repo: repo, user: 'mslob', passwd: 'test', cmd: 'publishOverview', target: target }));
     $.post( this.publishURL, 
            {repo: repo, user:'mslob',passwd:'test', cmd:'publishOverview', target: target},
            function success(data, textStatus,jqXHR) {

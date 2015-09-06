@@ -2,11 +2,11 @@
 require_once("Logger.php");
 require_once("EntityConverter.php");
 class VOPlatform extends Platform {
-    private $baseURL = "http://stercollecties-concept.appspot.com";
-    private $putTextURL = "http://stercollecties-concept.appspot.com/puttextfile";
-    private $putResultXmlURL = "http://stercollecties-concept.appspot.com/putxmlfile";
-    private $resourceGetBlobUrl = "http://stercollecties-concept.appspot.com/getbloburl";
-    private $getResourceUrl= "http://stercollecties-concept.appspot.com/getresourceurl";
+    private $baseURL = "http://stercollecties.appspot.com";
+    private $putTextURL = "http://stercollecties.appspot.com/puttextfile";
+    private $putResultXmlURL = "http://stercollecties.appspot.com/putxmlfile";
+    private $resourceGetBlobUrl = "http://stercollecties.appspot.com/getbloburl";
+    private $getResourceUrl= "http://stercollecties.appspot.com/getresourceurl";
     
     //constructor 
     public function VOPlatform($publishId) {

@@ -25,9 +25,7 @@ import nl.math4all.gae_m4a.configuration.Repository;
 import nl.math4all.gae_m4a.configuration.SubComponent;
 
 public class ViewServlet extends HttpServlet {
-
     private static final long serialVersionUID = -5304896314263881051L;
-
     private final static Logger LOGGER = Logger.getLogger(XSLTbean.class.getName());
 
     static {
@@ -97,6 +95,7 @@ public class ViewServlet extends HttpServlet {
                     LOGGER.info("Setting repo from variant: " + repo);
                 }
             }
+            LOGGER.info("MSLO:: using variant " + variant);
             if (repo == null) {
                 throw new Exception("Het verplichte argument 'repo' ontbreekt: " + repo);
             }

@@ -138,7 +138,7 @@ indent="yes" encoding="utf-8"/>
 <!--   **************** -->
 <xsl:template match="/">
     <xsl:variable name="xml-filtered">
-        <xsl:apply-templates mode="filter-clone"/>
+        <xsl:apply-templates mode="filter"/>
     </xsl:variable>
     <xsl:variable name="xml">
         <xsl:apply-templates select="$xml-filtered" mode="numbering"/>
@@ -146,20 +146,58 @@ indent="yes" encoding="utf-8"/>
     <xsl:apply-templates select="$xml" mode="process"/>
 </xsl:template>
 
-<!--skip clone exercises -->
-<xsl:template match="exercises/include[document(concat($docbase,@filename))//exercise/metadata/clone[@active='true']]" mode="filter-clone">
+<!--skip clone exercises 
+[document(concat($docbase,@filename))/exercise/metadata/clone[@active='true']]-->
+<xsl:template match="exercises/include" mode="filter">
+    <xsl:if test="not(exists(document(concat($docbase,@filename))//exercise/metadata/clone[@active='true']))">
+        <xsl:copy>
+            <xsl:apply-templates select="@*|node()" mode="filter"/>
+        </xsl:copy>
+    </xsl:if>
+    
 </xsl:template>
+
+<!--skip content that is explicitly not intended for math4all -->
+<xsl:template match="*[@publishing-platforms!='math4all']" mode="filter"></xsl:template>
+
+<!-- hook to preprocess content-files (exercises, explanation, etc) before passing to the generic content.xslt -->
+<xsl:template match="*" mode="ma-content">
+    <xsl:param name="options"/>
+    <xsl:variable name="xml-filtered">
+        <xsl:apply-templates select="." mode="filter-content"/>
+    </xsl:variable>
+    <xsl:apply-templates select="$xml-filtered" mode="content">
+        <xsl:with-param name="options" select="$options"/>
+    </xsl:apply-templates>
+</xsl:template>
+
+<!-- m4a-only: small picture should always be put to the right -->
+<xsl:template match="paperfigure[@location='here' and number(replace(content/resource/width,'cm','')) le 5]" mode="filter-content">
+    <xsl:copy>
+        <xsl:attribute name="location">right</xsl:attribute>
+        <xsl:apply-templates select="@*[name()!='location']" mode="filter-content"/>
+        <xsl:apply-templates select="*" mode="filter-content"/>
+    </xsl:copy>
+</xsl:template>
+<xsl:template match="resource[contains(name,'.png') and string-length(width)=0]" mode="filter-content">
+    <xsl:copy>
+        <xsl:apply-templates select="@*" mode="filter-content"/>
+        <width>4cm</width>
+        <xsl:apply-templates select="*[name() != 'width']" mode="filter-content"/>
+    </xsl:copy>
+</xsl:template>
+<xsl:template match="*[@medium='paper']" priority='10' mode="filter-content"/>
 
 <xsl:template match="exercises/include" mode="numbering">
     <include>
         <xsl:attribute name="filename" select="@filename"/>
-        <xsl:attribute name="num" select="1+count(preceding::explore/include)+count(preceding-sibling::include)+count(preceding::exercises/include)+count(preceding::exercises/block[@medium='web']/include)"/>
+        <xsl:attribute name="num" select="1+count(preceding-sibling::include)+count(preceding::exercises/include)+count(preceding::exercises/block[@medium='web']/include)"/>
     </include>
 </xsl:template>
 <xsl:template match="exercises/block[@medium='web']/include" mode="numbering">
     <include>
         <xsl:attribute name="filename" select="@filename"/>
-        <xsl:attribute name="num" select="1+count(preceding-sibling::include)+count(preceding::explore/include)+count(preceding::exercises/block[@medium='web']/include)"/>
+        <xsl:attribute name="num" select="1+count(preceding-sibling::include)+count(preceding::exercises/block[@medium='web']/include)"/>
     </include>
 </xsl:template>
 <xsl:template match="examples/include" mode="numbering">
@@ -168,11 +206,14 @@ indent="yes" encoding="utf-8"/>
         <xsl:attribute name="num" select="1+count(preceding::examples/include)"/>
     </include>
 </xsl:template>
-
-
-<xsl:template match="@*|node()" mode="filter-clone">
+<xsl:template match="@*|node()" mode="filter">
     <xsl:copy>
-        <xsl:apply-templates select="@*|node()" mode="filter-clone"/>
+        <xsl:apply-templates select="@*|node()" mode="filter"/>
+    </xsl:copy>
+</xsl:template>
+<xsl:template match="@*|node()" mode="filter-content">
+    <xsl:copy>
+        <xsl:apply-templates select="@*|node()" mode="filter-content"/>
     </xsl:copy>
 </xsl:template>
 <xsl:template match="@*|node()" mode="numbering">
@@ -465,7 +506,7 @@ indent="yes" encoding="utf-8"/>
     <xsl:for-each select="include">
         <xsl:apply-templates select="document(concat($docbase,@filename))/exercise">
             <xsl:with-param name="options" select="$options"/>
-            <xsl:with-param name="number" select="position()"/>
+            <xsl:with-param name="number" select="concat('V',position())"/> 
             <xsl:with-param name="is-open">true</xsl:with-param>
         </xsl:apply-templates>
     </xsl:for-each>
@@ -507,7 +548,7 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="componentcontent/theory/examples">
     <h2 class="section-title">Voorbeeld <xsl:value-of select="$num"/></h2>
     <xsl:variable name="cont" select = "document(concat($docbase,include/@filename))"/>
-    <xsl:apply-templates select="$cont" mode="content"/>
+    <xsl:apply-templates select="$cont" mode="ma-content"/>
 </xsl:template>
 
 <xsl:template match="digest">
@@ -526,7 +567,7 @@ indent="yes" encoding="utf-8"/>
 
 <xsl:template match="summary">
     <h2 class="section-title">Samenvatten</h2>
-    <xsl:apply-templates mode="content"/>
+    <xsl:apply-templates mode="ma-content"/>
 </xsl:template>
 <xsl:template match="test">
     <h2 class="section-title">Testen</h2>
@@ -535,7 +576,7 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="background">
     <h2 class="section-title">Achtergronden</h2>
     <xsl:variable name="cont" select = "document(concat($docbase,include/@filename))"/>
-    <xsl:apply-templates select="$cont" mode="content"/>
+    <xsl:apply-templates select="$cont" mode="ma-content"/>
 </xsl:template>
 <xsl:template match="exam">
     <h2 class="section-title">Examenopgaven</h2>
@@ -545,7 +586,7 @@ indent="yes" encoding="utf-8"/>
 
 <xsl:template match="include">
     <xsl:param name="options"/>
-    <xsl:apply-templates select="document(concat($docbase,@filename))" mode="content">
+    <xsl:apply-templates select="document(concat($docbase,@filename))" mode="ma-content">
         <xsl:with-param name="options" select="$options"/>
     </xsl:apply-templates>
         
@@ -614,7 +655,7 @@ indent="yes" encoding="utf-8"/>
             </xsl:choose>
         </div>
         <div class="exercise-contents">
-            <xsl:apply-templates select="*[name()!='metadata']" mode="content">
+            <xsl:apply-templates select="*[name()!='metadata']" mode="ma-content">
                 <xsl:with-param name="options" select="$options"/>
             </xsl:apply-templates>
         </div>

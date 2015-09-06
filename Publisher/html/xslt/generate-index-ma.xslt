@@ -5,114 +5,135 @@
     xmlns:exslt="http://exslt.org/common"
     exclude-result-prefixes="exslt"
     version="1.0">
-<xsl:strip-space elements="*"/>
-<xsl:param name="refbase"/>
-<xsl:template match="/component">
-    <xsl:variable name="pass">
-        <index>
-            <component id="{@id}">
-                <xsl:apply-templates select="*" mode="collect"/>
-            </component>
-        </index>
-    </xsl:variable>
-    <xsl:apply-templates select="exslt:node-set($pass)" mode="numbering"/>
+    <xsl:strip-space elements="*"/>
+    <xsl:param name="refbase"/>
+    <xsl:template match="/component">
+        <xsl:variable name="pass">
+            <index>
+                <component id="{@id}">
+                    <xsl:apply-templates select="*" mode="collect"/>
+                </component>
+            </index>
+        </xsl:variable>
+        <xsl:apply-templates select="exslt:node-set($pass)" mode="numbering"/>
 
-<!--
-<xsl:apply-templates select="$pass" mode="numbering"/>
--->
-</xsl:template>
-<xsl:template match="subcomponent" mode="collect">
-    <xsl:if test="not(contains(@id,'test')) and not(contains(@id,'context'))">
-        <subcomponent id="{@id}">
-            <xsl:apply-templates mode="collect"/>
-        </subcomponent>
-    </xsl:if>
-</xsl:template>
-
-<xsl:template match="subcomponent/file" mode="collect">
-    <xsl:variable name="path" select="concat($refbase, substring-before(.,'/'),'/')"/>
-    <xsl:apply-templates select="document(concat($refbase,.))/subcomponent/*" mode="collect">
-        <xsl:with-param name="path" select="$path"/>
-    </xsl:apply-templates>
-</xsl:template>
-
-<xsl:template match="theory" mode="collect">
-    <xsl:param name="path"/>
-    <xsl:variable name="id">
-        <xsl:choose>
-            <xsl:when test="@id"><xsl:value-of select="@id"/></xsl:when>
-            <xsl:otherwise><xsl:value-of select="substring-before(include/@filename,'.xml')"/></xsl:otherwise>
-        </xsl:choose>
-    </xsl:variable>
-    <xsl:element name="{name()}">
-        <xsl:attribute name="id"><xsl:value-of select="$id"/></xsl:attribute>
-        <xsl:apply-templates  mode="collect">
-            <xsl:with-param name="path" select="$path"/>
-        </xsl:apply-templates>
-    </xsl:element>
-</xsl:template>
-<xsl:template match="examples" mode="collect">
-    <xsl:param name="path"/>
-    <xsl:element name="{name()}">
-        <xsl:apply-templates  mode="collect">
-            <xsl:with-param name="path" select="$path"/>
-        </xsl:apply-templates>
-    </xsl:element>
-</xsl:template>
-<xsl:template match="explanation" mode="collect">
-    <xsl:param name="path"/>
-    <explanation-parent>
-        <xsl:if test="@id">
-            <xsl:attribute name="id" select="@id"/>
+        <!--
+        <xsl:apply-templates select="$pass" mode="numbering"/>
+        -->
+    </xsl:template>
+    <xsl:template match="subcomponent" mode="collect">
+        <xsl:if test="not(contains(@id,'test')) and not(contains(@id,'context'))">
+            <subcomponent id="{@id}">
+                <xsl:apply-templates mode="collect"/>
+            </subcomponent>
         </xsl:if>
-        <xsl:apply-templates  mode="collect">
+    </xsl:template>
+
+    <xsl:template match="subcomponent/file" mode="collect">
+        <xsl:variable name="path" select="concat($refbase, substring-before(.,'/'),'/')"/>
+        <xsl:apply-templates select="document(concat($refbase,.))/subcomponent/*" mode="collect">
             <xsl:with-param name="path" select="$path"/>
         </xsl:apply-templates>
-    </explanation-parent>
-</xsl:template>
+    </xsl:template>
 
-<xsl:template match="include" mode="collect">
-    <xsl:param name="path"/>
-    <xsl:apply-templates select="document(concat($path,@filename))" mode="included">
-        <xsl:with-param name="path" select="$path"/>
-        <xsl:with-param name="fname" select="@filename"/>
-    </xsl:apply-templates>
-</xsl:template>
-
-<xsl:template match="exercise" mode="included">
-    <xsl:param name="fname"/>
-    <xsl:variable name="id" select="@id"/>
-    <xsl:if test="not(metadata/clone/@active='true')">
+    <xsl:template match="theory" mode="collect">
+        <xsl:param name="path"/>
+        <xsl:variable name="id">
+            <xsl:choose>
+                <xsl:when test="@id">
+                    <xsl:value-of select="@id"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="substring-before(include/@filename,'.xml')"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
         <xsl:element name="{name()}">
-            <xsl:attribute name="id"><xsl:value-of select="$id"/></xsl:attribute>
-            <xsl:attribute name="fname"><xsl:value-of select="$fname"/></xsl:attribute>
+            <xsl:attribute name="id">
+                <xsl:value-of select="$id"/>
+            </xsl:attribute>
+            <xsl:apply-templates  mode="collect">
+                <xsl:with-param name="path" select="$path"/>
+            </xsl:apply-templates>
         </xsl:element>
-    </xsl:if>
-</xsl:template>
-<xsl:template match="explore | introduction | digest | application | extra |test | summary | exam | example | application | explanation" mode="included">
-    <xsl:param name="fname"/>
-    <xsl:variable name="id" select="@id"/>
-    <xsl:element name="{name()}">
-        <xsl:attribute name="id"><xsl:value-of select="$id"/></xsl:attribute>
-        <xsl:attribute name="fname"><xsl:value-of select="$fname"/></xsl:attribute>
-    </xsl:element>
-</xsl:template>
-
-<xsl:template match="*" mode="included"></xsl:template>
-
-<xsl:template match="block[@medium='paper']"></xsl:template>
-<xsl:template match="*" mode="collect">
-    <xsl:param name="path"/>
-    <xsl:apply-templates select="*" mode="collect">
-        <xsl:with-param name="path" select="$path"/>
-    </xsl:apply-templates>
-</xsl:template>
-<!--
-<xsl:template match="exercise" mode="numbering">
+    </xsl:template>
     
-</xsl:template>
+    <xsl:template match="examples" mode="collect">
+        <xsl:param name="path"/>
+        <xsl:element name="{name()}">
+            <xsl:apply-templates  mode="collect">
+                <xsl:with-param name="path" select="$path"/>
+            </xsl:apply-templates>
+        </xsl:element>
+    </xsl:template>
+    
+    <xsl:template match="explore" mode="collect">
+        <xsl:param name="path"/>
+        <xsl:element name="{name()}">
+            <xsl:apply-templates  mode="collect">
+                <xsl:with-param name="path" select="$path"/>
+            </xsl:apply-templates>
+        </xsl:element>
+    </xsl:template>
 
-    -->
+    <xsl:template match="explanation" mode="collect">
+        <xsl:param name="path"/>
+        <explanation-parent>
+            <xsl:if test="@id">
+                <xsl:attribute name="id">
+                    <xsl:value-of select="@id"/>
+                </xsl:attribute>
+            </xsl:if>
+            <xsl:apply-templates  mode="collect">
+                <xsl:with-param name="path" select="$path"/>
+            </xsl:apply-templates>
+        </explanation-parent>
+    </xsl:template>
+
+    <xsl:template match="include" mode="collect">
+        <xsl:param name="path"/>
+        <xsl:apply-templates select="document(concat($path,@filename))" mode="included">
+            <xsl:with-param name="path" select="$path"/>
+            <xsl:with-param name="fname" select="@filename"/>
+        </xsl:apply-templates>
+    </xsl:template>
+
+    <xsl:template match="exercise" mode="included">
+        <xsl:param name="fname"/>
+        <xsl:variable name="id" select="@id"/>
+        <xsl:if test="not(metadata/clone/@active='true')">
+            <xsl:element name="{name()}">
+                <xsl:attribute name="id">
+                    <xsl:value-of select="$id"/>
+                </xsl:attribute>
+                <xsl:attribute name="fname">
+                    <xsl:value-of select="$fname"/>
+                </xsl:attribute>
+            </xsl:element>
+        </xsl:if>
+    </xsl:template>
+    <xsl:template match="explore | introduction | digest | application | extra |test | summary | exam | example | application | explanation" mode="included">
+        <xsl:param name="fname"/>
+        <xsl:variable name="id" select="@id"/>
+        <xsl:element name="{name()}">
+            <xsl:attribute name="id">
+                <xsl:value-of select="$id"/>
+            </xsl:attribute>
+            <xsl:attribute name="fname">
+                <xsl:value-of select="$fname"/>
+            </xsl:attribute>
+        </xsl:element>
+    </xsl:template>
+
+    <xsl:template match="*" mode="included"></xsl:template>
+
+    <xsl:template match="block[@medium='paper']"></xsl:template>
+    <xsl:template match="*" mode="collect">
+        <xsl:param name="path"/>
+        <xsl:apply-templates select="*" mode="collect">
+            <xsl:with-param name="path" select="$path"/>
+        </xsl:apply-templates>
+    </xsl:template>
 
     <xsl:template match="subcomponent" mode="numbering">
         <xsl:copy>
@@ -145,18 +166,33 @@
             </xsl:apply-templates>
         </xsl:copy>
     </xsl:template>
+    
     <xsl:template match="exercise" mode="numbering">
         <xsl:param name="exbase"/>
         <xsl:param name="examplebase"/>
         <xsl:param name="explanationbase"/>
         <xsl:copy>
             <xsl:attribute name="_nr">
-                <xsl:value-of select="1+count(preceding::exercise)-$exbase"/>
+                <xsl:value-of select="1+count(preceding::exercise)-count(ancestor::subcomponent/explore/exercise)-$exbase"/>
             </xsl:attribute>
             <xsl:copy-of select="@*"/>
             <xsl:apply-templates mode="numbering"/>
         </xsl:copy>
     </xsl:template>
+    
+    <xsl:template match="explore/exercise" mode="numbering">
+        <xsl:param name="exbase"/>
+        <xsl:param name="examplebase"/>
+        <xsl:param name="explanationbase"/>
+        <xsl:copy>
+            <xsl:attribute name="_nr">
+                <xsl:value-of select="concat('V', 1+count(preceding::exercise)-$exbase)"/>
+            </xsl:attribute>
+            <xsl:copy-of select="@*"/>
+            <xsl:apply-templates mode="numbering"/>
+        </xsl:copy>
+    </xsl:template>
+    
     <xsl:template match="example" mode="numbering">
         <xsl:param name="exbase"/>
         <xsl:param name="examplebase"/>

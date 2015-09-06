@@ -13,6 +13,7 @@ require_once("platforms/Platform.php");
 require_once("platforms/ThreeShipsPlatform.php");
 require_once("platforms/GAEPlatform.php");
 require_once("platforms/VOPlatform.php");
+require_once("platforms/VOPlatformConcept.php");
 require_once("platforms/PulseOnPlatform.php");
 require_once("platforms/VOQtiPlatform.php");
 require_once("Logger.php");
@@ -163,6 +164,8 @@ class Publisher {
 		switch ($this->targetID) {
 			case "vo": 
 				return new VOPlatform($publishId, false);
+			case "vo-concept": 
+				return new VOPlatformConcept($publishId, false);
 			default: 
 				return new GAEPlatform($publishId, false);
 		}
@@ -193,6 +196,7 @@ class Publisher {
             case "pulseon": $pf = new PulseOnPlatform($publishId, false); break;
             case "mathunited": $pf = new PulseOnPlatform($publishId, false); break;
             case "vo": $pf = new VOQtiPlatform($publishId, false); break;
+            case "vo-concept": $pf = new VOQtiPlatform($publishId, false); break;
             default:
                 throw new Exception("uploadQTIComponent: Unknown target ID: $targetID");
                 break;
@@ -215,6 +219,7 @@ class Publisher {
             case "threeships":$pf = new ThreeShipsPlatform($publishId, false); break;
             case "mathunited":$pf = new GAEPlatform($publishId); break;
             case "vo":$pf = new VOPlatform($publishId); break;
+            case "vo-concept":$pf = new VOPlatformConcept($publishId); break;
             default:
                 throw new Exception("publishComponentFile: Unknown target ID $targetID");
                 break;
@@ -230,6 +235,7 @@ class Publisher {
             case "threeships":$pf = new ThreeShipsPlatform($publishId, false); break;
             case "mathunited":$pf = new GAEPlatform($publishId); break;
             case "vo":$pf = new VOPlatform($publishId); break;
+            case "vo-concept":$pf = new VOPlatformConcept($publishId); break;
             default:
                 throw new Exception("publishSubcomponent: Unknown target ID $targetID");
                 break;
@@ -297,6 +303,7 @@ class Publisher {
             case "threeships":$tspf = new ThreeShipsPlatform($publishId, $doDemo); break;
             case "mathunited":$tspf = new GAEPlatform($publishId); break;
             case "vo":$tspf = new VOPlatform($publishId); break;
+            case "vo-concept":$tspf = new VOPlatformConcept($publishId); break;
             default:
                 throw new Exception("publishThread: Unknown target ID: $targetID");
                 break;

@@ -162,11 +162,14 @@ extension-element-prefixes="exsl">
                 <!-- relative url w.r.t. base path of content -->
                 <xsl:when test="name()='href'">
 	                <xsl:choose>
-	                   <xsl:when test="$host_type='GAE'">
+                            <xsl:when test="contains(., 'http://')">
+                                <xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
+                            </xsl:when>
+ 	                   <xsl:when test="$host_type='GAE'">
 		                    <xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
 	                   </xsl:when>
 	                   <xsl:otherwise>
-		                    <xsl:attribute name="href"><xsl:value-of select="concat($urlbase,'../dox/',.)"/></xsl:attribute>
+                                <xsl:attribute name="href"><xsl:value-of select="concat($urlbase,'../dox/',.)"/></xsl:attribute>
 	                   </xsl:otherwise>
 	                </xsl:choose>
                 </xsl:when>
@@ -418,7 +421,8 @@ extension-element-prefixes="exsl">
 </xsl:template>
 <xsl:template match="m:*" mode="content">
     <xsl:element name="{local-name()}">
-        <xsl:apply-templates  mode="content"/>
+        <xsl:apply-templates select="@*[name()!='scriptlevel']" mode="content"/>
+        <xsl:apply-templates mode="content"/>
     </xsl:element>
 </xsl:template>
 
