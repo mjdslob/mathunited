@@ -353,16 +353,27 @@ define(['jquery', 'jqueryui', 'jqueryChosen'], function($) {
             var result = {};
 
             if (spec.threadid) {
-                result.thread = {
-                    id: spec.threadid,
-                    name: threads[spec.threadid].title
-                };
+                if (spec.threadid in threads) {
+                    result.thread = {
+                        id: spec.threadid,
+                        name: threads[spec.threadid].title
+                    };
+                } else {
+                    alert("Neem aub contact op met het support-team onder vermelding van het volgende:\n" +
+                          "Deze paragraaf bevat een verkeerde thread-ID gebruikt verwijzend naar " + JSON.stringify(spec));
+                    return;
+                }
             }
             if (spec.compid) {
                 var comp = modules[spec.compid];
                 if (comp) {
                     result.component = {id: spec.compid, name: comp.name};
+                } else {
+                    alert("Neem aub contact op met het support-team onder vermelding van het volgende:\n" +
+                          "Deze paragraaf bevat een verkeerde component-ID gebruikt verwijzend naar " + JSON.stringify(spec));
+                    return;
                 }
+
                 var ii;
                 var sub = null;
                 for (ii = 0; ii < comp.subcomponents.length; ii++) {
@@ -377,6 +388,10 @@ define(['jquery', 'jqueryui', 'jqueryChosen'], function($) {
                         result.item = item;
                         callback(result);
                     });
+                } else {
+                    alert("Neem aub contact op met het support-team onder vermelding van het volgende:\n" +
+                          "Deze paragraaf bevat een verkeerde subcomponent-ID gebruikt verwijzend naar " + JSON.stringify(spec));
+                    return;
                 }
             }
         }
