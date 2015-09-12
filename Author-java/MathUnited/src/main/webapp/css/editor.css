@@ -830,3 +830,6 @@ span[tag='cloze-hint'] {
     font-style: italic;
     background-color: #ffff99;
 }
+.akit-dialog {
+    background-color:white;
+}

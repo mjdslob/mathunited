@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['akitex/Main','jquery'], function(AKITMain, $) {
+define(['exercise/Main','trainer/Main','jquery'], function(AKITExercise, AKITTrainer, $) {
 
     return {
         init: function(root) {            
@@ -86,29 +86,40 @@ define(['akitex/Main','jquery'], function(AKITMain, $) {
                 
                 
                 $('.algebrakit-test-config',parent).first().unbind('click').click(function() {
-                    var str = '<div class="akit-exercise akit-init-open" audience="">'
-                            + '  <div class="akit-main akit-item">'
-                            + '     <span class="akit-input-widget" solve=""/>'
+                    var str = '<div class="akit-dialog">' 
+                            + '  <div class="akit-exercise akit-init-open" audience="">'
+                            + '    <div class="akit-main akit-item">'
+                            + '       <span class="akit-input-widget" solve=""/>'
+                            + '    </div>'
+                            + '  </div>'
+                            + '  <div style="clear:both"><h3>Uitwerking</h3></div>'
+                            + '  <div class="akit-trainer" style="clear:both" solve="" attributes="" audience="">'
                             + '  </div>'
                             + '</div>';
                     var elm = $(str);
-                    var inp = $('.akit-input-widget',elm);
-                    str = $('select.audience-select option:selected', parent).attr('value');
-                    elm.attr('audience',str);
+                    var exerciseElm = $('.akit-exercise',elm).first();
+                    var trainerElm = $('.akit-trainer', elm).first();
+                    var inp = $('.akit-input-widget',exerciseElm);
+                    var audienceStr = $('select.audience-select option:selected', parent).attr('value');
+                    exerciseElm.attr('audience',audienceStr);
+                    trainerElm.attr('audience', audienceStr);
                     str = $('select.item-palette-select option:selected', parent).attr('value');
                     if(str && str!=='default')  elm.attr('palette',str);
-                    inp.attr('solve',$('input[name="solve"]', parent).val().trim());
+                    var solveExp = $('input[name="solve"]', parent).val().trim();
+                    inp.attr('solve',solveExp);
+                    trainerElm.attr('solve', solveExp);
                     str = $('select.algebrakit-mode-select option:selected', parent).attr('value');
                     inp.attr('mode',str);
                     str = $('select.algebrakit-hint-select option:selected', parent).attr('value');
-                    if(str==='false')  elm.attr('show-hints',str);
+                    if(str==='false')  exerciseElm.attr('show-hints',str);
                     
                     str = $('input[name="submit"]', parent).val().trim();
                     if(str) inp.attr('submit',str);
                     str = $('input[name="answer"]', parent).val().trim();
                     if(str) inp.attr('answer',str);
-                    str = $('input[name="solution-attributes"]', parent).val().trim();
-                    if(str) inp.attr('solution-attributes',str);
+                    var attributesStr = $('input[name="solution-attributes"]', parent).val().trim();
+                    if(str) inp.attr('solution-attributes',attributesStr);
+                    if(str) trainerElm.attr('attributes', attributesStr);
                     str = $('input[name="question"]', parent).val().trim();
                     if(str) {
                         inp.append($('<div class="akit-input-label">'+str+'</div>'));
@@ -118,17 +129,23 @@ define(['akitex/Main','jquery'], function(AKITMain, $) {
                     if(str) inp.attr('submit',str);
                     var dlg = elm.dialog({
                         resizable: true,
-                        height:400,
+                        height:600,
                         width:800,
                         modal: false,
+                        dialogClass: 'akit-dialog',
                         buttons: {
                             Cancel: function() {
                                 $( this ).dialog( "close" );
                             }
                         }
                     });
-                    
-                    AKITMain.addExercise({dom:dlg});
+                    AKITExercise.addExercise({dom:$('.akit-exercise',dlg).first()});
+                    AKITTrainer.showDerivation({
+                        dom: trainerElm,
+                        audience: audienceStr,
+                        solve: solveExp,
+                        attributes: attributesStr
+                    });
                 });
             });
             
