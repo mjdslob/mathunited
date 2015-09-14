@@ -304,7 +304,7 @@ extension-element-prefixes="exsl">
                 </xsl:if>
                 <xsl:choose>
                    <xsl:when test="$host_type='GAE'">
-            	       <xsl:attribute name="src"><xsl:value-of select="concat('http://mathunited2012.appspot.com/geogebra?file=',encode-for-uri(@filename))"/></xsl:attribute>
+            	       <xsl:attribute name="src"><xsl:value-of select="concat('http://math4allview.appspot.com/geogebra?file=',encode-for-uri(@filename))"/></xsl:attribute>
                    </xsl:when>
                    <xsl:otherwise>
 		       <xsl:attribute name="src"><xsl:value-of select="concat('/MathUnited/geogebra?file=',$refbase,'../geogebra/',replace(@filename,'GeoGebra/','../geogebra/'),'&amp;repo=',$repo)"/></xsl:attribute>

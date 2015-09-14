@@ -20,166 +20,122 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 div.SolveButton {
-   position: absolute;
-   right: 20px;
-   height: 22px;
-   width: 22px;
-   background:#ffffff url('../sources/kit_uitwerking.png') no-repeat center center;
-   margin-top:5px;
+    position: absolute;
+    right: 20px;
+    height: 22px;
+    width: 22px;
+    background:#ffffff url('../sources_akit/kit_uitwerking.png') no-repeat center center;
+    margin-top:5px;
 }
 div.SolveButton:hover {
-   position: absolute;
-   right: 20px;
-   height: 22px;
-   width: 22px;
-   background:#ffffff url('../sources/kit_uitwerking_mo.png') no-repeat center center;
-   margin-top:5px;
+    position: absolute;
+    right: 20px;
+    height: 22px;
+    width: 22px;
+    background:#ffffff url('../sources_akit/kit_uitwerking_mo.png') no-repeat center center;
+    margin-top:5px;
 }
 div.SolveButton:active {
-   position: absolute;
-   right: 20px;
-   height: 22px;
-   width: 22px;
-   background:#ffffff url('../sources/kit_uitwerking_hit.png') no-repeat center center;
-   margin-top:5px;
+    position: absolute;
+    right: 20px;
+    height: 22px;
+    width: 22px;
+    background:#ffffff url('../sources_akit/kit_uitwerking_hit.png') no-repeat center center;
+    margin-top:5px;
 }
 
 div.outputDiv {
-   padding: 0px 5px 0px 5px;
+    padding: 0px 5px 0px 5px;
 }
 
 /* div containing a procedure (a WKStep to be precise)*/
 div.stepPanel {
-   width: 100%;
+    width: 100%;
 }
 /* div conaining title of a single step */
-div.akit-shortdescr {
-   margin: 5pt 0pt 5pt 0pt;
-}
-
-div.akit-heading {
-    margin-top: 10px;
-}
-div.akit-inline-short-descr {
-    float:left;
-    margin-left:15px;
-    color:rgb(150,0,0);
-}
-.stepContainer.hide-inline-shortdescr>.outContainer>.akit-inline-short-descr {
-    display:none;
+div.shortDescr {
+    font:bold 100% Verdana, Arial, sans-serif;
+    width:100%;
+    color: rgb(10%, 10%, 40%);
+    margin: 5pt 0pt 5pt 0pt;
 }
 /* div containing child steps and explanation of a step */
 div.subSteps {
-   display:none;
-}
-.stepContainer.expanded>div.subSteps {
-    display:block;
-}
-.stepContainer.substeps-derivation.expanded>.outContainer .outExpression {
-    display:none;
-}
-
-div.afterStepsContainer {
-    display:none;
-}
-div.afterStepsContainer.visible {
-    display:block;
+    margin: 0pt 0pt 0pt 10pt;
+    padding: 0pt 0pt 0pt 10pt;
+    border-left: thin solid  #AAAAAA;
 }
 div.afterSteps {
-   margin: 0pt 0pt 0pt 10pt;
-   padding: 0pt 0pt 0pt 10pt;
-   border-left: thin solid  #AAAAAA;
+    margin: 0pt 0pt 0pt 10pt;
+    padding: 0pt 0pt 0pt 10pt;
+    border-left: thin solid  #AAAAAA;
 }
+
 div.outContainer {
-   position: relative;
+    position: relative;
 }
 
 div.buttonContainer {
-   padding-left: 20px;
-   width: 120px;
-   height: 22px;
-   float: left;
+    padding-left: 20px;
+    width: 120px;
+    height: 22px;
+    float: left;
 }
 
 /* div containing the result of a procedure */
 div.outExpression {
-   font:100%  Verdana,Arial, sans-serif;
-   color: rgb(10%, 10%, 10%);
-   float: left;
-   
+    font:100%  Verdana,Arial, sans-serif;
+    color: rgb(10%, 10%, 10%);
+    float: left;
+    margin:5px 0px 0px 10px;
+
 }
 div.StepPanelFooterDiv {
-   clear:both;
+    clear:both;
+}
+
+.akit-panel-button {
+    height: 100%;
+    width: 22px;
+    float:left;
 }
 div.ExpandButton {
-   height: 100%;
-   width: 22px;
-   background:#ffffff url('../sources/kit_detail.png') no-repeat center center;
-   float:left;
+    background:#ffffff url('../sources_akit/kit_detail.png') no-repeat center center;
 }
-div.ExpandButtonHover {
-   height: 100%;
-   width: 22px;
-   background:#ffffff url('../sources/kit_detail_mo.png') no-repeat center center;
-   float:left;
+div.ExpandButton:hover {
+    background:#ffffff url('../sources_akit/kit_detail_mo.png') no-repeat center center;
 }
-div.ExpandButtonDown {
-   height: 100%;
-   width: 22px;
-   background:#ffffff url('../sources/kit_detail_hit.png') no-repeat center center;
-   float:left;
+div.ExpandButton:active {
+    background:#ffffff url('../sources_akit/kit_detail_hit.png') no-repeat center center;
 }
 div.CollapseButton {
-   height: 100%;
-   width: 22px;
-   background:#ffffff url('../sources/kit_uitleguit.png') no-repeat center center;
-   float:left;
+    background:#ffffff url('../sources_akit/kit_uitleguit.png') no-repeat center center;
 }
-div.CollapseButtonHover {
-   height: 100%;
-   width: 22px;
-   background:#ffffff url('../sources/kit_uitleguit_mo.png') no-repeat center center;
-   float:left;
+div.CollapseButton:hover {
+    background:#ffffff url('../sources_akit/kit_uitleguit_mo.png') no-repeat center center;
 }
-div.CollapseButtonDown {
-   height: 100%;
-   width: 22px;
-   background:#ffffff url('../sources/kit_uitleguit_hit.png') no-repeat center center;
-   float:left;
+div.CollapseButton:active {
+    background:#ffffff url('../sources_akit/kit_uitleguit_hit.png') no-repeat center center;
 }
 div.CollapseInnerButton {
-   height: 100%;
-   width: 22px;
-   background:#ffffff url('../sources/kit_detailuit.png') no-repeat center center;
-   float:left;
+    background:#ffffff url('../sources_akit/kit_detailuit.png') no-repeat center center;
 }
-div.CollapseInnerButtonHover {
-   height: 100%;
-   width: 22px;
-   background:#ffffff url('../sources/kit_detailuit_mo.png') no-repeat center center;
-   float:left;
+div.CollapseInnerButton:hover {
+    background:#ffffff url('../sources_akit/kit_detailuit_mo.png') no-repeat center center;
 }
-div.CollapseInnerButtonDown {
-   height: 100%;
-   width: 22px;
-   background:#ffffff url('../sources/kit_detailuit_hit.png') no-repeat center center;
-   float:left;
+div.CollapseInnerButton:active {
+    background:#ffffff url('../sources_akit/kit_detailuit_hit.png') no-repeat center center;
 }
 .ExplainButton {
-   height: 100%;
-   width: 22px;
-   background:#ffffff url('../sources/kit_uitleg.png') no-repeat center center;
-   float:left;
+    background:#ffffff url('../sources_akit/kit_uitleg.png') no-repeat center center;
 }
-.ExplainButtonHover {
-   height: 100%;
-   width: 22px;
-   background:#ffffff url('../sources/kit_uitleg_mo.png') no-repeat center center;
-   float:left;
+.ExplainButton:hover {
+    background:#ffffff url('../sources_akit/kit_uitleg_mo.png') no-repeat center center;
 }
-.ExplainButtonDown {
-   height: 100%;
-   width: 22px;
-   background:#ffffff url('../sources/kit_uitleg_hit.png') no-repeat center center;
-   float:left;
+.ExplainButton:active {
+    background:#ffffff url('../sources_akit/kit_uitleg_hit.png') no-repeat center center;
+}
+div.theorem {
+    background-color:rgb(240,220,220);
+    padding:10px;
 }
