@@ -119,8 +119,8 @@ public class EditServlet extends HttpServlet {
             //System.out.printf("#### Component map. %d ms%n", System.currentTimeMillis() - tic); tic = System.currentTimeMillis();
 
             Component component = componentMap.get(comp);
-            if(component==null) {
-                throw new Exception("Er bestaat geen component met id '"+comp+"'");
+            if (component == null) {
+                throw new Exception("Er bestaat geen component met id '" + comp + "'");
             }
             //System.out.printf("#### Component selected. %d ms%n", System.currentTimeMillis() - tic); tic = System.currentTimeMillis();
 

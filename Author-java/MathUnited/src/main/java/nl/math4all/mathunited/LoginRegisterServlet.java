@@ -35,10 +35,10 @@ public class LoginRegisterServlet extends HttpServlet {
         try {    
             String name = request.getParameter("name");
             String password = request.getParameter("password");
-            if(name==null) {
+            if (name == null) {
                 throw new LoginException("Please set username");
             }
-            if(password==null) {
+            if (password == null) {
                 throw new LoginException("Please set password");
             }
 

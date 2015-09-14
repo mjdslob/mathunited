@@ -102,7 +102,7 @@ public class SvnUpdateServlet extends HttpServlet {
 
                 outputLines.clear();
 
-                ProcessBuilder pb = new ProcessBuilder("svn", "update", "--accept", "mine-full", svnPath);
+                ProcessBuilder pb = new ProcessBuilder("svn", "update", "--accept", "mine-conflict", svnPath);
                 pb.redirectErrorStream(true);
                 LOGGER.log(Level.INFO, "--- svn-update command = '" + pb.command() + "'.");
                 Process process = pb.start();

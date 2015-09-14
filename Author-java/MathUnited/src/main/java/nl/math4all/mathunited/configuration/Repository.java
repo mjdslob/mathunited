@@ -43,7 +43,7 @@ public class Repository {
         if(!f.exists() && this.baseRepo!=null && !this.baseRepo.isEmpty()) {
             Repository baseRepo = config.getRepos().get(this.baseRepo);
 
-            f = new File(config.contentRoot+baseRepo.getPath()+"/leerlijnen/components.xml");
+            f = new File(config.contentRoot + baseRepo.getPath() + "/leerlijnen/components.xml");
         }
         FileInputStream is = new FileInputStream(f);
 

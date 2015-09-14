@@ -125,7 +125,7 @@ public class ViewServlet extends HttpServlet {
             componentMap = repository.readComponentMap();
             Component component = componentMap.get(comp);
             if(component==null) {
-                throw new Exception("Er bestaat geen component met id '"+comp+"'");
+                throw new Exception("Er bestaat geen component met id '" + comp + "'");
             }
             
             

@@ -49,6 +49,13 @@ define(['jquery', 'app/Document','actions/ObjectivesHandler', 'actions/SetExerci
     var comp     = $('#meta-data-comp').text();
     var subcomp  = $('#meta-data-subcomp').text();
     var refbase  = $('#meta-data-refbase').text();
+
+     if (!comp) {
+         var msg = "Fout opgetreden: kan component-ID niet herleiden. Probeer te herladen of contacteer het support team." +
+             "\nAls u doorgaat, kunt u de aanpassingen niet opslaan.";
+         console.log(msg);
+         alert(msg);
+     }
     
     function refreshLock() {
         $.get(refreshURL, {refbase: refbase}, 
@@ -111,7 +118,9 @@ define(['jquery', 'app/Document','actions/ObjectivesHandler', 'actions/SetExerci
             var status = $('#workflow-container input:checked').val();
             var html = $('.editorDiv').first().html();
             var nItems = $('div[tag="include"]').length; //used to check if all items are saved
-            var str = repoPath+'\n'+comp+'\n'+subcomp+'\n'+status+'\n'+nItems+'\n'+html;
+            var str = repoPath + '\n' + comp + '\n' + subcomp + '\n' + status + '\n' + nItems + '\n' + html;
+            console.log("commmit url = '" + commitURL +"'");
+            console.log("commmit string = '" + str +"'");
         //    html = encodeURIComponent(html);
             $.post(commitURL, str,
                 function(data) {//on success

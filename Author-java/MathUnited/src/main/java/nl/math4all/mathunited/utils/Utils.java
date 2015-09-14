@@ -33,11 +33,13 @@ public class Utils {
         return parameterMap;
     }
     
-    public static String readParameter(String name, boolean isRequired,HttpServletRequest request) throws Exception {
+    public static String readParameter(String name, boolean isRequired, HttpServletRequest request) throws Exception {
         Map<String, String[]> paramMap = request.getParameterMap();
         String[] pvalArr = paramMap.get(name);
-        if(pvalArr==null || pvalArr.length==0) {
-            if(isRequired) throw new Exception("Parameters "+name+" is required");
+        if(pvalArr == null || pvalArr.length == 0) {
+            if (isRequired) {
+                throw new Exception("Parameters " + name + " is required");
+            }
             return null;
         } else {
             return pvalArr[0];

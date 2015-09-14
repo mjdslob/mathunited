@@ -60,10 +60,12 @@ public class PostContentServlet extends HttpServlet {
         Writer w = response.getWriter();
         PrintWriter pw = new PrintWriter(w);
         try{
-            //check if user is logged in
+            // Check if user is logged in
             Configuration config = Configuration.getInstance();
-            String repoId=null;
+            String repoId = null;
             Cookie[] cookieArr = request.getCookies();
+
+            // Get repo and throw exception of not set
             if(cookieArr != null) {
                 for(Cookie c:cookieArr) {
                     String name = c.getName();
@@ -72,44 +74,62 @@ public class PostContentServlet extends HttpServlet {
                     }
                 }
             }
-            if(repoId==null) {
+            if (repoId == null) {
                 throw new Exception("Repository is not set.");
             }
+
             UserSettings usettings = UserManager.isLoggedIn(request,response);
             
             String body = readBody(request);
-            
+            Map<String, String> parameterMap = new HashMap<String, String>();
+
             BufferedReader br = new BufferedReader(new StringReader(body));
+
+
             String _repo = br.readLine(); //not used
+            // if (repo != null) { repo = rep.trim() }
+            //
+            //if (repo == null || repo.isEmpty()) {
+            //    throw new Exception("Het verplichte argument 'repo' ontbreekt.");
+            //}
+            parameterMap.put("repo", repoId);
+
             String comp = br.readLine();
+            if (comp != null) {
+                comp = comp.trim();
+            }
+            if (comp == null || comp.isEmpty()) {
+                throw new Exception("Het verplichte argument 'comp' ontbreekt.");
+            }
+            parameterMap.put("comp", comp);
+
             String subcomp = br.readLine();
+            if (subcomp != null) {
+                subcomp = subcomp.trim();
+            }
+            if(subcomp == null || subcomp.isEmpty()) {
+                throw new Exception("Het verplichte argument 'subcomp' ontbreekt.");
+            }
+            parameterMap.put("subcomp", subcomp);
+
             String status = br.readLine();
+
             String nItemsStr = br.readLine();
             int nItems = 0;
-            if(nItemsStr!=null) nItems = Integer.parseInt(nItemsStr);
+            if (nItemsStr != null) {
+                nItems = Integer.parseInt(nItemsStr);
+            }
             
             StringBuffer htmlBuffer = new StringBuffer();
             String sCurrentLine;
             while ((sCurrentLine = br.readLine()) != null) {
-	         htmlBuffer.append(sCurrentLine);
+                htmlBuffer.append(sCurrentLine);
             }
-            String html = htmlBuffer.toString();
-            if(comp==null) {
-                throw new Exception("Het verplichte argument 'comp' ontbreekt.");
-            } 
-            if(subcomp==null) {
-                throw new Exception("Het verplichte argument 'subcomp' ontbreekt.");
-            } else {subcomp=subcomp.trim();}
-            if(repoId==null) {
-                throw new Exception("Het verplichte argument 'repo' ontbreekt.");
-            }
-            if(html==null) {
+
+            String html = htmlBuffer.toString().trim();
+            if (html.isEmpty()) {
                 throw new Exception("Het verplichte argument 'html' ontbreekt.");
             }
-            Map<String, String> parameterMap = new HashMap<String, String>();
-            parameterMap.put("comp", comp);
-            parameterMap.put("subcomp", subcomp);
-            parameterMap.put("repo", repoId);
             parameterMap.put("html", html);
                         
             
@@ -126,7 +146,10 @@ public class PostContentServlet extends HttpServlet {
                     break;
                 }
             }
-            if(!access) throw new LoginException("You do not have the rights to edit repository "+repoId);
+
+            if(!access) {
+                throw new LoginException("You do not have the rights to edit repository "+repoId);
+            }
 
             //user has access, continue
 
@@ -134,7 +157,9 @@ public class PostContentServlet extends HttpServlet {
             componentMap = repository.readComponentMap();
             Component component = componentMap.get(comp);
             if(component==null) {
-                throw new Exception("Er bestaat geen component met id '"+comp+"'");
+                throw new Exception("Er bestaat geen component met id '" + comp + "'.\n" +
+                        "Meldt u a.u.b. de volgende details aan het support team:\n" +
+                        "Commit: user='"+usettings.mail+"', comp='\"+comp+\"', subcomp='\"+subcomp+\"', repo='\"+repoId+\"'.");
             }
 
             // find subcomponent, previous and following
