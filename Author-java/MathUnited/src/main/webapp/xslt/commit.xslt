@@ -93,7 +93,7 @@ indent="yes" encoding="utf-8"/>
    </script>
 -->
    <script type="text/javascript"
-      src="http://localhost/MathJax/MathJax.js?config=MML_HTMLorMML-full&amp;delayStartupUntil=configured">
+      src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML-full&amp;delayStartupUntil=configured">
    </script>
    <script type="text/javascript" src="javascript/MathUnited_m4a.js"/>
    <link rel="stylesheet" href="css/M4AStijl2.css" type="text/css"/>

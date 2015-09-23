@@ -3,6 +3,7 @@ package nl.math4all.mathunited;
 import nl.math4all.mathunited.configuration.UserSettings;
 import nl.math4all.mathunited.configuration.Users;
 import nl.math4all.mathunited.exceptions.LoginException;
+import nl.math4all.mathunited.utils.SvnScriptRunner;
 import org.apache.commons.io.IOUtils;
 
 import javax.servlet.ServletConfig;
@@ -51,9 +52,9 @@ public class VersionServlet extends HttpServlet {
         response.setContentType("text/plain");
 
 
-
         Writer w = response.getWriter();
         PrintWriter pw = new PrintWriter(w);
+
         pw.println(version_txt);
     }
     

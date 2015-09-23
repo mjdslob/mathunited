@@ -1,7 +1,10 @@
 package nl.math4all.mathunited.editor;
 
 import nl.math4all.mathunited.configuration.*;
+import nl.math4all.mathunited.utils.SvnScriptRunner;
 import nl.math4all.mathunited.utils.Utils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.output.WriterOutputStream;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -40,7 +43,15 @@ public class SvnUpdateServlet extends HttpServlet {
     }
 
     private static Lock lock = new ReentrantLock();
-    private List<String> outputLines = new LinkedList<>();
+    private static File logFile;
+    {
+        try {
+            logFile = File.createTempFile("svn-update", ".tmp");
+            logFile.deleteOnExit();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void doGet(HttpServletRequest request,
@@ -51,7 +62,7 @@ public class SvnUpdateServlet extends HttpServlet {
         response.setContentType("text/plain");
         PrintWriter writer = response.getWriter();
 
-        //read request parameters
+        // Read request parameters
         Map<String, String[]> paramMap = request.getParameterMap();
         Map<String, String> parameterMap = new HashMap<>();
         for (Map.Entry<String, String[]> entry : paramMap.entrySet()) {
@@ -66,7 +77,7 @@ public class SvnUpdateServlet extends HttpServlet {
         // try to get repo from cookie
         String repo = null; // parameterMap.get("repo");
         Cookie[] cookieArr = request.getCookies();
-        if(cookieArr != null) {
+        if (cookieArr != null) {
             for(Cookie c:cookieArr) {
                 if(c.getName().equals("REPO")) {
                     repo = c.getValue();
@@ -82,36 +93,27 @@ public class SvnUpdateServlet extends HttpServlet {
 
         if (lock.tryLock()) {
             try {
+
                 String svnPath = config.getContentRoot();
-                String path = parameterMap.get("path");
-                if (path != null && !path.isEmpty()) {
-                    File newPath = new File(svnPath, path);
-                    if (Utils.isSubDirectory(new File(svnPath), newPath)) {
-                        svnPath = newPath.getCanonicalPath();
-                    } else {
-                        writer.println("=== ILLEGAL REPO PATH " + newPath);
-                        throw new Exception("Illegal svn path " + newPath);
+                SvnScriptRunner runner = new SvnScriptRunner(writer);
+
+                String fix = parameterMap.get("fix");
+                if (fix.equalsIgnoreCase("true")) {
+                    runner.runScript("svn-fix", svnPath, logFile.getPath());
+                } else {
+                    String path = parameterMap.get("path");
+                    if (path != null && !path.isEmpty()) {
+                        File newPath = new File(svnPath, path);
+                        if (Utils.isSubDirectory(new File(svnPath), newPath)) {
+                            svnPath = newPath.getCanonicalPath();
+                        } else {
+                            writer.println("=== ILLEGAL REPO PATH " + newPath);
+                            throw new Exception("Illegal svn path " + newPath);
+                        }
                     }
+                    runner.runScript("svn-update", svnPath, logFile.getPath());
                 }
-                writer.println("=== PERFORMING GLOBAL SVN UPDATE on " + svnPath);
 
-                /*
-                String[] commands = {"svn", "status", config.getContentRoot()};
-                Process process = Runtime.getRuntime().exec(commands);
-                */
-
-                outputLines.clear();
-
-                ProcessBuilder pb = new ProcessBuilder("svn", "update", "--accept", "mine-conflict", svnPath);
-                pb.redirectErrorStream(true);
-                LOGGER.log(Level.INFO, "--- svn-update command = '" + pb.command() + "'.");
-                Process process = pb.start();
-                BufferedReader is = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                String line;
-                while ((line = is.readLine()) != null) {
-                    outputLines.add(line);
-                    writer.println(line);
-                }
             }
             catch (Exception e) {
                 LOGGER.log(Level.WARNING, e.getMessage());
@@ -120,12 +122,11 @@ public class SvnUpdateServlet extends HttpServlet {
                 lock.unlock();
             }
         } else {
-            writer.println("!!! SVN UPDATE on " + config.getContentRoot() + " is already in progress");
+            writer.println("!!! SVN-UPDATE on " + config.getContentRoot() + " is already in progress");
             writer.println("!!! Not doing anything");
             writer.println("--- Messages from svn update so far:");
-            for (String line : outputLines) {
-                writer.println(line);
-            }
+            WriterOutputStream wos = new WriterOutputStream(writer);
+            FileUtils.copyFile(logFile, wos);
         }
     }
 

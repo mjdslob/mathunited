@@ -93,6 +93,7 @@ public class SvnLock extends Lock {
             SvnUtils.svn(false, "commit", refbase, "-m", "Changes by user " + username + ".");
 
             // Commit images
+            // TODO: Only highres?
             File imagedir = new File(refbase, "../images");
             if (imagedir.exists()) {
                 try {

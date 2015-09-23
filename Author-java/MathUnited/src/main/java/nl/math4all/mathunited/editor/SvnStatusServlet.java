@@ -1,6 +1,7 @@
 package nl.math4all.mathunited.editor;
 
 import nl.math4all.mathunited.configuration.Configuration;
+import nl.math4all.mathunited.utils.SvnScriptRunner;
 import nl.math4all.mathunited.utils.Utils;
 
 import javax.servlet.ServletConfig;
@@ -93,22 +94,10 @@ public class SvnStatusServlet extends HttpServlet {
                         throw new Exception("Illegal svn path " + newPath);
                     }
                 }
-                writer.println("=== SVN STATUS on " + svnPath);
 
-                /*
-                String[] commands = {"svn", "status", config.getContentRoot()};
-                Process process = Runtime.getRuntime().exec(commands);
-                */
+                SvnScriptRunner runner = new SvnScriptRunner(writer);
+                runner.runScript("svn-status", svnPath);
 
-                ProcessBuilder pb = new ProcessBuilder("svn", "status", svnPath);
-                pb.redirectErrorStream(true);
-                LOGGER.log(Level.INFO, "--- svn-status command = '" + pb.command() + "'.");
-                Process process = pb.start();
-                BufferedReader is = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                String line;
-                while ((line = is.readLine()) != null) {
-                    writer.println(line);
-                }
             }
             catch (Exception e) {
                 LOGGER.log(Level.WARNING, e.getMessage());
