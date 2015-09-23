@@ -5,6 +5,9 @@
 # This script checks the subversion status
 #
 
+# Avoid locale errors
+LC_CTYPE=
+
 echo "=== SVN FIX on '${ARG1}'" | tee  "${ARG2}"
 echo "--- Logging send to '${ARG2}'" | tee -a "${ARG2}"
 

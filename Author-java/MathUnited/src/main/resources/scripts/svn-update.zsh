@@ -5,6 +5,9 @@
 # This script checks the subversion status
 #
 
+# Avoid locale errors
+LC_CTYPE=
+
 echo "=== SVN UPDATE on '${ARG1}'"
 echo "--- Logging send to '${ARG2}'"
 

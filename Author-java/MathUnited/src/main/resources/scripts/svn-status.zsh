@@ -5,6 +5,9 @@
 # This script checks the subversion status
 #
 
+# Avoid locale errors
+LC_CTYPE=
+
 echo "=== SVN STATUS on '${ARG1}'"
 
 if [[ ! -e "${ARG1}" ]]; then
