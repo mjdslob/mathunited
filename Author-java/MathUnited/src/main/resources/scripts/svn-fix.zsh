@@ -35,8 +35,6 @@ for d in ${(f)dirs}; do ( # in subshell
     # Add xml files
     svn add --parents --force */*.xml |& tee -a "${ARG2}"
     svn commit . -m "Added unversioned files in $d" |& tee -a "${ARG2}"
-
-
 )
 done
 
