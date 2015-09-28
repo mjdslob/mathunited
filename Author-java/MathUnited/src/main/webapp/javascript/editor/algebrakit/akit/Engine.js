@@ -146,7 +146,7 @@ define(['jquery','akit/WKStep'], function ($, WKStep) {
             var params = 'cmd=getsolutionmodel_fromexpr&audience=' + spec.audience
                     + '&expression=' + encodeURIComponent(spec.expression);
             if (spec.answer)
-                params += '&answer=' + encodeURIComponent(JSON.stringify(spec.answer));
+                params += '&answer=' + encodeURIComponent(spec.answer);
             if (spec.mode)
                 params += '&mode=' + spec.mode;
             if (spec.attributes)
