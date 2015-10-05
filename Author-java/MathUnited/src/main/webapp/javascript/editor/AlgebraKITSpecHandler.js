@@ -118,8 +118,8 @@ define(['exercise/Main','trainer/Main','jquery'], function(AKITExercise, AKITTra
                     str = $('input[name="answer"]', parent).val().trim();
                     if(str) inp.attr('answer',str);
                     var attributesStr = $('input[name="solution-attributes"]', parent).val().trim();
-                    if(str) inp.attr('solution-attributes',attributesStr);
-                    if(str) trainerElm.attr('attributes', attributesStr);
+                    if(attributesStr) inp.attr('solution-attributes',attributesStr);
+                    if(attributesStr) trainerElm.attr('attributes', attributesStr);
                     str = $('input[name="question"]', parent).val().trim();
                     if(str) {
                         inp.append($('<div class="akit-input-label">'+str+'</div>'));
