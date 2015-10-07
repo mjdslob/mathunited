@@ -277,8 +277,8 @@ indent="yes" encoding="utf-8"/>
    <div class="balk">
        <xsl:call-template name="list-section-nrs">
            <xsl:with-param name="i"><xsl:value-of select="number(1)"/></xsl:with-param>
-           <xsl:with-param name="count"><xsl:value-of select="$subcomponent_count"/></xsl:with-param>
-           <xsl:with-param name="highlight"><xsl:value-of select="1+number($subcomponent_index)"/></xsl:with-param>
+           <xsl:with-param name="count"><xsl:value-of select="number($subcomponent_count)-2"/></xsl:with-param>
+           <xsl:with-param name="highlight"><xsl:value-of select="-1+number($subcomponent_index)"/></xsl:with-param>
            <xsl:with-param name="subcomponents" select="subcomponent/internal-meta/subcomponents"/>
        </xsl:call-template>
        <span class="subcomponent-title"><xsl:value-of select="$subcomponent_title"/></span>
