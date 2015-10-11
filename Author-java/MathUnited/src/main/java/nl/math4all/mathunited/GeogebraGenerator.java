@@ -20,7 +20,8 @@ import java.nio.file.Path;
 
 public class GeogebraGenerator extends HttpServlet {
     private final static Logger LOGGER = Logger.getLogger(GeogebraGenerator.class.getName());
-    String ggbSource = "http://www.geogebra.org/web/4.2/web/web.nocache.js";
+        String ggbSource = "http://web.geogebra.org/4.2/web/web.nocache.js";
+//    String ggbSource = "http://www.geogebra.org/web/4.2/web/web.nocache.js";
 //    String ggbSource = "http://js.geogebra.at/web/web.nocache.js";
 //    String ggbSource = "http://www.geogebratube.org/scripts/deployggb.js";
     @Override
@@ -34,7 +35,7 @@ public class GeogebraGenerator extends HttpServlet {
     public void doGet (  HttpServletRequest request,
                          HttpServletResponse response)
              throws ServletException, IOException {
-
+        //response.addHeader("Access-Control-Allow-Origin", "*");
         Writer w = response.getWriter();
         PrintWriter pw = new PrintWriter(w);
         try{
@@ -82,6 +83,7 @@ public class GeogebraGenerator extends HttpServlet {
                          HttpServletResponse response)
              throws ServletException, IOException {
         //get the pdf from the session and return it
+        doGet(request, response);
     }
 
 }

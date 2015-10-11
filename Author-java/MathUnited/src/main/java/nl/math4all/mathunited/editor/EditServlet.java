@@ -50,6 +50,8 @@ public class EditServlet extends HttpServlet {
                          HttpServletResponse response)
              throws ServletException, IOException {
 
+        //response.addHeader("Access-Control-Allow-Origin", "*");
+
         try{
             //long tic = System.currentTimeMillis();
             //System.out.printf("#### Edit. Request received. %d ms%n", System.currentTimeMillis() - tic); tic = System.currentTimeMillis();
