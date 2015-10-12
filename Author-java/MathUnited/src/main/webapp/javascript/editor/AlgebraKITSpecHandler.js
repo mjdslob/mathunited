@@ -104,7 +104,7 @@ define(['exercise/Main','trainer/Main','jquery'], function(AKITExercise, AKITTra
                     exerciseElm.attr('audience',audienceStr);
                     trainerElm.attr('audience', audienceStr);
                     str = $('select.item-palette-select option:selected', parent).attr('value');
-                    if(str && str!=='default')  elm.attr('palette',str);
+                    if(str && str!=='default')  exerciseElm.attr('palette',str);
                     var solveExp = $('input[name="solve"]', parent).val().trim();
                     inp.attr('solve',solveExp);
                     trainerElm.attr('solve', solveExp);
