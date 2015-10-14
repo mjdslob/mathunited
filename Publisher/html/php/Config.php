@@ -6,7 +6,7 @@ class Config {
         'm4a' => array(
             'id'=>'m4a',
             'paths'=>array(
-                'vd/', 'vb/','va/','v3/',
+                'vd/', 'vb/','va/','v3/','vc/',
                 'hv/',
                 'h3/',
                 'ha/',
