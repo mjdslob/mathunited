@@ -7,6 +7,7 @@ variants :
   pulseon_studiovo_item : {path: /xslt/studiovo_pulseon_item.xslt}
   wm_view : {path: /xslt/wm_view.xslt}
   m4a_view : {path: /xslt/m4a_view.xslt}
+  m4a_view_old : {path: /xslt/m4a_view_old.xslt}
   m4a_view_en : {path: /xslt/m4a_view_en.xslt}
   m4a_view_dedicon : {path: /xslt/m4a_view_dedicon.xslt}
   m4a_view_pulseon : {path: /xslt/m4a_view_pulseon.xslt}
@@ -38,7 +39,7 @@ repos :
     id : m4a-2015-07-20
     path: content-ma/concept
     edit_permission: editor_m4a
-    defaultVariant: m4a_view
+    defaultVariant: m4a_view_old
   m4a2015 :
     id : m4a2015-2015-07-16
     path: content-ma/malmberg
