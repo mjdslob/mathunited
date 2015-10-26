@@ -833,3 +833,15 @@ span[tag='cloze-hint'] {
 .akit-dialog {
     background-color:white;
 }
+
+div[tag='bron'] {
+    background-color: lightgrey;
+    color: #666;
+}
+
+div[tag='bron']::before {
+    content: 'bron: ';
+    font-variant: small-caps;
+    color: #777;
+    padding-left: .5ex;
+}
