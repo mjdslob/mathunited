@@ -60,7 +60,7 @@ define(['jquery'], function ($) {
                     {symbol: 'log', cmd: "\\logBase"},
                     {symbol: '`int_a^b`', cmd: "\\int", class: "palette-button-function palette-button-integral"},
                     {symbol: '`d/dx`', insert: "d/dx", class: "palette-button-function palette-button-integral"},
-                    {symbol: '<math><mfrac><mi>n</mi><mi>k</mi></mfrac></math>', insert: '\\binom', class: 'palette-button-operator'}
+                    {symbol: '<math><mo>(</mo><mtable><mtr><mtd><mi>n</mi></mtd></mtr><mtr><mtd><mi>k</mi></mtd></mtr></mtable><mo>)</mo></math>', insert: '\\binom ', class: 'palette-button-function palette-button-integral'}
                 ]
             ]
 
