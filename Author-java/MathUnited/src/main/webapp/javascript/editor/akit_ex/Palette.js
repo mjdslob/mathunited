@@ -43,7 +43,8 @@ define(['jquery'], function ($) {
                     {symbol: '<math><mroot><mi>a</mi><mi>b</mi></mroot></math>', cmd: "\\nthroot"},
                     {symbol: '&#8744;', cmd: "\\lor"},
                     {symbol: '&#8743;', cmd: "\\wedge"},
-                    {symbol: '<math><mi>π</mi></math>', cmd: "\\pi"}
+                    {symbol: '<math><mi>π</mi></math>', cmd: "\\pi"},
+                    {symbol: 'F', cmd: "\\bot"}
                 ]
             ],
             bovenbouw: [
@@ -55,9 +56,11 @@ define(['jquery'], function ($) {
                     {symbol: '&#8744;', cmd: "\\vee"},
                     {symbol: '&#8743;', cmd: "\\wedge"},
                     {symbol: '<math><mi>π</mi></math>', cmd: "\\pi"},
+                    {symbol: 'F', cmd: "\\bot"},
                     {symbol: 'log', cmd: "\\logBase"},
                     {symbol: '`int_a^b`', cmd: "\\int", class: "palette-button-function palette-button-integral"},
-                    {symbol: '`d/dx`', insert: "d/dx", class: "palette-button-function palette-button-integral"}
+                    {symbol: '`d/dx`', insert: "d/dx", class: "palette-button-function palette-button-integral"},
+                    {symbol: '<math><mfrac><mi>n</mi><mi>k</mi></mfrac></math>', insert: '\\binom', class: 'palette-button-operator'}
                 ]
             ]
 
