@@ -24,25 +24,12 @@ import java.util.logging.Logger;
 // - fixed parameters: variant, comp (component), subcomp (subcomponent).
 // - other parameters are just passed to xslt
 
-public class SvnUpdateServlet extends HttpServlet {
+public class SvnUpdateServlet extends BaseHttpServlet {
 
     private final static Logger LOGGER = Logger.getLogger(SvnUpdateServlet.class.getName());
 
-    ServletContext context;
-
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        try {
-            super.init(config);
-            context = getServletContext();
-            LOGGER.setLevel(Level.INFO);
-        } catch (Exception e) {
-            e.printStackTrace();
-            LOGGER.log(Level.SEVERE, e.getMessage());
-        }
-    }
-
     private static Lock lock = new ReentrantLock();
+
     private static File logFile;
     {
         try {
@@ -63,15 +50,8 @@ public class SvnUpdateServlet extends HttpServlet {
         PrintWriter writer = response.getWriter();
 
         // Read request parameters
-        Map<String, String[]> paramMap = request.getParameterMap();
-        Map<String, String> parameterMap = new HashMap<>();
-        for (Map.Entry<String, String[]> entry : paramMap.entrySet()) {
-            String pname = entry.getKey();
-            String[] pvalArr = entry.getValue();
-            if (pvalArr != null && pvalArr.length > 0) {
-                parameterMap.put(pname, pvalArr[0]);
-            }
-        }
+        Map<String, String> parameterMap = Utils.readParameters(request);
+
 
         // Find out which repository to use, so we force a logged in user
         // try to get repo from cookie
@@ -98,9 +78,11 @@ public class SvnUpdateServlet extends HttpServlet {
                 SvnScriptRunner runner = new SvnScriptRunner(writer);
 
                 String fix = parameterMap.get("fix");
-                if (fix.equalsIgnoreCase("true")) {
+                if (fix != null && fix.equalsIgnoreCase("true")) {
+                    System.out.println("Running svn-fix script");
                     runner.runScript("svn-fix", svnPath, logFile.getPath());
                 } else {
+                    System.out.println("Running svn-update script");
                     String path = parameterMap.get("path");
                     if (path != null && !path.isEmpty()) {
                         File newPath = new File(svnPath, path);

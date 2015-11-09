@@ -7,6 +7,8 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 import java.util.Map;
 import java.util.HashMap;
+
+import nl.math4all.mathunited.utils.Utils;
 import org.xml.sax.InputSource;
 import java.util.Properties;
 import javax.xml.transform.sax.SAXSource;
@@ -22,26 +24,12 @@ import org.xml.sax.helpers.XMLReaderFactory;
 // - fixed parameters: variant, comp (component), subcomp (subcomponent).
 // - other parameters are just passed to xslt
 
-public class ProcessItemServlet extends HttpServlet {
+public class ProcessItemServlet extends BaseHttpServlet {
     private final static Logger LOGGER = Logger.getLogger(ProcessItemServlet.class.getName());
     XSLTbean processor;
     Map<String, Component> componentMap;
-    ServletContext context;
     Properties prop = new Properties();
     
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        try{
-            super.init(config);
-            context = getServletContext();
-            LOGGER.setLevel(Level.INFO);
-            processor = new XSLTbean(context);
-        } catch(Exception e) {
-            e.printStackTrace();
-            LOGGER.log(Level.SEVERE, e.getMessage());
-        }
-    }
-
     @Override
     public void doPost (  HttpServletRequest request,
                          HttpServletResponse response)
@@ -51,15 +39,8 @@ public class ProcessItemServlet extends HttpServlet {
             Configuration config = Configuration.getInstance();
             
             //read request parameters
-            Map<String, String[]> paramMap = request.getParameterMap();
-            Map<String, String> parameterMap = new HashMap<String, String>();
-            for(Map.Entry<String, String[]> entry : paramMap.entrySet()) {
-                String pname = entry.getKey();
-                String[] pvalArr = entry.getValue();
-                if(pvalArr!=null && pvalArr.length>0) {
-                   parameterMap.put(pname, pvalArr[0]);
-                }
-            }
+            Map<String, String> parameterMap = Utils.readParameters(request);
+
             if(isMobile(request.getHeader("user-agent"))) {
                 parameterMap.put("is_mobile", "true");
             } else {
@@ -160,7 +141,7 @@ public class ProcessItemServlet extends HttpServlet {
             
             String errStr = processor.process(xmlSaxSource, variant, parameterMap, resolver, byteStream);
             response.setContentType("text/html");
-            if(errStr.length()>0){
+            if (errStr.length() > 0) {
                 PrintWriter writer = response.getWriter();
                 String resultStr = "<html><head></head><body>"+errStr+"</body></html>";
                 writer.println(resultStr);

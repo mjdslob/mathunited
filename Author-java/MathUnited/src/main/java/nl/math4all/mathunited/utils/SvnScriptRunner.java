@@ -51,11 +51,11 @@ public class SvnScriptRunner {
     /**
      * Exception-less version
      */
-    public void runScript(String name, String... args) throws IOException {
+    public void runScript(String name, String... args) {
         try {
             runScript(name, false, args);
         } catch (SvnException ex) {
-            // Ignore.
+            // Ignore as well.
         }
     }
 
@@ -63,7 +63,7 @@ public class SvnScriptRunner {
      * Run script name.sh (no arguments)
      * @param name The name of the script. The .sh extension will be added.
      */
-    public void runScript(String name, boolean exceptions, String... args) throws SvnException, IOException {
+    public void runScript(String name, boolean exceptions, String... args) throws SvnException {
         // Build command line
         CommandLine sh = new CommandLine(SHELL);
 
@@ -96,7 +96,12 @@ public class SvnScriptRunner {
         printStream.printf("--- Executing '%s'%n", cmd);
 
         // Add any arguments to environment as ARG1, ARG2 etc.
-        Map<String, String> env = EnvironmentUtils.getProcEnvironment();
+        Map<String, String> env;
+        try {
+            env = EnvironmentUtils.getProcEnvironment();
+        } catch (IOException ex) {
+            throw new SvnException(ex);
+        }
         for (int i = 0; i < args.length; i++) {
             // Generate name in form of ARG1 etc.
             String varname = String.format("ARG%d", i + 1);
@@ -140,7 +145,9 @@ public class SvnScriptRunner {
             resultHandler.waitFor();
         } catch (Exception ex) {
             String message = "Error executing '" + cmd + "': " + ex.getMessage();
-            writer.write("*** " + message + "\n");
+            try {
+                writer.write("*** " + message + "\n");
+            } catch (IOException e) {}
             if (exceptions) {
                 throw new SvnException(message, ex);
             } else {
@@ -149,14 +156,19 @@ public class SvnScriptRunner {
         } finally {
             // Re-create print stream
             long toc = System.currentTimeMillis();
-            writer.write("--- '" + cmd + "' took " + (toc - tic) + " ms.\n");
+            try {
+                writer.write("--- '" + cmd + "' took " + (toc - tic) + " ms.\n");
+            } catch (IOException ex) {}
         }
 
         // Return exit code
         if (resultHandler.getExitValue() != 0) {
             String message = "Error executing '''" + sh
                     + "''': Return value was " + resultHandler.getExitValue();
-            writer.write("*** " + message + "\n");
+            try {
+                writer.write("*** " + message + "\n");
+            } catch (IOException ex) {}
+
             if (exceptions) {
                 throw new SvnException(message);
             } else {

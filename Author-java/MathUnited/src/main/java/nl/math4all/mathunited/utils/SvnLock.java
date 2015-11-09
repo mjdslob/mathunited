@@ -2,6 +2,7 @@ package nl.math4all.mathunited.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -11,9 +12,6 @@ import java.util.logging.Logger;
  * Created by linden on 8-12-14.
  */
 public class SvnLock extends Lock {
-    /** Remember which files were locked to see which files need to be "svn add"-ed. */
-    String[] lockedFiles = new String[0];
-
     /** Log with proper prefix. */
     public static final Logger LOGGER = Logger.getLogger(FileLock.class.getName());
 
@@ -41,84 +39,24 @@ public class SvnLock extends Lock {
         // Remove stale lock file
         removeLockFile();
 
-        // Update
-        try {
-            SvnUtils.svn(true, "update", refbase);
-            File imagedir = new File(refbase, "../images");
-            SvnUtils.svn(false, "update", imagedir.toString());
-        } catch (SvnException e) {
-            throw new LockException("Could not update " + refbase + ": " + e.getMessage());
-        }
+        // Update with script
+        SvnScriptRunner runner = new SvnScriptRunner(new PrintWriter(System.out));
+        runner.runScript("svn-update-paragraph", refbase, username);
 
         // Create new persistent lock file
         createLockFile();
 
-        // Get list of files we need to lock
-        lockedFiles = SvnUtils.svnFilesForPath(refbase);
-
-        // No need to lock files in empty directory
-        if (lockedFiles.length == 0) {
-            return;
-        }
-
-        // Lock the files
-        try {
-            // Lock files
-            SvnUtils.svn(false, lockedFiles, "lock");
-        } catch (SvnException e) {
-            throw new LockException("Could not acquire lock: " + e.getMessage());
-        }
     }
 
     /** Release lock */
     public void release() throws LockException {
         LOGGER.info("Releasing lock (svn) for " + refbase + " for user " + username + ".");
 
-        // Get list of files that are lockable
-        String[] files = SvnUtils.svnFilesForPath(refbase);
+        // Commit the new files
+        SvnScriptRunner runner = new SvnScriptRunner(new PrintWriter(System.out));
+        runner.runScript("svn-commit-paragraph", refbase, username);
 
-        // Get list of new files
-        HashSet<String> newFileSet = new HashSet<>(Arrays.asList(files));
-        newFileSet.removeAll(Arrays.asList(lockedFiles));
-        String[] newFiles = newFileSet.toArray(new String[0]);
-
-        // Commit the files the files
-        try {
-            // Add new files (ignore errors, add missing parent directories)
-            if (newFiles != null && newFiles.length > 0) {
-                SvnUtils.svn(false, newFiles, "add", "--parents");
-            }
-
-            // Commit will unlock
-            SvnUtils.svn(false, "commit", refbase, "-m", "Changes by user " + username + ".");
-
-            // Commit images
-            // TODO: Only highres?
-            File imagedir = new File(refbase, "../images");
-            if (imagedir.exists()) {
-                try {
-                    String imagepath = imagedir.getCanonicalPath();
-                    SvnUtils.svn(false, "add", "--force", imagepath);
-                    SvnUtils.svn(false, "commit", imagepath, "-m", "Changed images by user " + username + ".");
-                } catch (IOException e) {
-                    // Warn, but ignore errors
-                    LOGGER.warning("Failed to add images: " + e.getMessage());
-                }
-            }
-
-            // Explicitly unlock files in case no changes were made
-            if (lockedFiles.length > 0) {
-                SvnUtils.svn(false, lockedFiles, "unlock");
-            }
-
-            // Remove the lock file
-            File lockFile = new File(refbase, "lock");
-            if (lockFile.exists()) {
-                lockFile.delete();
-            }
-
-        } catch (SvnException e) {
-            throw new LockException("Could not release lock", e);
-        }
+        // Remove the lock file
+        removeLockFile();
     }
 }

@@ -667,6 +667,7 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="p">
     <xsl:apply-templates mode="content"/>
 </xsl:template>
+
 <!--   **************** -->
 <!--     NAVIGATION     -->
 <!--   **************** -->

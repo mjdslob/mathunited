@@ -68,7 +68,12 @@ extension-element-prefixes="exsl">
 </xsl:template>
 
 
-<!-- Elements that are treated in a nonstandard way -->
+    <!-- Match bron paragraphs -->
+    <xsl:template match="*[@tag='bron']" mode="editor" priority="2">
+        <p class='bron'><xsl:apply-templates mode="paragraph"/></p>
+    </xsl:template>
+
+    <!-- Elements that are treated in a nonstandard way -->
 <xsl:template match="*[@tag='stepaligntable']" mode="editor" priority="2">
     <stepaligntable>
         <xsl:apply-templates select=".//tr[@tag='cells']" mode="editor"/>
@@ -188,6 +193,7 @@ extension-element-prefixes="exsl">
         <xsl:apply-templates mode="paragraph"/>
     </xsl:element>
 </xsl:template>
+
 <xsl:template match="p" mode="paragraph">
     <xsl:for-each select="@*[name()!='tag']">
         <xsl:attribute name="{name()}" select="."/>
@@ -197,7 +203,9 @@ extension-element-prefixes="exsl">
     </xsl:for-each>
     <p><xsl:apply-templates mode="paragraph"/></p>
 </xsl:template>
-<xsl:template match="span" mode="paragraph">
+
+
+    <xsl:template match="span" mode="paragraph">
     <xsl:apply-templates mode="paragraph"/>
 </xsl:template>
 <xsl:template match="img" mode="paragraph">
