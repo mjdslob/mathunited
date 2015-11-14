@@ -424,10 +424,10 @@ extension-element-prefixes="exsl">
                 <xsl:attribute name="href">
                     <xsl:choose>
                         <xsl:when test="string-length($num) > 0">
-                            <xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',$subcomp,'&amp;variant=',$variant,'&amp;item=', $item,'&amp;num=', $num,'&amp;ws_id=', @item)"/>
+                            <xsl:value-of select="concat('view?repo=',$repo,'&amp;comp=',$comp,'&amp;subcomp=',$subcomp,'&amp;variant=',$variant,'&amp;item=', $item,'&amp;num=', $num,'&amp;ws_id=', @item)"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',$subcomp,'&amp;variant=',$variant,'&amp;item=', $item,'&amp;ws_id=', @item)"/>
+                            <xsl:value-of select="concat('view?repo=',$repo,'&amp;comp=',$comp,'&amp;subcomp=',$subcomp,'&amp;variant=',$variant,'&amp;item=', $item,'&amp;ws_id=', @item)"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:attribute>
