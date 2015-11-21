@@ -833,3 +833,18 @@ span[tag='cloze-hint'] {
 .akit-dialog {
     background-color:white;
 }
+iframe.widgetFrame {
+    width:100% !important;
+    height:600px;
+}
+.button {
+    padding:5px 10px;
+    margin:5px 10px 5px 0;
+    background-color:rgb(0,0,100);
+    color:white;
+    display: inline-block;
+}
+.button:hover {
+    background-color:lightblue;
+    color:darkblue;
+}
