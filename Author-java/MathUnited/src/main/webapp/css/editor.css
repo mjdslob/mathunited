@@ -844,6 +844,7 @@ div[tag='bron']::before {
     font-variant: small-caps;
     color: #777;
     padding-left: .5ex;
+}
 
 iframe.widgetFrame {
     width:100% !important;
