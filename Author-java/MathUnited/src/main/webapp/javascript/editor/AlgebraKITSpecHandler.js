@@ -84,68 +84,46 @@ define(['exercise/Main','trainer/Main','jquery'], function(AKITExercise, AKITTra
                 // Change 'show-hints' tag on <evaluation>
                 chooseSelectedItem('algebrakit-hint-select', tag, 'show-hints', 'true', true);
                 
+//                var algebrakitURL = 'http://localhost:8080/akit';
+                var algebrakitURL = 'http://217.23.8.140:8080/akit-staging';
                 
-                $('.algebrakit-test-config',parent).first().unbind('click').click(function() {
-                    var str = '<div class="akit-dialog">' 
-                            + '  <div class="akit-exercise akit-init-open" audience="">'
-                            + '    <div class="akit-main akit-item">'
-                            + '       <span class="akit-input-widget" solve=""/>'
-                            + '    </div>'
-                            + '  </div>'
-                            + '  <div style="clear:both"><h3>Uitwerking</h3></div>'
-                            + '  <div class="akit-trainer" style="clear:both" solve="" attributes="" audience="">'
-                            + '  </div>'
-                            + '</div>';
-                    var elm = $(str);
-                    var exerciseElm = $('.akit-exercise',elm).first();
-                    var trainerElm = $('.akit-trainer', elm).first();
-                    var inp = $('.akit-input-widget',exerciseElm);
+                $('.algebrakit-review-process',parent).first().unbind('click').click(function() {
                     var audienceStr = $('select.audience-select option:selected', parent).attr('value');
-                    exerciseElm.attr('audience',audienceStr);
-                    trainerElm.attr('audience', audienceStr);
-                    str = $('select.item-palette-select option:selected', parent).attr('value');
-                    if(str && str!=='default')  exerciseElm.attr('palette',str);
                     var solveExp = $('input[name="solve"]', parent).val().trim();
-                    inp.attr('solve',solveExp);
-                    trainerElm.attr('solve', solveExp);
-                    str = $('select.algebrakit-mode-select option:selected', parent).attr('value');
-                    inp.attr('mode',str);
-                    str = $('select.algebrakit-hint-select option:selected', parent).attr('value');
-                    if(str==='false')  exerciseElm.attr('show-hints',str);
-                    
-                    str = $('input[name="submit"]', parent).val().trim();
-                    if(str) inp.attr('submit',str);
-                    str = $('input[name="answer"]', parent).val().trim();
-                    if(str) inp.attr('answer',str);
                     var attributesStr = $('input[name="solution-attributes"]', parent).val().trim();
-                    if(attributesStr) inp.attr('solution-attributes',attributesStr);
-                    if(attributesStr) trainerElm.attr('attributes', attributesStr);
-                    str = $('input[name="question"]', parent).val().trim();
-                    if(str) {
-                        inp.append($('<div class="akit-input-label">'+str+'</div>'));
-                    }
                     
-                    str = $('input[name="submit"]', parent).val().trim();
-                    if(str) inp.attr('submit',str);
-                    var dlg = elm.dialog({
-                        resizable: true,
-                        height:600,
-                        width:800,
-                        modal: false,
-                        dialogClass: 'akit-dialog',
-                        buttons: {
-                            Cancel: function() {
-                                $( this ).dialog( "close" );
-                            }
-                        }
-                    });
-                    AKITExercise.addExercise({dom:$('.akit-exercise',dlg).first()});
-                    AKITTrainer.showDerivation({
-                        dom: trainerElm,
-                        audience: audienceStr,
-                        solve: solveExp,
-                        attributes: attributesStr
-                    });
+                    var processURL = algebrakitURL+'/processWidget.html?solve='
+                            +encodeURIComponent(solveExp)+"&audience="+audienceStr;
+                    if(attributesStr) {
+                        processURL+='&modes='+encodeURIComponent(attributesStr);
+                    }
+                    window.open(processURL, 'Review opgave', "height=600,width=600");
+                });
+                $('.algebrakit-review-exercise',parent).first().unbind('click').click(function() {
+                    var audienceStr = $('select.audience-select option:selected', parent).attr('value');
+                    var paletteStr = $('select.item-palette-select option:selected', parent).attr('value');
+                    var solveExp = $('input[name="solve"]', parent).val().trim();
+                    var evalModeStr = $('select.algebrakit-mode-select option:selected', parent).attr('value');
+                    var showHintStr = $('select.algebrakit-hint-select option:selected', parent).attr('value');
+//                    str = $('input[name="submit"]', parent).val().trim();
+//                    if(str) inp.attr('submit',str);
+                    var answerStr = $('input[name="answer"]', parent).val().trim();
+                    var attributesStr = $('input[name="solution-attributes"]', parent).val().trim();
+                    var prefixLabelStr = $('input[name="question"]', parent).val().trim();
+                    
+                    var exerciseURL = algebrakitURL+'/exerciseWidget.html?solve='
+                            +encodeURIComponent(solveExp)+"&audience="+audienceStr;
+                    if(attributesStr) {
+                        exerciseURL+='&modes='+encodeURIComponent(attributesStr);
+                    }
+                    if(answerStr) exerciseURL+='&answer='+encodeURIComponent(answerStr);
+                    if(paletteStr && paletteStr!=='default') exerciseURL+='&palette='+encodeURIComponent(paletteStr);
+                    if(evalModeStr) exerciseURL+='&evalMode='+encodeURIComponent(evalModeStr);
+                    if(showHintStr==='false')  exerciseURL+='&showHints=false';
+                    if(prefixLabelStr) exerciseURL+='&prefixLabel='+encodeURIComponent(prefixLabelStr);
+
+                    window.open(exerciseURL, 'Review opgave', "height=600,width=600");
+
                 });
             });
             

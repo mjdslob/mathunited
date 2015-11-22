@@ -412,14 +412,14 @@ div[tag="alternatives"] .menu-button-div {
     height:20px;
     left:-80px;
     top:0px;
-    
+
 }
 .item-insert-button {
     color:red;
     display:inline;
 }
 .item-remove-button {
-    color:red;    
+    color:red;
     display:inline;
 }
 
@@ -462,7 +462,7 @@ div[tag="knownaspects"] {
 p:empty {
     min-height:20px;
     border: 1px dashed gray;
-    
+
 }
 .exercises-insertion-point {
     border:1px dashed rgb(200,200,200);
@@ -532,7 +532,7 @@ table.log-overview {
     margin:2px 0px;
     padding:2px;
 }
-.log-entry:hover{ 
+.log-entry:hover{
     background-color:rgb(100,100,100);
     color:white;
 }
@@ -670,7 +670,7 @@ div.objective-new-item input {
 }
 .item-selector-subcomponent:hover {
     border:1px solid darkgray;
-    padding: 2px 9px;   
+    padding: 2px 9px;
 }
 .item-selector-item {
     position:relative;
@@ -680,10 +680,10 @@ div.objective-new-item input {
     text-decoration: underline;
 }
 .example-answer-content {
-    display:none;    
+    display:none;
 }
 .example-answer-content.visible {
-    display:block;    
+    display:block;
 }
 .example-answer-button.visible {
     color:red;
@@ -757,7 +757,7 @@ select.thread-choser, select.component-choser, select.subcomponent-choser, selec
 .algebrakit-spec-item {
     display:inline-block;
     width:200px;
-    
+
 }
 
 figure.no-edit {
@@ -844,4 +844,21 @@ div[tag='bron']::before {
     font-variant: small-caps;
     color: #777;
     padding-left: .5ex;
+
+iframe.widgetFrame {
+    width:100% !important;
+    height:600px;
+}
+
+.button {
+    padding:5px 10px;
+    margin:5px 10px 5px 0;
+    background-color:rgb(0,0,100);
+    color:white;
+    display: inline-block;
+}
+
+.button:hover {
+    background-color:lightblue;
+    color:darkblue;
 }

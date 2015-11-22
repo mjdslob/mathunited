@@ -340,15 +340,18 @@ extension-element-prefixes="exsl">
                 <xsl:attribute name="class">wrong-input-line</xsl:attribute>
             </xsl:if>
         </input><br/>
+        <!--
         <span class="algebrakit-spec-item">Invoertemplate voor AlgebraKIT:</span>
         <input type="text" name="submit" size="70" value="{evaluation/@submit}"/><br/>
+        -->
         <span class="algebrakit-spec-item">Tekst vóór invoerveld:</span>
         <input type="text" name="question" size="70" value="{evaluation/@question}"/><br/>
         <span class="algebrakit-spec-item">Antwoord (AlgebraKIT):</span>
         <input type="text" name="answer" size="70" value="{evaluation/@answer}"/><br/>
         <span class="algebrakit-spec-item">Extra attributen:</span>
         <input type="text" name="solution-attributes" size="70" value="{evaluation/@solution-attributes}"/><br/>
-        <div class="algebrakit-test-config">testen</div>
+        <div class="button algebrakit-review-process">bekijk uitwerking</div>
+        <div class="button algebrakit-review-exercise">maak opgave</div>
         <xsl:apply-templates select="evaluation" mode="editor"/>
         
     </div>
