@@ -31,6 +31,17 @@ public class ProcessItemServlet extends BaseHttpServlet {
     Properties prop = new Properties();
     
     @Override
+    public void init(ServletConfig config) throws ServletException {
+        try{
+            super.init(config);
+            processor = new XSLTbean(context);
+        } catch(Exception e) {
+            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage());
+        }
+    }
+
+    @Override
     public void doPost (  HttpServletRequest request,
                          HttpServletResponse response)
              throws ServletException, IOException {
