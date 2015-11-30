@@ -415,7 +415,7 @@ class GAEPlatform extends Platform {
         $url = trim($response);
         if ($url != "")
         {
-            $logger->trace(LEVEL_INFO, 'Skipped resource upload ('.$type.') (id='.$id.', repo='.$repo.', fname='.$fname.', mimetype='.$mimetype.' <a href="http://mathunited2012.appspot.com'.$url.'">open</a>)');       
+            $logger->trace(LEVEL_INFO, 'Skipped resource upload ('.$type.') (id='.$id.', repo='.$repo.', fname='.$fname.', mimetype='.$mimetype.' <a href="http://math4allview.appspot.com'.$url.'">open</a>)');       
             return $url;
         }
         
@@ -427,6 +427,7 @@ class GAEPlatform extends Platform {
             throw new Exception($putURL);
         }
         curl_close($ch);
+        $putURL = trim($putURL);
         
         $fields = array(
             'id'=>urlencode($id),
@@ -437,16 +438,18 @@ class GAEPlatform extends Platform {
             'publishid'=>urlencode($this->publishId),
     	    'checksum'=>$localChecksum
         );
+        
         $ch = curl_init($putURL); 
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $response = curl_exec($ch);
+        curl_close($ch);
+        
         if($response!=null && strncmp($response, 'error', 5)==0){
             throw new Exception($response);
         }
-        $logger->trace(LEVEL_INFO, 'Uploaded resource ('.$type.') (id='.$id.', repo='.$repo.', fname='.$fname.', mimetype='.$mimetype.' <a href="http://mathunited2012.appspot.com'.$response.'">open</a>)');       
-        curl_close($ch);
+        $logger->trace(LEVEL_INFO, 'Uploaded resource ('.$type.') (id='.$id.', repo='.$repo.', fname='.$fname.', mimetype='.$mimetype.' <a href="http://math4allview.appspot.com'.$response.'">open</a>)');       
         return $response;
     }
 }
