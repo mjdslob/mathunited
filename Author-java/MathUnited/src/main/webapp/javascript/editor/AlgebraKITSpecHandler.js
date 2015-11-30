@@ -85,7 +85,7 @@ define(['exercise/Main','trainer/Main','jquery'], function(AKITExercise, AKITTra
                 chooseSelectedItem('algebrakit-hint-select', tag, 'show-hints', 'true', true);
                 
 //                var algebrakitURL = 'http://localhost:8080/akit';
-                var algebrakitURL = 'http://217.23.8.140:8080/akit-staging';
+                var algebrakitURL = 'http://217.23.8.140/akit-staging';
                 
                 $('.algebrakit-review-process',parent).first().unbind('click').click(function() {
                     var audienceStr = $('select.audience-select option:selected', parent).attr('value');
