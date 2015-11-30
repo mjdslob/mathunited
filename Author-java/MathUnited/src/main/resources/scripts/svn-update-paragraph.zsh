@@ -40,6 +40,11 @@ fi
     echo "--- Running 'svn update' on path ${ARG1}"
     svn update ${ARG1} $imgdir $ggbdir $doxdir
 
+    if test -n "$(find ${ARG1} -maxdepth 1 -name '*.xml' -print -quit)"; then
+      echo "--- Locking of files in ${ARG1}"
+      find ${ARG1} -maxdepth 1 -name '*.xml' -exec svn lock '{}' \;
+    fi
+
     echo "*** DONE. SVN UPDATE OF PARAGRAPH '${ARG1}'"
 
 
