@@ -12,6 +12,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import nl.math4all.gae_m4a.configuration.Configuration;
 import nl.math4all.gae_m4a.configuration.Repository;
@@ -26,7 +28,7 @@ import com.google.appengine.api.datastore.KeyFactory;
 public class GetResourceUrlServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -5808086102358829597L;
-//	private final static Logger LOGGER = Logger.getLogger(GetResourceInfoServlet.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(GetResourceUrlServlet.class.getName());
 
 	public GetResourceUrlServlet()  {
     }
@@ -79,7 +81,9 @@ public class GetResourceUrlServlet extends HttpServlet {
  		   	{
  		   		entity = getFromDataStore(repository, parentId, id, type);
  		   	}
-        	catch(EntityNotFoundException e) {}
+                        catch(EntityNotFoundException e) {
+                            LOGGER.info("Could not find resource: repo="+repo+", parentId="+parentId+", id="+id+", type="+type);
+                        }
  		   	
  		   	String localChecksum = "";
  		   	if (entity != null && entity.hasProperty("checksum"))

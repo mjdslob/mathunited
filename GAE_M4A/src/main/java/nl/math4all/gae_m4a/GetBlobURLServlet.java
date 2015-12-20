@@ -15,8 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import java.util.logging.Logger;
 
 public class GetBlobURLServlet extends HttpServlet {
+        private final static Logger LOGGER = Logger.getLogger(GetBlobURLServlet.class.getName());
 
 	private static final long serialVersionUID = -1185194851400641339L;
 
@@ -29,8 +31,10 @@ public class GetBlobURLServlet extends HttpServlet {
         try   {
             java.io.Writer w = response.getWriter();
             PrintWriter pw = new PrintWriter(w);
-            pw.println(blobstoreService.createUploadUrl("/putresource"));
+            String url = blobstoreService.createUploadUrl("/putresource");
+            pw.println(url);
         } catch(Exception e) {
+            LOGGER.severe(e.getMessage());
             e.printStackTrace();
             java.io.Writer w = response.getWriter();
             PrintWriter pw = new PrintWriter(w);

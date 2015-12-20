@@ -45,6 +45,14 @@ public class PutResourceServlet extends HttpServlet {
             LOGGER.severe((new StringBuilder("Init of PutResourceServlet failed")).append(e.getMessage()).toString());
         }
     }
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        LOGGER.setLevel(Level.INFO);
+        LOGGER.info("PutResourceServlet called with GET, forwarding to POST");
+        doPost(request, response);
+    }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -125,6 +133,7 @@ public class PutResourceServlet extends HttpServlet {
                 Key key = KeyFactory.createKey(parentKey, type, id);
                 blobEntity = datastore.get(key);
             } catch (EntityNotFoundException e) {
+                
             }
             if (blobEntity != null) {
                 String oldPublishId = (String) blobEntity.getProperty("publishid");
@@ -157,6 +166,7 @@ public class PutResourceServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             pw.println("error: " + e.getMessage());
+            LOGGER.severe(e.getMessage());
             throw new ServletException(e);
         }
     }
