@@ -1,16 +1,13 @@
 package nl.math4all.mathunited.editor;
 
 import nl.math4all.mathunited.configuration.*;
-import nl.math4all.mathunited.utils.SvnScriptRunner;
+import nl.math4all.mathunited.utils.ScriptRunner;
 import nl.math4all.mathunited.utils.Utils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.WriterOutputStream;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -75,7 +72,7 @@ public class SvnUpdateServlet extends BaseHttpServlet {
             try {
 
                 String svnPath = config.getContentRoot();
-                SvnScriptRunner runner = new SvnScriptRunner(writer);
+                ScriptRunner runner = new ScriptRunner(writer);
 
                 String fix = parameterMap.get("fix");
                 if (fix != null && fix.equalsIgnoreCase("true")) {

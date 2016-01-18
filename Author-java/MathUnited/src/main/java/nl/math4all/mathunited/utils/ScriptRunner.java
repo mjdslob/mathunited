@@ -4,7 +4,6 @@ import org.apache.commons.exec.*;
 import org.apache.commons.exec.environment.EnvironmentUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.output.NullWriter;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.io.output.WriterOutputStream;
 
 import java.io.*;
@@ -18,8 +17,8 @@ import java.util.logging.Logger;
  * Class to run svn scripts
  * Created by linden on 22/09/15.
  */
-public class SvnScriptRunner {
-    static final Logger LOGGER = Logger.getLogger(SvnScriptRunner.class.getName());
+public class ScriptRunner {
+    static final Logger LOGGER = Logger.getLogger(ScriptRunner.class.getName());
     static final String SHELL = "/bin/zsh";
 
     Writer writer;
@@ -36,7 +35,7 @@ public class SvnScriptRunner {
     /**
      * Create a script runner that copies script output to a writer
      */
-    public SvnScriptRunner(Writer writer) {
+    public ScriptRunner(Writer writer) {
         this.writer = writer;
         makeStream();
     }
@@ -44,7 +43,7 @@ public class SvnScriptRunner {
     /**
      * Create a script runner that does not copy script output to a writer
      */
-    public SvnScriptRunner() {
+    public ScriptRunner() {
         this(new NullWriter());
     }
 
@@ -76,7 +75,7 @@ public class SvnScriptRunner {
         }
 
         // Get the script location in the tomcat app and check that it exists
-        URL scriptURL = SvnScriptRunner.class.getResource("/" + escapedName + ".zsh");
+        URL scriptURL = ScriptRunner.class.getResource("/" + escapedName + ".zsh");
         if (scriptURL == null) {
             String msg = "No such script: " + escapedName + ".zsh";
             if (exceptions) {

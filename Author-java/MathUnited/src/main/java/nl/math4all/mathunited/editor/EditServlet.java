@@ -6,7 +6,6 @@ import javax.servlet.http.*;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 import java.util.Map;
-import java.util.HashMap;
 import javax.xml.transform.Source;
 import java.util.Properties;
 import nl.math4all.mathunited.XSLTbean;
@@ -199,6 +198,7 @@ public class EditServlet extends BaseHttpServlet {
      * @throws Exception 
      */
     public String getLock(String username, String refbase) throws Exception {
+        // TODO: dit moet eigenlijk aan LockServlet worden gevraagd
         return LockManager.getInstance().getLock(username, refbase);
     }
     

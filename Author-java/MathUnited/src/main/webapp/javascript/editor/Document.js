@@ -38,10 +38,10 @@ define(['jquery', 'app/TinyMCE', 'app/ContextMenu',  'app/AlgebraKITSpecHandler'
             var w = img.width();
             var h = img.height();
             if(w>0){
-                img.attr('WIDTH',''+w);
+                img.attr('width',''+w);
             }
             if(h>0){
-                img.attr('HEIGHT',''+h);
+                img.attr('height',''+h);
             }
         });
     }
@@ -178,7 +178,8 @@ define(['jquery', 'app/TinyMCE', 'app/ContextMenu',  'app/AlgebraKITSpecHandler'
        prepareForSubmit: function(elm) {
             Editor.closeAll();
             if(!elm) elm = root;
-            //bugfix in MathJax: a '<' symbol messes up the xml document
+
+           //bugfix in MathJax: a '<' symbol messes up the xml document
             $('script',elm).each(function() { 
                var str = this.text.replace('<','&lt;');
                $(this).text(str);

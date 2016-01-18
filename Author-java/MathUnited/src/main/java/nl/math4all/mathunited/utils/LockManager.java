@@ -165,5 +165,15 @@ public class LockManager {
         return username;
     }
 
+    /** Clean up times and theads. */
+    public void shutdown() {
+        timer.shutdownNow();
+        try {
+            timer.awaitTermination(10, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 

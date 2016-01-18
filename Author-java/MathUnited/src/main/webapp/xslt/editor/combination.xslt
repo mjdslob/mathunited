@@ -106,4 +106,11 @@ extension-element-prefixes="exsl">
         </div>
     </xsl:template>
 
+    <xsl:template match="am" mode="table">
+        <span class="am-container">
+            <span tag="am"><xsl:apply-templates mode="table"/></span>
+            `<xsl:value-of select='.'/>`
+        </span>
+    </xsl:template>
+
 </xsl:stylesheet>

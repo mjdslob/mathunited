@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import javax.servlet.http.Cookie;
 import nl.math4all.mathunited.configuration.Configuration;
 import nl.math4all.mathunited.configuration.Repository;
+import org.apache.commons.io.FilenameUtils;
 
 /**
  *
@@ -82,6 +83,14 @@ public class Utils {
         }
 
         return false;
+    }
+
+    public static String pathJoin(String... parts) {
+        String joined = new String();
+        for (String part : parts) {
+            joined = FilenameUtils.concat(joined, part);
+        }
+        return joined;
     }
 
 }

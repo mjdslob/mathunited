@@ -116,7 +116,37 @@ define(['jquery', 'app/Document','actions/ObjectivesHandler', 'actions/SetExerci
             doc.prepareForSubmit();
             
             var status = $('#workflow-container input:checked').val();
-            var html = $('.editorDiv').first().html();
+
+            var editorDiv = $('.editorDiv').first();
+
+            /* Fancy way don't work
+            // Make the noNamespaceSchemaLocation tags camel cased again
+            // Get all the nodes with a mis-case-d xsi:nonamespaceschemalocation tag
+            var nnsl = editorDiv.find('[xsi\\:nonamespaceschemalocation]');
+            var xsi = 'http://www.w3.org/2001/XMLSchema-instance';
+
+            console.log("Lowercase: " + nnsl);
+
+            // Re-attribute each one
+            nnsl.each(function() {
+                // Get schema location
+                var schema = $(this).attr('xsi:nonamespaceschemalocation');
+                // Remove lowercase name
+                $(this).removeAttr('xsi:nonamespaceschemalocation');
+                // Add camelCase name
+                $(this)[0].setAttributeNS(xsi, 'xsi:noNamespaceSchemaLocation', schema)
+            });
+
+            console.log("CaMeLCase: " + nnsl);
+            */
+
+
+            var html = editorDiv.html();
+
+            // replace xsi:nonamespaceschemalocation --> xsi:noNamespaceSchemaLocation
+            html = html.replace(/xsi:nonamespaceschemalocation/g, "xsi:noNamespaceSchemaLocation");
+
+
             var nItems = $('div[tag="include"]').length; //used to check if all items are saved
             var str = repoPath + '\n' + comp + '\n' + subcomp + '\n' + status + '\n' + nItems + '\n' + html;
             console.log("commmit url = '" + commitURL +"'");

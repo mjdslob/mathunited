@@ -99,8 +99,6 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
         var amContainerElm = $('span.am-container',temp);
         amContainerElm.each(function() {
             var am = $('span[tag="am"]',$(this) ).html();
-            console.log("##### am = " + am);
-            console.log("##### am as text as before = " + ($('span[tag="am"]',$(this) ).text()));
             $(this).replaceWith("`"+am+"`");
         });
         var mathContainerElm = $('span.math-container',temp);
@@ -133,7 +131,7 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
 
     function onGetContent(obj) {
         var convert = obj.content.replace(/`([^\n\r`]*)`/g,"<span class='am-container'><span tag='am'>$1</span>`$1`</span>");
-        console.log(convert);
+        //console.log(convert);
         convert = convert.replace(/\u00a0/g, " "); //replace no-break-space with regular space
         obj.content = convert.replace(/\s+/g,' ').trim();
         
@@ -184,18 +182,23 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
            var str = this.text.replace('<','&lt;');
            $(this).text(str);
         });
+
         //deal with images
         $('img',parent).each(function() {
             var img = $(this);
-            img.addClass('paperfigure');
+
+            // Make it a paperfigure by default (i.e. when no ...figure class has been specified yet
+            if (!/figure\b/.test(img.attr('class'))) {
+                img.addClass('paperfigure');
+            }
 
             var w = img.width();
             var h = img.height();
-            if(w>0) img.attr('WIDTH',''+w);
-            if(h>0) img.attr('HEIGHT',''+h);
+            if (w > 0) img.attr('width',''+w);
+            if (h > 0) img.attr('height',''+h);
         });
         
-        console.log("onremove: "+parent.innerHTML);
+        //console.log("onremove: "+parent.innerHTML);
     }    
 
     //concatenate editable blocks into one
