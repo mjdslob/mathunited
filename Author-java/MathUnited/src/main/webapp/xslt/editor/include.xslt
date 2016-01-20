@@ -117,19 +117,16 @@ extension-element-prefixes="exsl">
         </div>        
                 
         <div tag="{name()}">
-            <xsl:apply-templates select="@*" mode="editor"/>
-                    
+            <xsl:apply-templates select="@*" mode="editor"/>                    
             <!-- add metadata section. If not present in xml, generate one -->
             <xsl:call-template name="set-metadata">
                 <xsl:with-param name="name" select="name()"/>
                 <xsl:with-param name="fname" select="$fname"/>
             </xsl:call-template>
-
             <!-- create remaining content of the item -->
             <xsl:apply-templates select="*[name()!='metadata']" mode="editor">
                 <xsl:with-param name="fname" select="$fname"/>
-            </xsl:apply-templates>
-                    
+            </xsl:apply-templates>                    
         </div>
     </div>
 </xsl:template>

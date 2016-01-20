@@ -36,7 +36,12 @@ import nl.math4all.mathunited.utils.FileManager;
 // - other parameters are just passed to xslt
 
 public class PostContentServlet extends HttpServlet {
-    private final static Logger LOGGER = Logger.getLogger(PostContentServlet.class.getName());
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4413308030922780962L;
+	
+	private final static Logger LOGGER = Logger.getLogger(PostContentServlet.class.getName());
     private String resultXML = "<post result=\"{#POSTRESULT}\"><message>{#MESSAGE}</message></post>";
     XSLTbean processor;
     Map<String, Component> componentMap;
@@ -91,7 +96,8 @@ public class PostContentServlet extends HttpServlet {
             BufferedReader br = new BufferedReader(new StringReader(body));
 
 
-            String _repo = br.readLine(); //not used
+            br.readLine(); 
+            
             // if (repo != null) { repo = rep.trim() }
             //
             //if (repo == null || repo.isEmpty()) {
@@ -188,7 +194,7 @@ public class PostContentServlet extends HttpServlet {
             XMLReader xmlReader = XMLReaderFactory.createXMLReader("org.ccil.cowan.tagsoup.Parser");
             xmlReader.setFeature(org.ccil.cowan.tagsoup.Parser.namespacesFeature, false);
             xmlReader.setEntityResolver(ContentResolver.entityResolver);
-
+            
             int ind = sub.file.lastIndexOf('/');
             String subFolder = sub.file.substring(0, ind);
             String refbase = Utils.pathJoin(config.getContentRoot(), repository.getPath(), subFolder);
@@ -197,7 +203,7 @@ public class PostContentServlet extends HttpServlet {
             StringReader strReader = new StringReader(html);
             InputSource xmlSource = new InputSource(strReader);
             SAXSource xmlSaxSource = new SAXSource(xmlReader, xmlSource);
-
+            
             Node root = processor.processToDOM(xmlSaxSource, "m4a_inverse", parameterMap, resolver);
 
             /*

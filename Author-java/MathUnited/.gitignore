@@ -1,0 +1,9 @@
+.idea
+.classpath
+.DS_Store
+.project
+src/main/resources/configuration.yaml
+MathUnited*.war
+MathUnited.iml
+target
+.settings

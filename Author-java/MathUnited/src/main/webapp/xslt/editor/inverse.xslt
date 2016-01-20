@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xsl:stylesheet version="2.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:saxon="http://saxon.sf.net/"
                 xmlns:exsl="http://exslt.org/common"
                 xmlns:m="http://www.w3.org/1998/Math/MathML"
-                xmlns:cals="http://www.someplace.org/cals"
                 xmlns:xhtml="http://www.w3.org/1999/xhtml"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                exclude-result-prefixes="saxon cals xsi"
+                exclude-result-prefixes="xsi"
                 extension-element-prefixes="exsl">
 
     <xsl:template match="xhtml:*" mode="editor-prepare">
@@ -37,11 +35,8 @@
     </xsl:template>
 
     <xsl:template match="node() | @*" mode="cleanup">
-        <xsl:copy>
-            <xsl:apply-templates select="@* | node()" mode="cleanup"/>
-        </xsl:copy>
+        <xsl:copy><xsl:apply-templates select="@* | node()" mode="cleanup"/></xsl:copy>
     </xsl:template>
-
 
     <!-- editor-mode (default): copy all attributes (except tag-attribute) and text -->
     <xsl:template match="@*" mode="editor">
@@ -52,6 +47,7 @@
 
     <!-- Remove whitespace -->
     <xsl:template match="text()" mode="editor">
+        <xsl:if test="position() &gt; 1"><xsl:text> </xsl:text></xsl:if>
         <xsl:value-of select="normalize-space()"/>
     </xsl:template>
 
@@ -73,9 +69,7 @@
 
     <!-- Match bron paragraphs -->
     <xsl:template match="*[@tag='bron']" mode="editor" priority="2">
-        <p class='bron'>
-            <xsl:apply-templates mode="paragraph"/>
-        </p>
+        <p class='bron'><xsl:apply-templates mode="paragraph"/></p>
     </xsl:template>
 
     <!-- Elements that are treated in a nonstandard way -->
@@ -93,36 +87,20 @@
 
     <xsl:template match="*[@tag='cells']" mode="editor" priority="2">
         <cells>
-            <c1>
-                <xsl:apply-templates select="*[@tag='c1']//p/node()" mode="paragraph"/>
-            </c1>
-            <c2>
-                <xsl:apply-templates select="*[@tag='c2']//p/node()" mode="paragraph"/>
-            </c2>
-            <c3>
-                <xsl:apply-templates select="*[@tag='c3']//p/node()" mode="paragraph"/>
-            </c3>
+            <c1><xsl:apply-templates select="*[@tag='c1']//p/node()" mode="paragraph"/></c1>
+            <c2><xsl:apply-templates select="*[@tag='c2']//p/node()" mode="paragraph"/></c2>
+            <c3><xsl:apply-templates select="*[@tag='c3']//p/node()" mode="paragraph"/></c3>
         </cells>
-        <text>
-            <xsl:apply-templates select="*[@tag='text']//p/node()" mode="paragraph"/>
-        </text>
+        <text><xsl:apply-templates select="*[@tag='text']//p/node()" mode="paragraph"/></text>
     </xsl:template>
 
     <xsl:template match="*[@tag='cells']" mode="paragraph" priority="2">
         <cells>
-            <c1>
-                <xsl:apply-templates select="*[@tag='c1']//p/node()" mode="paragraph"/>
-            </c1>
-            <c2>
-                <xsl:apply-templates select="*[@tag='c2']//p/node()" mode="paragraph"/>
-            </c2>
-            <c3>
-                <xsl:apply-templates select="*[@tag='c3']//p/node()" mode="paragraph"/>
-            </c3>
+            <c1><xsl:apply-templates select="*[@tag='c1']//p/node()" mode="paragraph"/></c1>
+            <c2><xsl:apply-templates select="*[@tag='c2']//p/node()" mode="paragraph"/></c2>
+            <c3><xsl:apply-templates select="*[@tag='c3']//p/node()" mode="paragraph"/></c3>
         </cells>
-        <text>
-            <xsl:apply-templates select="*[@tag='text']//p/node()" mode="paragraph"/>
-        </text>
+        <text><xsl:apply-templates select="*[@tag='text']//p/node()" mode="paragraph"/></text>
     </xsl:template>
 
 
@@ -135,7 +113,10 @@
     <xsl:template match="div[@class='paragraph-content']" priority="2" mode="editor">
         <xsl:apply-templates mode="paragraph"/>
     </xsl:template>
-
+    <xsl:template match="div[@tag='subcaption']" priority="2" mode="editor">
+        <xsl:apply-templates mode="paragraph"/>
+    </xsl:template>
+    
     <!-- ASCIIMathML: -->
     <xsl:template match="span[@class='MathJax_Preview']" mode="paragraph"/>
     <xsl:template match="span[@class='MathJax']" mode="paragraph"/>
@@ -152,11 +133,8 @@
     <xsl:template match="span[@class='am-container']" mode="paragraph">
         <xsl:apply-templates select="span[@tag='am']" mode="paragraph"/>
     </xsl:template>
-    <xsl:template match="div[@tag='am']" mode="paragraph editor image">
-        <xsl:text> </xsl:text><am><xsl:value-of select="."/></am><xsl:text> </xsl:text>
-    </xsl:template>
-    <!-- end of ASCIIMathML: -->
 
+    <!-- end of ASCIIMathML: -->
 
     <xsl:template match="a" mode="paragraph">
         <xsl:choose>
@@ -165,9 +143,7 @@
                     <xsl:for-each select="@*">
                         <xsl:choose>
                             <xsl:when test="name()='href'">
-                                <xsl:attribute name="href">
-                                    <xsl:value-of select="replace(.,'../dox/','')"/>
-                                </xsl:attribute>
+                                <xsl:attribute name="href"><xsl:value-of select="replace(.,'../dox/','')"/></xsl:attribute>
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:attribute name="{name()}">
@@ -189,9 +165,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="br" mode="paragraph">
-        <br/>
-    </xsl:template>
+    <xsl:template match="br" mode="paragraph"><br/></xsl:template>
 
     <xsl:template match="ul" mode="paragraph">
         <itemize number="1" type="packed">
@@ -203,6 +177,7 @@
             <xsl:apply-templates select="li" mode="paragraph"/>
         </itemize>
     </xsl:template>
+
     <!--
     <xsl:template match="table | xhtml:table | tbody | xhtml:tbody | tr | xhtml:tr | td | xhtml:td | th | xhtml:th" mode="paragraph">
         <xsl:copy>
@@ -228,10 +203,12 @@
         <xsl:for-each select="@*[name()!='tag']">
             <xsl:attribute name="{name()}" select="."/>
         </xsl:for-each>
-        <p>
-            <xsl:apply-templates mode="paragraph"/>
-        </p>
+        <xsl:for-each select="img">
+            <xsl:apply-templates select="." mode="image"/>
+        </xsl:for-each>
+        <p><xsl:apply-templates mode="paragraph"/></p>
     </xsl:template>
+
 
     <xsl:template match="span" mode="paragraph">
         <xsl:apply-templates mode="paragraph"/>
@@ -255,7 +232,7 @@
         <xsl:sequence select="replace(., '\s+', ' ', 'm')"/>
     </xsl:template>
 
-    <xsl:template match="sub | sup | b | i | am" mode="paragraph">
+    <xsl:template match="sub | sup | b | i" mode="paragraph">
         <xsl:element name="{name()}"><xsl:apply-templates select="node()" mode="paragraph"/></xsl:element>
     </xsl:template>
 
