@@ -114,7 +114,9 @@
         <xsl:apply-templates mode="paragraph"/>
     </xsl:template>
     <xsl:template match="div[@tag='subcaption']" priority="2" mode="editor">
-        <xsl:apply-templates mode="paragraph"/>
+        <subcaption>
+            <xsl:apply-templates mode="paragraph"/>
+        </subcaption>
     </xsl:template>
     
     <!-- ASCIIMathML: -->
