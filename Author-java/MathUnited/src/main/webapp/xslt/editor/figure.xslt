@@ -35,9 +35,11 @@
             <xsl:attribute name="figure_label">
                 <xsl:value-of select="@label" />
             </xsl:attribute>
-            <xsl:attribute name="reset">
-                <xsl:value-of select="@reset" />
-            </xsl:attribute>
+            <xsl:if test="@reset != ''">                
+                <xsl:attribute name="reset">
+                    <xsl:value-of select="@reset" />
+                </xsl:attribute>
+            </xsl:if>                
             <xsl:if test="$width>0">
                 <xsl:attribute name="style">width:<xsl:value-of select="$width"/>px</xsl:attribute>
                 <xsl:attribute name="width"><xsl:value-of select="$width"/></xsl:attribute>
