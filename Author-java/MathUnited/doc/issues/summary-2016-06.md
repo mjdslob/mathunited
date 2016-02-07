@@ -2,7 +2,7 @@ SUMMARY OF CHANGES 2016 / WEEK 06
 =================================
 
 
-### PXKETEN-461 (AlgebraKit knop)
+### PXKETEN-440 (AlgebraKit knop)
 
 
 - Ontwerp
@@ -26,4 +26,6 @@ SUMMARY OF CHANGES 2016 / WEEK 06
 
 ---
 
-### PXKETEN-
+### PXKETEN-461
+
+- `uuid` attributes worden verwijderd bij klonen.

@@ -46,6 +46,10 @@ define(['jquery','mathjax'], function($, MathJax) {
             //create a copy of the current exercise...
             generator.getXML(parent[0], function(xml) {
                 xml = $(xml);
+
+                // Remove uuid
+                xml.find('[uuid]').removeAttr('uuid');
+
                 //...and make the necessary adjustments to the xml to make this a clone exercise
                 //create a unique id
                 var counter=1;
