@@ -19,7 +19,7 @@ define(['jquery','actions/OptionalContentItem','actions/OptionalMenuItem','actio
                  'actions/RepeatExercise','actions/RepeatExerciseItem','actions/RepeatTemplate',
                  'actions/SetExerciseMetadata','actions/SetGeneralMetadata', 'actions/ShiftItemDown',
                  'actions/ShiftItemUp','actions/CreateCloneExercise','actions/CopyHandler',
-                 'actions/ToggleAlgebraKIT'],
+                 'actions/ToggleAlgebraKIT', 'actions/ToggleAllAlgebraKIT'],
                  function($) {
     var insertContentItem_typeUrl = 'content-items.xml';
     var processItem_url = '/MathUnited/processitem';
