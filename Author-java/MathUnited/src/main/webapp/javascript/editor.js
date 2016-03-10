@@ -16,9 +16,9 @@
  */
 
 requirejs.config({
-    urlArgs: 'bust=v32', //update this when a modification is made, to prevent caching problems
+    urlArgs: "bust=20160310", //update this when a modification is made, to prevent caching problems
     //By default load any module IDs from js/lib
-    baseUrl: '/MathUnited/javascript/lib',
+    baseUrl: "/MathUnited/javascript/lib",
 //    baseUrl: 'js/lib',
     //except, if the module ID starts with "app",
     //load it from the js/app directory. paths
@@ -37,7 +37,7 @@ requirejs.config({
         jqueryChosen: 'chosen_v1.1.0/chosen.jquery.min',
 //        touchpunch: 'jquery.ui.touch-punch.min',
         tinymce: '../tinymce/jquery.tinymce.min',
-        mathjax: "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML&amp;delayStartupUntil=configured",
+        mathjax: "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML&amp;delayStartupUntil=configured",
         touchpunch: 'jquery.ui.touch-punch.min'
         
     },

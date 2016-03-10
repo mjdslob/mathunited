@@ -4,6 +4,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 xmlns:xs="http://www.w3.org/2001/XMLSchema"
 xmlns:exsl="http://exslt.org/common"
 xmlns:m="http://www.w3.org/1998/Math/MathML"
+xmlns:cals="http://www.someplace.org/cals"
 xmlns:qti="http://www.imsglobal.org/xsd/imsqti_v2p1"
 extension-element-prefixes="exsl">
 

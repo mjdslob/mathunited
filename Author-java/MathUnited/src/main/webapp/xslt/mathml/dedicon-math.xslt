@@ -4,6 +4,7 @@
         xmlns:test="http://www.jenitennison.com/xslt/unit-test"
         xmlns:math="http://www.exslt.org/math"
         xmlns:m="http://www.w3.org/1998/Math/MathML"
+        xmlns:cals="http://www.someplace.org/cals"
         extension-element-prefixes="exsl math"
         exclude-result-prefixes="test math xml xsl exsl"
         version="1.0">

@@ -3,6 +3,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:exsl="http://exslt.org/common"
                 xmlns:m="http://www.w3.org/1998/Math/MathML"
+                xmlns:cals="http://www.someplace.org/cals"
                 xmlns:xhtml="http://www.w3.org/1999/xhtml"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 exclude-result-prefixes="xsi"
