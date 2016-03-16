@@ -372,7 +372,7 @@ extension-element-prefixes="exsl">
 <xsl:template match="iframe" mode="content">
     <iframe scrolling="no">
         <xsl:choose>
-            <xsl:when test="starts-with(@src,'http://')">
+            <xsl:when test="starts-with(@src,'http')">
                 <xsl:copy-of select="@*"/>
             </xsl:when>
             <xsl:otherwise>
