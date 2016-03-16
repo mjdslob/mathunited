@@ -1,9 +1,5 @@
 package nl.math4all.mathunited;
 
-import nl.math4all.mathunited.configuration.UserSettings;
-import nl.math4all.mathunited.configuration.Users;
-import nl.math4all.mathunited.exceptions.LoginException;
-import nl.math4all.mathunited.utils.SvnScriptRunner;
 import org.apache.commons.io.IOUtils;
 
 import javax.servlet.ServletConfig;
@@ -15,7 +11,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.Map;
 
 //mathunited.pragma-ade.nl/MathUnited/view?variant=basis&comp=m4a/xml/12hv-me0&subcomp=3&item=explore
 // - fixed parameters: variant, comp (component), subcomp (subcomponent).

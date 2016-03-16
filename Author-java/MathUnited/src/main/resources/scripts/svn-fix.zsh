@@ -35,6 +35,10 @@ fi
     echo "--- Running svn cleanup"
     svn cleanup
 
+    # Remove empty directories
+    echo "--- Removing completely empty directories (no content, no .svn)"
+    find . -type d -empty -not -iwholename "*.svn*" -print -delete
+
     # Find content directories by looking for index.xml
     indexes=$(/bin/ls -1 **/index.xml)
 

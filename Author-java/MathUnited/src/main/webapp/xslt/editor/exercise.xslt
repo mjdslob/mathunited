@@ -235,6 +235,9 @@ extension-element-prefixes="exsl">
         <xsl:apply-templates select="@*" mode="editor"/>
         <div tag="itemcontent">
             <div class="_editor_option" type="action" name="AlgebraKIT aan/uit" function="actions/ToggleAlgebraKIT" />
+            <xsl:if test="ancestor::multi-item">
+                <div class="_editor_option" type="action" name="Maak alle deegvragen AlgebraKIT" function="actions/ToggleAllAlgebraKIT" />
+            </xsl:if>
             <div class="_editor_option" type="optional" function="actions/OptionalTemplate" name="item intro">
                 <xsl:attribute name="params">{template:'exercise-itemintro-template'}</xsl:attribute>
                 <xsl:choose>
@@ -255,7 +258,21 @@ extension-element-prefixes="exsl">
             <xsl:apply-templates select="itemcontent/question" mode="editor"/>
         </div>
         <!-- make sure a container is always present for the answer -->
-        <div class="answer-button"></div>
+        <xsl:choose>
+            <xsl:when test="@type='algebrakit'">
+                <xsl:choose>
+                    <xsl:when test="evaluation/@solve=''">
+                        <div class="answer-button answer-button-akit-incomplete"></div>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <div class="answer-button answer-button-akit"></div>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:when>
+            <xsl:otherwise>
+                <div class="answer-button"></div>
+            </xsl:otherwise>
+        </xsl:choose>
         <div class="answer-content">
             <xsl:if test="@type='algebrakit'">
                 <div class="answer-heading">AlgebraKIT:</div>

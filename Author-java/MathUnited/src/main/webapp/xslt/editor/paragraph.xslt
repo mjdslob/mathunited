@@ -42,13 +42,12 @@
     <!-- specific behaviour -->
     <xsl:template match="am" mode="paragraph">
         <span class="am-container">
-            <span tag="am">
-                <xsl:apply-templates mode="paragraph"/>
-            </span>
+            <span tag="am"><xsl:apply-templates mode="paragraph"/></span>
             `<xsl:value-of select='.'/>`
         </span>
     </xsl:template>
-    <xsl:template match="m:math" mode="paragraph">
+
+    <xsl:template match="m:math" mode="paragraph ">
         <xsl:choose>
             <xsl:when test="@prevent-am">
                 <span class="math-container">

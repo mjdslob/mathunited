@@ -10,20 +10,18 @@ extension-element-prefixes="exsl">
     <!-- Two pass processing of paperfigures with combinations. -->
     <xsl:template match="paperfigure[.//combination]" mode="editor">
         <!-- Create the div tags to carry over metadata -->
-        <div tag="{name()}">
-            <xsl:apply-templates select="@* | node()" mode="divtag"/>
-        </div>
+        <div tag="{name()}"><xsl:apply-templates select="@* | node()" mode="divtag"/></div>
         <!-- Create visual representation -->
         <xsl:apply-templates select="." mode="paragraph" />
     </xsl:template>
 
     <!-- Put all XML as <div tag=> elements -->
-    <xsl:template match="*" mode="divtag">
-        <div tag="{name()}">
-            <xsl:apply-templates select="@* | node()" mode="divtag"/>
-        </div>
-    </xsl:template>
+    <xsl:template match="*" mode="divtag"><div tag="{name()}"><xsl:apply-templates select="@* | node()" mode="divtag"/></div></xsl:template>
 
+    <xsl:template match="am" mode="divtag">
+        <span class="am-container"><span tag="{name()}"><xsl:apply-templates select="@* | node()" mode="divtag"/></span></span>
+    </xsl:template>
+    
     <!-- Copy all attributes. -->
     <xsl:template match="@*" mode="divtag">
         <xsl:copy/>
@@ -105,5 +103,7 @@ extension-element-prefixes="exsl">
             <xsl:apply-templates mode="table"/>
         </div>
     </xsl:template>
+
+    <xsl:template match="am" mode="table">`<xsl:value-of select='.'/>`</xsl:template>
 
 </xsl:stylesheet>

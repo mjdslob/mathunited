@@ -71,5 +71,12 @@ fi
     # Commit
     svn commit ${commitdirs} -m "Changes by user $ARG2."
 
+    # Unlock
+    if test -n "$(find ${ARG1} -maxdepth 1 -name '*.xml' -print -quit)"; then
+      echo "--- Unlocking of files in ${ARG1}"
+      find ${ARG1} -maxdepth 1 -name '*.xml' -exec svn unlock '{}' \;
+    fi
+
+
     echo "*** DONE. SVN COMMIT OF PARAGRAPH '${ARG1}'"
 } |& println

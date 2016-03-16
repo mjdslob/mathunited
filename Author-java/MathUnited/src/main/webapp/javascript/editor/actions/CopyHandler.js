@@ -29,6 +29,10 @@ define(['jquery','app/Document','app/DOMgenerator'], function($, doc,generator) 
             var type = params.itemtype;
             generator.getXML(parent[0], function(xml) {
                 xml = $(xml);
+
+                // Remove uuid attributes
+                xml.find('[uuid]').removeAttr('uuid');
+
                 //modify ids
                 //newid = <id>-copy1.xml
                 $('include',xml).each(function() {
@@ -37,11 +41,11 @@ define(['jquery','app/Document','app/DOMgenerator'], function($, doc,generator) 
                     var fnamebase = fname.replace(/(-copy\d*)?\.xml$/,'');
                     var num = 1;
                     var newfname = fnamebase+'-copy'+num+'.xml';
-                    var elm = $('div[tag="include"][filename="'+newfname+'"]');
+                    var elm = $('div[tag="include"][filename="' + newfname + '"]');
                     while(elm.length>0) {
                         num++;
                         newfname = fnamebase+'-copy'+num+'.xml';
-                        elm = $('div[tag="include"][filename="'+newfname+'"]');
+                        elm = $('div[tag="include"][filename="' + newfname + '"]');
                     }
                     $(this).attr('filename',newfname);
                 });

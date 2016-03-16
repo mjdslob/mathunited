@@ -1,12 +1,2 @@
-GAE/Mathunited/.metadata/
-GAE/Mathunited/war/WEB-INF/classes/
-GAE/Mathunited/war/WEB-INF/lib/
-GAE/Mathunited/.settings/org.eclipse.wst.validation.prefs
-GAE/.metadata/
-GAE/.recommenders/
-Author-java/.metadata/
-Author-java/MathUnited/target/
-Author-java/MathUnited/.settings/
-.metadata/
-GAE/Mathunited/war/WEB-INF/appengine-web.xml
-/GAE_M4A/target/
+Publisher/html/leerlijnen
+Publisher/html/moxiemanager/data/storage/user.anonymous.json

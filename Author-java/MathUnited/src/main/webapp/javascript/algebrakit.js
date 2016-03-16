@@ -29,7 +29,7 @@ requirejs.config({
         jquery: 'jquery-1.10.2', //change here when using newer version of jquery,
         jqueryui: 'jquery-ui-1.10.4.custom.min', //change here when using newer version of jquery,
         //mathjax: "../../bower_components/MathJax/MathJax.js?config=TeX-AMS_HTML&amp;delayStartupUntil=configured",
-        mathjax: "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML&amp;delayStartupUntil=configured",
+        mathjax: "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML&amp;delayStartupUntil=configured",
         touchpunch: 'jquery.ui.touch-punch.min'
     },
     shim: {

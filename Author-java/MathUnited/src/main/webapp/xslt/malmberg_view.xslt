@@ -197,7 +197,7 @@ indent="yes" encoding="utf-8"/>
                            }
 		      });
                    </script>
-		   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js">
+		   <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js">
 		   </script>
 		   <script type="text/javascript" src="/javascript/MathUnited.js"/>
 		   <script type="text/javascript" src="/javascript/MathUnited_m4a.js"/>
@@ -222,7 +222,7 @@ indent="yes" encoding="utf-8"/>
                            }
 		      });
 		   </script>
-		   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js">
+		   <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js">
 		   </script>
 		   <script type="text/javascript" src="javascript/MathUnited.js"/>
 		   <script type="text/javascript" src="javascript/MathUnited_m4a.js"/>

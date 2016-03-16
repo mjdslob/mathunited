@@ -1,18 +1,14 @@
 package nl.math4all.mathunited.editor;
 
 import nl.math4all.mathunited.configuration.Configuration;
-import nl.math4all.mathunited.utils.SvnScriptRunner;
+import nl.math4all.mathunited.utils.ScriptRunner;
 import nl.math4all.mathunited.utils.Utils;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -74,7 +70,7 @@ public class SvnStatusServlet extends BaseHttpServlet {
                     }
                 }
 
-                SvnScriptRunner runner = new SvnScriptRunner(writer);
+                ScriptRunner runner = new ScriptRunner(writer);
                 runner.runScript("svn-status", svnPath);
 
             }

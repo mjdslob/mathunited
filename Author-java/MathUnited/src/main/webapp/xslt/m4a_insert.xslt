@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xsl:stylesheet version="2.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:saxon="http://saxon.sf.net/"
                 xmlns:exsl="http://exslt.org/common"
                 xmlns:m="http://www.w3.org/1998/Math/MathML"
                 xmlns:cals="http://www.someplace.org/cals"
                 xmlns:xhtml="http://www.w3.org/1999/xhtml"
-                exclude-result-prefixes="saxon cals xhtml"
+                exclude-result-prefixes="xhtml"
                 extension-element-prefixes="exsl">
     <xsl:strip-space elements="*"/>
     <xsl:preserve-space elements="m:*"/>

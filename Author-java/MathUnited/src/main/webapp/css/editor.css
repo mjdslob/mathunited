@@ -406,6 +406,15 @@ div[tag="alternatives"] .menu-button-div {
     background-image: url('../sources_ma/kit_uitleguit_mo.png');
     cursor:pointer;
 }
+
+.answer-button-akit {
+    border-left: 4px solid #008000;
+}
+
+.answer-button-akit-incomplete {
+    border-left: 4px solid #c00000;
+}
+
 .item-button-container {
     position:absolute;
     width:40px;

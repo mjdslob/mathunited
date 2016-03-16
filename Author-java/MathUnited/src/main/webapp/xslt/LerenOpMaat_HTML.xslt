@@ -97,7 +97,7 @@ indent="yes" encoding="utf-8"/>
       });
    </script>
    <script type="text/javascript"
-      src="http://cdn.mathjax.org/mathjax/latest/MathJax.js">
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js">
    </script>
    <script type="text/javascript" src="http://mathunited.pragma-ade.nl:41080/MathUnited/javascript/MathUnited.js"/>
    <script type="text/javascript" src="http://mathunited.pragma-ade.nl:41080/MathUnited/javascript/MathUnited_LOM.js"/>

@@ -101,4 +101,12 @@ public class LockServlet extends HttpServlet {
         //get the pdf from the session and return it
     }
 
+    /** Clean up lock manager */
+    @Override
+    public void destroy() {
+        LockManager.getInstance().shutdown();
+        super.destroy();
+    }
+
+
 }

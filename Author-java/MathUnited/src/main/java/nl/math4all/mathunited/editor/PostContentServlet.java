@@ -8,12 +8,17 @@ import java.util.logging.Level;
 import java.util.Map;
 import java.util.HashMap;
 import javax.xml.transform.sax.SAXSource;
+
+import nl.math4all.mathunited.utils.ScriptRunner;
+import nl.math4all.mathunited.utils.Utils;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
+
 import javax.xml.xpath.*;
+
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 import nl.math4all.mathunited.XSLTbean;
@@ -31,7 +36,12 @@ import nl.math4all.mathunited.utils.FileManager;
 // - other parameters are just passed to xslt
 
 public class PostContentServlet extends HttpServlet {
-    private final static Logger LOGGER = Logger.getLogger(PostContentServlet.class.getName());
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4413308030922780962L;
+	
+	private final static Logger LOGGER = Logger.getLogger(PostContentServlet.class.getName());
     private String resultXML = "<post result=\"{#POSTRESULT}\"><message>{#MESSAGE}</message></post>";
     XSLTbean processor;
     Map<String, Component> componentMap;
@@ -39,37 +49,37 @@ public class PostContentServlet extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        try{
+        try {
             super.init(config);
             LOGGER.setLevel(Level.INFO);
             context = getServletContext();
 
             processor = new XSLTbean(context);
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
 
     @Override
-    public void doPost ( HttpServletRequest request,
-                         HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request,
+                       HttpServletResponse response) throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
         response.setContentType("application/xml");
         Writer w = response.getWriter();
         PrintWriter pw = new PrintWriter(w);
-        try{
+        try {
             // Check if user is logged in
             Configuration config = Configuration.getInstance();
             String repoId = null;
             Cookie[] cookieArr = request.getCookies();
 
             // Get repo and throw exception of not set
-            if(cookieArr != null) {
-                for(Cookie c:cookieArr) {
+            if (cookieArr != null) {
+                for (Cookie c : cookieArr) {
                     String name = c.getName();
-                    if(name.equals("REPO")) {
+                    if (name.equals("REPO")) {
                         repoId = c.getValue();
                     }
                 }
@@ -78,15 +88,16 @@ public class PostContentServlet extends HttpServlet {
                 throw new Exception("Repository is not set.");
             }
 
-            UserSettings usettings = UserManager.isLoggedIn(request,response);
-            
+            UserSettings usettings = UserManager.isLoggedIn(request, response);
+
             String body = readBody(request);
             Map<String, String> parameterMap = new HashMap<String, String>();
 
             BufferedReader br = new BufferedReader(new StringReader(body));
 
 
-            String _repo = br.readLine(); //not used
+            br.readLine(); 
+            
             // if (repo != null) { repo = rep.trim() }
             //
             //if (repo == null || repo.isEmpty()) {
@@ -107,7 +118,7 @@ public class PostContentServlet extends HttpServlet {
             if (subcomp != null) {
                 subcomp = subcomp.trim();
             }
-            if(subcomp == null || subcomp.isEmpty()) {
+            if (subcomp == null || subcomp.isEmpty()) {
                 throw new Exception("Het verplichte argument 'subcomp' ontbreekt.");
             }
             parameterMap.put("subcomp", subcomp);
@@ -119,7 +130,7 @@ public class PostContentServlet extends HttpServlet {
             if (nItemsStr != null) {
                 nItems = Integer.parseInt(nItemsStr);
             }
-            
+
             StringBuffer htmlBuffer = new StringBuffer();
             String sCurrentLine;
             while ((sCurrentLine = br.readLine()) != null) {
@@ -131,24 +142,26 @@ public class PostContentServlet extends HttpServlet {
                 throw new Exception("Het verplichte argument 'html' ontbreekt.");
             }
             parameterMap.put("html", html);
-                        
-            
+
+
             LOGGER.log(Level.INFO, "Commit: user={0}, comp={1}, subcomp={2}, repo={3}", new Object[]{usettings.mail, comp, subcomp, repoId});
             LOGGER.log(Level.FINE, html);
+            System.out.println(html);
+
             Repository repository = config.getRepos().get(repoId);
-            if(repository==null) {
-                throw new Exception(repoId+" is een ongeldige repository");
+            if (repository == null) {
+                throw new Exception(repoId + " is een ongeldige repository");
             }
             boolean access = false;
-            for(String role : usettings.roles) {
-                if(role.equals(repository.edit_permission)) {
+            for (String role : usettings.roles) {
+                if (role.equals(repository.edit_permission)) {
                     access = true;
                     break;
                 }
             }
 
-            if(!access) {
-                throw new LoginException("You do not have the rights to edit repository "+repoId);
+            if (!access) {
+                throw new LoginException("You do not have the rights to edit repository " + repoId);
             }
 
             //user has access, continue
@@ -156,25 +169,25 @@ public class PostContentServlet extends HttpServlet {
             //read components. To be moved to init()
             componentMap = repository.readComponentMap();
             Component component = componentMap.get(comp);
-            if(component==null) {
+            if (component == null) {
                 throw new Exception("Er bestaat geen component met id '" + comp + "'.\n" +
                         "Meldt u a.u.b. de volgende details aan het support team:\n" +
-                        "Commit: user='"+usettings.mail+"', comp='\"+comp+\"', subcomp='\"+subcomp+\"', repo='\"+repoId+\"'.");
+                        "Commit: user='" + usettings.mail + "', comp='\"+comp+\"', subcomp='\"+subcomp+\"', repo='\"+repoId+\"'.");
             }
 
             // find subcomponent, previous and following
-            SubComponent sub=null;
+            SubComponent sub = null;
             boolean found = false;
-            for(int ii=0; ii<component.subComponentList.size(); ii++ ){
+            for (int ii = 0; ii < component.subComponentList.size(); ii++) {
                 sub = component.subComponentList.get(ii);
-                if(sub.id.equals(subcomp)) {
-                    found=true;
+                if (sub.id.equals(subcomp)) {
+                    found = true;
                     break;
                 }
             }
-            
-            if(sub==null || !found) {
-                throw new Exception("Er bestaat geen subcomponent met id '"+subcomp+"'");
+
+            if (sub == null || !found) {
+                throw new Exception("Er bestaat geen subcomponent met id '" + subcomp + "'");
             }
 
             LOGGER.log(Level.FINE, "found subcomponent {0}: {1}", new Object[]{subcomp, sub.title});
@@ -184,13 +197,13 @@ public class PostContentServlet extends HttpServlet {
             
             int ind = sub.file.lastIndexOf('/');
             String subFolder = sub.file.substring(0, ind);
-            String refbase = config.getContentRoot()+repository.getPath()+"/"+subFolder+"/";
+            String refbase = Utils.pathJoin(config.getContentRoot(), repository.getPath(), subFolder);
 
             ContentResolver resolver = new ContentResolver(repository, context);
             StringReader strReader = new StringReader(html);
             InputSource xmlSource = new InputSource(strReader);
             SAXSource xmlSaxSource = new SAXSource(xmlReader, xmlSource);
-
+            
             Node root = processor.processToDOM(xmlSaxSource, "m4a_inverse", parameterMap, resolver);
 
             /*
@@ -201,28 +214,28 @@ public class PostContentServlet extends HttpServlet {
                 FileManager.log(subFolder, usettings.username, zipFile, repository);
             }
             */
-            
+
             XPath xpath = XPathFactory.newInstance().newXPath();
             String expression = "//include";
             NodeList nodes = (NodeList) xpath.evaluate(expression, root, XPathConstants.NODESET);
             int n = nodes.getLength();
-            if(n!=nItems) {                
+            if (n != nItems) {
                 LOGGER.log(Level.SEVERE, "Number of items does not match. Expected {0}, but found {1}. Not saving the document to prevent loss of content.", new Object[]{nItems, n});
-                saveState(html,comp, subcomp, nItems,n, repository);
-                String result = resultXML.replace("{#POSTRESULT}","false").replace("{#MESSAGE}", "Number of items does not match. Not saving the document to prevent loss of content.");
+                saveState(html, comp, subcomp, nItems, n, repository);
+                String result = resultXML.replace("{#POSTRESULT}", "false").replace("{#MESSAGE}", "Number of items does not match. Not saving the document to prevent loss of content.");
                 pw.println(result);
             } else {
-                for(int ii=0; ii<n; ii++) {
+                for (int ii = 0; ii < n; ii++) {
                     Node node = nodes.item(ii);
                     NamedNodeMap nodeMap = node.getAttributes();
-                    if(nodeMap!=null) {
+                    if (nodeMap != null) {
                         Node attrNode = nodeMap.getNamedItem("filename");
-                        if(attrNode!=null) {
-                            String fileStr = refbase + attrNode.getNodeValue();
-                            if(node.getFirstChild()!=null) {
+                        if (attrNode != null) {
+                            String fileStr = Utils.pathJoin(refbase, attrNode.getNodeValue());
+                            if (node.getFirstChild() != null) {
                                 FileManager.writeToFile(fileStr, node.getFirstChild(), repository);
                                 node.removeChild(node.getFirstChild());
-                            } 
+                            }
                         }
                     }
                 }
@@ -230,7 +243,7 @@ public class PostContentServlet extends HttpServlet {
                 expression = "/root/subcomponent";
                 Element node = (Element) xpath.evaluate(expression, root, XPathConstants.NODE);
                 node.setAttribute("status", status);
-                String fileStr = config.getContentRoot()+repository.getPath()+"/" + sub.file;
+                String fileStr = Utils.pathJoin(config.getContentRoot(), repository.getPath(), sub.file);
                 FileManager.writeToFile(fileStr, node, repository);
                 WorkflowServlet.updateStatus(repoId, subcomp, fileStr);
 
@@ -240,59 +253,62 @@ public class PostContentServlet extends HttpServlet {
                 FileManager.log(subFolder, usettings.username, zipFile, repository);
                 */
 
-                String result = resultXML.replace("{#POSTRESULT}","true").replace("{#MESSAGE}", "success");
+                String result = resultXML.replace("{#POSTRESULT}", "true").replace("{#MESSAGE}", "success");
                 pw.println(result);
             }
-        }
-        catch (Exception e) {
+
+            // Fix-up XML files
+            ScriptRunner runner = new ScriptRunner(new PrintWriter(System.out));
+            runner.runScript("xml-fixup", refbase);
+        } catch (Exception e) {
             e.printStackTrace();
-            String result = resultXML.replace("{#POSTRESULT}","false").replace("{#MESSAGE}", e.getMessage());
+            String result = resultXML.replace("{#POSTRESULT}", "false").replace("{#MESSAGE}", e.getMessage());
             pw.println(result);
         }
-        
+
     }
-    
+
     private void saveState(String html, String comp, String subcomp, int nItems, int n, Repository repo) throws Exception {
         Configuration config = Configuration.getInstance();
-        File f = new File(config.contentRoot+repo.getPath()+"/debug/"+comp+"/"+subcomp+"/log.txt");
+        File f = new File(config.contentRoot + repo.getPath() + "/debug/" + comp + "/" + subcomp + "/log.txt");
         f.getParentFile().mkdirs();
         BufferedWriter out = new BufferedWriter(new FileWriter(f));
         out.write("\n----------------\n");
-        out.write("nItems in html = "+nItems+", nItems in xml ="+n);
+        out.write("nItems in html = " + nItems + ", nItems in xml =" + n);
         out.write("\n----------------\n");
         out.write(html);
         out.write("\n----------------\n");
         out.close();
     }
-    
+
     @Override
-    public void doGet (  HttpServletRequest request,
-                         HttpServletResponse response)
-             throws ServletException, IOException {
+    public void doGet(HttpServletRequest request,
+                      HttpServletResponse response)
+            throws ServletException, IOException {
 
     }
-    
+
     private String readBody(HttpServletRequest request) throws Exception {
         int length = request.getContentLength();
         BufferedReader br = request.getReader();
-        char[] buffer = new char[4*1024];
+        char[] buffer = new char[4 * 1024];
         int numChars;
         StringBuilder result = new StringBuilder();
-        
-        while( (numChars=br.read(buffer,0,buffer.length)) >=0 ) {
-            result.append(buffer,0,numChars);
+
+        while ((numChars = br.read(buffer, 0, buffer.length)) >= 0) {
+            result.append(buffer, 0, numChars);
         }
 
         String str = result.toString();
         int nRead = str.getBytes().length;
-        if(nRead!=length) {
+        if (nRead != length) {
             LOGGER.log(Level.SEVERE, "Number of bytes read does not match contextlength header. Nr of bytes read = {0}, content-length = {1}", new Object[]{nRead, length});
-            if(nRead<length*0.9)
-                throw new Exception("Number of bytes read does not match contextlength header. Nr of bytes read = "+nRead+", content-length = "+length);
+            if (nRead < length * 0.9)
+                throw new Exception("Number of bytes read does not match contextlength header. Nr of bytes read = " + nRead + ", content-length = " + length);
         } else {
             LOGGER.log(Level.FINE, "sanity check passed: number of bytes in body matches contentlength header: {0}", length);
         }
-        
+
         return str;
     }
 }

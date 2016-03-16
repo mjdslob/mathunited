@@ -26,8 +26,6 @@ public class ContentResolver implements URIResolver{
            {
               try {
                   if(systemId.endsWith("entities.xml")) {
-                      
-                      //File entitiesFile = new File("/var/www/content/entities.xml");
                       Configuration config = Configuration.getInstance();
                       InputStream entitiesStream = new FileInputStream(config.getEntitiesFile());
                       return new InputSource(entitiesStream);

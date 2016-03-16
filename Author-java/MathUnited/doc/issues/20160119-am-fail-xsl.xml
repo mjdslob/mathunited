@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?context-directive job ctxfile ../m4all-leertaak.ctx?><root xmlns:m="http://www.w3.org/1998/Math/MathML"
+      xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    <subcomponent id="hv-pre13" name="Schatten" status="auteur_gereed" type="paragraaf">
+        <metadata>
+            <targetgroup>Wiskunde eerste fase HAVO/VWO</targetgroup>
+            <supportedlink>
+                <entries>
+                    <entry>www.math4all.nl</entry>
+                    <entry>MAThADORE-basiswiskunde</entry>
+                    <entry>1/2 HAVO/VWO</entry>
+                </entries>
+            </supportedlink>
+        </metadata>
+        <description>
+            <label>hv-pre13</label>
+            <domain>Rekenen</domain>
+            <subdomain>Rekenen</subdomain>
+            <section>Voorrangsregels</section>
+            <number>16</number>
+            <objectives>
+                <objective id="obj-1">ddd</objective>
+                <objective id="obj-2">dddd</objective>
+            </objectives>
+        </description>
+        <componentcontent>
+            <explanation>
+                <include filename="hv-pre13-u1.xml">
+                    <explanation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="hv-pre13-u1"
+                                 xsi:nonamespaceschemalocation="http://54.72.171.200/math4all-schemata/math4all-main.xsd">
+                        <metadata/>
+                        <p>
+                            <b/>
+                            <author-remark>Geodriehoek is geen voorkennis van de basisschool. Dus... </author-remark>
+                        </p>
+                        <p>Dit is een formule met spatie <am>4x - 5</am> en dit met een spatie die in XML overeind bliijft <am>~4x -5</am> of moet het zo <am>\ 4 x - 5</am>
+                        </p>
+                        <p> </p>
+                        <paperfigure id="*" label="*" location="here" paperlocation="here" type="c">
+                            <caption/>
+                            <content>
+                                <combination nx="4" ny="1">
+                                    <combiblock>
+                                        <subcaption>
+                                            <p>Grote jpg afbeeldingi<am>sum_(i=1)^n i^3=((n(n+1))/2)^2</am>
+                                            </p>
+                                        </subcaption>
+                                        <content>
+                                            <resource>
+                                                <name>v12_fig_07_vb2_03a.jpg</name>
+                                                <width/>
+                                                <height/>
+                                                <description/>
+                                                <owner/>
+                                            </resource>
+                                        </content>
+                                    </combiblock>
+                                    <combiblock>
+                                        <subcaption>
+                                            <p>kleine svg afbeelding</p>
+                                        </subcaption>
+                                        <content>
+                                            <resource>
+                                                <name>v12_rek_05_ui1_00_1.svg</name>
+                                                <width/>
+                                                <height/>
+                                                <description/>
+                                                <owner/>
+                                            </resource>
+                                        </content>
+                                    </combiblock>
+                                    <combiblock>
+                                        <subcaption>
+                                            <p>medium png afbeelding</p>
+                                        </subcaption>
+                                        <content>
+                                            <resource>
+                                                <name>va_feg_03_vb3_00_ant_1.png</name>
+                                                <width/>
+                                                <height/>
+                                                <description/>
+                                                <owner/>
+                                            </resource>
+                                        </content>
+                                    </combiblock>
+                                    <combiblock>
+                                        <subcaption>
+                                            <p>klein jpg afbeelding</p>
+                                        </subcaption>
+                                        <content>
+                                            <resource>
+                                                <name>me105.jpg</name>
+                                                <width/>
+                                                <height/>
+                                                <description/>
+                                                <owner/>
+                                            </resource>
+                                        </content>
+                                    </combiblock>
+                                </combination>
+                            </content>
+                        </paperfigure>
+                        <am>sum_(i=1)^n i^3=((n(n+1))/2)^2</am>
+                        <p>Met <i>Algebra</i>
+                            <b>KIT</b> kun je oefenen met oplossen van lineaire vergelijkingen. Je kunt telkens een nieuwe opgave oproepen. Je maakt elke opgave zelf op papier. Met <inlinefigure type="t" id="hv-re24-xa1-fig2" label="hv-re24-xa1-fig2">
+                                <content>
+                                    <resource type="graphic">
+                                        <name>AK-answer.jpg</name>
+                                        <id/>
+                                        <width/>
+                                        <height/>
+                                        <description/>
+                                        <owner>math4all</owner>
+                                    </resource>
+                                </content>
+                            </inlinefigure> zie je het antwoord. Je kunt op de uitwerking inzoomen. Met <inlinefigure type="t" id="hv-re24-xa1-fig3" label="hv-re24-xa1-fig3">
+                                <content>
+                                    <resource type="graphic">
+                                        <name>AK-repeat.jpg</name>
+                                        <id/>
+                                        <width/>
+                                        <height/>
+                                        <description/>
+                                        <owner>math4all</owner>
+                                    </resource>
+                                </content>
+                            </inlinefigure> krijg je een nieuwe opgave. </p>
+                        <p>Of inline figuur zo?</p>
+                        <inlinefigure id="hv-re24-xa1-fig3" type="t" label="hv-re24-xa1-fig3">
+                            <content>
+                                <resource type="graphic">
+                                    <name>AK-repeat.jpg</name>
+                                    <id/>
+                                    <width/>
+                                    <height/>
+                                    <description/>
+                                    <owner>math4all</owner>
+                                </resource>
+                            </content>
+                        </inlinefigure>
+                        <p>Paper figure</p>
+                        <paperfigure type="c" label="*" id="*" location="here" paperlocation="here" reset="">
+                            <caption/>
+                            <content>
+                                <resource>
+                                    <name>v12_gra_10_et_04.svg</name>
+                                    <id/>
+                                    <width>7.5cm</width>
+                                    <height/>
+                                    <description/>
+                                    <owner/>
+                                </resource>
+                            </content>
+                        </paperfigure>
+                        <p>
+                            <b>Meten met een liniaal</b>
+                        </p>
+                        <p>Op een  <keyword>
+                                <text>liniaal</text>
+                            </keyword>
+                            <b> </b>zijn altijd de <textref ref="bas">centimeters</textref> (en 1 centimeter is 10 <cloze audience="basis" type="algebrakit">
+                                <cloze-answers>
+                                    <cloze-answer evaluate="equivalent" score="100%">
+                                        <cloze-answertext> millimeters</cloze-answertext>  </cloze-answer>
+                                    <cloze-answer evaluate="exact" score="100%">
+                                        <cloze-answertext>mm</cloze-answertext>
+                                    </cloze-answer>
+                                    <cloze-answer evaluate="equivalent" score="50%">
+                                        <cloze-answertext>duizendste meter </cloze-answertext>
+                                    </cloze-answer>
+                                </cloze-answers>
+                            </cloze>
+                            <b> </b>en de millimeters<b> </b>aangegeven. Let erop dat een liniaal meestal niet bij <am>0</am> begint. Wanneer je een lijnstuk meet, leg dan altijd het begin van de lijn bij het streepje <am>0</am> cm en niet bij het begin van de liniaal. </p>
+                        <paperfigure type="c" label="*" id="*" location="false" reset="">
+                            <caption/>
+                            <content>
+                                <resource>
+                                    <name>Pengo_test_hello3.svg</name>
+                                    <id/>
+                                    <width/>
+                                    <height/>
+                                    <description/>
+                                    <owner/>
+                                </resource>
+                            </content>
+                        </paperfigure>
+                        <paperfigure type="c" label="*" id="*" location="false" reset="">
+                            <caption/>
+                            <content>
+                                <resource>
+                                    <name>12hv-M0112.jpg</name>
+                                    <id/>
+                                    <width/>
+                                    <height/>
+                                    <description/>
+                                    <owner/>
+                                </resource>
+                            </content>
+                        </paperfigure>
+                        <p>De ober staat in de <cloze audience="basis" palette="toetsjes" type="text">
+                                <cloze-hint>Gebruik de namen zoals getoond in de afbeeling </cloze-hint>
+                                <cloze-answers>
+                                    <cloze-answer evaluate="equivalent" score="100%">
+                                        <cloze-answertext>badkamer</cloze-answertext>
+                                    </cloze-answer>
+                                    <cloze-answer evaluate="equivalent" score="100%">
+                                        <cloze-answertext>toilet</cloze-answertext>
+                                    </cloze-answer>
+                                    <cloze-answer evaluate="equivalent" score="100%">
+                                        <cloze-answertext>berging</cloze-answertext>
+                                    </cloze-answer>
+                                    <cloze-answer evaluate="equivalent" score="100%">
+                                        <cloze-answertext>balkon</cloze-answertext>
+                                    </cloze-answer>
+                                    <cloze-answer evaluate="equivalent" score="0%">
+                                        <cloze-answertext>woonkamer </cloze-answertext>
+                                        <cloze-correction>De woonkamer is geen rechthoek; hij heeft, samen met de keuken, meer dan 4 hoeken. </cloze-correction>
+                                    </cloze-answer>
+                                    <cloze-answer evaluate="equivalent" score="0%">
+                                        <cloze-answertext>keuken</cloze-answertext>
+                                        <cloze-correction>De keuken is geen rechthoek; hij heeft, samen met de woonkamer, meer dan 4 hoeken. </cloze-correction>
+                                    </cloze-answer>
+                                    <cloze-answer evaluate="equivalent" score="0%">
+                                        <cloze-answertext>hobbyruimte </cloze-answertext>
+                                        <cloze-correction>De hobbyruimte is geen rechthoek; hij heeft weliswaar 4 hoeken, maar niet alle hoeken zijn recht. </cloze-correction>
+                                    </cloze-answer>
+                                    <cloze-answer evaluate="equivalent" score="0%">
+                                        <cloze-answertext>entree</cloze-answertext>
+                                        <cloze-correction>De entree is geen rechthoek; hij heeft meer dan 4 hoeken. </cloze-correction>
+                                    </cloze-answer>
+                                </cloze-answers>
+                            </cloze> . </p>
+                        <paperfigure type="c" label="*" id="*" location="false" reset="">
+                            <caption/>
+                            <content>
+                                <resource>
+                                    <name>liniaal 4.png</name>
+                                    <id/>
+                                    <width>3.7cm</width>
+                                    <height/>
+                                    <description/>
+                                    <owner/>
+                                </resource>
+                            </content>
+                        </paperfigure>
+                        <p>
+                            <b>Meten met een geodriehoek</b>
+                        </p>
+                        <p>Meten met een <keyword>
+                                <text>geodriehoek</text>
+                            </keyword>
+                            <b> </b>gaat anders dan meten met een liniaal. Ook met een geodriehoek kun je in centimeters en in millimeters meten, maar de <am>0</am> cm staat precies in het midden van de langste zijde. Met een geodriehoek kun je meer dan alleen lengtes meten. Je kunt er ook hoeken mee meten. </p>
+                        <paperfigure type="c" label="*" id="*" location="false" reset="">
+                            <caption/>
+                            <content>
+                                <resource>
+                                    <name>geo.jpg</name>
+                                    <id/>
+                                    <width>4.64cm</width>
+                                    <height/>
+                                    <description/>
+                                    <owner/>
+                                </resource>
+                            </content>
+                        </paperfigure>
+                    </explanation>
+                </include>
+                <exercises/>
+            </explanation>
+            <explanation>
+                <include filename="hv-pre13-u2.xml">
+                    <explanation id="hv-pre13-u2">
+                        <metadata/>
+                        <p>
+                            <b>
+                                <author-remark/>
+                            </b>
+                        </p>
+                        <p>
+                            <b/>
+                        </p>
+                        <p>
+                            <i/>
+                            <b>
+                                <keyword>
+                                    <text/>
+                                </keyword>
+                            </b>
+                            <i/>
+                            <keyword>
+                                <text/>
+                            </keyword>
+                        </p>
+                        <table border="0">
+                            <tbody>
+                                <tr>
+                                    <td colspan="1" rowspan="1"/>
+                                    <td colspan="1" rowspan="1"/>
+                                    <td colspan="1" rowspan="1"/>
+                                </tr>
+                                <tr>
+                                    <td colspan="1" rowspan="1"/>
+                                    <td colspan="1" rowspan="1"/>
+                                    <td colspan="1" rowspan="1"/>
+                                </tr>
+                                <tr>
+                                    <td colspan="1" rowspan="1"/>
+                                    <td colspan="1" rowspan="1"/>
+                                    <td colspan="1" rowspan="1"/>
+                                </tr>
+                                <tr>
+                                    <td colspan="1" rowspan="1"/>
+                                    <td colspan="1" rowspan="1"/>
+                                    <td colspan="1" rowspan="1"/>
+                                </tr>
+                                <tr>
+                                    <td colspan="1" rowspan="1"/>
+                                    <td colspan="1" rowspan="1"/>
+                                    <td colspan="1" rowspan="1"/>
+                                </tr>
+                                <tr>
+                                    <td colspan="1" rowspan="1"/>
+                                    <td colspan="1" rowspan="1"/>
+                                    <td colspan="1" rowspan="1"/>
+                                </tr>
+                                <tr>
+                                    <td colspan="1" rowspan="1"/>
+                                    <td colspan="1" rowspan="1"/>
+                                    <td colspan="1" rowspan="1"/>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </explanation>
+                </include>
+                <exercises/>
+            </explanation>
+            <explanation>
+                <include filename="hv-pre13-u3.xml">
+                    <explanation id="hv-pre13-u3">
+                        <metadata/>
+                        <p>
+                            <b/>
+                        </p>
+                        <p>
+                            <keyword>
+                                <text/>
+                            </keyword>
+                        </p>
+                        <p>
+                            <b/>
+                        </p>
+                        <p>
+                            <b/>
+                        </p>
+                        <p>
+                            <am/>
+                            <am/>
+                            <am/>
+                            <am/>
+                            <am/>
+                        </p>
+                        <p>
+                            <b/>
+                        </p>
+                        <p>
+                            <am/>
+                            <am/>
+                            <am/>
+                        </p>
+                    </explanation>
+                </include>
+                <exercises/>
+            </explanation>
+            <theory>
+                <examples>
+                    <include filename="hv-pre13-v1.xml">
+                        <example id="hv-pre13-v1">
+                            <metadata/>
+                            <examplecontent>
+                                <p>
+                                    <author-remark/>
+                                </p>
+                                <p>
+                                    <am/>
+                                    <am/>
+                                </p>
+                            </examplecontent>
+                        </example>
+                    </include>
+                </examples>
+                <exercises>
+                    <block medium="paper">
+                        <productpage product="ninept-sb">
+                            <page/>
+                        </productpage>
+                    </block>
+                </exercises>
+                <examples>
+                    <include filename="hv-pre13-v2.xml">
+                        <example id="hv-pre13-v2">
+                            <metadata/>
+                            <examplecontent>
+                                <p>
+                                    <author-remark/>
+                                </p>
+                                <p>
+                                    <b/>
+                                </p>
+                                <p>
+                                    <b/>
+                                </p>
+                            </examplecontent>
+                        </example>
+                    </include>
+                </examples>
+                <exercises/>
+                <examples>
+                    <include filename="hv-pre13-v3.xml">
+                        <example id="hv-pre13-v3">
+                            <metadata/>
+                            <examplecontent/>
+                        </example>
+                    </include>
+                </examples>
+                <exercises>
+                    <include filename="hv-pre13-v31.xml">
+                        <exercise id="hv-pre13-v31">
+                            <metadata/>
+                            <multi-item>
+                                <intro/>
+                                <items>
+                                    <item label="a" type="open">
+                                        <itemcontent>
+                                            <question/>
+                                        </itemcontent>
+                                        <answer/>
+                                        <explanation/>
+                                        <feedback/>
+                                        <teacheranswer/>
+                                    </item>
+                                </items>
+                            </multi-item>
+                        </exercise>
+                    </include>
+                </exercises>
+                <examples>
+                    <include filename="hv-pre13-v5.xml">
+                        <example id="hv-pre13-v5">
+                            <metadata/>
+                            <examplecontent/>
+                        </example>
+                    </include>
+                </examples>
+                <exercises>
+                    <include filename="hv-pre13-v51.xml">
+                        <exercise id="hv-pre13-v51">
+                            <metadata/>
+                            <multi-item>
+                                <intro/>
+                                <items>
+                                    <item label="a" type="open">
+                                        <itemcontent>
+                                            <question/>
+                                        </itemcontent>
+                                        <answer/>
+                                        <explanation/>
+                                        <feedback/>
+                                        <teacheranswer/>
+                                    </item>
+                                </items>
+                            </multi-item>
+                        </exercise>
+                    </include>
+                </exercises>
+            </theory>
+            <digest>
+                <exercises>
+                    <include filename="hv-pre13-ex-1.xml">
+                        <exercise id="hv-pre13-ex-1">
+                            <metadata>
+                                <objectives/>
+                            </metadata>
+                            <single-item>
+                                <item label="a" type="algebrakit">
+                                    <itemcontent>
+                                        <question>
+                                            <p>
+                                                <am/>
+                                            </p>
+                                        </question>
+                                    </itemcontent>
+                                    <evaluation audience="vwo-b" solve=""/>
+                                    <answer/>
+                                    <explanation/>
+                                    <feedback/>
+                                    <teacheranswer/>
+                                </item>
+                            </single-item>
+                        </exercise>
+                    </include>
+                </exercises>
+            </digest>
+        </componentcontent>
+    </subcomponent>
+</root>

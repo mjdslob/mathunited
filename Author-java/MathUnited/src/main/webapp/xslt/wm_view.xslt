@@ -5,6 +5,7 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema"
 xmlns:saxon="http://saxon.sf.net/"
 xmlns:exsl="http://exslt.org/common"
 xmlns:m="http://www.w3.org/1998/Math/MathML"
+xmlns:cals="http://www.someplace.org/cals"
 exclude-result-prefixes="saxon"
 extension-element-prefixes="exsl">
 <xsl:param name="item"/>
@@ -169,7 +170,7 @@ indent="yes" encoding="utf-8" />
 		      });
 		   </script>
 		   <script type="text/javascript"
-		      src="http://cdn.mathjax.org/mathjax/latest/MathJax.js">
+		      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js">
 		   </script>
 		   <link rel="stylesheet" href="/css/basis_wm.css" type="text/css"/>
 		   <link rel="stylesheet" href="/css/content.css" type="text/css"/>
@@ -193,7 +194,7 @@ indent="yes" encoding="utf-8" />
 		      });
 		   </script>
 		   <script type="text/javascript"
-		      src="http://cdn.mathjax.org/mathjax/latest/MathJax.js">
+		      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js">
 		   </script>
 		   <link rel="stylesheet" href="css/basis_wm.css" type="text/css"/>
 		   <link rel="stylesheet" href="css/content.css" type="text/css"/>

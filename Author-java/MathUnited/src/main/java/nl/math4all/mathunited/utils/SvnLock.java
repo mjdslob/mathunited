@@ -1,9 +1,6 @@
 package nl.math4all.mathunited.utils;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -40,7 +37,7 @@ public class SvnLock extends Lock {
         removeLockFile();
 
         // Update with script
-        SvnScriptRunner runner = new SvnScriptRunner(new PrintWriter(System.out));
+        ScriptRunner runner = new ScriptRunner(new PrintWriter(System.out));
         runner.runScript("svn-update-paragraph", refbase, username);
 
         // Create new persistent lock file
@@ -53,7 +50,7 @@ public class SvnLock extends Lock {
         LOGGER.info("Releasing lock (svn) for " + refbase + " for user " + username + ".");
 
         // Commit the new files
-        SvnScriptRunner runner = new SvnScriptRunner(new PrintWriter(System.out));
+        ScriptRunner runner = new ScriptRunner(new PrintWriter(System.out));
         runner.runScript("svn-commit-paragraph", refbase, username);
 
         // Remove the lock file

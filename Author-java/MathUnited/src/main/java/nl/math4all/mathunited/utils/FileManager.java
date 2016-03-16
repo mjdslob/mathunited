@@ -212,10 +212,11 @@ public class FileManager {
             FileOutputStream fos = new FileOutputStream(file);
             OutputStreamWriter fwriter = new OutputStreamWriter(fos, "UTF-8");
             output.setCharacterStream(fwriter);
-            if(newDoc!=null)
+            if (newDoc != null) {
                 writer.write(newDoc, output);
-            else
+            } else {
                 writer.write(node, output);
+            }
             fwriter.close();
         }
     }    
