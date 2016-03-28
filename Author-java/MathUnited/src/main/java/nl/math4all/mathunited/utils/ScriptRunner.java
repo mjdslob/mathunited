@@ -134,6 +134,10 @@ public class ScriptRunner {
         DefaultExecuteResultHandler resultHandler = new DefaultExecuteResultHandler();
         Executor executor = new DefaultExecutor();
 
+        // Add a timeout of an hour
+        ExecuteWatchdog watchdog = new ExecuteWatchdog(1 * 60 * 60 * 1000 /* 1 hour in milliseconds */);
+        executor.setWatchdog(watchdog);
+
         // Connect I&O
         PumpStreamHandler streamHandler = new PumpStreamHandler(printStream);
         executor.setStreamHandler(streamHandler);
@@ -156,7 +160,11 @@ public class ScriptRunner {
             // Re-create print stream
             long toc = System.currentTimeMillis();
             try {
-                writer.write("--- '" + cmd + "' took " + (toc - tic) + " ms.\n");
+                if (watchdog.killedProcess()) {
+                    writer.write("*** Process '" + cmd + "' was killed by watchdog after " + (toc - tic) + " ms.\n");
+                } else {
+                    writer.write("--- '" + cmd + "' took " + (toc - tic) + " ms.\n");
+                }
             } catch (IOException ex) {}
         }
 
