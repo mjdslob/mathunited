@@ -56,7 +56,7 @@
 }
 .choice-exercise-content {
     float:left;
-    width:600px;
+    /*width:600px; gives problem for hv-me31 -> digest -> 5th exercise */
 }
 .choice-exercise-content p{
     margin:0;

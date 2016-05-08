@@ -82,6 +82,7 @@ extension-element-prefixes="exsl">
     <xsl:choose>
         <xsl:when test="string-length($id) > 0"><xsl:value-of select="name(subcomponent/componentcontent/*[descendant::include[@filename=concat($id,'.xml')]])"/></xsl:when>
         <xsl:when test="$item=''"><xsl:value-of select="name(subcomponent/componentcontent/*[1])"/></xsl:when>
+        <xsl:when test="$item='theory' and not(subcomponent/componentcontent/theory/include)">explanation</xsl:when>
         <xsl:otherwise><xsl:value-of select="$item"/></xsl:otherwise>
     </xsl:choose>
 </xsl:variable>
