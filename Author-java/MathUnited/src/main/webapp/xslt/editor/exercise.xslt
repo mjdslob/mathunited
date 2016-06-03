@@ -236,7 +236,7 @@ extension-element-prefixes="exsl">
         <div tag="itemcontent">
             <div class="_editor_option" type="action" name="AlgebraKIT aan/uit" function="actions/ToggleAlgebraKIT" />
             <xsl:if test="ancestor::multi-item">
-                <div class="_editor_option" type="action" name="Maak alle deegvragen AlgebraKIT" function="actions/ToggleAllAlgebraKIT" />
+                <div class="_editor_option" type="action" name="Maak alle deelvragen AlgebraKIT" function="actions/ToggleAllAlgebraKIT" />
             </xsl:if>
             <div class="_editor_option" type="optional" function="actions/OptionalTemplate" name="item intro">
                 <xsl:attribute name="params">{template:'exercise-itemintro-template'}</xsl:attribute>

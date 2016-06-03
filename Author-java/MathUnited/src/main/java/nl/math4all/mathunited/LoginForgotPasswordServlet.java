@@ -39,11 +39,13 @@ public class LoginForgotPasswordServlet extends HttpServlet {
             }
             name = name.trim();
 
-            UserSettings usettings = UserManager.resetPassword(name);
-            
+            //UserSettings usettings = UserManager.resetPassword(name);
             pw.println(resultXML.replace("{#LOGINRESULT}","true")
+                        .replace("{#LOGINMESSAGE}","Neemt u aub contact op met de administratie."));
+
+            /*pw.println(resultXML.replace("{#LOGINRESULT}","true")
                         .replace("{#LOGINMESSAGE}", 
-                                 "Nieuw wachtwoord is verstuurd naar "+usettings.mail));
+                                 "Nieuw wachtwoord is verstuurd naar " + usettings.mail));*/
               
         } catch(LoginException e) {
             String result = resultXML.replace("{#LOGINRESULT}","false").replace("{#LOGINMESSAGE}", e.getMessage());

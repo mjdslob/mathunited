@@ -11,11 +11,11 @@ LC_CTYPE=
 # are prependend with a time stamp
 if ! type gawk > /dev/null; then
 function println() {
-    tee -a "${ARG2}"
+    /bin/cat
 }
 else
 function println() {
-    gawk '{ print strftime("%Y-%m-%d|%H:%M:%S|"), $0; fflush(); }' | tee -a "${ARG2}"
+    gawk '{ print strftime("%Y-%m-%d|%H:%M:%S|"), $0; fflush(); }'
 }
 fi
 
@@ -30,6 +30,6 @@ fi
 
     svn status "$ARG1"
 
-    echo "*** DONE. SVN FIX on '${ARG1}'"
+    echo "*** DONE. SVN STATUS on '${ARG1}'"
 
 } |& println

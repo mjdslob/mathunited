@@ -12,11 +12,11 @@ LC_CTYPE=
 # are prependend with a time stamp
 if ! type gawk > /dev/null; then
 function println() {
-    tee -a "${ARG2}"
+    /usr/bin/tee -a "${ARG2}"
 }
 else
 function println() {
-    gawk '{ print strftime("%Y-%m-%d|%H:%M:%S|"), $0; fflush(); }' | tee -a "${ARG2}"
+    gawk '{ print strftime("%Y-%m-%d|%H:%M:%S|"), $0; fflush(); }' | /usr/bin/tee -a "${ARG2}"
 }
 fi
 
