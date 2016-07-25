@@ -30,14 +30,27 @@ fi
     fi
 
     cd ${ARG1}
+    echo "--- In directory $(pwd)"
+
+    # Removing thumbnail directories from repo
+    echo "--- Removing thumbnail directories from repo"
+    thumbdirs=$(/bin/ls -1 **/images/highres/mcith)
+    svn rm --keep-local ${(f)thumbdirs}
+    svn commit -m "(svn-fix) Removed image thumbnail dirs from repo."
+
+    # Removing thumbnails
+    echo "--- Removing thumbnails"
+    thumbnails=$(/bin/ls -1 **/mcith/mcith_*)
+    #echo $thumbnails
+    rm -f ${(f)thumbnails}
+
+    # Remove empty directories
+    echo "--- Removing completely empty directories (no content, no .svn)"
+    find ${ARG1} -type d -empty -not -iwholename "*.svn*" -print -delete
 
     # Cleanup svn tree
     echo "--- Running svn cleanup"
     svn cleanup
-
-    # Remove empty directories
-    echo "--- Removing completely empty directories (no content, no .svn)"
-    find . -type d -empty -not -iwholename "*.svn*" -print -delete
 
     # Find content directories by looking for index.xml
     indexes=$(/bin/ls -1 **/index.xml)

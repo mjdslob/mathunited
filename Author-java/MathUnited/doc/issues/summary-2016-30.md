@@ -1,9 +1,7 @@
-SUMMARY OF CHANGES 2016 / WEEK 06
+SUMMARY OF CHANGES 2016 / WEEK 30
 =================================
 
-
-### PXKETEN-???: UUID weglaten bij kopieeracties
-
-
-- Zelfde `uuid=''`-verwijdering actie als voor klonen.
-- Getest op test server. FIXED.
+Fixt: 
+- CS-123: spelfout
+- CS-159: svn-fix verwijdert geheel lege directories
+- Algemeen: kleine fixes aan scripts (svn-update, svn-status)
