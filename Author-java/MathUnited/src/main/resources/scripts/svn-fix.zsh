@@ -55,6 +55,11 @@ fi
     # Find content directories by looking for index.xml
     indexes=$(/bin/ls -1 **/index.xml)
 
+    # Fixing permissions on index.xml files
+    echo "--- Fixing permissions on index.xml files"
+    # Make group writable
+    chmod g+rw ${(f)indexes}
+
     # Remove index.xml's from repo
     echo "--- Removing index.xml's from repo"
     svn rm --keep-local ${(f)indexes}
