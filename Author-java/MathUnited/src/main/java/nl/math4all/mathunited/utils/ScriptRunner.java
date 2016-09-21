@@ -160,11 +160,14 @@ public class ScriptRunner {
             // Re-create print stream
             long toc = System.currentTimeMillis();
             try {
+                String msg;
                 if (watchdog.killedProcess()) {
-                    writer.write("*** Process '" + cmd + "' was killed by watchdog after " + (toc - tic) + " ms.\n");
+                    msg = "*** Process '" + cmd + "' was killed by watchdog after " + (toc - tic) + " ms.\n";
                 } else {
-                    writer.write("--- '" + cmd + "' took " + (toc - tic) + " ms.\n");
+                    msg = "--- '" + cmd + "' took " + (toc - tic) + " ms.\n";
                 }
+                writer.write(msg);
+                System.out.print(msg);
             } catch (IOException ex) {}
         }
 

@@ -17,6 +17,7 @@ import nl.math4all.mathunited.utils.LockManager;
 import nl.math4all.mathunited.utils.UserManager;
 import nl.math4all.mathunited.utils.Utils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
 
 //mathunited.pragma-ade.nl/MathUnited/view?variant=basis&comp=m4a/xml/12hv-me0&subcomp=3&item=explore
 // - fixed parameters: variant, comp (component), subcomp (subcomponent).
@@ -50,7 +51,8 @@ public class EditServlet extends BaseHttpServlet {
 
         //response.addHeader("Access-Control-Allow-Origin", "*");
 
-        try{
+        try {
+            long tic = System.currentTimeMillis();
 
             Configuration config = Configuration.getInstance();
             UserSettings usettings = UserManager.isLoggedIn(request,response);
@@ -149,8 +151,15 @@ public class EditServlet extends BaseHttpServlet {
 
             component.addToParameterMap(parameterMap, subcomp);
 
-            String currentOwner = getLock(usettings.username, config.getContentRoot() + refbase);
+            long toc = System.currentTimeMillis();
+            System.out.println("[TIMING] @@@ edit: preamble took " + (toc - tic) + " ms.");
 
+            tic = toc;
+            String currentOwner = getLock(usettings.username, config.getContentRoot() + refbase);
+            toc = System.currentTimeMillis();
+            System.out.println("[TIMING] @@@ edit: user locking took " + (toc - tic) + " ms.");
+
+            tic = toc;
             if (currentOwner != null & !StringUtils.equals(currentOwner, usettings.username)) {
                 if (currentOwner.startsWith("@@@")) {
                     parameterMap.put("lock_errormsg", currentOwner.substring(3));
@@ -162,10 +171,20 @@ public class EditServlet extends BaseHttpServlet {
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             ContentResolver resolver = new ContentResolver(repository, context);
             Source xmlSource = resolver.resolve(repository.getPath() + "/" + sub.file, "");
+
+            toc = System.currentTimeMillis();
+            System.out.println("[TIMING] @@@ edit: setting up before xml processing took " + (toc - tic) + " ms.");
+
+            tic = toc;
             String errStr = processor.process(xmlSource, variant, parameterMap, resolver, byteStream);
+            toc = System.currentTimeMillis();
+            System.out.println("[TIMING] @@@ edit: xml processing took " + (toc - tic) + " ms.");
+
+            tic = toc;
+
             response.setContentType("text/html");
 
-            if(errStr.length()>0){
+            if(errStr.length() > 0){
                 PrintWriter writer = response.getWriter();
                 String resultStr = "<html><head></head><body>"+errStr+"</body></html>";
                 writer.println(resultStr);
@@ -175,6 +194,9 @@ public class EditServlet extends BaseHttpServlet {
                 ServletOutputStream os = response.getOutputStream();
                 os.write(result);
             }
+
+            toc = System.currentTimeMillis();
+            System.out.println("[TIMING] @@@ edit: writing result " + (toc - tic) + " ms.");
 
         }
         catch (Exception e) {
