@@ -214,6 +214,16 @@
             30
         </session-timeout>
     </session-config>
+    <!-- BEGIN For performance measurement -->
+    <filter>
+        <filter-name>timingFilter</filter-name>
+        <filter-class>nl.math4all.mathunited.filters.TimingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>timingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!-- END performance measurement -->
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>

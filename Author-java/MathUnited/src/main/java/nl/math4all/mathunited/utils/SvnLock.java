@@ -31,7 +31,7 @@ public class SvnLock extends Lock {
      * be locked in the subversion repo, a lock exceptions is thrown.
      */
     public void aquire() throws LockException {
-        LOGGER.info("Locking (svn)" + refbase + " for user " + username + ".");
+        //LOGGER.info("Locking (svn)" + refbase + " for user " + username + ".");
 
         // Remove stale lock file
         removeLockFile();
@@ -47,7 +47,7 @@ public class SvnLock extends Lock {
 
     /** Release lock */
     public void release() throws LockException {
-        LOGGER.info("Releasing lock (svn) for " + refbase + " for user " + username + ".");
+        //LOGGER.info("Releasing lock (svn) for " + refbase + " for user " + username + ".");
 
         // Commit the new files
         ScriptRunner runner = new ScriptRunner(new PrintWriter(System.out));

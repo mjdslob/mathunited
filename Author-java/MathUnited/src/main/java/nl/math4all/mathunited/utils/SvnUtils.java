@@ -51,7 +51,7 @@ public class SvnUtils {
             cmd.addArgument(arg);
         }
 
-        LOGGER.info("Command line = '''" + cmd + "'''.");
+        //LOGGER.info("Command line = '''" + cmd + "'''.");
         long tic = System.currentTimeMillis();
 
         // Execute in child process
@@ -76,7 +76,7 @@ public class SvnUtils {
         }
         finally {
             long toc = System.currentTimeMillis();
-            LOGGER.info("'" + cmd + "' took " + (toc - tic) + " ms.");
+            LOGGER.info("[TIMING] '" + cmd + "' took " + (toc - tic) + " ms.");
         }
 
         // Return exit code

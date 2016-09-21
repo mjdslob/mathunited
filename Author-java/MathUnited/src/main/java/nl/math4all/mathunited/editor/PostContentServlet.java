@@ -144,9 +144,8 @@ public class PostContentServlet extends HttpServlet {
             parameterMap.put("html", html);
 
 
-            LOGGER.log(Level.INFO, "Commit: user={0}, comp={1}, subcomp={2}, repo={3}", new Object[]{usettings.mail, comp, subcomp, repoId});
-            LOGGER.log(Level.FINE, html);
-            System.out.println(html);
+            //LOGGER.log(Level.INFO, "Commit: user={0}, comp={1}, subcomp={2}, repo={3}", new Object[]{usettings.mail, comp, subcomp, repoId});
+            //LOGGER.log(Level.FINE, html);
 
             Repository repository = config.getRepos().get(repoId);
             if (repository == null) {
@@ -190,7 +189,7 @@ public class PostContentServlet extends HttpServlet {
                 throw new Exception("Er bestaat geen subcomponent met id '" + subcomp + "'");
             }
 
-            LOGGER.log(Level.FINE, "found subcomponent {0}: {1}", new Object[]{subcomp, sub.title});
+            //LOGGER.log(Level.FINE, "found subcomponent {0}: {1}", new Object[]{subcomp, sub.title});
             XMLReader xmlReader = XMLReaderFactory.createXMLReader("org.ccil.cowan.tagsoup.Parser");
             xmlReader.setFeature(org.ccil.cowan.tagsoup.Parser.namespacesFeature, false);
             xmlReader.setEntityResolver(ContentResolver.entityResolver);
@@ -306,7 +305,7 @@ public class PostContentServlet extends HttpServlet {
             if (nRead < length * 0.9)
                 throw new Exception("Number of bytes read does not match contextlength header. Nr of bytes read = " + nRead + ", content-length = " + length);
         } else {
-            LOGGER.log(Level.FINE, "sanity check passed: number of bytes in body matches contentlength header: {0}", length);
+            // LOGGER.log(Level.FINE, "sanity check passed: number of bytes in body matches contentlength header: {0}", length);
         }
 
         return str;

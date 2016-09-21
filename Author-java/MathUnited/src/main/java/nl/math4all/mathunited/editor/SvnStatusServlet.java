@@ -23,8 +23,6 @@ public class SvnStatusServlet extends BaseHttpServlet {
 
     private final static Logger LOGGER = Logger.getLogger(SvnStatusServlet.class.getName());
 
-    private static Lock lock = new ReentrantLock();
-
     @Override
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response)
@@ -56,33 +54,25 @@ public class SvnStatusServlet extends BaseHttpServlet {
             return;
         }
 
-        if (lock.tryLock()) {
-            try {
-                String svnPath = config.getContentRoot();
-                String path = parameterMap.get("path");
-                if (path != null && !path.isEmpty()) {
-                    File newPath = new File(svnPath, path);
-                    if (Utils.isSubDirectory(new File(svnPath), newPath)) {
-                        svnPath = newPath.getCanonicalPath();
-                    } else {
-                        writer.println("=== ILLEGAL REPO PATH " + newPath);
-                        throw new Exception("Illegal svn path " + newPath);
-                    }
+        try {
+            String svnPath = config.getContentRoot();
+            String path = parameterMap.get("path");
+            if (path != null && !path.isEmpty()) {
+                File newPath = new File(svnPath, path);
+                if (Utils.isSubDirectory(new File(svnPath), newPath)) {
+                    svnPath = newPath.getCanonicalPath();
+                } else {
+                    writer.println("=== ILLEGAL REPO PATH " + newPath);
+                    throw new Exception("Illegal svn path " + newPath);
                 }
+            }
 
-                ScriptRunner runner = new ScriptRunner(writer);
-                runner.runScript("svn-status", svnPath);
+            ScriptRunner runner = new ScriptRunner(writer);
+            runner.runScript("svn-status", svnPath);
 
-            }
-            catch (Exception e) {
-                LOGGER.log(Level.WARNING, e.getMessage());
-            }
-            finally {
-                lock.unlock();
-            }
-        } else {
-            writer.println("!!! SVN UPDATE on " + config.getContentRoot() + " is already in progress");
-            writer.println("!!! Not doing anything");
+        }
+        catch (Exception e) {
+            LOGGER.log(Level.WARNING, e.getMessage());
         }
     }
 

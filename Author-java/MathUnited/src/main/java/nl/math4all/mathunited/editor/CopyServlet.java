@@ -62,7 +62,7 @@ public class CopyServlet extends HttpServlet {
             if(typestr==null) {
                 throw new Exception("Het verplichte argument 'type' ontbreekt.");
             }
-            LOGGER.log(Level.FINE, "CopyServlet: xml={0}, type={1}", new Object[]{xmlstr, typestr});
+            //LOGGER.log(Level.FINE, "CopyServlet: xml={0}, type={1}", new Object[]{xmlstr, typestr});
 
             UserSettings usettings = UserManager.isLoggedIn(request,response);
             

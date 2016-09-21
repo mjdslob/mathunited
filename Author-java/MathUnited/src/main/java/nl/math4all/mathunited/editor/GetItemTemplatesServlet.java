@@ -61,7 +61,7 @@ public class GetItemTemplatesServlet extends HttpServlet {
                 }
             }
 
-            LOGGER.log(Level.FINE, "GetItemTemplatesServlet: type={0}", typestr);
+            //LOGGER.log(Level.FINE, "GetItemTemplatesServlet: type={0}", typestr);
 
             //find out which repository to use
             //try to get repo from cookie
@@ -86,7 +86,7 @@ public class GetItemTemplatesServlet extends HttpServlet {
 
             if(repository.contentItems==null) throw new Exception("No content-items file available");
             String fname = "/content-items/"+repository.contentItems;
-            LOGGER.log(Level.FINE, "Reading content-items from {0}", fname);
+            //LOGGER.log(Level.FINE, "Reading content-items from {0}", fname);
             InputStream xmlStream = context.getResourceAsStream(fname);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -100,7 +100,7 @@ public class GetItemTemplatesServlet extends HttpServlet {
 
             response.setContentType("application/xml");
             if(containerNode==null) {
-                LOGGER.log(Level.FINE,"Could not find templates for type={0}", typestr);
+                //LOGGER.log(Level.FINE,"Could not find templates for type={0}", typestr);
                 Writer w = response.getWriter();
                 PrintWriter pw = new PrintWriter(w);
                 pw.println("<result success=\"false\"/>");
@@ -119,7 +119,7 @@ public class GetItemTemplatesServlet extends HttpServlet {
                     containerNode = importedContainerNode;
                 }
                 String result = FileManager.serializeXML(containerNode);
-                LOGGER.log(Level.FINE, "GetItemTemplatesServlet: result={0}", result);
+                //LOGGER.log(Level.FINE, "GetItemTemplatesServlet: result={0}", result);
                 byte[] barr = result.getBytes("UTF-8");
                 response.setCharacterEncoding("UTF-8");
                 response.setContentLength(barr.length);

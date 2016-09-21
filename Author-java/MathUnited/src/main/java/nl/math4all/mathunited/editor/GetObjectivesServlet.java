@@ -53,7 +53,7 @@ public class GetObjectivesServlet extends HttpServlet {
             }
             sb.append("</objectives>");
             String result = sb.toString();
-            LOGGER.log(Level.FINE, result);
+            //LOGGER.log(Level.FINE, result);
             pw.println(result);
         } catch(Exception e) {
             e.printStackTrace();

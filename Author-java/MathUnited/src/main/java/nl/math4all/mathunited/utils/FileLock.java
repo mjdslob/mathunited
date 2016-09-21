@@ -22,7 +22,7 @@ public class FileLock extends Lock {
 
     /** Acquire lock. */
     public void aquire() throws LockException {
-        LOGGER.info("Locking (svn)" + refbase + " for user " + username + ".");
+        //LOGGER.info("Locking (svn)" + refbase + " for user " + username + ".");
 
         // Check if directory has already been locked before (e.g. after a server restart)
         removeLockFile();
@@ -33,7 +33,7 @@ public class FileLock extends Lock {
 
     /** Release lock */
     public void release() {
-        LOGGER.info("Locking (svn)" + refbase + " for user " + username + ".");
+        //LOGGER.info("Releasing lock (svn)" + refbase + " for user " + username + ".");
         removeLockFile();
     }
 }

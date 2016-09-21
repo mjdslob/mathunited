@@ -43,7 +43,6 @@ public class VersionServlet extends HttpServlet {
     @Override
     public void doPost ( HttpServletRequest request,
                          HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("LoginRegisterServlet called");
         response.setContentType("text/plain");
 
 

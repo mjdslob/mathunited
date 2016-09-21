@@ -86,7 +86,7 @@ public class LockManager {
                     Map.Entry<String,Lock> entry = it.next();
                     Lock lock = entry.getValue();
 
-                    LOGGER.info("Checking " + lock.refbase + " dt = " + (now - lock.timestamp));
+                    //LOGGER.info("Checking " + lock.refbase + " dt = " + (now - lock.timestamp));
                     if (now - lock.timestamp > MAX_LOCK_DURATION_MS) {
                         try {
                             lock.release();
@@ -130,7 +130,7 @@ public class LockManager {
      *         username of this current owner is returned.
      */
     public String getLock(String username, String refbase) {
-        LOGGER.info("Requesting lock for user " + username + " for path '" + refbase + "'");
+        //LOGGER.info("Requesting lock for user " + username + " for path '" + refbase + "'");
 
         // Put in synchronized block because there is time between checking existing lock and adding new
         synchronized (locks) {
@@ -138,25 +138,25 @@ public class LockManager {
             Lock lockData = locks.get(refbase);
             if (lockData != null) {
                 if (Objects.equals(lockData.username, username)) {
-                    LOGGER.info("Updating lock timestamp for " + refbase + ", user " + username);
+                    //LOGGER.info("Updating lock timestamp for " + refbase + ", user " + username);
                     lockData.touch();
                 } else {
-                    LOGGER.info("Editing not allowed: lock for " + refbase + " is currently owned by " + lockData.username);
+                    LOGGER.warning("Editing not allowed: lock for " + refbase + " is currently owned by " + lockData.username);
                 }
                 return lockData.username;
             }
 
             // Create lock
-            LOGGER.info("Creating new lock on " + refbase + " for user " + username);
+            //LOGGER.info("Creating new lock on " + refbase + " for user " + username);
 
             try {
                 Lock lock = newLock(refbase, username);
                 lock.aquire();
                 locks.put(refbase, lock);
 
-                LOGGER.info("Lock was created succesfully");
+                //LOGGER.info("Lock was created succesfully");
             } catch (LockException e) {
-                LOGGER.info("Could not create lock, assuming locked by XML editor: " + e.getMessage());
+                LOGGER.warning("Could not create lock, assuming locked by XML editor: " + e.getMessage());
                 return "@@@" + e.getMessage();
             }
         }

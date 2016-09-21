@@ -62,7 +62,7 @@ public class ProcessItemServlet extends BaseHttpServlet {
             String subcomp = parameterMap.get("subcomp");            
             String variant = parameterMap.get("variant");    
             String xmlstr = parameterMap.get("xml");            
-            LOGGER.log(Level.FINE, "processitem: comp={0}, subcomp={1}, xml={2}", new Object[]{comp, subcomp, xmlstr});
+            //LOGGER.log(Level.FINE, "processitem: comp={0}, subcomp={1}, xml={2}", new Object[]{comp, subcomp, xmlstr});
             if(comp==null) {
                 throw new Exception("Het verplichte argument 'comp' ontbreekt.");
             }
@@ -143,7 +143,7 @@ public class ProcessItemServlet extends BaseHttpServlet {
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             ContentResolver resolver = new ContentResolver(repository, context);
             
-            LOGGER.log(Level.FINE, "process-item: xml={0}", xmlstr);
+            //LOGGER.log(Level.FINE, "process-item: xml={0}", xmlstr);
             XMLReader xmlReader = XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
             xmlReader.setEntityResolver(ContentResolver.entityResolver);
             StringReader reader = new StringReader(xmlstr);

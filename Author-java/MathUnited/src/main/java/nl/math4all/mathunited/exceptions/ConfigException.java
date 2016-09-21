@@ -4,7 +4,7 @@ package nl.math4all.mathunited.exceptions;
  *
  * @author martijnslob
  */
-public class ConfigException extends Exception {
+public class ConfigException extends MathUnitedException {
     public ConfigException() {
         super();
     }

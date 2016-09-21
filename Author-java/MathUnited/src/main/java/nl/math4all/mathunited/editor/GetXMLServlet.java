@@ -59,7 +59,7 @@ public class GetXMLServlet extends HttpServlet {
                 }
             }
             String htmlstr = Utils.readParameter("html", true, request);
-            LOGGER.log(Level.FINE, "GetXML: html={0}", htmlstr);
+            //LOGGER.log(Level.FINE, "GetXML: html={0}", htmlstr);
 
             //parse the html into xml with tagsoup parser
             XMLReader xmlReader = XMLReaderFactory.createXMLReader("org.ccil.cowan.tagsoup.Parser");
@@ -74,7 +74,7 @@ public class GetXMLServlet extends HttpServlet {
             Node root = processor.processToDOM(xmlSaxSource, "m4a_inverse", parameterMap, null);
             String result = FileManager.serializeXML(root);
             //pw.println( result );
-            LOGGER.log(Level.FINE, "GetXML: result={0}", result);
+            //LOGGER.log(Level.FINE, "GetXML: result={0}", result);
             byte[] barr = result.getBytes("UTF-8");
             response.setContentType("application/xml");
             response.setCharacterEncoding("UTF-8");

@@ -4,7 +4,7 @@ package nl.math4all.mathunited.exceptions;
  *
  * @author martijnslob
  */
-public class LoginException extends Exception {
+public class LoginException extends MathUnitedException {
     public LoginException() {
         super();
     }
