@@ -51,15 +51,7 @@ public class GetItemTemplatesServlet extends HttpServlet {
             String typestr = Utils.readParameter("type", true, request);
             
             //read request parameters
-            Map<String, String[]> paramMap = request.getParameterMap();
-            Map<String, String> parameterMap = new HashMap<String, String>();
-            for(Map.Entry<String, String[]> entry : paramMap.entrySet()) {
-                String pname = entry.getKey();
-                String[] pvalArr = entry.getValue();
-                if(pvalArr!=null && pvalArr.length>0) {
-                   parameterMap.put(pname, pvalArr[0]);
-                }
-            }
+            Map<String, String> parameterMap = Utils.readParameters(request);
 
             //LOGGER.log(Level.FINE, "GetItemTemplatesServlet: type={0}", typestr);
 
@@ -95,7 +87,7 @@ public class GetItemTemplatesServlet extends HttpServlet {
             //get compatible components
             XPathFactory xPathfactory = XPathFactory.newInstance();
             XPath xpath = xPathfactory.newXPath();
-            XPathExpression expr = xpath.compile("//container[@name=\""+typestr+"\"]");
+            XPathExpression expr = xpath.compile("//container[@name=\"" + typestr + "\"]");
             Node containerNode = (Node)expr.evaluate(doc, XPathConstants.NODE);
 
             response.setContentType("application/xml");

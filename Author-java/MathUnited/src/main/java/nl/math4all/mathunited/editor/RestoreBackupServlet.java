@@ -17,6 +17,8 @@ import nl.math4all.mathunited.configuration.Repository;
 import nl.math4all.mathunited.configuration.SubComponent;
 import nl.math4all.mathunited.configuration.UserSettings;
 import nl.math4all.mathunited.utils.UserManager;
+import nl.math4all.mathunited.utils.Utils;
+
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -57,15 +59,7 @@ public class RestoreBackupServlet extends HttpServlet {
             UserSettings usettings = UserManager.isLoggedIn(request,response);
             
             //read request parameters
-            Map<String, String[]> paramMap = request.getParameterMap();
-            Map<String, String> parameterMap = new HashMap<String, String>();
-            for(Map.Entry<String, String[]> entry : paramMap.entrySet()) {
-                String pname = entry.getKey();
-                String[] pvalArr = entry.getValue();
-                if(pvalArr!=null && pvalArr.length>0) {
-                   parameterMap.put(pname, pvalArr[0]);
-                }
-            }
+            Map<String, String> parameterMap = Utils.readParameters(request);
 
             //find out which repository to use
             //try to get repo from cookie

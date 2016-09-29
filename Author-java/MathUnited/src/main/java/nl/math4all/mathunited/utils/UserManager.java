@@ -17,6 +17,8 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpSession;
+
 /**
  *
  * @author martijnslob
@@ -41,67 +43,26 @@ public class UserManager {
     
     //check if user is logged in
     public static UserSettings isLoggedIn(HttpServletRequest request, HttpServletResponse response)  throws LoginException, ConfigException {
+        HttpSession session = request.getSession();
+        String userName = (String)session.getAttribute("userid");
+
         try{
-            Configuration config = Configuration.getInstance();
-            String userName=null, userAgent=null;
-            Cookie[] cookieArr = request.getCookies();
-            if(cookieArr != null) {
-                for(Cookie c:cookieArr) {
-                    String name = c.getName();
-                    if(name.equals("USERID")) {
-                        userName = c.getValue();
-                    }
-                    if(name.equals("USERAGENT")) {
-                        userAgent = c.getValue();
-                    }
-                }
-            }
-            if(userName==null || userAgent==null) {
+            if (userName == null) {
                 throw new LoginException("Not logged in.");
             } 
 
             UserSettings usettings = Users.getInstance().getUsers().get(userName);
-            if(usettings==null) {
-                throw new LoginException("Login error: unknown user "+userName);
+
+            if (usettings == null) {
+                throw new LoginException("Login error: unknown user " + userName);
             }
             usettings.username = userName;
-            if(!userAgent.equals(hash(request.getHeader("User-Agent")))){
-                Cookie cookie = new Cookie("USERID", userName);
-                cookie.setMaxAge(0);
-                response.addCookie(cookie);
-                cookie = new Cookie("USERAGENT", "dummy");
-                cookie.setMaxAge(0);
-                response.addCookie(cookie);
-
-                throw new LoginException("Login error: this is not the same computer on which you logged in!");
-            }
-            //valid login
-            Cookie cookie = new Cookie("USERID", userName);
-            cookie.setMaxAge(24*60*3);
-            response.addCookie(cookie);
 
             return usettings;
-        } catch(LoginException e) {
-            //clear cookies
-            Cookie[] cookieArr = request.getCookies();
-            if(cookieArr != null) {
-                for(Cookie c:cookieArr) {
-                    String name = c.getName();
-                    if(name.equals("USERID")) {
-                        c.setMaxAge(0);
-                        response.addCookie(c);
-                    }
-                    if(name.equals("USERAGENT")) {
-                        c.setMaxAge(0);
-                        response.addCookie(c);
-                    }
-                    if(name.equals("REPO")) {
-                        c.setMaxAge(0);
-                        response.addCookie(c);
-                    }
-                }
-            }
-            throw(e);
+        } catch (LoginException e) {
+            // End session
+            session.invalidate();
+            throw e;
         }
     }
     

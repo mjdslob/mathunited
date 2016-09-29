@@ -74,16 +74,11 @@ public class EditServlet extends BaseHttpServlet {
             //find out which repository to use
             //try to get repo from cookie
             String repo = parameterMap.get("repo");
-            Cookie[] cookieArr = request.getCookies();
-            if(cookieArr != null) {
-                for(Cookie c:cookieArr) {
-                    if(c.getName().equals("REPO")) {
-                        repo = c.getValue();
-                        parameterMap.put("repo",repo);
-                    }
-                }
+            String cookieRepo = Utils.getRepoID(request);
+            if (cookieRepo != null) {
+                repo = cookieRepo;
+                parameterMap.put("repo", repo);
             }
-
             if (repo == null) {
                 throw new Exception("Er is geen archief geselecteerd.");
             }

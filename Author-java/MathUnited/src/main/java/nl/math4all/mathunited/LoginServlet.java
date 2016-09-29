@@ -45,19 +45,17 @@ public class LoginServlet extends HttpServlet {
 
             UserSettings usettings = UserManager.checkCredentials(name, password);
             
-            if(usettings.repo!=null) {
-                pw.println(resultXML.replace("{#LOGINRESULT}","true").replace("{#LOGINMESSAGE}", "Login successfull").replace("{#DEFAULTREPO}",usettings.repo));
+            if(usettings.repo != null) {
+                pw.println(resultXML.replace("{#LOGINRESULT}","true").replace("{#LOGINMESSAGE}", "Login successfull").replace("{#DEFAULTREPO}", usettings.repo));
             } else {
                 pw.println(resultXML.replace("{#LOGINRESULT}","true").replace("{#LOGINMESSAGE}", "Login successfull").replace("{#DEFAULTREPO}",""));
             }
-            Cookie cookie1 = new Cookie("USERID", name);
-            Cookie cookie2 = new Cookie("USERAGENT", UserManager.hash(request.getHeader("User-Agent")));
-            cookie1.setMaxAge(24*60*60);
-            cookie2.setMaxAge(24*60*60);
-            response.addCookie(cookie1); 
-            response.addCookie(cookie2); 
-            
-              
+
+            // Create session
+            HttpSession session = request.getSession();
+            session.setAttribute("userid", name);
+            session.setMaxInactiveInterval(24 * 60 * 60);
+
         } catch(LoginException e) {
             String result = resultXML.replace("{#LOGINRESULT}","false").replace("{#LOGINMESSAGE}", e.getMessage());
             System.out.println(result);

@@ -49,15 +49,8 @@ public class GetXMLServlet extends HttpServlet {
             Configuration config = Configuration.getInstance();
             
             //read request parameters
-            Map<String, String[]> paramMap = request.getParameterMap();
-            Map<String, String> parameterMap = new HashMap<String, String>();
-            for(Map.Entry<String, String[]> entry : paramMap.entrySet()) {
-                String pname = entry.getKey();
-                String[] pvalArr = entry.getValue();
-                if(pvalArr!=null && pvalArr.length>0) {
-                   parameterMap.put(pname, pvalArr[0]);
-                }
-            }
+            Map<String, String> parameterMap = Utils.readParameters(request);
+
             String htmlstr = Utils.readParameter("html", true, request);
             //LOGGER.log(Level.FINE, "GetXML: html={0}", htmlstr);
 

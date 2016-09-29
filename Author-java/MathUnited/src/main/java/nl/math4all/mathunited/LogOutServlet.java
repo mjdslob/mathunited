@@ -21,26 +21,17 @@ public class LogOutServlet extends HttpServlet {
                          HttpServletResponse response) throws ServletException, IOException {
     
         response.setContentType("application/xml");
+
+        // End the session
+        HttpSession session = request.getSession();
+        session.invalidate();
+
+        String result = resultXML.replace("{#LOGINRESULT}","true").replace("{#LOGINMESSAGE}", "Logout successfull");
+
+        // Write the result
         Writer w = response.getWriter();
         PrintWriter pw = new PrintWriter(w);
-        try {    
-            Cookie[] cookieArr = request.getCookies();
-            if(cookieArr!=null) {
-                for(Cookie c:cookieArr) {
-                    if(c.getName().equals("USERID") || c.getName().equals("USERAGENT")) {
-                        c.setMaxAge(0);  //remove cookie
-                        response.addCookie(c);
-                    }
-                }
-            }
-            String result = resultXML.replace("{#LOGINRESULT}","true").replace("{#LOGINMESSAGE}", "Logout successfull");
-            pw.println(result);
-        } catch(Exception e) {
-            e.printStackTrace();
-            String result = resultXML.replace("{#LOGINRESULT}","false").replace("{#LOGINMESSAGE}", e.getMessage());
-            pw.println(result);
-        }
-    
+        pw.println(result);
     }
     
     @Override

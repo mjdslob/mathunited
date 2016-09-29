@@ -45,16 +45,8 @@ public class GetComponentItemsServlet extends HttpServlet {
             String comp = Utils.readParameter("comp", true, request);
             
             //read request parameters
-            Map<String, String[]> paramMap = request.getParameterMap();
-            Map<String, String> parameterMap = new HashMap<String, String>();
-            for(Map.Entry<String, String[]> entry : paramMap.entrySet()) {
-                String pname = entry.getKey();
-                String[] pvalArr = entry.getValue();
-                if(pvalArr!=null && pvalArr.length>0) {
-                   parameterMap.put(pname, pvalArr[0]);
-                }
-            }
-            
+            Map<String, String> parameterMap = Utils.readParameters(request);
+
             //read components. 
             componentMap = repository.readComponentMap();
             Component component = componentMap.get(comp);

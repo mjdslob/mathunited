@@ -72,23 +72,11 @@ public class PostContentServlet extends HttpServlet {
         try {
             // Check if user is logged in
             Configuration config = Configuration.getInstance();
-            String repoId = null;
-            Cookie[] cookieArr = request.getCookies();
-
-            // Get repo and throw exception of not set
-            if (cookieArr != null) {
-                for (Cookie c : cookieArr) {
-                    String name = c.getName();
-                    if (name.equals("REPO")) {
-                        repoId = c.getValue();
-                    }
-                }
-            }
+            UserSettings usettings = UserManager.isLoggedIn(request, response);
+            String repoId = Utils.getRepoID(request);
             if (repoId == null) {
                 throw new Exception("Repository is not set.");
             }
-
-            UserSettings usettings = UserManager.isLoggedIn(request, response);
 
             String body = readBody(request);
             Map<String, String> parameterMap = new HashMap<String, String>();

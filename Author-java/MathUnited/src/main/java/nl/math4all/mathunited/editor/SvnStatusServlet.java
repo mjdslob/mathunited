@@ -1,7 +1,9 @@
 package nl.math4all.mathunited.editor;
 
 import nl.math4all.mathunited.configuration.Configuration;
+import nl.math4all.mathunited.configuration.UserSettings;
 import nl.math4all.mathunited.utils.ScriptRunner;
+import nl.math4all.mathunited.utils.UserManager;
 import nl.math4all.mathunited.utils.Utils;
 
 import javax.servlet.ServletException;
@@ -35,23 +37,13 @@ public class SvnStatusServlet extends BaseHttpServlet {
         //read request parameters
         Map<String, String> parameterMap = Utils.readParameters(request);
 
-        // Find out which repository to use, so we force a logged in user
-        // try to get repo from cookie
-        String repo = null; // parameterMap.get("repo");
-        Cookie[] cookieArr = request.getCookies();
-
-        if(cookieArr != null) {
-            for(Cookie c:cookieArr) {
-                if(c.getName().equals("REPO")) {
-                    repo = c.getValue();
-                    parameterMap.put("repo",repo);
-                }
-            }
-        }
-
-        if (repo == null) {
+        // Force login
+        try {
+            UserSettings usettings = UserManager.isLoggedIn(request,response);
+        } catch (Exception e) {
             writer.println("!!! NOT LOGGED IN");
             return;
+
         }
 
         try {

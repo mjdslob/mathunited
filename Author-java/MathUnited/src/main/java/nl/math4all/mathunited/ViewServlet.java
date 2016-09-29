@@ -49,16 +49,8 @@ public class ViewServlet extends HttpServlet {
         try{
             Configuration config = Configuration.getInstance();
             
-            //read request parameters
-            Map<String, String[]> paramMap = request.getParameterMap();
-            Map<String, String> parameterMap = new HashMap<String, String>();
-            for(Map.Entry<String, String[]> entry : paramMap.entrySet()) {
-                String pname = entry.getKey();
-                String[] pvalArr = entry.getValue();
-                if(pvalArr!=null && pvalArr.length>0) {
-                   parameterMap.put(pname, pvalArr[0]);
-                }
-            }
+            // Read request parameters
+            Map<String, String> parameterMap = Utils.readParameters(request);
 
             if(isMobile(request.getHeader("user-agent"))) {
                 parameterMap.put("is_mobile", "true");

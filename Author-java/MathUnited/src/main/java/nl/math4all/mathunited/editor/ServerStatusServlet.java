@@ -42,6 +42,7 @@ public class ServerStatusServlet extends BaseHttpServlet {
         String repo = null; // parameterMap.get("repo");
         Cookie[] cookieArr = request.getCookies();
 
+        // TODO: we should properly check login, but this is convenient for now
         if(cookieArr != null) {
             for(Cookie c:cookieArr) {
                 if(c.getName().equals("REPO")) {

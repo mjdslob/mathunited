@@ -46,17 +46,23 @@ public class Utils {
             return pvalArr[0];
         }
     }
- 
-    public static Repository getRepository(HttpServletRequest request) throws Exception {
-        String repo = null;
+
+    public static String getRepoID(HttpServletRequest request) {
+        String repoID = null;
         Cookie[] cookieArr = request.getCookies();
         if (cookieArr != null) {
             for (Cookie c : cookieArr) {
                 if (c.getName().equals("REPO")) {
-                    repo = c.getValue();
+                    repoID = c.getValue();
+                    break;
                 }
             }
         }
+        return repoID;
+    }
+ 
+    public static Repository getRepository(HttpServletRequest request) throws Exception {
+        String repo = getRepoID(request);
         if (repo == null) {
             throw new Exception("Er is geen archief geselecteerd.");
         }

@@ -18,6 +18,7 @@ import nl.math4all.mathunited.configuration.Component;
 import nl.math4all.mathunited.configuration.SubComponent;
 import nl.math4all.mathunited.configuration.Configuration;
 import nl.math4all.mathunited.configuration.Repository;
+import nl.math4all.mathunited.utils.Utils;
 
 /**
  *
@@ -56,22 +57,15 @@ public class WorkflowServlet extends HttpServlet {
             response.setContentType("application/xml");
             Writer w = response.getWriter();
             PrintWriter pw = new PrintWriter(w);
-            Map<String, String[]> paramMap = request.getParameterMap();
-            Map<String, String> parameterMap = new HashMap<String, String>();
-            for(Map.Entry<String, String[]> entry : paramMap.entrySet()) {
-                String pname = entry.getKey();
-                String[] pvalArr = entry.getValue();
-                if(pvalArr!=null && pvalArr.length>0) {
-                   parameterMap.put(pname, pvalArr[0]);
-                }
-            }
+            Map<String, String> parameterMap = Utils.readParameters(request);
+
             String repo = parameterMap.get("repo");
             
             Map<String, String> repoMap = statusMap.get(repo);
-            if(repoMap==null) {
+            if (repoMap == null) {
                 readComponentStatus(repo);
                 repoMap = statusMap.get(repo);
-                if(repoMap==null) {
+                if(repoMap == null) {
                     throw new Exception("<error>Could not get info on repository "+repo+"</error");
                 }
             }

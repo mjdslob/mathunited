@@ -3,6 +3,8 @@ package nl.math4all.mathunited;
 import nl.math4all.mathunited.utils.UserManager;
 import nl.math4all.mathunited.configuration.*;
 import nl.math4all.mathunited.exceptions.LoginException;
+import nl.math4all.mathunited.utils.Utils;
+
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -26,36 +28,28 @@ public class LoginStateServlet extends HttpServlet {
         response.setContentType("application/xml");
         Writer w = response.getWriter();
         PrintWriter pw = new PrintWriter(w);
-        try {    
-            //check if user is logged in
-            String userName = null;
+
+        try {
+            // Check if user is logged in
             Configuration config = Configuration.getInstance();
-            String repoId = "";
-            Cookie[] cookieArr = request.getCookies();
-            if(cookieArr != null) {
-                for(Cookie c:cookieArr) {
-                    String name = c.getName();
-                    if(name.equals("REPO")) {
-                        repoId = c.getValue();
-                    }
-                    if(name.equals("USERID")) {
-                        userName = c.getValue();
-                    }
-                }
+            String repoId = Utils.getRepoID(request);
+            if (repoId == null) {
+                repoId = "";
             }
 
             UserSettings usettings = UserManager.isLoggedIn(request, response);
 
             String repoStr = "";
-            //get repos that user can edit
+
+            // Get repos that user can edit
             for(Map.Entry<String, Repository> entry : config.getRepos().entrySet()) {
-                if(hasRightToEdit(usettings, entry.getValue())) {
-                    repoStr = repoStr + "<repo name=\""+entry.getKey()+"\"/>";
+                if (hasRightToEdit(usettings, entry.getValue())) {
+                    repoStr = repoStr + "<repo name=\"" + entry.getKey() + "\"/>";
                 }
             }
-            pw.println(resultXML.replace("{#LOGINRESULT}","true").replace("{#UNAME}", userName).replace("{#REPOSET}",repoStr)
+            pw.println(resultXML.replace("{#LOGINRESULT}", "true").replace("{#UNAME}", usettings.username).replace("{#REPOSET}", repoStr)
                     .replace("{#REPOID}",repoId));
-        } catch(LoginException e) {
+        } catch (LoginException e) {
             String result = resultXMLError.replace("{#MESSAGE}", e.getMessage());
             System.out.println(result);
             pw.println(result);

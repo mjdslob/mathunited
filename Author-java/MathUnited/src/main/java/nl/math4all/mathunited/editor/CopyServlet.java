@@ -11,6 +11,8 @@ import nl.math4all.mathunited.configuration.*;
 import nl.math4all.mathunited.utils.UserManager;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+
+import nl.math4all.mathunited.utils.Utils;
 import org.w3c.dom.Document;
 
 //mathunited.pragma-ade.nl/MathUnited/view?variant=basis&comp=m4a/xml/12hv-me0&subcomp=3&item=explore
@@ -44,15 +46,7 @@ public class CopyServlet extends HttpServlet {
             Configuration config = Configuration.getInstance();
             
             //read request parameters
-            Map<String, String[]> paramMap = request.getParameterMap();
-            Map<String, String> parameterMap = new HashMap<String, String>();
-            for(Map.Entry<String, String[]> entry : paramMap.entrySet()) {
-                String pname = entry.getKey();
-                String[] pvalArr = entry.getValue();
-                if(pvalArr!=null && pvalArr.length>0) {
-                   parameterMap.put(pname, pvalArr[0]);
-                }
-            }
+            Map<String, String> parameterMap = Utils.readParameters(request);
 
             String xmlstr = parameterMap.get("xml");     
             if(xmlstr==null) {

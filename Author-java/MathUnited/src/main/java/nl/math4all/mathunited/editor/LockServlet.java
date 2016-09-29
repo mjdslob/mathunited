@@ -12,6 +12,7 @@ import nl.math4all.mathunited.configuration.*;
 import nl.math4all.mathunited.configuration.Component;
 import nl.math4all.mathunited.utils.LockManager;
 import nl.math4all.mathunited.utils.UserManager;
+import nl.math4all.mathunited.utils.Utils;
 
 //mathunited.pragma-ade.nl/MathUnited/view?variant=basis&comp=m4a/xml/12hv-me0&subcomp=3&item=explore
 // - fixed parameters: variant, comp (component), subcomp (subcomponent).
@@ -46,16 +47,8 @@ public class LockServlet extends HttpServlet {
 
             UserSettings usettings = UserManager.isLoggedIn(request,response);
             
-            //read request parameters
-            Map<String, String[]> paramMap = request.getParameterMap();
-            Map<String, String> parameterMap = new HashMap<String, String>();
-            for(Map.Entry<String, String[]> entry : paramMap.entrySet()) {
-                String pname = entry.getKey();
-                String[] pvalArr = entry.getValue();
-                if(pvalArr!=null && pvalArr.length>0) {
-                   parameterMap.put(pname, pvalArr[0]);
-                }
-            }
+            // Read request parameters
+            Map<String, String> parameterMap = Utils.readParameters(request);
 
             String refbase = parameterMap.get("refbase");
 
