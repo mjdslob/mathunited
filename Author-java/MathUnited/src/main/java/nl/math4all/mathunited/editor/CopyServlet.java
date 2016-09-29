@@ -21,18 +21,11 @@ import org.w3c.dom.Document;
 
 public class CopyServlet extends HttpServlet {
     private final static Logger LOGGER = Logger.getLogger(CopyServlet.class.getName());
-    ServletContext context;
-    
+
     @Override
     public void init(ServletConfig config) throws ServletException {
-        try{
-            super.init(config);
-            context = getServletContext();
-            LOGGER.setLevel(Level.FINE);
-        } catch(Exception e) {
-            e.printStackTrace();
-            LOGGER.log(Level.SEVERE, e.getMessage());
-        }
+        super.init(config);
+        LOGGER.setLevel(Level.FINE);
     }
 
     @Override

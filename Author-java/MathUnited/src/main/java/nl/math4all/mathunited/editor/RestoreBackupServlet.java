@@ -32,13 +32,8 @@ public class RestoreBackupServlet extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        try{
-            super.init(config);
-            LOGGER.setLevel(Level.FINE);
-        } catch(Exception e) {
-            e.printStackTrace();
-            LOGGER.log(Level.SEVERE, e.getMessage());
-        }
+        super.init(config);
+        LOGGER.setLevel(Level.FINE);
     }
 
     /**

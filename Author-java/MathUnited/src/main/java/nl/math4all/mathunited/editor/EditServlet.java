@@ -23,7 +23,7 @@ import org.apache.commons.lang3.SystemUtils;
 // - fixed parameters: variant, comp (component), subcomp (subcomponent).
 // - other parameters are just passed to xslt
 
-public class EditServlet extends BaseHttpServlet {
+public class EditServlet extends HttpServlet {
     private static final int MAX_LOCK_DURATION_SECONDS = 60;
     
     private final static Logger LOGGER = Logger.getLogger(EditServlet.class.getName());
@@ -34,10 +34,10 @@ public class EditServlet extends BaseHttpServlet {
     
     @Override
     public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        LOGGER.setLevel(Level.INFO);
         try{
-            super.init(config);
-            LOGGER.setLevel(Level.INFO);
-            processor = new XSLTbean(context);
+            processor = new XSLTbean(getServletContext());
         } catch(Exception e) {
             e.printStackTrace();
             LOGGER.log(Level.SEVERE, e.getMessage());
@@ -164,7 +164,7 @@ public class EditServlet extends BaseHttpServlet {
             }
 
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-            ContentResolver resolver = new ContentResolver(repository, context);
+            ContentResolver resolver = new ContentResolver(repository, getServletContext());
             Source xmlSource = resolver.resolve(repository.getPath() + "/" + sub.file, "");
 
             toc = System.currentTimeMillis();

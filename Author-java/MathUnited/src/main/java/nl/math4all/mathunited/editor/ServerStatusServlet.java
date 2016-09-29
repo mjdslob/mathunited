@@ -6,6 +6,7 @@ import nl.math4all.mathunited.utils.Utils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -21,7 +22,7 @@ import java.util.logging.Logger;
 // - fixed parameters: variant, comp (component), subcomp (subcomponent).
 // - other parameters are just passed to xslt
 
-public class ServerStatusServlet extends BaseHttpServlet {
+public class ServerStatusServlet extends HttpServlet {
 
     private final static Logger LOGGER = Logger.getLogger(ServerStatusServlet.class.getName());
 

@@ -45,16 +45,13 @@ public class PostContentServlet extends HttpServlet {
     private String resultXML = "<post result=\"{#POSTRESULT}\"><message>{#MESSAGE}</message></post>";
     XSLTbean processor;
     Map<String, Component> componentMap;
-    ServletContext context;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        LOGGER.setLevel(Level.INFO);
         try {
-            super.init(config);
-            LOGGER.setLevel(Level.INFO);
-            context = getServletContext();
-
-            processor = new XSLTbean(context);
+            processor = new XSLTbean(getServletContext());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -186,7 +183,7 @@ public class PostContentServlet extends HttpServlet {
             String subFolder = sub.file.substring(0, ind);
             String refbase = Utils.pathJoin(config.getContentRoot(), repository.getPath(), subFolder);
 
-            ContentResolver resolver = new ContentResolver(repository, context);
+            ContentResolver resolver = new ContentResolver(repository, getServletContext());
             StringReader strReader = new StringReader(html);
             InputSource xmlSource = new InputSource(strReader);
             SAXSource xmlSaxSource = new SAXSource(xmlReader, xmlSource);

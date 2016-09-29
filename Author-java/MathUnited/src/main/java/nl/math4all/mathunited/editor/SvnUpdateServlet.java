@@ -11,6 +11,7 @@ import org.apache.commons.io.output.WriterOutputStream;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -24,7 +25,7 @@ import java.util.logging.Logger;
 // - fixed parameters: variant, comp (component), subcomp (subcomponent).
 // - other parameters are just passed to xslt
 
-public class SvnUpdateServlet extends BaseHttpServlet {
+public class SvnUpdateServlet extends HttpServlet {
 
     private final static Logger LOGGER = Logger.getLogger(SvnUpdateServlet.class.getName());
 

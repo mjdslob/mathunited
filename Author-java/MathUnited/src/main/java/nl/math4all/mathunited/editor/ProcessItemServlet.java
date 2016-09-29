@@ -24,7 +24,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 // - fixed parameters: variant, comp (component), subcomp (subcomponent).
 // - other parameters are just passed to xslt
 
-public class ProcessItemServlet extends BaseHttpServlet {
+public class ProcessItemServlet extends HttpServlet {
     private final static Logger LOGGER = Logger.getLogger(ProcessItemServlet.class.getName());
     XSLTbean processor;
     Map<String, Component> componentMap;
@@ -32,9 +32,9 @@ public class ProcessItemServlet extends BaseHttpServlet {
     
     @Override
     public void init(ServletConfig config) throws ServletException {
+        super.init(config);
         try{
-            super.init(config);
-            processor = new XSLTbean(context);
+            processor = new XSLTbean(getServletContext());
         } catch(Exception e) {
             e.printStackTrace();
             LOGGER.log(Level.SEVERE, e.getMessage());
@@ -141,7 +141,7 @@ public class ProcessItemServlet extends BaseHttpServlet {
             parameterMap.put("option","editor-process-item");
             parameterMap.put("dopreprocess","true()");  //used to remove xhtml namespaces that are added by TagSoup parser
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-            ContentResolver resolver = new ContentResolver(repository, context);
+            ContentResolver resolver = new ContentResolver(repository, getServletContext());
             
             //LOGGER.log(Level.FINE, "process-item: xml={0}", xmlstr);
             XMLReader xmlReader = XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");

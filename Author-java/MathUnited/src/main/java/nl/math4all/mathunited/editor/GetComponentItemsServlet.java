@@ -18,19 +18,11 @@ import nl.math4all.mathunited.utils.Utils;
 public class GetComponentItemsServlet extends HttpServlet {
     private final static Logger LOGGER = Logger.getLogger(GetComponentItemsServlet.class.getName());
     Map<String, Component> componentMap;
-    ServletContext context;
-    Properties prop = new Properties();
-    
+
     @Override
     public void init(ServletConfig config) throws ServletException {
-        try{
-            super.init(config);
-            context = getServletContext();
-            LOGGER.setLevel(Level.INFO);
-        } catch(Exception e) {
-            e.printStackTrace();
-            LOGGER.log(Level.SEVERE, e.getMessage());
-        }
+        super.init(config);
+        LOGGER.setLevel(Level.INFO);
     }
 
     @Override

@@ -25,15 +25,13 @@ import org.w3c.dom.Node;
 public class GetXMLServlet extends HttpServlet {
     private final static Logger LOGGER = Logger.getLogger(GetXMLServlet.class.getName());
     XSLTbean processor;
-    ServletContext context;
-    
+
     @Override
     public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        LOGGER.setLevel(Level.INFO);
         try{
-            super.init(config);
-            context = getServletContext();
-            LOGGER.setLevel(Level.INFO);
-            processor = new XSLTbean(context);
+            processor = new XSLTbean(getServletContext());
         } catch(Exception e) {
             e.printStackTrace();
             LOGGER.log(Level.SEVERE, e.getMessage());

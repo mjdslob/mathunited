@@ -26,18 +26,11 @@ import nl.math4all.mathunited.utils.Utils;
 // - optionally include item from clipboard, if such an item is available (and is compatible with requested item type)
 public class GetItemTemplatesServlet extends HttpServlet {
     private final static Logger LOGGER = Logger.getLogger(GetItemTemplatesServlet.class.getName());
-    ServletContext context;
-    
+
     @Override
     public void init(ServletConfig config) throws ServletException {
-        try{
-            super.init(config);
-            context = getServletContext();
-            LOGGER.setLevel(Level.FINE);
-        } catch(Exception e) {
-            e.printStackTrace();
-            LOGGER.log(Level.SEVERE, e.getMessage());
-        }
+        super.init(config);
+        LOGGER.setLevel(Level.FINE);
     }
 
     @Override
@@ -79,7 +72,7 @@ public class GetItemTemplatesServlet extends HttpServlet {
             if(repository.contentItems==null) throw new Exception("No content-items file available");
             String fname = "/content-items/"+repository.contentItems;
             //LOGGER.log(Level.FINE, "Reading content-items from {0}", fname);
-            InputStream xmlStream = context.getResourceAsStream(fname);
+            InputStream xmlStream = getServletContext().getResourceAsStream(fname);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 	    Document doc = dBuilder.parse(xmlStream);

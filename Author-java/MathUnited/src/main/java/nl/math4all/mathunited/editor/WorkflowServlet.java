@@ -32,12 +32,8 @@ public class WorkflowServlet extends HttpServlet {
     
     @Override
     public void init(ServletConfig config) throws ServletException {
-        try{
-            super.init(config);
-            LOGGER.setLevel(Level.INFO);
-        } catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
+        super.init(config);
+        LOGGER.setLevel(Level.INFO);
     }
 
     public static void clear() { statusMap.clear(); }
