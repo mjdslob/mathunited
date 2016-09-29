@@ -113,15 +113,8 @@ public class GetItemTemplatesServlet extends HttpServlet {
             }
         }
         catch (Exception e) {
-            e.printStackTrace();
             LOGGER.severe(e.getMessage());
-            response.setContentType("text/html");
-            Writer w = response.getWriter();
-            PrintWriter pw = new PrintWriter(w);
-            pw.println("<html><head></head><body><h1>Fout opgetreden</h1><p>");
-            pw.println(e.getMessage());
-            pw.println("</p></body></html>");
-//            throw new ServletException(e);
+            Utils.writeError(response, e);
         }
 
     }

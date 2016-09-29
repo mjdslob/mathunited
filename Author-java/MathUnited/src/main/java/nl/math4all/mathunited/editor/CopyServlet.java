@@ -42,11 +42,11 @@ public class CopyServlet extends HttpServlet {
             Map<String, String> parameterMap = Utils.readParameters(request);
 
             String xmlstr = parameterMap.get("xml");     
-            if(xmlstr==null) {
+            if (xmlstr == null) {
                 throw new Exception("Het verplichte argument 'xml' ontbreekt.");
             }
             String typestr = parameterMap.get("type");
-            if(typestr==null) {
+            if(typestr == null) {
                 throw new Exception("Het verplichte argument 'type' ontbreekt.");
             }
             //LOGGER.log(Level.FINE, "CopyServlet: xml={0}, type={1}", new Object[]{xmlstr, typestr});
@@ -66,12 +66,7 @@ public class CopyServlet extends HttpServlet {
             pw.println("<?xml version=\"1.0\" encoding=\"utf-8\"?><response success=\"true\"/>");
         }
         catch (Exception e) {
-            e.printStackTrace();
-            response.setContentType("text/html");
-            pw.println("<html><head></head><body><h1>Fout opgetreden</h1><p>");
-            pw.println(e.getMessage());
-            pw.println("</p></body></html>");
-//            throw new ServletException(e);
+            Utils.writeError(response, e);
         }
 
     }

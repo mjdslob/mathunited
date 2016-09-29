@@ -58,13 +58,7 @@ public class LockServlet extends HttpServlet {
             writer.println(resultStr);
         }
         catch (Exception e) {
-            e.printStackTrace();
-            response.setContentType("text/html");
-            Writer w = response.getWriter();
-            PrintWriter pw = new PrintWriter(w);
-            pw.println("<html><head></head><body><h1>Fout opgetreden</h1><p>");
-            pw.println(e.getMessage());
-            pw.println("</p></body></html>");
+            Utils.writeError(response, e);
         }
 
     }
