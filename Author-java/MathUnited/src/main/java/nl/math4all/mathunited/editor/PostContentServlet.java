@@ -50,11 +50,7 @@ public class PostContentServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         LOGGER.setLevel(Level.INFO);
-        try {
-            processor = new XSLTbean(getServletContext());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        processor = new XSLTbean(getServletContext());
     }
 
 

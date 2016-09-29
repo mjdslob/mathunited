@@ -56,7 +56,7 @@ public class XSLTbean {
     }
     
     //the constructor simply gets a new TransformerFactory instance
-    public XSLTbean(ServletContext ctxt) throws Exception {
+    public XSLTbean(ServletContext ctxt) {
         LOGGER.setLevel(Level.INFO);
         context = ctxt;
     }

@@ -33,12 +33,7 @@ public class ProcessItemServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        try{
-            processor = new XSLTbean(getServletContext());
-        } catch(Exception e) {
-            e.printStackTrace();
-            LOGGER.log(Level.SEVERE, e.getMessage());
-        }
+        processor = new XSLTbean(getServletContext());
     }
 
     @Override
