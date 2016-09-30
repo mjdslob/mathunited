@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,7 +24,9 @@ import org.apache.commons.io.FilenameUtils;
  */
 public class Utils {
     public static Level LOGLEVEL = Level.FINE;
-            
+    private final static Logger LOGGER = Logger.getLogger(Utils.class.getName());
+
+
     public static Map<String, String> readParameters(HttpServletRequest request) {
         //read request parameters
         Map<String, String[]> paramMap = request.getParameterMap();
@@ -106,12 +109,15 @@ public class Utils {
     public static void writeError(HttpServletResponse response, Exception e) {
         e.printStackTrace();
         response.setContentType("text/html");
-        Writer w = response.getWriter();
-        PrintWriter pw = new PrintWriter(w);
-        pw.println("<html><head></head><body><h1>Fout opgetreden</h1><p>");
-        pw.println(e.getMessage());
-        pw.println("</p></body></html>");
-
+        try {
+            Writer w = response.getWriter();
+            PrintWriter pw = new PrintWriter(w);
+            pw.println("<html><head></head><body><h1>Fout opgetreden</h1><p>");
+            pw.println(e.getMessage());
+            pw.println("</p></body></html>");
+        } catch (IOException e2) {
+            LOGGER.warning("Could not write error to client: " + e.getMessage());
+        }
     }
 
 }

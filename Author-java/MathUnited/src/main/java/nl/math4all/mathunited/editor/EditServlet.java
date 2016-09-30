@@ -203,7 +203,6 @@ public class EditServlet extends HttpServlet {
      * @throws Exception 
      */
     public String getLock(String username, String refbase) throws Exception {
-        // TODO: dit moet eigenlijk aan LockServlet worden gevraagd
         return LockManager.getInstance().getLock(username, refbase);
     }
     
