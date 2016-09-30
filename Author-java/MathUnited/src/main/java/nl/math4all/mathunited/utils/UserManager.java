@@ -41,29 +41,26 @@ public class UserManager {
         return usettings;
     }
     
-    //check if user is logged in
+    /** Check if user is logged in. */
     public static UserSettings isLoggedIn(HttpServletRequest request, HttpServletResponse response)  throws LoginException, ConfigException {
-        HttpSession session = request.getSession();
-        String userName = (String)session.getAttribute("userid");
-
-        try{
-            if (userName == null) {
-                throw new LoginException("Not logged in.");
-            } 
-
-            UserSettings usettings = Users.getInstance().getUsers().get(userName);
-
-            if (usettings == null) {
-                throw new LoginException("Login error: unknown user " + userName);
-            }
-            usettings.username = userName;
-
-            return usettings;
-        } catch (LoginException e) {
-            // End session
-            session.invalidate();
-            throw e;
+        // Get session if already exists
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            throw new LoginException("Not logged in.");
         }
+
+        String userName = (String) session.getAttribute("userid");
+        if (userName == null) {
+            throw new LoginException("Not logged in.");
+        }
+
+        UserSettings usettings = Users.getInstance().getUsers().get(userName);
+        if (usettings == null) {
+            throw new LoginException("Login error: unknown user " + userName);
+        }
+
+        usettings.username = userName;
+        return usettings;
     }
     
     public static UserSettings resetPassword(String userId) throws Exception {
