@@ -23,8 +23,10 @@ public class LogOutServlet extends HttpServlet {
         response.setContentType("application/xml");
 
         // End the session
-        HttpSession session = request.getSession();
-        session.invalidate();
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
 
         String result = resultXML.replace("{#LOGINRESULT}","true").replace("{#LOGINMESSAGE}", "Logout successfull");
 
