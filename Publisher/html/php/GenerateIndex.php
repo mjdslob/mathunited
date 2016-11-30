@@ -27,8 +27,8 @@ class Overview {
     
     function Overview() {
         header('Content-type: text/html');
-        echo "<html><head><style>#error-div {width:100%;height:300px;border:3px solid red; position:absolute;top:0px;background-color:rgb(200,200,200)}</style></head><body>";
-try{
+        echo "<html><head><title>GenerateIndex v20161130</title><style>#error-div {width:100%;height:300px;border:3px solid red; position:absolute;top:0px;background-color:rgb(200,200,200)}</style></head><body>";
+        try{
         set_time_limit(MAX_TIME_LIMIT); 
         include("Config.php");
         
@@ -231,6 +231,7 @@ try{
          $metaDoc = $compDoc->metadata;
          $componentNode = $parent->addChild('component');
          $componentNode->addAttribute('id', $compDoc['id']);
+         $componentNode->addAttribute('uuid', $compDoc['uuid']);
          $componentNode->addAttribute('basePath', $repo['basePath']);
          $componentNode->addAttribute('file', $cc["relativePath"].$cc["file"]);
          $componentNode->addChild('year',$metaDoc->year);
@@ -254,6 +255,7 @@ try{
              $sc = $subNode->addChild('subcomponent');
              $sc->addAttribute('number', $s['number']);
              $sc->addAttribute('id', $s['id']);
+             $sc->addAttribute('uuid', $s['uuid']);
              $sc->addChild('title', $s->title);
              $sc->addChild('file', $cc["relativePath"].(string)$s->file);
          }
