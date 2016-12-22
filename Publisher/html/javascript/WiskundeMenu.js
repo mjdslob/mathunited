@@ -13,7 +13,7 @@ MU_View.prototype.showThread = function(thread) {
     //add dynamic behavior
     //--------------------
     this.createWidgets();
-}
+};
 
 MU_View.prototype.selectModule = function(mod) {
     var elm = $('#mod-'+mod.id);
@@ -34,7 +34,7 @@ MU_View.prototype.selectModule = function(mod) {
     });
 */    
 
-}
+};
 
 MU_View.prototype.showThreadMenu = function(threads,selectedId) {
    var parent = $('#choose-thread-container');
@@ -58,11 +58,11 @@ MU_View.prototype.showThreadMenu = function(threads,selectedId) {
            $(this).removeClass('mu-thread-item-active');
        });
    }
-}
+};
 
 MU_View.prototype.removeThreadElements = function() {
     $('#component-widget > *').remove();   //remove old contents
-}
+};
 
 MU_View.prototype.createThreadElements = function(thread) {
     var n = thread.modules.length;
@@ -95,7 +95,7 @@ MU_View.prototype.createThreadElements = function(thread) {
 
         }
     }
-}
+};
 
 MU_View.prototype.showLoadIcon = function(parentId) {
     var parent=$('#'+parentId);
@@ -104,11 +104,12 @@ MU_View.prototype.showLoadIcon = function(parentId) {
 //    loadIcon.css('top','30px');
 //    loadIcon.css('left','200px');
     this.loadIcon = loadIcon;
-}
+};
+
 MU_View.prototype.hideLoadIcon = function() {
     this.loadIcon.remove();
     this.loadIcon = null;
-}
+};
 
 MU_View.prototype.createWidgets = function() {
     var _this = this;
@@ -215,7 +216,6 @@ function gup( name )
 }
 
 
-;
 
 function WM_Link(mod1, mod2) {
     this.state = WM_MODULE_STATE_NORMAL;
@@ -232,7 +232,8 @@ WM_Link.prototype.equals = function(other) {
         if(this.mod2.id != other.mod1.id) return false;
         return true;
     }
-}
+};
+
 WM_Link.prototype.other = function(mod) {
     if(this.mod1.id == mod.id) return this.mod2;
     if(this.mod2.id == mod.id) return this.mod1;
@@ -279,7 +280,7 @@ WM_Manager.prototype.init = function() {
     this.addCommand(new WM_Command(WM_CMD_LOAD_METHOD_DATA, {}));
     this.addCommand(new WM_Command(WM_CMD_LOAD_CONFIG_DATA, {}));
     this.execute();
-}
+};
 
 function WM_Command(code, args) {
     this.code = code;
@@ -288,7 +289,7 @@ function WM_Command(code, args) {
 
 WM_Manager.prototype.addCommand = function(cmd) {
    this.CallStack.push(cmd);
-}
+};
 
 WM_Manager.prototype.continueProcessing = function() {
    var n = this.CallStack.length;
@@ -329,14 +330,14 @@ WM_Manager.prototype.continueProcessing = function() {
      default:
           alert("Unknown command: "+cmd.code);
    }
-}
+};
 
 WM_Manager.prototype.execute = function() {
     if(!this.isExecuting) {
         this.isExecuting=true;
         this.continueProcessing();
     }
-}
+};
 
 WM_Manager.prototype.loadConfig = function() {
     var _this = this;
@@ -346,12 +347,12 @@ WM_Manager.prototype.loadConfig = function() {
               _this.methodURL = $('componentsURL',data).text();
               _this.continueProcessing();
           });
-}
+};
 
 
 WM_Manager.prototype.setMessage = function(msg){
     $('message-box').html(msg);
-}
+};
 
 
 WM_Manager.prototype.loadWorkflowStatus = function() {
@@ -377,7 +378,7 @@ WM_Manager.prototype.loadWorkflowStatus = function() {
            _this.continueProcessing();
        }
     );
-}
+};
 
 WM_Manager.prototype.initViews = function() {
     var _this = this;
@@ -388,7 +389,7 @@ WM_Manager.prototype.initViews = function() {
         }
         _this.continueProcessing();
     });
-}
+};
 
 WM_Manager.prototype.initCanvas = function(filter) {
     try {
@@ -406,7 +407,8 @@ WM_Manager.prototype.initCanvas = function(filter) {
         debug.innerHTML='Een fout is opgetreden: Foutnaam: '+error.name+'. Melding: '+error.message+'<br/>line:'+error.lineNumber
           +'<br/>file: '+error.fileName;
     }
-}
+};
+
 WM_Manager.prototype.loadMethodData = function() {
     var _this=this;
     this.modules = [];
@@ -469,7 +471,7 @@ WM_Manager.prototype.loadMethodData = function() {
               _this.continueProcessing();
           }
     );
-}
+};
 
 WM_Manager.prototype.loadThreads = function(args) {
     var _this = this;
@@ -550,11 +552,12 @@ WM_Manager.prototype.loadThreads = function(args) {
             _this.continueProcessing();
         }
     );
-}
+};
 
 WM_Manager.prototype.hoverModule = function(id,active) {
     if(this.view) this.view.hoverModule(this.modules[id],active);
-}
+};
+
 WM_Manager.prototype.selectModule = function(module) {
     if(this.view)  this.view.selectModule(module);
     this.threadView.selectModule(module);
@@ -566,7 +569,7 @@ function WM_Method(spec) {
     this.title = spec.title;
     this.ypos = spec.id;
 }
-;
+
 //a module represents one element of learning content (aggregation level 2)
 WM_MODULE_STATE_NORMAL = 1;
 WM_MODULE_STATE_HOVER  = 2;
@@ -589,9 +592,10 @@ function WM_Module(spec) {
     this.state = WM_MODULE_STATE_NORMAL;
     this.colors = ['rgb(230,230,256)','rgb(230,256,230)','rgb(256,230,230)','rgb(230,256,256)','rgb(256,230,256)','rgb(256,256,230)'];
 }
+
 WM_Module.prototype.addThread = function(thread) {
     this.threads.push(thread);
-}
+};
 
 WM_Module.prototype.addPostLink = function(link) {
     for(var jj=0;jj<this.post.length;jj++) {
@@ -600,7 +604,7 @@ WM_Module.prototype.addPostLink = function(link) {
     if(jj==this.post.length) {  //unknown precondition: add it
         this.post.push( link );
     }
-}
+};
 
 WM_Module.prototype.addPreLink = function(link) {
     for(var jj=0;jj<this.pre.length;jj++) {
@@ -609,7 +613,7 @@ WM_Module.prototype.addPreLink = function(link) {
     if(jj==this.pre.length) {  //unknown precondition: add it
         this.pre.push( link );
     }
-}
+};
 
 WM_Module.prototype.calcPositions = function(base) {
     this.pos = {x: base.x, y: base.y+ 0.5*wm.view.LINE_DISTANCE};
@@ -621,13 +625,13 @@ WM_Module.prototype.calcPositions = function(base) {
             modAfter.calcPositions(newBase);
         }
     }
-}
+};
 
 WM_Module.prototype.setSelected = function(isSelected) {
     this.selected = isSelected;
     for(var jj=0; jj<this.pre.length; jj++) this.pre[jj].selected = isSelected;
     for(var jj=0; jj<this.post.length; jj++) this.post[jj].selected = isSelected;
-}
+};
 
 WM_Module.prototype.getColor = function(state,selected) {
     if(state==null) state = this.state;
@@ -643,7 +647,8 @@ WM_Module.prototype.getColor = function(state,selected) {
              break;
          return 'rgb(0,0,0)';
     }
-}
+};
+
 WM_Module.prototype.getTextColor = function(state,selected) {
     if(state==null) state = this.state;
     if(selected==null) selected= this.selected;
@@ -658,7 +663,7 @@ WM_Module.prototype.getTextColor = function(state,selected) {
              break;
          return 'rgb(0,0,0)';
     }
-}
+};
 
 
 WM_Module.prototype.draw = function(ctx) {
@@ -684,7 +689,8 @@ WM_Module.prototype.draw = function(ctx) {
      ctx.translate(-this.pos.x-wm.view.MODULE_RADIUS*1.5, -this.pos.y+wm.view.MODULE_RADIUS*1.5)
      
      ctx.stroke();
-}
+};
+
 WM_Module.prototype.drawPreline = function(ctx) {
      for(var ii=0;ii<this.pre.length;ii++){
          //highest state prevails: hover over normal
@@ -699,7 +705,7 @@ WM_Module.prototype.drawPreline = function(ctx) {
          ctx.lineTo(this.pos.x-d[0]*wm.view.MODULE_RADIUS, this.pos.y-d[1]*wm.view.MODULE_RADIUS);
          ctx.stroke();
      }
-}
+};
 
 //returns [x,y,width, height]
 WM_Module.prototype.getBoundingBox = function() {
@@ -709,7 +715,7 @@ WM_Module.prototype.getBoundingBox = function() {
         this.pos.y-dist,
         2*dist,2*dist
     ]
-}
+};
 
 WM_Module.prototype.hover = function() {
     var div = document.getElementById('module-hover-div');
@@ -718,19 +724,20 @@ WM_Module.prototype.hover = function() {
     div.style.left = ''+(this.pos.x+wm.view.MODULE_HOVER_OFFSET.x)+'px';
     div.style.zIndex = '5';
     div.style.visibility='visible';
-}
+};
+
 WM_Module.prototype.hoverOff = function() {
     var div = document.getElementById('module-hover-div');
     div.style.top = '0px';
     div.style.left = '0px';
     div.style.zIndex = '-5';
     div.style.visibility='hidden';
-}
-;
+};
+
 //raster is a (lower resolution) representation of the canvas. Used to track
 //which elements are visible on what part of the canves. Nedessary to enable
 //mouse clicks, hovering, etc.
-var pitch = {x:3,y:3}
+var pitch = {x:3,y:3};
 function Raster(width,height) {
     this.width = width/pitch.x;
     this.height = height/pitch.y;
@@ -739,11 +746,13 @@ function Raster(width,height) {
         this.pix[ii] = new Array(Math.ceil(this.height));
     }
 }
+
 Raster.prototype.reset = function() {
     for(var ii=0;ii<this.width;ii++) {
         this.pix[ii] = new Array(Math.ceil(this.height));
     }
-}
+};
+
 Raster.prototype.addItem = function(item,shift) {
     var posArr = item.getBoundingBox();
     var bx = Math.floor(0.5+(posArr[0]-shift.x)/pitch.x);
@@ -779,7 +788,8 @@ Raster.prototype.addItem = function(item,shift) {
     }
     
 
-}
+};
+
 Raster.prototype.getItem = function(x,y) {
     x = Math.round(x/pitch.x);
     y = Math.round(y/pitch.y);
@@ -787,9 +797,8 @@ Raster.prototype.getItem = function(x,y) {
         return this.pix[x][y];
     }
     return null;
-}
+};
 
-;
 //a segment represents a chain of modules that need to be traversed completely
 //it contains a definition of the containing modules and defines the preconditions
 //a precondition is a list of chains. This chain is 'allowed' if at least one of
@@ -823,7 +832,7 @@ WM_Segment.prototype.setSelected = function(isSelected) {
     for(var ii=0; ii<this.modules.length; ii++) {
         this.modules[ii].setSelected(isSelected);
     }
-}
+};
 
 WM_Segment.prototype.calcPositions = function(base) {
     this.pos = {x: base.x, y: base.y+ (this.method.displayLine+0.5)*wm.view.LINE_DISTANCE};
@@ -843,17 +852,17 @@ WM_Segment.prototype.calcPositions = function(base) {
     for(var ii=0;ii<this.modules.length;ii++){
         this.modules[ii].pos = {x:this.pos.x + ii*dx + (2*ii+1)*wm.view.MODULE_RADIUS, y:this.pos.y};
     }
-}
+};
 
 WM_Segment.prototype.draw = function(ctx, raster) {
     for(var ii=0;ii<this.modules.length;ii++) {
         this.modules[ii].draw(ctx);
         raster.addItem(this.modules[ii],wm.view.CANVAS_MODULE_SHIFT);
     }
-}
+};
 
 
-;
+
 //
 //  id   :
 //  info : beschrijving (korte zin)
@@ -887,8 +896,9 @@ WM_Thread.prototype.addModule = function(mod) {
             modBefore.addPostLink(link);
         }
     }
-}
-;function WM_View() {
+};
+
+function WM_View() {
     this.OVERSAMPLING = 2;//to compensate for bad text quality
     this.LINE_DISTANCE = 40*this.OVERSAMPLING; 
     this.MODULE_DISTANCE = 30*this.OVERSAMPLING;
@@ -953,7 +963,7 @@ WM_Thread.prototype.addModule = function(mod) {
         cursor.x*=_this.OVERSAMPLING;
         cursor.y*=_this.OVERSAMPLING;
         return cursor;
-    }
+    };
 
     //add mouse events to the canvas
     var ev_mousemove = function(ev) {
@@ -981,7 +991,7 @@ WM_Thread.prototype.addModule = function(mod) {
       if(redrawNeeded) {
           _this.drawModules();
       }
-    }
+    };
 
     var ev_mouseclick = function(ev) {
       var x, y;
@@ -992,7 +1002,8 @@ WM_Thread.prototype.addModule = function(mod) {
       if(item!=null) {
           wm.selectModule(item);
       }
-    }
+    };
+
     var ev_mouseOut = function(ev) {
       if(hoveredItem) {
           hoveredItem.state = WM_SEGMENT_STATE_NORMAL;
@@ -1001,7 +1012,7 @@ WM_Thread.prototype.addModule = function(mod) {
           $('#mod-'+hoveredItem.id).removeClass('module-hovered');
           hoveredItem = null;
       }
-    }
+    };
 
     this.canvas.addEventListener('mousemove', ev_mousemove, false);
     this.canvas.addEventListener('click', ev_mouseclick, false);
@@ -1014,7 +1025,8 @@ WM_View.prototype.selectModule = function(mod) {
         this.modules[ii].selected = (this.modules[ii].id==modId);
     }
     this.drawModules();
-}
+};
+
 WM_View.prototype.setModules = function(modules) {
     if(!this.ctx) return;
     if(!modules || modules.length==0) return;
@@ -1038,7 +1050,7 @@ WM_View.prototype.setModules = function(modules) {
     for(var ii=0;ii<this.modules.length;ii++){
         this.raster.addItem(this.modules[ii],wm.view.CANVAS_MODULE_SHIFT);
     }
-}
+};
 
 WM_View.prototype.drawModules = function(){
     if(!this.ctx) return;
@@ -1048,17 +1060,17 @@ WM_View.prototype.drawModules = function(){
     for(var ii=0;ii<wm.modules.length;ii++) {
         wm.modules[ii].draw(this.ctx, this.raster);
     }
-}
+};
 
 WM_View.prototype.setTitle = function(title) {
     $('#leerlijn-chooser-titel').html(title);
-}
+};
 
 WM_View.prototype.threadSelected = function(thread) {
     $('#thread-title').html(thread.title);
     $('#thread-info').html(thread.info);
     $('#leerlijn-submit').attr('href',wm.ShowThreadURL+thread.id);
-}
+};
 
 var _mod = null;
 WM_View.prototype.hoverModule = function(mod,active) {
@@ -1073,5 +1085,4 @@ WM_View.prototype.hoverModule = function(mod,active) {
         _mod = mod;
     }
     this.drawModules();
-}
-;
+};
