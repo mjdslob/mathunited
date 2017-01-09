@@ -225,7 +225,7 @@ public class PostContentServlet extends HttpServlet {
                 node.setAttribute("status", status);
                 String fileStr = Utils.pathJoin(config.getContentRoot(), repository.getPath(), sub.file);
                 FileManager.writeToFile(fileStr, node, repository);
-                WorkflowServlet.updateStatus(repoId, subcomp, fileStr);
+                WorkflowServlet.updateStatus(getServletContext(), repoId, subcomp, fileStr);
 
                 //create backup
                 /*

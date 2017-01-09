@@ -28,7 +28,7 @@ public class InitServlet extends HttpServlet {
             XSLTbean.clearTemplates();
             Configuration.clear();
             Users.clear();
-            WorkflowServlet.clear();
+            WorkflowServlet.getStatusMap().clear();
             
             response.setContentType("text/html");
             Writer w = response.getWriter();

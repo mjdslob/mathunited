@@ -7,10 +7,14 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,19 +31,22 @@ import nl.math4all.mathunited.utils.Utils;
 public class WorkflowServlet extends HttpServlet {
     private final static Logger LOGGER = Logger.getLogger(WorkflowServlet.class.getName());
 
+    private static final String STATUS_MAP_NAME = "statusMap";
+
+    static Map<String, Map<String, String>> statusMap = new HashMap<String, Map<String, String>>();
+
     /**
      * map of repo to a (map of subcomp-id to status)
      */
-    private static Map<String, Map<String, String>> statusMap = new HashMap<String, Map<String, String>>();
+
+    public static Map<String, Map<String, String>> getStatusMap() {
+        return statusMap;
+    }
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         LOGGER.setLevel(Level.INFO);
-    }
-
-    public static void clear() {
-        statusMap.clear();
     }
 
     /**
@@ -63,8 +70,11 @@ public class WorkflowServlet extends HttpServlet {
             String repo = parameterMap.get("repo");
             String reread = parameterMap.get("reread");
 
+            Map<String, Map<String,String>> statusMap = getStatusMap();
             Map<String, String> repoMap = statusMap.get(repo);
-            if (repoMap == null || reread == "true") {
+
+            if (repoMap == null || Objects.equals(reread, "true")) {
+                LOGGER.info("(Re)reading '" + repo + "'.");
                 readComponentStatus(repo);
                 repoMap = statusMap.get(repo);
                 if (repoMap == null) {
@@ -84,7 +94,8 @@ public class WorkflowServlet extends HttpServlet {
 
     }
 
-    public static void updateStatus(String repo, String subcomp, String path) throws Exception {
+    static void updateStatus(ServletContext context, String repo, String subcomp, String path) throws Exception {
+        Map<String, Map<String,String>> statusMap = getStatusMap();
         Map<String, String> compStatusMap = statusMap.get(repo);
         if (compStatusMap != null) {
             String status = extractStatus(path);
@@ -103,6 +114,7 @@ public class WorkflowServlet extends HttpServlet {
 
         Map<String, Component> componentMap = repository.readComponentMap();
 
+        Map<String, Map<String,String>> statusMap = getStatusMap();
         Map<String, String> compStatusMap = statusMap.get(repo);
         if (compStatusMap == null) {
             compStatusMap = new HashMap<String, String>();
