@@ -68,14 +68,18 @@ fi
       fi
     done
 
-    # Commit
+    # Update & commit
+    echo "--- Running 'svn update' on path ${ARG1}"
+    svn update --accept mine-conflict ${ARG1} $imgdir $ggbdir $doxdir
+    echo "--- Running 'svn commit' on path ${ARG1}"
     svn commit ${commitdirs} -m "Changes by user $ARG2."
 
-    # Unlock
-    if test -n "$(find ${ARG1} -maxdepth 1 -name '*.xml' -print -quit)"; then
-      echo "--- Unlocking of files in ${ARG1}"
-      find ${ARG1} -maxdepth 1 -name '*.xml' -exec svn unlock '{}' \;
-    fi
+# TODO: disabled locking/unlocking
+#    # Unlock
+#    if test -n "$(find ${ARG1} -maxdepth 1 -name '*.xml' -print -quit)"; then
+#      echo "--- Unlocking of files in ${ARG1}"
+#      find ${ARG1} -maxdepth 1 -name '*.xml' -exec svn unlock '{}' \;
+#    fi
 
 
     echo "*** DONE. SVN COMMIT OF PARAGRAPH '${ARG1}'"

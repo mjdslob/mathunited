@@ -1,0 +1,46 @@
+@startuml
+
+@startuml
+actor Auteur as usr
+actor "XML Auteur" as xml
+boundary "Apache\nuser apache" as ap
+control "Mathplus\nuser tomcat" as tom
+database "Werk directory" as work
+database "SVN Repo" as repo
+
+usr -> ap: Request edit
+ap -> tom: Request edit
+tom -> work: is niemand anders bezig?
+tom -> repo: svn update\nuser tomcat
+repo -> work: Updates uit repo\nmaar werkdir versies\nhebben voorrang!
+tom -> repo: svn lock *.xml\nuser tomcat
+repo -> work: svn-locks
+work -> tom: XML to HTML
+tom -> usr: Send page
+
+newpage
+
+usr -> ap: Save results (HTML)
+ap -> tom: Forward
+tom -> tom: XSLT:\nhtml to xml
+tom -> tom: XML cleanup
+tom -> tom: XML cleanup
+tom -> work: Store
+tom -> repo: Commit
+work -> repo: Transfer diffs
+alt Normaloperation"
+repo -> tom: Made revision r.xxxxx
+else Conflict
+repo -> tom: Oops!
+end alt
+note over tom
+Always proceeds by sending
+back latest work dir version...
+end note
+work -> tom: XML to HTML
+tom -> usr: Send page
+
+
+
+
+@enduml

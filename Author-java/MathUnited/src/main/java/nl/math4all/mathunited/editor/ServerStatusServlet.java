@@ -1,7 +1,7 @@
 package nl.math4all.mathunited.editor;
 
 import nl.math4all.mathunited.configuration.Configuration;
-import nl.math4all.mathunited.utils.ScriptRunner;
+import nl.math4all.mathunited.utils.UnfencedScriptRunner;
 import nl.math4all.mathunited.utils.Utils;
 
 import javax.servlet.ServletException;
@@ -9,12 +9,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -59,7 +56,7 @@ public class ServerStatusServlet extends HttpServlet {
         }
 
         try {
-            ScriptRunner runner = new ScriptRunner(writer);
+            UnfencedScriptRunner runner = new UnfencedScriptRunner(writer);
             runner.runScript("server-stat");
         }
         catch (Exception e) {

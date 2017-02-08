@@ -32,6 +32,10 @@ fi
     cd ${ARG1}
     echo "--- In directory $(pwd)"
 
+    # Cleanup svn tree
+    echo "--- Running svn cleanup"
+    svn cleanup
+
     # Removing thumbnail directories from repo
     echo "--- Removing thumbnail directories from repo"
     thumbdirs=$(/bin/ls -1 **/images/highres/mcith)
@@ -47,10 +51,6 @@ fi
     # Remove empty directories
     echo "--- Removing completely empty directories (no content, no .svn)"
     find ${ARG1} -type d -empty -not -iwholename "*.svn*" -print -delete
-
-    # Cleanup svn tree
-    echo "--- Running svn cleanup"
-    svn cleanup
 
     # Find content directories by looking for index.xml
     indexes=$(/bin/ls -1 **/index.xml)
@@ -95,6 +95,10 @@ fi
     # Run an update and accept conflicts
     echo "--- Pull in changes from repo"
     svn update --accept mine-conflict "$ARG1"
+
+    # Run an accept mine version for remaining conflicts
+    echo "--- Accept my version for any remaining conflicts"
+    svn resolve --accept mine-conflict "$ARG1"
 
     # Put back to the server
     echo "--- Put back resolved conflictes to repo"

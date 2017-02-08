@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.HashMap;
 import javax.xml.transform.sax.SAXSource;
 
-import nl.math4all.mathunited.utils.ScriptRunner;
+import nl.math4all.mathunited.utils.UnfencedScriptRunner;
 import nl.math4all.mathunited.utils.Utils;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
@@ -238,7 +238,7 @@ public class PostContentServlet extends HttpServlet {
             }
 
             // Fix-up XML files
-            ScriptRunner runner = new ScriptRunner(new PrintWriter(System.out));
+            UnfencedScriptRunner runner = new UnfencedScriptRunner(new PrintWriter(System.out));
             runner.runScript("xml-fixup", refbase);
         } catch (Exception e) {
             e.printStackTrace();

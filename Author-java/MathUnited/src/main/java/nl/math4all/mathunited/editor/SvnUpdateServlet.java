@@ -1,8 +1,6 @@
 package nl.math4all.mathunited.editor;
 
 import nl.math4all.mathunited.configuration.*;
-import nl.math4all.mathunited.exceptions.ConfigException;
-import nl.math4all.mathunited.exceptions.LoginException;
 import nl.math4all.mathunited.utils.ScriptRunner;
 import nl.math4all.mathunited.utils.UserManager;
 import nl.math4all.mathunited.utils.Utils;
@@ -10,7 +8,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.WriterOutputStream;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -69,11 +66,11 @@ public class SvnUpdateServlet extends HttpServlet {
                 ScriptRunner runner = new ScriptRunner(writer);
 
                 String fix = parameterMap.get("fix");
-                if (fix != null && fix.equalsIgnoreCase("true")) {
-                    System.out.println("Running svn-fix script");
+                if (Objects.equals(parameterMap.get("unlock"), "true")) {
+                    runner.runScript("svn-force-unlock");
+                } else if (Objects.equals(parameterMap.get("fix"), "true")) {
                     runner.runScript("svn-fix", svnPath, logFile.getPath());
                 } else {
-                    System.out.println("Running svn-update script");
                     String path = parameterMap.get("path");
                     if (path != null && !path.isEmpty()) {
                         File newPath = new File(svnPath, path);
