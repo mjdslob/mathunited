@@ -68,11 +68,34 @@ fi
       fi
     done
 
+    #
+    # Fixup XML
+    #
+    echo "=== XML FIXUP OF PARAGRAPH '${ARG1}'"
+    if test ! -d "${ARG1}"; then
+      echo "!!! '${ARG1}' is not a directory. Stopping."
+      exit 1
+    fi
+
+    echo "--- Fixing xsi:noNamespaceSchemaLocation on  all XML in ${ARG1}"
+    # Process top level XML files except for index.xml
+    for f in $(find ${ARG1} -maxdepth 1 -iname "*.xml" -and -not -name index.xml); do
+      # Only process files with wrong xsi tag
+      if grep -q xsi:nonamespaceschemalocation ${f}; then
+        echo "--- ... ${f:t}"
+        # Run inplace sed and delete backup only if succesful
+        sed -i.bak -e 's/xsi:nonamespaceschemalocation/xsi:noNamespaceSchemaLocation/g' $f && rm ${f}.bak
+      fi
+    done
+
+    #
     # Update & commit
+    #
     echo "--- Running 'svn update' on path ${ARG1}"
     svn update --accept mine-conflict ${ARG1} $imgdir $ggbdir $doxdir
     echo "--- Running 'svn commit' on path ${ARG1}"
     svn commit ${commitdirs} -m "Changes by user $ARG2."
+
 
 # TODO: disabled locking/unlocking
 #    # Unlock

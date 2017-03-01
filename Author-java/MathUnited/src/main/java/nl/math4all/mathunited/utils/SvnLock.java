@@ -49,10 +49,6 @@ public class SvnLock extends Lock {
     public void release() throws LockException {
         //LOGGER.info("Releasing lock (svn) for " + refbase + " for user " + username + ".");
 
-        // Commit the new files
-        ScriptRunner runner = new ScriptRunner(new PrintWriter(System.out));
-        runner.runScript("svn-commit-paragraph", refbase, username);
-
         // Remove the lock file
         removeLockFile();
     }

@@ -9,8 +9,7 @@ import java.util.Map;
 import java.util.HashMap;
 import javax.xml.transform.sax.SAXSource;
 
-import nl.math4all.mathunited.utils.UnfencedScriptRunner;
-import nl.math4all.mathunited.utils.Utils;
+import nl.math4all.mathunited.utils.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
@@ -27,8 +26,6 @@ import nl.math4all.mathunited.configuration.*;
 import nl.math4all.mathunited.configuration.SubComponent;
 import nl.math4all.mathunited.configuration.Component;
 import nl.math4all.mathunited.resolvers.ContentResolver;
-import nl.math4all.mathunited.utils.UserManager;
-import nl.math4all.mathunited.utils.FileManager;
 
 
 //mathunited.pragma-ade.nl/MathUnited/view?variant=basis&comp=m4a/xml/12hv-me0&subcomp=3&item=explore
@@ -238,8 +235,11 @@ public class PostContentServlet extends HttpServlet {
             }
 
             // Fix-up XML files
-            UnfencedScriptRunner runner = new UnfencedScriptRunner(new PrintWriter(System.out));
-            runner.runScript("xml-fixup", refbase);
+            // Commit the new files
+            ScriptRunner runner = new ScriptRunner(new PrintWriter(System.out));
+            runner.runScript("svn-commit-paragraph", refbase, usettings.username);
+//            UnfencedScriptRunner runner = new UnfencedScriptRunner(new PrintWriter(System.out));
+//            runner.runScript("xml-fixup", refbase);
         } catch (Exception e) {
             e.printStackTrace();
             String result = resultXML.replace("{#POSTRESULT}", "false").replace("{#MESSAGE}", e.getMessage());

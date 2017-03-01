@@ -36,6 +36,7 @@ public abstract class Lock {
     public File getLockFile() {
         return new File(refbase, LockManager.LOCK_FILE_NAME);
     }
+
     /** Create a lock file */
     public void createLockFile() throws LockException {
         try {
