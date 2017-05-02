@@ -197,8 +197,7 @@ indent="yes" encoding="utf-8"/>
                            }
 		      });
                    </script>
-		   <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js">
-		   </script>
+          <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AM_CHTML&amp;delayStartupUntil=configured" />
 		   <script type="text/javascript" src="/javascript/MathUnited.js"/>
 		   <script type="text/javascript" src="/javascript/MathUnited_m4a.js"/>
 		   <link rel="stylesheet" href="/css/content.css" type="text/css"/>
@@ -207,8 +206,8 @@ indent="yes" encoding="utf-8"/>
       </xsl:when>
       <xsl:otherwise>
 		   <link type="text/css" href="javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
-		   <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
-		   <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
+		   <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"/>
+		   <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"/>
 		   <script type="text/x-mathjax-config">
 		      MathJax.Hub.Config({
 		           extensions: ["mml2jax.js","asciimath2jax.js"],
@@ -222,8 +221,7 @@ indent="yes" encoding="utf-8"/>
                            }
 		      });
 		   </script>
-		   <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js">
-		   </script>
+          <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AM_CHTML&amp;delayStartupUntil=configured" />
 		   <script type="text/javascript" src="javascript/MathUnited.js"/>
 		   <script type="text/javascript" src="javascript/MathUnited_m4a.js"/>
 		   <link rel="stylesheet" href="css/content.css" type="text/css"/>
@@ -232,7 +230,7 @@ indent="yes" encoding="utf-8"/>
 		   <link rel="stylesheet" href="css/StepPanel.css" type="text/css"/>
 		   <link rel="stylesheet" href="css/AKIT-Exercise.css" type="text/css"/>
 		   <link rel="stylesheet" href="css/mathquill.css" type="text/css"/>
-                   <script data-main="javascript/algebrakit.js" src="javascript/require.js"></script>
+          <script data-main="javascript/algebrakit.js" src="javascript/require.js"/>
       </xsl:otherwise>
    </xsl:choose>
 

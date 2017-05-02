@@ -198,8 +198,7 @@ indent="yes" encoding="utf-8"/>
                            }
 		      });
                    </script>
-		   <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js">
-		   </script>
+          <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AM_CHTML&amp;delayStartupUntil=configured" />
 		   <script type="text/javascript" src="/javascript/MathUnited.js"/>
 		   <script type="text/javascript" src="/javascript/MathUnited_m4a.js"/>
 		   <link rel="stylesheet" href="/css/content.css" type="text/css"/>
@@ -223,8 +222,7 @@ indent="yes" encoding="utf-8"/>
                            }
 		      });
 		   </script>
-		   <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js">
-		   </script>
+          <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AM_CHTML&amp;delayStartupUntil=configured" />
 		   <script type="text/javascript" src="javascript/MathUnited.js"/>
 		   <script type="text/javascript" src="javascript/MathUnited_m4a.js"/>
 		   <link rel="stylesheet" href="css/content.css" type="text/css"/>

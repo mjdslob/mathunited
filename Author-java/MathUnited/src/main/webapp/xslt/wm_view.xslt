@@ -169,9 +169,7 @@ indent="yes" encoding="utf-8" />
 		           jax: ["input/MathML","input/AsciiMath"]
 		      });
 		   </script>
-		   <script type="text/javascript"
-		      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js">
-		   </script>
+          <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AM_CHTML&amp;delayStartupUntil=configured" />
 		   <link rel="stylesheet" href="/css/basis_wm.css" type="text/css"/>
 		   <link rel="stylesheet" href="/css/content.css" type="text/css"/>
 		   <link rel="stylesheet" href="/css/exercises.css" type="text/css"/>
@@ -179,8 +177,8 @@ indent="yes" encoding="utf-8" />
       </xsl:when>
       <xsl:otherwise>
 		   <link type="text/css" href="javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
-		   <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
-		   <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
+		   <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"/>
+		   <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"/>
 		   <script type="text/javascript" src="javascript/jquery.ui.touch-punch.min.js"/>
 		   <link rel="stylesheet" href="css/grid.css" type="text/css"/>
 		   <script type="text/x-mathjax-config">
@@ -193,9 +191,7 @@ indent="yes" encoding="utf-8" />
 		           jax: ["input/MathML","input/AsciiMath"]
 		      });
 		   </script>
-		   <script type="text/javascript"
-		      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js">
-		   </script>
+          <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AM_CHTML&amp;delayStartupUntil=configured" />
 		   <link rel="stylesheet" href="css/basis_wm.css" type="text/css"/>
 		   <link rel="stylesheet" href="css/content.css" type="text/css"/>
 		   <link rel="stylesheet" href="css/exercises.css" type="text/css"/>

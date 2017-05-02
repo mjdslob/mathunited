@@ -94,10 +94,8 @@ indent="yes" encoding="utf-8"/>
            jax: ["input/MathML","input/AsciiMath"]
       });
    </script>
-   <script type="text/javascript"
-      src="http://cdn.mathjax.org/mathjax/latest/MathJax.js">
-   </script>
-   <script type="text/javascript" src="http://mathunited.pragma-ade.nl:41080/MathUnited/javascript/MathUnited.js"/>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AM_CHTML&amp;delayStartupUntil=configured" />
+    <script type="text/javascript" src="http://mathunited.pragma-ade.nl:41080/MathUnited/javascript/MathUnited.js"/>
    <script type="text/javascript" src="http://mathunited.pragma-ade.nl:41080/MathUnited/javascript/MathUnited_LOM.js"/>
    <link rel="stylesheet" href="http://mathunited.pragma-ade.nl:41080/MathUnited/css/content.css" type="text/css"/>
    <link rel="stylesheet" href="http://mathunited.pragma-ade.nl:41080/MathUnited/css/LerenOpMaat_HTML.css" type="text/css"/>
