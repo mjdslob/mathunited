@@ -3,6 +3,7 @@ package nl.math4all.mathunited.editor;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
+import java.util.Date;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 import java.util.Map;
@@ -124,7 +125,10 @@ public class PostContentServlet extends HttpServlet {
 
 
             LOGGER.log(Level.INFO, "Commit: user={0}, comp={1}, subcomp={2}, repo={3}", new Object[]{usettings.username, comp, subcomp, repoId});
-            LOGGER.log(Level.FINE, html);
+            //LOGGER.log(Level.FINE, html);
+            System.out.println(">>> SEND BY " + usettings.username + " at " + new Date());
+            System.out.println(html);
+            System.out.println("<<<");
 
             Repository repository = config.getRepos().get(repoId);
             if (repository == null) {
