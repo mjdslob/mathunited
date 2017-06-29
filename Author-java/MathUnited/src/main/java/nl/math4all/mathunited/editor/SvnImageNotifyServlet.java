@@ -64,7 +64,13 @@ public class SvnImageNotifyServlet extends HttpServlet {
         // Locally accessed
 
         // Get image path (relative on server)
-        String imagePathString = parameterMap.get("path").trim();
+        String imagePathString = parameterMap.get("path");
+        if (imagePathString == null) {
+            String msg = "Required argument 'path' was not specified.";
+            LOGGER.warning(msg);
+            writer.println(msg);
+            return;
+        }
 
         // Get relative to content root
         imagePathString = imagePathString.replaceFirst("/data", "");
