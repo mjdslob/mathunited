@@ -1,6 +1,7 @@
 package nl.math4all.mathunited.editor;
 
 import nl.math4all.mathunited.configuration.Configuration;
+import nl.math4all.mathunited.utils.ScriptRunner;
 import nl.math4all.mathunited.utils.UnfencedScriptRunner;
 import nl.math4all.mathunited.utils.Utils;
 
@@ -95,7 +96,7 @@ public class SvnImageNotifyServlet extends HttpServlet {
         writer.println("Registered image " + imagePath);
 
         // Commit image
-        UnfencedScriptRunner runner = new UnfencedScriptRunner(writer);
+        ScriptRunner runner = new ScriptRunner(writer);
         runner.runScript("svn-add-image", imagePath.toString());
     }
 
