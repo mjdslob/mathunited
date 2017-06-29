@@ -59,10 +59,13 @@ public class PostContentServlet extends HttpServlet {
         response.setContentType("application/xml");
         Writer w = response.getWriter();
         PrintWriter pw = new PrintWriter(w);
+
+        String user = "<unknown>";
+
         try {
             // Check if user is logged in
             Configuration config = Configuration.getInstance();
-            UserSettings usettings = UserManager.isLoggedIn(request, response);
+            UserSettings usettings = UserManager.isLoggedIn(request);
             String repoId = Utils.getRepoID(request);
             if (repoId == null) {
                 throw new Exception("Repository is not set.");
@@ -72,9 +75,7 @@ public class PostContentServlet extends HttpServlet {
             Map<String, String> parameterMap = new HashMap<String, String>();
 
             BufferedReader br = new BufferedReader(new StringReader(body));
-
-
-            br.readLine(); 
+            br.readLine();
             
             // if (repo != null) { repo = rep.trim() }
             //
@@ -122,8 +123,8 @@ public class PostContentServlet extends HttpServlet {
             parameterMap.put("html", html);
 
 
-            //LOGGER.log(Level.INFO, "Commit: user={0}, comp={1}, subcomp={2}, repo={3}", new Object[]{usettings.mail, comp, subcomp, repoId});
-            //LOGGER.log(Level.FINE, html);
+            LOGGER.log(Level.INFO, "Commit: user={0}, comp={1}, subcomp={2}, repo={3}", new Object[]{usettings.username, comp, subcomp, repoId});
+            LOGGER.log(Level.FINE, html);
 
             Repository repository = config.getRepos().get(repoId);
             if (repository == null) {
@@ -216,7 +217,8 @@ public class PostContentServlet extends HttpServlet {
                         }
                     }
                 }
-                //store master file
+
+                // Store master file
                 expression = "/root/subcomponent";
                 Element node = (Element) xpath.evaluate(expression, root, XPathConstants.NODE);
                 node.setAttribute("status", status);
@@ -241,6 +243,7 @@ public class PostContentServlet extends HttpServlet {
 //            UnfencedScriptRunner runner = new UnfencedScriptRunner(new PrintWriter(System.out));
 //            runner.runScript("xml-fixup", refbase);
         } catch (Exception e) {
+            System.out.println(Utils.echoContext(request, "ERROR"));
             e.printStackTrace();
             String result = resultXML.replace("{#POSTRESULT}", "false").replace("{#MESSAGE}", e.getMessage());
             pw.println(result);

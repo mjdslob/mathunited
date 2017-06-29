@@ -89,6 +89,7 @@ public class WorkflowServlet extends HttpServlet {
             pw.println("</repo>");
 
         } catch (Exception e) {
+            System.out.println(Utils.echoContext(request, "ERROR"));
             Utils.writeError(response, e);
         }
 

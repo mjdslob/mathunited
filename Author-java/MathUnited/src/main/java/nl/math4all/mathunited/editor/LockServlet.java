@@ -38,7 +38,7 @@ public class LockServlet extends HttpServlet {
         try{
             Configuration config = Configuration.getInstance();
 
-            UserSettings usettings = UserManager.isLoggedIn(request,response);
+            UserSettings usettings = UserManager.isLoggedIn(request);
             
             // Read request parameters
             Map<String, String> parameterMap = Utils.readParameters(request);
@@ -58,6 +58,7 @@ public class LockServlet extends HttpServlet {
             writer.println(resultStr);
         }
         catch (Exception e) {
+            System.out.println(Utils.echoContext(request, "ERROR"));
             Utils.writeError(response, e);
         }
 

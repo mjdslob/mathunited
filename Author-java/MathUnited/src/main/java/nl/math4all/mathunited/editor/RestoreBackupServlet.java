@@ -51,7 +51,7 @@ public class RestoreBackupServlet extends HttpServlet {
         try{
             Configuration config = Configuration.getInstance();
 
-            UserSettings usettings = UserManager.isLoggedIn(request,response);
+            UserSettings usettings = UserManager.isLoggedIn(request);
             
             //read request parameters
             Map<String, String> parameterMap = Utils.readParameters(request);
@@ -125,6 +125,7 @@ public class RestoreBackupServlet extends HttpServlet {
             
         }
         catch (Exception e) {
+            System.out.println(Utils.echoContext(request, "ERROR"));
             Utils.writeError(response, e);
         }
     }

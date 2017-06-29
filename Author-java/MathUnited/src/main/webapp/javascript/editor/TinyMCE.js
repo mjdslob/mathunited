@@ -252,6 +252,9 @@ define(['jquery','tinymce','mathjax'], function($,__tce, MathJax) {
             plugins : "paste,fullscreen, table, link, charmap",
             toolbar: "undo redo | bold italic | numlist bullist outdent indent | link unlink m4a_textref | m4a_keyword m4a_quotation m4a_remark m4a_cloze | m4a_image m4a_akit | charmap",
             moxiemanager_rootpath: '/data/'+imagebase,
+            moxiemanager_onupload: function(args) {
+                console.log(args);
+            },
             //moxiemanager_path: '/logs',//imagebase+'/',
             relative_urls:false,
 

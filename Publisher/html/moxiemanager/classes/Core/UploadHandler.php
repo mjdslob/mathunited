@@ -198,7 +198,11 @@ class MOXMAN_Core_UploadHandler implements MOXMAN_Http_IHandler {
 				$args = new MOXMAN_Core_FileActionEventArgs("add", $file);
 				MOXMAN::getPluginManager()->get("core")->fire("FileAction", $args);
 				// In case file is modified
-				$file = $args->getFile();
+                $file = $args->getFile();
+
+                // BvdL: file has been written notify svn
+                $imagepath = $file->getPublicPath();
+                $notification = file_get_contents('http://127.0.0.1/MathUnited/svn-image-notify?path=' . $imagepath);
 
 				$result = MOXMAN_Core_Plugin::fileToJson($file, true);
 			} else {

@@ -24,7 +24,7 @@ public class SetRepoServlet extends HttpServlet {
         try{
             //check if user is logged in
             Configuration config = Configuration.getInstance();
-            UserSettings usettings = UserManager.isLoggedIn(request, response);
+            UserSettings usettings = UserManager.isLoggedIn(request);
             
             String repo = request.getParameter("repo");
             if(repo==null) {

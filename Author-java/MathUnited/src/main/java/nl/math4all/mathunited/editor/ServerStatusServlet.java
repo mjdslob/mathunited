@@ -60,6 +60,7 @@ public class ServerStatusServlet extends HttpServlet {
             runner.runScript("server-stat");
         }
         catch (Exception e) {
+            System.out.println(Utils.echoContext(request, "ERROR"));
             LOGGER.log(Level.WARNING, e.getMessage());
         }
     }

@@ -37,7 +37,7 @@ public class LoginStateServlet extends HttpServlet {
                 repoId = "";
             }
 
-            UserSettings usettings = UserManager.isLoggedIn(request, response);
+            UserSettings usettings = UserManager.isLoggedIn(request);
 
             String repoStr = "";
 

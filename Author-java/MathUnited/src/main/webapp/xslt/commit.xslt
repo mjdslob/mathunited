@@ -93,7 +93,7 @@ indent="yes" encoding="utf-8"/>
       src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML-full&amp;delayStartupUntil=configured">
    </script>
 -->
-   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AM_CHTML&amp;delayStartupUntil=configured" />
+   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML&amp;delayStartupUntil=configured" />
    <script type="text/javascript" src="javascript/MathUnited_m4a.js"/>
    <link rel="stylesheet" href="css/M4AStijl2.css" type="text/css"/>
    <script type="text/javascript" src="javascript/ASCIIMathML.js"/>

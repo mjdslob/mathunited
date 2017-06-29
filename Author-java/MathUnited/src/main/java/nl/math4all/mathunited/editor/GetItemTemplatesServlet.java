@@ -40,7 +40,7 @@ public class GetItemTemplatesServlet extends HttpServlet {
         
         try{
             Configuration config = Configuration.getInstance();
-            UserSettings usettings = UserManager.isLoggedIn(request,response);
+            UserSettings usettings = UserManager.isLoggedIn(request);
             String typestr = Utils.readParameter("type", true, request);
             
             //read request parameters
@@ -113,6 +113,7 @@ public class GetItemTemplatesServlet extends HttpServlet {
             }
         }
         catch (Exception e) {
+            System.out.println(Utils.echoContext(request, "ERROR"));
             LOGGER.severe(e.getMessage());
             Utils.writeError(response, e);
         }

@@ -56,6 +56,7 @@ public class GetObjectivesServlet extends HttpServlet {
             //LOGGER.log(Level.FINE, result);
             pw.println(result);
         } catch(Exception e) {
+            System.out.println(Utils.echoContext(request, "ERROR"));
             e.printStackTrace();
             throw new ServletException(e);
         }

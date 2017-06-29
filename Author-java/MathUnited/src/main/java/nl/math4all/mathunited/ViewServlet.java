@@ -169,7 +169,7 @@ public class ViewServlet extends HttpServlet {
             parameterMap.put("component", component.getXML());
             component.addToParameterMap(parameterMap, subcomp);
             parameterMap.put("repo-path", repository.getPath());
-            parameterMap.put("baserepo-path", baserepo==null?"":baserepo.getPath());
+            parameterMap.put("baserepo-path", baserepo==null? "" : baserepo.getPath());
             parameterMap.put("requesturl", request.getRequestURL().toString() + "?" + request.getQueryString());
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             ContentResolver resolver = new ContentResolver(repository, context);

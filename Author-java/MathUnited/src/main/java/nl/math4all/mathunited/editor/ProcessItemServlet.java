@@ -146,6 +146,7 @@ public class ProcessItemServlet extends HttpServlet {
             SAXSource xmlSaxSource = new SAXSource(xmlReader, xmlSource);
             
             String errStr = processor.process(xmlSaxSource, variant, parameterMap, resolver, byteStream);
+
             response.setContentType("text/html");
             if (errStr.length() > 0) {
                 PrintWriter writer = response.getWriter();
@@ -160,6 +161,7 @@ public class ProcessItemServlet extends HttpServlet {
 
         }
         catch (Exception e) {
+            System.out.println(Utils.echoContext(request, "ERROR"));
             Utils.writeError(response, e);
         }
 

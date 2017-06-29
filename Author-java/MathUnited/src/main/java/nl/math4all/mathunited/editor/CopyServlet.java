@@ -51,7 +51,7 @@ public class CopyServlet extends HttpServlet {
             }
             //LOGGER.log(Level.FINE, "CopyServlet: xml={0}, type={1}", new Object[]{xmlstr, typestr});
 
-            UserSettings usettings = UserManager.isLoggedIn(request,response);
+            UserSettings usettings = UserManager.isLoggedIn(request);
             
             //parse string into xml
             InputStream is = new ByteArrayInputStream(xmlstr.getBytes("UTF-16"));
@@ -66,6 +66,7 @@ public class CopyServlet extends HttpServlet {
             pw.println("<?xml version=\"1.0\" encoding=\"utf-8\"?><response success=\"true\"/>");
         }
         catch (Exception e) {
+            System.out.println(Utils.echoContext(request, "ERROR"));
             Utils.writeError(response, e);
         }
 

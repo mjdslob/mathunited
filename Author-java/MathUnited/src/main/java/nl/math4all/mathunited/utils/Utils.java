@@ -1,13 +1,13 @@
 package nl.math4all.mathunited.utils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.Servlet;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import nl.math4all.mathunited.configuration.Configuration;
 import nl.math4all.mathunited.configuration.Repository;
+import nl.math4all.mathunited.configuration.UserSettings;
+import nl.math4all.mathunited.exceptions.MathUnitedException;
 import org.apache.commons.io.FilenameUtils;
 
 /**
@@ -120,4 +122,38 @@ public class Utils {
         }
     }
 
+    public static String echoContext(ServletRequest servletRequest, String prefix) {
+        // Get the name of the servlet request if possible
+        StringBuilder builder = new StringBuilder();
+        builder.append("[" + prefix + "] Servlet ");
+
+        if (servletRequest instanceof HttpServletRequest) {
+            HttpServletRequest request = (HttpServletRequest) servletRequest;
+            builder.append(request.getRequestURI());
+
+            // See if component info is available
+            try {
+                for (String key : new String[] {"comp", "subcomp", "variant"}) {
+                    String val = Utils.readParameter(key, true, request);
+                    builder.append(' ');
+                    builder.append(key);
+                    builder.append('=');
+                    builder.append(val);
+                }
+            } catch (Exception e){
+                // ignore...
+            }
+
+            // See if user info is available
+            try {
+                UserSettings usettings = UserManager.isLoggedIn(request);
+                builder.append(" for user=");
+                builder.append(usettings.username);
+            } catch (MathUnitedException e) {
+                // ignore...
+            }
+        }
+
+        return builder.toString();
+    }
 }

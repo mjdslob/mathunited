@@ -32,7 +32,7 @@ public class GetComponentItemsServlet extends HttpServlet {
 
         try{
             Configuration config = Configuration.getInstance();
-            UserSettings usettings = UserManager.isLoggedIn(request,response);
+            UserSettings usettings = UserManager.isLoggedIn(request);
             Repository repository = Utils.getRepository(request);
             String comp = Utils.readParameter("comp", true, request);
             
@@ -74,6 +74,7 @@ public class GetComponentItemsServlet extends HttpServlet {
             }
         }
         catch (Exception e) {
+            System.out.println(Utils.echoContext(request, "ERROR"));
             Utils.writeError(response, e);
         }
     }

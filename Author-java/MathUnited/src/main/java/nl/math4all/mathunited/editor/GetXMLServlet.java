@@ -69,6 +69,7 @@ public class GetXMLServlet extends HttpServlet {
             os.write(barr);
         }
         catch (Exception e) {
+            System.out.println(Utils.echoContext(request, "ERROR"));
             Utils.writeError(response, e);
         }
 

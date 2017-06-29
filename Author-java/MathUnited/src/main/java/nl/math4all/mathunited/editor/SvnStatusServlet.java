@@ -37,7 +37,7 @@ public class SvnStatusServlet extends HttpServlet {
 
         // Force login
         try {
-            UserSettings usettings = UserManager.isLoggedIn(request,response);
+            UserSettings usettings = UserManager.isLoggedIn(request);
         } catch (Exception e) {
             writer.println("!!! NOT LOGGED IN");
             return;
@@ -62,6 +62,7 @@ public class SvnStatusServlet extends HttpServlet {
 
         }
         catch (Exception e) {
+            System.out.println(Utils.echoContext(request, "ERROR"));
             LOGGER.log(Level.WARNING, e.getMessage());
         }
     }

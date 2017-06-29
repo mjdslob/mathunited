@@ -282,7 +282,7 @@ extension-element-prefixes="exsl">
                         jax: ["input/MathML","input/AsciiMath"]
                 });
             </script>
-              <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AM_CHTML&amp;delayStartupUntil=configured" />
+              <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML&amp;delayStartupUntil=configured" />
               <xsl:if test="$uitleg">
                 <xsl:apply-templates select="$uitleg" mode="copy"/>
             </xsl:if>

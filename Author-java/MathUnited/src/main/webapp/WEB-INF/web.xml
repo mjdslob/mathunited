@@ -105,6 +105,10 @@
         <servlet-name>server-status</servlet-name>
         <servlet-class>nl.math4all.mathunited.editor.ServerStatusServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>svn-image-notify</servlet-name>
+        <servlet-class>nl.math4all.mathunited.editor.SvnImageNotifyServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>view</servlet-name>
         <url-pattern>/view</url-pattern>
@@ -208,6 +212,10 @@
     <servlet-mapping>
         <servlet-name>server-status</servlet-name>
         <url-pattern>/server-status</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>svn-image-notify</servlet-name>
+        <url-pattern>/svn-image-notify</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

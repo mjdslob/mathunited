@@ -37,7 +37,7 @@ requirejs.config({
         jqueryChosen: 'chosen_v1.1.0/chosen.jquery.min',
 //        touchpunch: 'jquery.ui.touch-punch.min',
         tinymce: '../tinymce/jquery.tinymce.min',
-        mathjax: "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AM_CHTML&amp;delayStartupUntil=configured",
+        mathjax: "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML&amp;delayStartupUntil=configured",
         touchpunch: 'jquery.ui.touch-punch.min'
         
     },

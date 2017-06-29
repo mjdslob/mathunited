@@ -52,7 +52,7 @@ public class SvnUpdateServlet extends HttpServlet {
 
         // Force login
         try {
-            UserSettings usettings = UserManager.isLoggedIn(request,response);
+            UserSettings usettings = UserManager.isLoggedIn(request);
         } catch (Exception e) {
             writer.println("!!! NOT LOGGED IN");
             return;
@@ -92,6 +92,7 @@ public class SvnUpdateServlet extends HttpServlet {
                 lock.unlock();
             }
         } else {
+            System.out.println(Utils.echoContext(request, "ERROR"));
             writer.println("!!! SVN-UPDATE on " + config.getContentRoot() + " is already in progress");
             writer.println("!!! Not doing anything");
             writer.println("--- Messages from svn update so far:");

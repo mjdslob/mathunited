@@ -36,7 +36,7 @@ public class GetBackupListServlet extends HttpServlet {
         try{
             Configuration config = Configuration.getInstance();
 
-            UserSettings usettings = UserManager.isLoggedIn(request,response);
+            UserSettings usettings = UserManager.isLoggedIn(request);
             Repository repository = Utils.getRepository(request);
             String comp = Utils.readParameter("comp", true, request);
             String subcomp = Utils.readParameter("subcomp", true, request);
@@ -86,6 +86,7 @@ public class GetBackupListServlet extends HttpServlet {
             writer.println("</log-index>");
         }
         catch (Exception e) {
+            System.out.println(Utils.echoContext(request, "ERROR"));
             Utils.writeError(response, e);
         }
     }

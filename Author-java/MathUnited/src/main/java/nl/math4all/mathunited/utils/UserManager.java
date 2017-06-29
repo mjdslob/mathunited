@@ -42,7 +42,7 @@ public class UserManager {
     }
     
     /** Check if user is logged in. */
-    public static UserSettings isLoggedIn(HttpServletRequest request, HttpServletResponse response)  throws LoginException, ConfigException {
+    public static UserSettings isLoggedIn(HttpServletRequest request)  throws LoginException, ConfigException {
         // Get session if already exists
         HttpSession session = request.getSession(false);
         if (session == null) {

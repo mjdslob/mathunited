@@ -39,43 +39,11 @@ public class TimingFilter implements Filter {
         }
 
         // Get the name of the servlet request if possible
-        StringBuilder builder = new StringBuilder();
-        builder.append("[TIMING] Servlet ");
-
-        if (servletRequest instanceof HttpServletRequest) {
-            HttpServletRequest request = (HttpServletRequest) servletRequest;
-            builder.append(request.getRequestURI());
-
-            // See if component info is available
-            try {
-                for (String key : new String[] {"comp", "subcomp", "variant"}) {
-                    String val = Utils.readParameter(key, true, request);
-                    builder.append(' ');
-                    builder.append(key);
-                    builder.append('=');
-                    builder.append(val);
-                }
-            } catch (Exception e){
-                // ignore...
-            }
-
-            // See if user info is available
-            try {
-                UserSettings usettings = UserManager.isLoggedIn(request, (HttpServletResponse) servletResponse);
-                builder.append(" for user=");
-                builder.append(usettings.username);
-            } catch (MathUnitedException e) {
-                // ignore...
-            }
-        }
-
-        builder.append(" took ");
-        builder.append(toc);
-        builder.append(" ms.");
-
+        String timingLine = Utils.echoContext(servletRequest, "TIMING");
+        timingLine = timingLine + " took " + toc + " ms.";
 
         // Only log long operations (>= 10 ms). We put this filter to avoid static
         // content (css, images) to end up in the log.
-        System.out.println(builder.toString());
+        System.out.println(timingLine);
     }
 }
