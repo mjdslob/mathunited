@@ -13,9 +13,7 @@ import nl.math4all.mathunited.resolvers.ContentResolver;
 import nl.math4all.mathunited.configuration.*;
 import nl.math4all.mathunited.configuration.SubComponent;
 import nl.math4all.mathunited.configuration.Component;
-import nl.math4all.mathunited.utils.LockManager;
-import nl.math4all.mathunited.utils.UserManager;
-import nl.math4all.mathunited.utils.Utils;
+import nl.math4all.mathunited.utils.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 
@@ -97,7 +95,7 @@ public class EditServlet extends HttpServlet {
             //note: this implies that an id of a subcomponent can not be an integer!
             try{
                 int subcomp_index = Integer.parseInt(subcomp);
-                if(subcomp_index>0 && subcomp_index<=component.subComponentList.size()){
+                if (subcomp_index>0 && subcomp_index<=component.subComponentList.size()){
                     SubComponent sub = component.subComponentList.get(subcomp_index-1);
                     subcomp = sub.id;
                 }
@@ -145,18 +143,29 @@ public class EditServlet extends HttpServlet {
             System.out.println("[TIMING] @@@ edit: preamble took " + (toc - tic) + " ms.");
 
             tic = toc;
-            String currentOwner = getLock(usettings.username, config.getContentRoot() + refbase);
+            Lock lock = getLock(usettings.username, config.getContentRoot() + refbase);
             toc = System.currentTimeMillis();
             System.out.println("[TIMING] @@@ edit: user locking took " + (toc - tic) + " ms.");
 
             tic = toc;
-            if (currentOwner != null & !StringUtils.equals(currentOwner, usettings.username)) {
-                if (currentOwner.startsWith("@@@")) {
-                    parameterMap.put("lock_errormsg", currentOwner.substring(3));
-                } else {
-                    parameterMap.put("lock_owner", currentOwner);
+
+            // Check lock was indeed returned
+            if (lock == null) {
+                // If not, that is a server error. Communicate to user. Details are in server log.
+                parameterMap.put("lock_errormsg", "locking error on server");
+            } else if (!StringUtils.equals(lock.getUsername(), usettings.username)) {
+                // Other user is locking. Notify and communicate which user,
+                parameterMap.put("lock_owner", lock.getUsername());
+            } else {
+                // Update from repo with script
+                ScriptRunner runner = new ScriptRunner(new PrintWriter(System.out));
+                try {
+                    runner.runScript("svn-update-paragraph", true, lock.getRefbase(), usettings.username);
+                } catch (SvnException e) {
+                    LOGGER.warning("svn-update-paragraph on " + lock.getRefbase() + " for user " + usettings.username + " failed.");
                 }
             }
+
 
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             ContentResolver resolver = new ContentResolver(repository, getServletContext());
@@ -203,7 +212,7 @@ public class EditServlet extends HttpServlet {
      *         username of this current owner is returned.
      * @throws Exception 
      */
-    public String getLock(String username, String refbase) throws Exception {
+    public Lock getLock(String username, String refbase) throws Exception {
         return LockManager.getInstance().getLock(username, refbase);
     }
     

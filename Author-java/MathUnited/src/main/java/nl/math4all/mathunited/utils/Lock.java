@@ -11,6 +11,14 @@ import java.util.logging.Logger;
  * Created by linden on 8-12-14.
  */
 public abstract class Lock {
+    public String getRefbase() {
+        return refbase;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
     String refbase;
     String username;
     long timestamp;

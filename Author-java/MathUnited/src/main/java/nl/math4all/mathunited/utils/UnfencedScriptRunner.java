@@ -101,6 +101,7 @@ public class UnfencedScriptRunner {
         } catch (IOException ex) {
             throw new SvnException(ex);
         }
+
         for (int i = 0; i < args.length; i++) {
             // Generate name in form of ARG1 etc.
             String varname = String.format("ARG%d", i + 1);

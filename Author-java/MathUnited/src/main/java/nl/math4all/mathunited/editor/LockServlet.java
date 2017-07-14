@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Properties;
 import nl.math4all.mathunited.configuration.*;
 import nl.math4all.mathunited.configuration.Component;
+import nl.math4all.mathunited.utils.Lock;
 import nl.math4all.mathunited.utils.LockManager;
 import nl.math4all.mathunited.utils.UserManager;
 import nl.math4all.mathunited.utils.Utils;
@@ -45,12 +46,12 @@ public class LockServlet extends HttpServlet {
 
             String refbase = parameterMap.get("refbase");
 
-            String currentOwner = getLock(usettings.username, config.getContentRoot()+refbase);
+            String currentOwner = getLockUsername(usettings.username, config.getContentRoot() + refbase);
 
             response.setContentType("application/xml");
             PrintWriter writer = response.getWriter();
             String resultStr;
-            if( currentOwner!=null ) {
+            if (currentOwner != null ) {
                 resultStr = "<refresh-lock success='true'/>";
             } else {
                 resultStr = "<refresh-lock success='false'/>";
@@ -71,8 +72,13 @@ public class LockServlet extends HttpServlet {
      *         username of this current owner is returned.
      * @throws Exception 
      */
-    public static String getLock(String username, String refbase) throws Exception {
-        return LockManager.getInstance().getLock(username, refbase);
+    public static String getLockUsername(String username, String refbase) throws Exception {
+        Lock lock = LockManager.getInstance().getLock(username, refbase);
+        if (lock == null) {
+            return null;
+        } else {
+            return lock.getUsername();
+        }
     }
     
     @Override

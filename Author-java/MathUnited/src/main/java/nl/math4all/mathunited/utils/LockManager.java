@@ -44,10 +44,6 @@ public class LockManager {
      */
     ScheduledExecutorService timer = Executors.newSingleThreadScheduledExecutor();
 
-    /** Whether svn is present. */
-    boolean useSubversion = SvnUtils.hasSubversion();
-
-
     /**
      * Look for stale lock and put them back into the map.
      * This happens after a server restart of update. We the lose the state in
@@ -66,7 +62,7 @@ public class LockManager {
             String refbase = f.getParent();
             try {
                 String username = FileUtils.readFileToString(f);
-                locks.put(refbase, newLock(refbase, username));
+                locks.putIfAbsent(refbase, newLock(refbase, username));
             } catch (IOException e) {
                 LOGGER.warning("!!! Problems processing lock file '" + f + "': " + e.getMessage());
             }
@@ -114,55 +110,78 @@ public class LockManager {
 
     /** Create a new lock for given paragraph directory and username. */
     private Lock newLock(String refbase, String username) {
-        Lock lock;
-        if (useSubversion) {
-            lock = new SvnLock(refbase, username);
-        } else {
-            lock = new FileLock(refbase, username);
-        }
-        return lock;
+        return new FileLock(refbase, username);
     }
 
-    /** Tries to7 get the lock on this subcomponent.
+    /**
+     * Tries to get the lock on this subcomponent.
      * @param username
      * @param refbase
      * @return null if lock is obtained. If the lock is owned by some other user, the
      *         username of this current owner is returned.
      */
-    public String getLock(String username, String refbase) {
+    public Lock getLock(String username, String refbase) {
         //LOGGER.info("Requesting lock for user " + username + " for path '" + refbase + "'");
 
         // Put in synchronized block because there is time between checking existing lock and adding new
-        synchronized (locks) {
-            // Check if refbase is being locked already
-            Lock lockData = locks.get(refbase);
-            if (lockData != null) {
-                if (Objects.equals(lockData.username, username)) {
-                    //LOGGER.info("Updating lock timestamp for " + refbase + ", user " + username);
-                    lockData.touch();
-                } else {
-                    LOGGER.warning("Editing not allowed: lock for " + refbase + " is currently owned by " + lockData.username);
-                }
-                return lockData.username;
-            }
+        //synchronized (locks) {
+        // Check if refbase is being locked already
+        Lock lockData = locks.get(refbase);
 
-            // Create lock
-            //LOGGER.info("Creating new lock on " + refbase + " for user " + username);
+        // If no lock was there yet...
+        if (lockData == null) {
+            // create a new lock
+            LOGGER.info("Creating new lock on " + refbase + " for user " + username);
 
             try {
                 Lock lock = newLock(refbase, username);
                 lock.aquire();
-                locks.put(refbase, lock);
+                locks.putIfAbsent(refbase, lock);
+
+                // For concurrency: update lockData
+                lockData = locks.get(refbase);
+
+                // Return if still no lock data was found
+                if (lockData == null) {
+                    LOGGER.warning("Could not obtain a lockData object on " + refbase + " for " + username);
+                    return null;
+                }
 
                 //LOGGER.info("Lock was created succesfully");
             } catch (LockException e) {
                 LOGGER.warning("Could not create lock, assuming locked by XML editor: " + e.getMessage());
-                return "@@@" + e.getMessage();
+                return null;
             }
         }
 
-        // Return username
-        return username;
+        // Lock data now is always != null
+
+        // If username matches
+        if (Objects.equals(lockData.username, username)) {
+            // ... update the lock
+            //LOGGER.info("Updating lock timestamp for " + refbase + ", user " + username);
+            lockData.touch();
+        } else {
+            // ... raise a warning
+            LOGGER.warning("Editing not allowed: lock for " + refbase + " is currently owned by " + lockData.username);
+        }
+
+        // Return the username
+        return lockData;
+    }
+
+    /**
+     * Checks if there is a lock on this component.
+     * @param refbase
+     * @return null if lock is obtained. If the lock is owned by some other user, the
+     *         username of this current owner is returned.
+     */
+    public boolean hasLock(String refbase) {
+        //LOGGER.info("Requesting lock for user " + username + " for path '" + refbase + "'");
+
+        // Check if refbase is being locked already
+        Lock lockData = locks.get(refbase);
+        return lockData != null;
     }
 
     /** Clean up times and theads. */

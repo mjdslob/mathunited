@@ -13,8 +13,7 @@ import nl.math4all.mathunited.resolvers.ContentResolver;
 import nl.math4all.mathunited.configuration.*;
 import nl.math4all.mathunited.configuration.SubComponent;
 import nl.math4all.mathunited.configuration.Component;
-import nl.math4all.mathunited.utils.SvnUtils;
-import nl.math4all.mathunited.utils.Utils;
+import nl.math4all.mathunited.utils.*;
 
 //mathunited.pragma-ade.nl/MathUnited/view?variant=basis&comp=m4a/xml/12hv-me0&subcomp=3&item=explore
 // - fixed parameters: variant, comp (component), subcomp (subcomponent).
@@ -46,7 +45,7 @@ public class ViewServlet extends HttpServlet {
                          HttpServletResponse response)
              throws ServletException, IOException {
 
-        try{
+        try {
             Configuration config = Configuration.getInstance();
             
             // Read request parameters
@@ -157,14 +156,21 @@ public class ViewServlet extends HttpServlet {
             }
 
             String refbase = repoPath + sub.file.substring(0, ind+1);
-            if (SvnUtils.hasSubversion()) {
-                // Update to latest version
-                File contentRoot = new File(Configuration.getInstance().getContentRoot());
-                File refpath = new File(contentRoot, refbase);
-                SvnUtils.svn(true, "update", refpath.toString());
-                File imagedir = new File(refpath, "../images");
-                SvnUtils.svn(false, "update", imagedir.toString());
+
+            // Get username
+            UserSettings usettings = UserManager.isLoggedIn(request);
+
+            // Update with script if it is not being locked at the minute
+            String repobase = config.getContentRoot() + refbase;
+            if (!LockManager.getInstance().hasLock(repobase)) {
+                ScriptRunner runner = new ScriptRunner(new PrintWriter(System.out));
+                try {
+                    runner.runScript("svn-update-paragraph", true, repobase, usettings.username);
+                } catch (SvnException e) {
+                    LOGGER.warning("svn-update-paragraph on " + repobase + " for user " + usettings.username + " failed.");
+                }
             }
+
             parameterMap.put("refbase", refbase);
             parameterMap.put("component", component.getXML());
             component.addToParameterMap(parameterMap, subcomp);
