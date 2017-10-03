@@ -26,6 +26,7 @@ requirejs.config({
     //the paths config could be for a directory.
     paths: {
         akitex: '../editor/akit_ex',
+        akit: '../algebrakit',
         jquery: 'jquery-1.10.2', //change here when using newer version of jquery,
         jqueryui: 'jquery-ui-1.10.4.custom.min', //change here when using newer version of jquery,
         //mathjax: "../../bower_components/MathJax/MathJax.js?config=TeX-AMS_HTML&amp;delayStartupUntil=configured",
@@ -63,8 +64,9 @@ requirejs.config({
 });
 
 // Start the main app logic.
-requirejs(['jquery', 'akitex/Main','touchpunch','mathjax'],
-function   ($, Main,touchpunch) {
+requirejs(['jquery', 'akit/trainer/Main', 'touchpunch','mathjax'],
+function   ($,Trainer, touchpunch) {
+    /*
     $('.akit-exercise').each(function() {
         try{
             Main.addExercise({
@@ -73,6 +75,17 @@ function   ($, Main,touchpunch) {
         } catch(err) {
             alert(err.message);
         }
+    });
+    */
+    $('m4a-trainer').each(function() {
+        try{
+            Trainer.init({
+                dom: $(this),
+                exerciseId: $(this).attr('exercise-id')
+            });
+        } catch(err) {
+            alert(err.message);
+        }        
     });
 });
 

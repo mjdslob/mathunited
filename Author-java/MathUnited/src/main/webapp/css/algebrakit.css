@@ -1,0 +1,65 @@
+.akit-container {
+    
+}
+
+.akit-logo {
+    
+}
+
+.akit-panel {
+    position: relative;
+    background-color: rgb(240,240,240);
+    /* width: 100%; */
+    margin: 0px 0px 0px 10px;
+    border-radius: 5px;
+    border: 2px solid #FCB040;    
+    padding: 5px 20px 5px 5px;    
+}
+
+.akit-instruction-text {
+}
+.akit-button {
+    
+}
+
+.akit-button.akit-button-repeat {
+    position: absolute;
+    right: 20px;
+    top: 5px;
+    height: 60px;
+    height: 22px;
+    width: 22px;
+    background: url(../sources/kit_nieuw.png) no-repeat center center;    
+}
+.akit-button.akit-button-repeat:hover {
+    background: url(../sources/kit_nieuw_mo.png) no-repeat center center;    
+}
+.akit-button.akit-button-repeat:active {
+    background: url(../sources/kit_nieuw_hit.png) no-repeat center center;    
+}
+
+.akit-button.akit-button-solve {
+    position: absolute;
+    right: 20px;
+    bottom: -28px;
+    height: 22px;
+    width: 22px;
+    background: #ffffff url(../sources/kit_uitwerking.png) no-repeat center center;
+    margin-top: 5px;    
+}
+.akit-button.akit-button-solve:hover {
+    background: url(../sources/kit_uitwerking_mo.png) no-repeat center center;    
+}
+.akit-button.akit-button-solve:active {
+    background: url(../sources/kit_uitwerking_hit.png) no-repeat center center;    
+}
+
+.akit-output {
+    padding: 10px 20px 5px 17px;
+}
+
+.akit-panel .katex-display {
+    margin: 0;
+    text-align:left;
+    display:inline-block;
+}

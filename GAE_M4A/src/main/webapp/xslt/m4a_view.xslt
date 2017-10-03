@@ -468,12 +468,28 @@ indent="yes" encoding="utf-8"/>
 </xsl:template>
 
 <xsl:template match="componentcontent/examples">
-    <h2 class="section-title">Voorbeeld <xsl:value-of select="$num"/></h2>
+    <h2 class="section-title">Voorbeeld
+        <xsl:choose>
+            <xsl:when test="@targetgroup='techniek'">Techniek</xsl:when>
+            <xsl:when test="@targetgroup='groen'">Groen</xsl:when>
+            <xsl:when test="@targetgroup='economie'">Economie</xsl:when>
+            <xsl:when test="@targetgroup='zorg'">Zorg en welzijn</xsl:when>
+            <xsl:otherwise><xsl:value-of select="$num"/></xsl:otherwise>
+        </xsl:choose>
+    </h2>
     <xsl:apply-templates/>
 </xsl:template>
 
 <xsl:template match="componentcontent/theory/examples">
-    <h2 class="section-title">Voorbeeld <xsl:value-of select="$num"/></h2>
+    <h2 class="section-title">Voorbeeld
+        <xsl:choose>
+            <xsl:when test="@targetgroup='techniek'">Techniek</xsl:when>
+            <xsl:when test="@targetgroup='groen'">Groen</xsl:when>
+            <xsl:when test="@targetgroup='economie'">Economie</xsl:when>
+            <xsl:when test="@targetgroup='zorg'">Zorg en welzijn</xsl:when>
+            <xsl:otherwise><xsl:value-of select="$num"/></xsl:otherwise>
+        </xsl:choose>
+    </h2>
     <xsl:variable name="cont" select = "document(concat($docbase,include/@filename))"/>
     <xsl:apply-templates select="$cont" mode="ma-content"/>
 </xsl:template>
@@ -663,18 +679,35 @@ indent="yes" encoding="utf-8"/>
    </xsl:if>
    <xsl:for-each select="examples">
        <div class="menu-item-div" item="example">
+            <xsl:if test="@targetgroup">
+                <xsl:attribute name="targetgroup"><xsl:value-of select="@targetgroup"/></xsl:attribute>
+            </xsl:if>
            <xsl:attribute name="num"><xsl:value-of select="position()"/></xsl:attribute>
            <a>
-                <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefix,'example&amp;num=',position())"/></xsl:attribute>
-                <xsl:choose>
-                    <xsl:when test="($itemInner='example' or $itemInner='theory') and position()=number($num)">
-                    <xsl:attribute name="id">selected-menu-item</xsl:attribute>
-                    <div class="menu-item-dot-wrapper"><div class="menu-item-dot"/></div>
-                </xsl:when><xsl:otherwise>
-                    <xsl:attribute name="class">navigatie</xsl:attribute>
-                </xsl:otherwise>
-            </xsl:choose>
-               Voorbeeld <xsl:value-of select="position()"/></a>
+               <xsl:attribute name="href">
+                   <xsl:value-of select="concat($intraLinkPrefix,'example&amp;num=',position())"/>
+               </xsl:attribute>
+               <xsl:choose>
+                   <xsl:when test="($itemInner='example' or $itemInner='theory') and position()=number($num)">
+                       <xsl:attribute name="id">selected-menu-item</xsl:attribute>
+                       <div class="menu-item-dot-wrapper">
+                           <div class="menu-item-dot"/>
+                       </div>
+                   </xsl:when>
+                   <xsl:otherwise>
+                       <xsl:attribute name="class">navigatie</xsl:attribute>
+                   </xsl:otherwise>
+               </xsl:choose>
+               <xsl:choose>
+                   <xsl:when test="@targetgroup='techniek'">Techniek</xsl:when>
+                   <xsl:when test="@targetgroup='groen'">Groen</xsl:when>
+                   <xsl:when test="@targetgroup='economie'">Economie</xsl:when>
+                   <xsl:when test="@targetgroup='zorg'">Zorg / welzijn</xsl:when>
+                   <xsl:otherwise>
+                       Voorbeeld <xsl:value-of select="position()"/>
+                   </xsl:otherwise>
+               </xsl:choose>
+           </a>
         </div>
    </xsl:for-each>
 </xsl:template>

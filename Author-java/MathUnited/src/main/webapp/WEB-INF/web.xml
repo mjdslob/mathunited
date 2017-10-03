@@ -6,6 +6,10 @@
         <servlet-class>nl.math4all.mathunited.ViewServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>akit-generate</servlet-name>
+        <servlet-class>nl.math4all.mathunited.AkitGenerate</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>edit</servlet-name>
         <servlet-class>nl.math4all.mathunited.editor.EditServlet</servlet-class>
     </servlet>
@@ -112,6 +116,10 @@
     <servlet-mapping>
         <servlet-name>view</servlet-name>
         <url-pattern>/view</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>akit-generate</servlet-name>
+        <url-pattern>/akit-generate</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>edit</servlet-name>
