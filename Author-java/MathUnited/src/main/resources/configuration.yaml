@@ -25,7 +25,7 @@ roles :
 repos :
   wm :
     path: content-wm/concept
-    edit_permission: 
+    edit_permission: editor_wm
     defaultVariant: wm_view
     componentsURL: /index/wm/components.xml
     threadsURL: /index/wm/threads.xml
