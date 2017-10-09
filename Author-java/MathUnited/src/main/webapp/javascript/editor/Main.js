@@ -60,7 +60,8 @@ define(['jquery', 'app/Document','actions/ObjectivesHandler', 'actions/SetExerci
     function refreshLock() {
         $.get(refreshURL, {refbase: refbase}, 
             function(data) {
-                if( $(data).children().first().attr('success')==='true') {
+                var result_tag = $(data).children().first();
+                if(result_tag.attr('success')==='true') {
                     setTimeout(refreshLock, 30000);
                 } else {
                     alert('Er is een probleem opgetreden: kan lock op de paragraaf niet verversen.');

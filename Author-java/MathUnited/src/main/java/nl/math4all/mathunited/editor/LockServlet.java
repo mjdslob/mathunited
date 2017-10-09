@@ -14,6 +14,7 @@ import nl.math4all.mathunited.utils.Lock;
 import nl.math4all.mathunited.utils.LockManager;
 import nl.math4all.mathunited.utils.UserManager;
 import nl.math4all.mathunited.utils.Utils;
+import org.apache.commons.lang3.StringUtils;
 
 //mathunited.pragma-ade.nl/MathUnited/view?variant=basis&comp=m4a/xml/12hv-me0&subcomp=3&item=explore
 // - fixed parameters: variant, comp (component), subcomp (subcomponent).
@@ -51,7 +52,7 @@ public class LockServlet extends HttpServlet {
             response.setContentType("application/xml");
             PrintWriter writer = response.getWriter();
             String resultStr;
-            if (currentOwner != null ) {
+            if (currentOwner != null && StringUtils.equals(usettings.username, currentOwner)) {
                 resultStr = "<refresh-lock success='true'/>";
             } else {
                 resultStr = "<refresh-lock success='false'/>";

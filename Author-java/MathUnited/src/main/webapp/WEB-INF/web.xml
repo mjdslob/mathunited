@@ -106,6 +106,10 @@
         <servlet-class>nl.math4all.mathunited.editor.ServerStatusServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>show-locks</servlet-name>
+        <servlet-class>nl.math4all.mathunited.editor.ShowLocksServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>svn-image-notify</servlet-name>
         <servlet-class>nl.math4all.mathunited.editor.SvnImageNotifyServlet</servlet-class>
     </servlet>
@@ -212,6 +216,10 @@
     <servlet-mapping>
         <servlet-name>server-status</servlet-name>
         <url-pattern>/server-status</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>show-locks</servlet-name>
+        <url-pattern>/show-locks</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>svn-image-notify</servlet-name>

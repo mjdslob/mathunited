@@ -36,7 +36,7 @@ public class Utils {
         for(Map.Entry<String, String[]> entry : paramMap.entrySet()) {
             String pname = entry.getKey();
             String[] pvalArr = entry.getValue();
-            if(pvalArr!=null && pvalArr.length>0) {
+            if (pvalArr != null && pvalArr.length > 0) {
                parameterMap.put(pname, pvalArr[0]);
             }
         }

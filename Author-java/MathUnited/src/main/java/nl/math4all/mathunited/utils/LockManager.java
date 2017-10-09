@@ -4,6 +4,7 @@ import nl.math4all.mathunited.configuration.Configuration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -126,6 +127,7 @@ public class LockManager {
         // Put in synchronized block because there is time between checking existing lock and adding new
         //synchronized (locks) {
         // Check if refbase is being locked already
+        refbase = normalizeRefbaseName(refbase);
         Lock lockData = locks.get(refbase);
 
         // If no lock was there yet...
@@ -157,7 +159,7 @@ public class LockManager {
         // Lock data now is always != null
 
         // If username matches
-        if (Objects.equals(lockData.username, username)) {
+        if (StringUtils.equals(lockData.username, username)) {
             // ... update the lock
             //LOGGER.info("Updating lock timestamp for " + refbase + ", user " + username);
             lockData.touch();
@@ -192,6 +194,19 @@ public class LockManager {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Get a copy of the map in its current state
+     * @return a copy of the map
+     */
+    public HashMap<String, Lock> getLockMap() {
+        HashMap<String, Lock> currentMap = new HashMap<>(locks);
+        return currentMap;
+    }
+
+    public static String normalizeRefbaseName(String refbase) {
+        return StringUtils.appendIfMissing(refbase, "/");
     }
 
 }

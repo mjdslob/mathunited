@@ -1,7 +1,9 @@
 package nl.math4all.mathunited.editor;
 
 import nl.math4all.mathunited.configuration.Configuration;
+import nl.math4all.mathunited.configuration.UserSettings;
 import nl.math4all.mathunited.utils.UnfencedScriptRunner;
+import nl.math4all.mathunited.utils.UserManager;
 import nl.math4all.mathunited.utils.Utils;
 
 import javax.servlet.ServletException;
@@ -28,29 +30,13 @@ public class ServerStatusServlet extends HttpServlet {
                       HttpServletResponse response)
             throws ServletException, IOException
     {
-        Configuration config = Configuration.getInstance();
         response.setContentType("text/plain");
         PrintWriter writer = response.getWriter();
 
-        //read request parameters
-        Map<String, String> parameterMap = Utils.readParameters(request);
-
-        // Find out which repository to use, so we force a logged in user
-        // try to get repo from cookie
-        String repo = null; // parameterMap.get("repo");
-        Cookie[] cookieArr = request.getCookies();
-
-        // TODO: we should properly check login, but this is convenient for now
-        if(cookieArr != null) {
-            for(Cookie c:cookieArr) {
-                if(c.getName().equals("REPO")) {
-                    repo = c.getValue();
-                    parameterMap.put("repo",repo);
-                }
-            }
-        }
-
-        if (repo == null) {
+        // Force login
+        try {
+            UserManager.isLoggedIn(request);
+        } catch (Exception e) {
             writer.println("!!! NOT LOGGED IN");
             return;
         }

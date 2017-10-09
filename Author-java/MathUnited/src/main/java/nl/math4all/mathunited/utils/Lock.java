@@ -19,6 +19,8 @@ public abstract class Lock {
         return username;
     }
 
+    public long getTimestamp()  { return timestamp; }
+
     String refbase;
     String username;
     long timestamp;
@@ -30,6 +32,8 @@ public abstract class Lock {
         if (StringUtils.isEmpty(refbase) || StringUtils.isEmpty(username)) {
             LOGGER.warning("Refbase or username is empty");
         }
+        // Make sure refbase ends with /
+        refbase = LockManager.normalizeRefbaseName(refbase);
         this.refbase = refbase;
         this.username = username;
         this.timestamp = System.currentTimeMillis();
