@@ -11,6 +11,7 @@ import java.util.HashMap;
 import javax.xml.transform.sax.SAXSource;
 
 import nl.math4all.mathunited.utils.*;
+import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
@@ -60,8 +61,6 @@ public class PostContentServlet extends HttpServlet {
         response.setContentType("application/xml");
         Writer w = response.getWriter();
         PrintWriter pw = new PrintWriter(w);
-
-        String user = "<unknown>";
 
         try {
             // Check if user is logged in
@@ -124,11 +123,8 @@ public class PostContentServlet extends HttpServlet {
             parameterMap.put("html", html);
 
 
-            LOGGER.log(Level.INFO, "Commit: user={0}, comp={1}, subcomp={2}, repo={3}", new Object[]{usettings.username, comp, subcomp, repoId});
+            LOGGER.log(Level.INFO, "Commit request: user={0}, comp={1}, subcomp={2}, repo={3}", new Object[]{usettings.username, comp, subcomp, repoId});
             //LOGGER.log(Level.FINE, html);
-            System.out.println(">>> SEND BY " + usettings.username + " at " + new Date());
-            System.out.println(html);
-            System.out.println("<<<");
 
             Repository repository = config.getRepos().get(repoId);
             if (repository == null) {
@@ -172,14 +168,23 @@ public class PostContentServlet extends HttpServlet {
                 throw new Exception("Er bestaat geen subcomponent met id '" + subcomp + "'");
             }
 
-            //LOGGER.log(Level.FINE, "found subcomponent {0}: {1}", new Object[]{subcomp, sub.title});
-            XMLReader xmlReader = XMLReaderFactory.createXMLReader("org.ccil.cowan.tagsoup.Parser");
-            xmlReader.setFeature(org.ccil.cowan.tagsoup.Parser.namespacesFeature, false);
-            xmlReader.setEntityResolver(ContentResolver.entityResolver);
-            
+            // Get storage location
             int ind = sub.file.lastIndexOf('/');
             String subFolder = sub.file.substring(0, ind);
             String refbase = Utils.pathJoin(config.getContentRoot(), repository.getPath(), subFolder);
+
+            // Check if user owns current write access to this file
+            Lock lock = LockManager.getInstance(getServletContext()).getLock(usettings.username, refbase);
+            if (lock == null || !StringUtils.equals(lock.getUsername(), usettings.username)) {
+                String msg = String.format("You do not have the rights to edit repository. Currently locked by '%s'.",
+                        lock == null ? "<unknown>" : lock.getUsername());
+                throw new LoginException(msg);
+            }
+
+            // LOGGER.log(Level.FINE, "found subcomponent {0}: {1}", new Object[]{subcomp, sub.title});
+            XMLReader xmlReader = XMLReaderFactory.createXMLReader("org.ccil.cowan.tagsoup.Parser");
+            xmlReader.setFeature(org.ccil.cowan.tagsoup.Parser.namespacesFeature, false);
+            xmlReader.setEntityResolver(ContentResolver.entityResolver);
 
             ContentResolver resolver = new ContentResolver(repository, getServletContext());
             StringReader strReader = new StringReader(html);
@@ -240,12 +245,20 @@ public class PostContentServlet extends HttpServlet {
                 pw.println(result);
             }
 
-            // Fix-up XML files
             // Commit the new files
             ScriptRunner runner = new ScriptRunner(new PrintWriter(System.out));
-            runner.runScript("svn-commit-paragraph", refbase, usettings.username);
-//            UnfencedScriptRunner runner = new UnfencedScriptRunner(new PrintWriter(System.out));
-//            runner.runScript("xml-fixup", refbase);
+            try {
+                runner.runScript("svn-commit-paragraph", true, refbase, usettings.username);
+
+                // Notify successful commit
+                lock.committed();
+            } catch (SvnException ex) {
+                // Notify unsuccessful commit
+                lock.commitFailed();
+                throw ex;
+            }
+
+
         } catch (Exception e) {
             System.out.println(Utils.echoContext(request, "ERROR"));
             e.printStackTrace();
@@ -257,6 +270,7 @@ public class PostContentServlet extends HttpServlet {
 
     private void saveState(String html, String comp, String subcomp, int nItems, int n, Repository repo) throws Exception {
         Configuration config = Configuration.getInstance();
+        // TODO: this path does not exists on server ATM. Do we still want this method?
         File f = new File(config.contentRoot + repo.getPath() + "/debug/" + comp + "/" + subcomp + "/log.txt");
         f.getParentFile().mkdirs();
         BufferedWriter out = new BufferedWriter(new FileWriter(f));

@@ -47,13 +47,18 @@ public class LockServlet extends HttpServlet {
 
             String refbase = parameterMap.get("refbase");
 
-            String currentOwner = getLockUsername(usettings.username, config.getContentRoot() + refbase);
+            LockManager lm = LockManager.getInstance(getServletContext());
+            Lock lock = lm.getLock(usettings.username, config.getContentRoot() + refbase);
+            String currentOwner = lock.getUsername();
 
             response.setContentType("application/xml");
             PrintWriter writer = response.getWriter();
             String resultStr;
             if (currentOwner != null && StringUtils.equals(usettings.username, currentOwner)) {
-                resultStr = "<refresh-lock success='true'/>";
+                resultStr = String.format("<refresh-lock success='true' session-start='%s' last-update='%s' last-commit='%s' />",
+                        ShowLocksServlet.stringForTimestamp(lock.getSessionStart()),
+                        ShowLocksServlet.stringForTimestamp(lock.getLastUpdate()),
+                        ShowLocksServlet.stringForTimestamp(lock.getLastCommit()));
             } else {
                 resultStr = "<refresh-lock success='false'/>";
             }
@@ -66,22 +71,6 @@ public class LockServlet extends HttpServlet {
 
     }
 
-    /** Tries to7 get the lock on this subcomponent.
-     * @param username
-     * @param refbase
-     * @return null if lock is obtained. If the lock is owned by some other user, the
-     *         username of this current owner is returned.
-     * @throws Exception 
-     */
-    public static String getLockUsername(String username, String refbase) throws Exception {
-        Lock lock = LockManager.getInstance().getLock(username, refbase);
-        if (lock == null) {
-            return null;
-        } else {
-            return lock.getUsername();
-        }
-    }
-    
     @Override
     public void doPost (  HttpServletRequest request,
                          HttpServletResponse response)
@@ -92,7 +81,7 @@ public class LockServlet extends HttpServlet {
     /** Clean up lock manager */
     @Override
     public void destroy() {
-        LockManager.getInstance().shutdown();
+        LockManager.getInstance(getServletContext()).shutdown();
         super.destroy();
     }
 

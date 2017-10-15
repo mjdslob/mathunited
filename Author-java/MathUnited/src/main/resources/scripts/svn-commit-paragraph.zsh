@@ -83,7 +83,7 @@ fi
       # Only process files with wrong xsi tag
       if grep -q xsi:nonamespaceschemalocation ${f}; then
         echo "--- ... ${f:t}"
-        # Run inplace sed and delete backup only if succesful
+        # Run inplace sed and delete backup only if successful
         sed -i.bak -e 's/xsi:nonamespaceschemalocation/xsi:noNamespaceSchemaLocation/g' $f && rm ${f}.bak
       fi
     done
@@ -103,7 +103,6 @@ fi
 #      echo "--- Unlocking of files in ${ARG1}"
 #      find ${ARG1} -maxdepth 1 -name '*.xml' -exec svn unlock '{}' \;
 #    fi
-
 
     echo "*** DONE. SVN COMMIT OF PARAGRAPH '${ARG1}'"
 } |& println

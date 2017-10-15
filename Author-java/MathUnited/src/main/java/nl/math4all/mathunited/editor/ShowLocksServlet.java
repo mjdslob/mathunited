@@ -25,6 +25,22 @@ public class ShowLocksServlet extends HttpServlet {
 
     private final static Logger LOGGER = Logger.getLogger(ShowLocksServlet.class.getName());
 
+    // Format for dates
+    //private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // no millis
+
+    static String stringForTimestamp(long t) {
+        String msg;
+        if (t == Lock.TIMESTAMP_NEVER) {
+            msg = "never";
+        } else if (t == Lock.TIMESTAMP_FAILED) {
+            msg = "<span style='color:yellow;background-color:red'>FAILED</span>";
+        } else {
+            msg = sdf.format(new Date(t));
+        }
+        return msg;
+    }
+
     @Override
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response)
@@ -41,7 +57,7 @@ public class ShowLocksServlet extends HttpServlet {
         }
 
         // Get the lock map
-        HashMap<String, Lock> locks = LockManager.getInstance().getLockMap();
+        HashMap<String, Lock> locks = LockManager.getInstance(getServletContext()).getLockMap();
         Date now = new Date();
 
         // Select output type
@@ -53,25 +69,25 @@ public class ShowLocksServlet extends HttpServlet {
             response.setContentType("text/plain");
 
             // Write a plain text table
+            writer.println("User,Base,SessionStart,Timestamp,Active");
             for (Lock lock : locks.values()) {
-                writer.printf("%s %s %d\n", lock.getUsername(), lock.getRefbase(), lock.getTimestamp());
+                writer.printf("%s,%s,%d,%d,%d", lock.getUsername(), lock.getRefbase(), lock.getSessionStart(), lock.getTimestamp(),lock.isActive() ? 1 : 0);
             }
         } else if (StringUtils.equals(type, "xml")) {
             // XML output
             response.setContentType("text/xml");
             writer.println("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-            writer.printf("<locks timestamp=\"%d\">", now.getTime());
+            writer.printf("<locks timestamp='%d'>", now.getTime());
                 // Write a plain text table
             for (Lock lock : locks.values()) {
-                writer.printf("\t<lock timestamp=\"%d\"><user>%s</user><path>%s</path></lock>\n", lock.getTimestamp(), lock.getUsername(), lock.getRefbase());
+                writer.printf("\t<lock sessionStart='%d' timestamp='%d' active='%s'><user>%s</user><path>%s</path></lock>\n",
+                        lock.getSessionStart(), lock.getTimestamp(), lock.isActive(), lock.getUsername(), lock.getRefbase());
             }
             writer.println("</locks>");
         } else {
             // HTML output
             response.setContentType("text/html");
 
-            // Format for dates
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
             // Path prefix to subtract from paths
             Configuration config = Configuration.getInstance();
@@ -83,6 +99,7 @@ public class ShowLocksServlet extends HttpServlet {
             // JQuery + data tables
             String scriptFmt = "\t<script type=\"text/javascript\" language=\"javascript\" src=\"%s\"></script>\n";
             String cssFmt = "\t<link rel=\"stylesheet\" type=\"text/css\" href=\"%s\">\n";
+
             writer.printf(cssFmt, "css/M4AStijl2.css");
             writer.printf(cssFmt, "css/editor.css");
             writer.printf(cssFmt, "https:////cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css");
@@ -94,24 +111,54 @@ public class ShowLocksServlet extends HttpServlet {
             writer.print("<div class='editorDiv'>\n<br><h1>Lock information</h1>\n<p>Overview of locks at ");
             writer.print(sdf.format(now));
             writer.println("</p>\n<p>");
-            writer.println("<table id='locks-table' class='display'>\n" +
+
+            // Table + header.
+            writer.println("<table id='locks-table' class='display' style='font-size:small;'>\n" +
                     "\t<thead>\n\t<tr>\n" +
                     "\t\t<th>User</th>\n" +
                     "\t\t<th>Path</th>\n" +
+                    "\t\t<th>Session start</th>\n" +
+                    "\t\t<th>Active</th>\n" +
                     "\t\t<th>Timestamp</th>\n" +
+                    "\t\t<th>Time since refresh</th>\n" +
                     "\t\t<th>Last update</th>\n" +
+                    "\t\t<th>Last commit</th>\n" +
                     "\t</tr>\n\t</thead>\n\t<tbody>");
+
+            // Row entries for each lock
             for (Lock lock : locks.values()) {
+                // 1. Username
                 writer.print("\t\t<tr><td>");
                 writer.print(lock.getUsername());
+
+                // 2. Refbase
                 writer.print("</td><td>");
                 writer.print(lock.getRefbase().replace(root, ""));
+
+                // 3. Session start
                 writer.print("</td><td>");
-                Date date = new Date(lock.getTimestamp());
-                writer.print(sdf.format(date));
+                writer.print(stringForTimestamp(lock.getSessionStart()));
+
+                // 4. Active
                 writer.print("</td><td>");
-                double sec = 1e-3 * (now.getTime() - date.getTime());
+                writer.print(lock.isActive() ? "yes" : "no");
+
+                // 5. Refresh timestamp
+                writer.print("</td><td>");
+                writer.print(stringForTimestamp(lock.getTimestamp()));
+
+                // 6. Refresh timestamp as seconds ago from now
+                writer.print("</td><td>");
+                double sec = 1e-3 * (now.getTime() - lock.getTimestamp());
                 writer.printf("%.3fs", sec);
+
+                // 7. Last (e.g. SVN) update time
+                writer.print("</td><td>");
+                writer.print(stringForTimestamp(lock.getLastUpdate()));
+
+                // 8. Last (e.g. SVN) commit time
+                writer.print("</td><td>");
+                writer.print(stringForTimestamp(lock.getLastCommit()));
                 writer.println("</td></tr>");
             }
             writer.println("\t</tbody>\n</table>\n</p></div>");
@@ -119,7 +166,9 @@ public class ShowLocksServlet extends HttpServlet {
             // Intialize datatables
             writer.println("<script>\n"+
                     "$(document).ready(function(){\n" +
-                    "    $('#locks-table').DataTable();\n" +
+                    "    $('#locks-table').DataTable(" +
+                    // This makes the 2nd column wider (for path names)
+                    "{'columnDefs': [{'targets':1, 'width':'20%'}]});\n" +
                     "});\n" +
                     "</script>"
             );

@@ -58,7 +58,7 @@ public class EditServlet extends HttpServlet {
             //read request parameters
             Map<String, String> parameterMap = Utils.readParameters(request);
 
-            if(isMobile(request.getHeader("user-agent"))) {
+            if (isMobile(request.getHeader("user-agent"))) {
                 parameterMap.put("is_mobile", "true");
             } else {
                 parameterMap.put("is_mobile", "false");
@@ -93,30 +93,31 @@ public class EditServlet extends HttpServlet {
 
             //if subcomp is not an integer, it will be interpreted as the index of the subcomponent.
             //note: this implies that an id of a subcomponent can not be an integer!
-            try{
+            try {
                 int subcomp_index = Integer.parseInt(subcomp);
-                if (subcomp_index>0 && subcomp_index<=component.subComponentList.size()){
-                    SubComponent sub = component.subComponentList.get(subcomp_index-1);
+                if (subcomp_index > 0 && subcomp_index <= component.subComponentList.size()) {
+                    SubComponent sub = component.subComponentList.get(subcomp_index - 1);
                     subcomp = sub.id;
                 }
-            } catch(NumberFormatException exc) {
-                
+            } catch (NumberFormatException exc) {
+
             }
 
-            
+
             // find subcomponent, previous and following
-            SubComponent sub=null, nextSub=null, prevSub=null;
+            SubComponent sub = null, nextSub = null, prevSub = null;
             int subcomp_index = 0;
-            for(subcomp_index=0; subcomp_index<component.subComponentList.size(); subcomp_index++ ){
+            for (subcomp_index = 0; subcomp_index < component.subComponentList.size(); subcomp_index++) {
                 sub = component.subComponentList.get(subcomp_index);
-                if(sub.id.equals(subcomp)) {
-                    if(subcomp_index>0) prevSub = component.subComponentList.get(subcomp_index-1);
-                    if(subcomp_index<component.subComponentList.size()-1) nextSub = component.subComponentList.get(subcomp_index+1);
+                if (sub.id.equals(subcomp)) {
+                    if (subcomp_index > 0) prevSub = component.subComponentList.get(subcomp_index - 1);
+                    if (subcomp_index < component.subComponentList.size() - 1)
+                        nextSub = component.subComponentList.get(subcomp_index + 1);
                     break;
                 }
             }
-            if(sub==null) {
-                throw new Exception("Er bestaat geen subcomponent met id '"+subcomp+"'");
+            if (sub == null) {
+                throw new Exception("Er bestaat geen subcomponent met id '" + subcomp + "'");
             }
 
             // supply path to subcomponent to xslt. Might be needed when resolving other xml-documents
@@ -124,9 +125,9 @@ public class EditServlet extends HttpServlet {
             String refbase;
             String basePath = repository.getPath();
             if (basePath.isEmpty()) {
-                refbase = sub.file.substring(0, ind+1);
+                refbase = sub.file.substring(0, ind + 1);
             } else {
-                refbase = repository.getPath() + "/" + sub.file.substring(0, ind+1);
+                refbase = repository.getPath() + "/" + sub.file.substring(0, ind + 1);
             }
 
             parameterMap.put("componentsURL", repository.componentsURL);
@@ -143,7 +144,8 @@ public class EditServlet extends HttpServlet {
             System.out.println("[TIMING] @@@ edit: preamble took " + (toc - tic) + " ms.");
 
             tic = toc;
-            Lock lock = getLock(usettings.username, config.getContentRoot() + refbase);
+            Lock lock = LockManager.getInstance(getServletContext())
+                    .getLock(usettings.username, config.getContentRoot() + refbase);
             toc = System.currentTimeMillis();
             System.out.println("[TIMING] @@@ edit: user locking took " + (toc - tic) + " ms.");
 
@@ -153,19 +155,27 @@ public class EditServlet extends HttpServlet {
             if (lock == null) {
                 // If not, that is a server error. Communicate to user. Details are in server log.
                 parameterMap.put("lock_errormsg", "locking error on server");
-            } else if (!StringUtils.equals(lock.getUsername(), usettings.username)) {
-                // Other user is locking. Notify and communicate which user,
-                parameterMap.put("lock_owner", lock.getUsername());
             } else {
-                // Update from repo with script
-                ScriptRunner runner = new ScriptRunner(new PrintWriter(System.out));
-                try {
-                    runner.runScript("svn-update-paragraph", true, lock.getRefbase(), usettings.username);
-                } catch (SvnException e) {
-                    LOGGER.warning("svn-update-paragraph on " + lock.getRefbase() + " for user " + usettings.username + " failed.");
+                if (!StringUtils.equals(lock.getUsername(), usettings.username)) {
+                    // Other user is locking. Notify and communicate which user,
+                    parameterMap.put("lock_owner", lock.getUsername());
+                } else {
+                    // Update from repo with script
+                    ScriptRunner runner = new ScriptRunner(new PrintWriter(System.out));
+                    try {
+                        runner.runScript("svn-update-paragraph", true, lock.getRefbase(), usettings.username);
+                        lock.updated();
+                    } catch (SvnException e) {
+                        LOGGER.warning("svn-update-paragraph on " + lock.getRefbase() + " for user " + usettings.username + " failed.");
+                        lock.updateFailed();
+                        throw e;
+                    }
                 }
+                // Expose lock status information to XSLT
+                parameterMap.put("info_session_start", ShowLocksServlet.stringForTimestamp(lock.getSessionStart()));
+                parameterMap.put("info_last_update", ShowLocksServlet.stringForTimestamp(lock.getLastUpdate()));
+                parameterMap.put("info_last_commit", ShowLocksServlet.stringForTimestamp(lock.getLastCommit()));
             }
-
 
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             ContentResolver resolver = new ContentResolver(repository, getServletContext());
@@ -205,17 +215,6 @@ public class EditServlet extends HttpServlet {
 
     }
 
-    /** Tries to get the lock on this subcomponent. 
-     * @param username
-     * @param refbase
-     * @return null if lock is obtained. If the lock is owned by some other user, the
-     *         username of this current owner is returned.
-     * @throws Exception 
-     */
-    public Lock getLock(String username, String refbase) throws Exception {
-        return LockManager.getInstance().getLock(username, refbase);
-    }
-    
     public boolean isMobile(String uaStr) {
         if(uaStr==null) return false;
     	boolean ismobile = false;

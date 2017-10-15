@@ -63,6 +63,9 @@ define(['jquery', 'app/Document','actions/ObjectivesHandler', 'actions/SetExerci
                 var result_tag = $(data).children().first();
                 if(result_tag.attr('success')==='true') {
                     setTimeout(refreshLock, 30000);
+                    $('#info-session-start').text(result_tag.attr('session-start'));
+                    $('#info-last-update').text(result_tag.attr('last-update'));
+                    $('#info-last-commit').text(result_tag.attr('last-commit'));
                 } else {
                     alert('Er is een probleem opgetreden: kan lock op de paragraaf niet verversen.');
                 }

@@ -872,3 +872,8 @@ iframe.widgetFrame {
     background-color:lightblue;
     color:darkblue;
 }
+
+.file-status-container {
+    color: #555555;
+    font-size: small;
+}

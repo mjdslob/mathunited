@@ -6,6 +6,7 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -22,18 +23,17 @@ public class LockManager {
     /** Maximum time before lock can be stolen. */
     private static final int MAX_LOCK_DURATION_MS = 60000;
 
-    /** Name of lock files */
-    public static final String LOCK_FILE_NAME = "lock";
-
     /** Logger */
     private final static Logger LOGGER = Logger.getLogger(LockManager.class.getName());
 
     /** Singleton pattern. */
-    public static final LockManager INSTANCE = new LockManager();
-
-    /** Singleton pattern. */
-    public static LockManager getInstance() {
-        return INSTANCE;
+    public static LockManager getInstance(ServletContext context) {
+        LockManager lm = (LockManager) context.getAttribute("LockManager");
+        if (lm == null) {
+            lm = new LockManager();
+            context.setAttribute("LockManager", lm);
+        }
+        return lm;
     }
 
     /** Lock locations to user and timestamp information. */
@@ -45,30 +45,6 @@ public class LockManager {
      */
     ScheduledExecutorService timer = Executors.newSingleThreadScheduledExecutor();
 
-    /**
-     * Look for stale lock and put them back into the map.
-     * This happens after a server restart of update. We the lose the state in
-     * the locks map, so this state has to be rebuild.
-     */
-    private void fillLockMapWithStaleLocks() {
-        File contentRoot = new File(Configuration.getInstance().getContentRoot());
-        IOFileFilter lockName = FileFilterUtils.nameFileFilter(LOCK_FILE_NAME);
-        IOFileFilter doSubdirs = FileFilterUtils.trueFileFilter();
-
-        // Find all lock files
-        Collection<File> lockFiles = FileUtils.listFiles(contentRoot, lockName, doSubdirs);
-
-        // Add previous locks to locks map
-        for (File f : lockFiles) {
-            String refbase = f.getParent();
-            try {
-                String username = FileUtils.readFileToString(f);
-                locks.putIfAbsent(refbase, newLock(refbase, username));
-            } catch (IOException e) {
-                LOGGER.warning("!!! Problems processing lock file '" + f + "': " + e.getMessage());
-            }
-        }
-    }
 
     /** Class that periodically checks if locks have a timeout and calls release() on those locks. */
     private class LockTimeoutChecker implements Runnable {
@@ -102,16 +78,13 @@ public class LockManager {
 
     /** Private constructor to enforce singleton pattern */
     private LockManager() {
-        // Add stale locks
-        fillLockMapWithStaleLocks();
-
         // Setup release cycle
         timer.scheduleAtFixedRate(new LockTimeoutChecker(), MAX_LOCK_DURATION_MS, MAX_LOCK_DURATION_MS / 4, TimeUnit.MILLISECONDS);
     }
 
     /** Create a new lock for given paragraph directory and username. */
     private Lock newLock(String refbase, String username) {
-        return new FileLock(refbase, username);
+        return new Lock(refbase, username);
     }
 
     /**
@@ -129,6 +102,8 @@ public class LockManager {
         // Check if refbase is being locked already
         refbase = normalizeRefbaseName(refbase);
         Lock lockData = locks.get(refbase);
+
+        LOGGER.info("Requesting lock on " + refbase + " for user " + username);
 
         // If no lock was there yet...
         if (lockData == null) {

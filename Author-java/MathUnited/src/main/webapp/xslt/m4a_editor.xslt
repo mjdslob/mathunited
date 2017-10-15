@@ -41,6 +41,10 @@
     <xsl:param name="subcomponent_count"/>
     <xsl:param name="subcomponent_id"/>
 
+    <xsl:param name="info_session_start"/>
+    <xsl:param name="info_last_update"/>
+    <xsl:param name="info_last_commit"/>
+
     <xsl:param name="refbase"/> <!-- used for includes: base path. Includes final / -->
 
     <!--   /////////////////////////////////////////////   -->
@@ -410,6 +414,11 @@
                                     </input>
                                     <span>Klaar voor productie</span>
                                 </div>
+                            </div>
+                            <div class="file-status-container">
+                                <p>Open sinds: <span id="info-session-start"><xsl:value-of select="$info_session_start"/></span></p>
+                                <p>Laatste update: <span id="info-last-update"><xsl:value-of select="$info_last_update"/></span></p>
+                                <p>Laatste commit: <span id="info-last-commit"><xsl:value-of select="$info_last_commit"/></span></p>
                             </div>
                             <div style="clear:both"/>
                         </div>

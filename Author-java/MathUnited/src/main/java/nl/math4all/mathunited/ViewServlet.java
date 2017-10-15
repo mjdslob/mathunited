@@ -162,7 +162,7 @@ public class ViewServlet extends HttpServlet {
 
             // Update with script if it is not being locked at the minute
             String repobase = config.getContentRoot() + refbase;
-            if (!LockManager.getInstance().hasLock(repobase)) {
+            if (!LockManager.getInstance(getServletContext()).hasLock(repobase)) {
                 ScriptRunner runner = new ScriptRunner(new PrintWriter(System.out));
                 try {
                     runner.runScript("svn-update-paragraph", true, repobase, usettings.username);
