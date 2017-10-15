@@ -1,32 +1,102 @@
 variants : 
   basis : {path: /xslt/m4a_view.xslt}
+  basis_wm : {path: /xslt/wm_view.xslt}
+  basis_studiovo : {path: /xslt/studiovo_view.xslt}
+  studiovo_view : {path: /xslt/studiovo_view.xslt}
+  wm_view : {path: /xslt/wm_view.xslt}
   m4a_view : {path: /xslt/m4a_view.xslt}
-  malmberg_view : {path: /xslt/malmberg_view.xslt}
+  m4a_view_saba : {path: /xslt/m4a_view_saba.xslt}
+  m4a_view_engels : {path: /xslt/m4a_view_engels.xslt}
+  m4a_view_dedicon : {path: /xslt/m4a_view_dedicon.xslt}
+  m4a_view_pulseon : {path: /xslt/m4a_view_pulseon.xslt}
   m4a_editor : {path: /xslt/m4a_editor.xslt}
+  m4a_insert : {path: /xslt/m4a_insert.xslt}
+  m4a_remove : {path: /xslt/m4a_remove.xslt}
   m4a_inverse : {path: /xslt/m4a_inverse.xslt}
 
 roles :
   - admin
+  - editor_saba
+  - editor_m4a
+  - editor_concept_alt
   - editor_test
   - editor_malmberg
   
 repos :
-  malmberg :
-    path: 
+  wm :
+    path: content-wm/concept
+    edit_permission: editor_wm
+    defaultVariant: wm_view
+    componentsURL: /index/wm/components.xml
+    threadsURL: /index/wm/threads.xml
+  m4a :
+    path: content-ma/concept
+    edit_permission: editor_m4a
+    defaultVariant: m4a_view
+    componentsURL: /index/math4all/components.xml
+    threadsURL: /index/math4all/threads.xml
+  m4a2015 :
+    path: content-ma/malmberg
+    edit_permission: editor_m4a
+    defaultVariant: m4a_view
+    componentsURL: /index/malmberg/components.xml
+    threadsURL: /index/malmberg/threads.xml
+  math4mbo :
+    path: content-ma/math4mbo
+    edit_permission: editor_m4a
+    defaultVariant: m4a_view
+    componentsURL: /index/math4mbo/components.xml
+    threadsURL: /index/math4mbo/threads.xml
+  mathplus :
+    path: content-ma/malmberg
+    edit_permission: editor_m4a
+    defaultVariant: m4a_view
+    componentsURL: /index/malmberg/components.xml
+    threadsURL: /index/malmberg/threads.xml
+  m4a_concept_alt :
+    path: content-ma/concept_alt
+    baseRepo : m4a
+    edit_permission: editor_concept_alt
+    defaultVariant: m4a_view
+  m4a_en :
+    path: content-ma/saba
+    baseRepo : m4a
+    edit_permission: editor_saba
+    defaultVariant: m4a_view_saba
+    componentsURL: /index/m4a-engels/components.xml
+    threadsURL: /index/m4a-engels/threads.xml
+  m4a_engels :
+    path: content-ma/engels
+    baseRepo : m4a
+    edit_permission: editor_engels
+    defaultVariant: m4a_view_engels
+  malmberg_pragma :
+    path: content-ma/malmberg
     edit_permission: editor_malmberg
-    defaultVariant: malmberg_view
-    componentsURL: /leerlijnen/components.xml
-    threadsURL: /leerlijnen/threads.xml
+    defaultVariant: m4a_view
+    componentsURL: /index/malmberg/components.xml
+    threadsURL: /index/malmberg/threads.xml
+    contentItems: m4a-content-items.xml
+  algebrakit :
+    path: content-ma/algebrakit
+    edit_permission: 
+    defaultVariant: m4a_view
+  test :
+    path: content-ma/test
+    baseRepo : m4a
+    edit_permission: editor_test
+    defaultVariant: m4a_view
+    componentsURL: /index/test/components.xml
+    threadsURL: /index/test/threads.xml
     contentItems: m4a-content-items.xml
 
-userFile : /opt/sw/mathplus/conf/users_malmberg.yaml
-contentRoot : /opt/data/mathplus/
-entitiesFile : /opt/data/mathplus/entities.xml
+userFile : /data/content-overview/users.yaml
+contentRoot : /data/
+entitiesFile : /data/content-overview/entities.xml
 
-mail_host : localhost
-mail_smtp_port : 25
-mail_username :  
-mail_password :  
+mail_host : smtp.xs4all.nl
+mail_smtp_port : 587
+mail_username : gaj2
+mail_password : mjd1602S
 admin_mail : m.slob@math4all.nl
 
-svnRepoRoot: /opt/data/svn/mathplus

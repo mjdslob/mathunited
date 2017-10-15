@@ -255,13 +255,14 @@ indent="yes" encoding="utf-8"/>
                    </script>
           <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML&amp;delayStartupUntil=configured" />
           <script type="text/javascript" src="/javascript/MathUnited.js"/>
-		   <script type="text/javascript" src="/javascript/MathUnited_m4a.js"/>
-		   <link rel="stylesheet" href="/css/content.css" type="text/css"/>
-		   <link rel="stylesheet" href="/css/exercises.css" type="text/css"/>
-		   <link rel="stylesheet" href="/css/M4AStijl2.css" type="text/css"/>
+           <script type="text/javascript" src="/javascript/MathUnited_m4a.js"/>
+           <link rel="stylesheet" href="/css/content.css" type="text/css"/>
+           <link rel="stylesheet" href="/css/exercises.css" type="text/css"/>
+           <link rel="stylesheet" href="/css/M4AStijl2.css" type="text/css"/>
       </xsl:when>
       <xsl:otherwise>
 		   <link type="text/css" href="javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
+                   <link rel='stylesheet' href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.css"/>
 		   <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
 		   <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
 		   <script type="text/x-mathjax-config">
@@ -278,15 +279,14 @@ indent="yes" encoding="utf-8"/>
 		      });
 		   </script>
            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML&amp;delayStartupUntil=configured" />
-		   <script type="text/javascript" src="javascript/MathUnited.js"/>
-		   <script type="text/javascript" src="javascript/MathUnited_m4a.js"/>
-		   <link rel="stylesheet" href="css/content.css" type="text/css"/>
-		   <link rel="stylesheet" href="css/exercises.css" type="text/css"/>
-		   <link rel="stylesheet" href="css/M4AStijl2.css" type="text/css"/>
-		   <link rel="stylesheet" href="css/StepPanel.css" type="text/css"/>
-		   <link rel="stylesheet" href="css/AKIT-Exercise.css" type="text/css"/>
-		   <link rel="stylesheet" href="css/mathquill.css" type="text/css"/>
-                   <script data-main="javascript/algebrakit.js" src="javascript/require.js"></script>
+           <script type="text/javascript" src="javascript/MathUnited.js"/>
+           <script type="text/javascript" src="javascript/MathUnited_m4a.js"/>
+           <link rel="stylesheet" href="css/content.css" type="text/css"/>
+           <link rel="stylesheet" href="css/exercises.css" type="text/css"/>
+           <link rel="stylesheet" href="css/M4AStijl2.css" type="text/css"/>
+           <link rel="stylesheet" href="css/StepPanel.css" type="text/css"/>
+           <link rel="stylesheet" href="css/algebrakit.css" type="text/css"/>
+           <link rel="stylesheet" href="css/mathquill.css" type="text/css"/>
       </xsl:otherwise>
    </xsl:choose>
 
@@ -458,6 +458,11 @@ indent="yes" encoding="utf-8"/>
         </a></span>
 </div>
 </div>
+    <!-- katex takes care of displaying math formula in latex -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/contrib/auto-render.min.js"></script>
+    <script src="http://algebrakit.eu/akit-widgets.js"></script>
+    <script data-main="javascript/algebrakit.js" src="javascript/require.js"></script>
 </body>
 </html>
 </xsl:template>
@@ -540,12 +545,28 @@ indent="yes" encoding="utf-8"/>
 </xsl:template>
 
 <xsl:template match="componentcontent/examples">
-    <h2 class="section-title">Voorbeeld <xsl:value-of select="$num"/></h2>
+    <h2 class="section-title">Voorbeeld
+        <xsl:choose>
+            <xsl:when test="@targetgroup='techniek'">Techniek</xsl:when>
+            <xsl:when test="@targetgroup='groen'">Groen</xsl:when>
+            <xsl:when test="@targetgroup='economie'">Economie</xsl:when>
+            <xsl:when test="@targetgroup='zorg'">Zorg en welzijn</xsl:when>
+            <xsl:otherwise><xsl:value-of select="$num"/></xsl:otherwise>
+        </xsl:choose>
+    </h2>
     <xsl:apply-templates/>
 </xsl:template>
 
 <xsl:template match="componentcontent/theory/examples">
-    <h2 class="section-title">Voorbeeld <xsl:value-of select="$num"/></h2>
+    <h2 class="section-title">Voorbeeld
+        <xsl:choose>
+            <xsl:when test="@targetgroup='techniek'">Techniek</xsl:when>
+            <xsl:when test="@targetgroup='groen'">Groen</xsl:when>
+            <xsl:when test="@targetgroup='economie'">Economie</xsl:when>
+            <xsl:when test="@targetgroup='zorg'">Zorg en welzijn</xsl:when>
+            <xsl:otherwise><xsl:value-of select="$num"/></xsl:otherwise>
+        </xsl:choose>
+    </h2>
     <xsl:variable name="cont" select = "document(concat($docbase,include/@filename))"/>
     <xsl:apply-templates select="$cont" mode="ma-content"/>
 </xsl:template>
@@ -752,19 +773,33 @@ indent="yes" encoding="utf-8"/>
         </div>
    </xsl:if>
    <xsl:for-each select="examples">
-       <div class="menu-item-div" item="example">
+        <div class="menu-item-div" item="example">
+            <xsl:if test="@targetgroup">
+                <xsl:attribute name="targetgroup"><xsl:value-of select="@targetgroup"/></xsl:attribute>
+            </xsl:if>
            <xsl:attribute name="num"><xsl:value-of select="position()"/></xsl:attribute>
            <a>
                 <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefix,'example&amp;num=',position())"/></xsl:attribute>
                 <xsl:choose>
                     <xsl:when test="($itemInner='example' or $itemInner='theory') and position()=number($num)">
-                    <xsl:attribute name="id">selected-menu-item</xsl:attribute>
-                    <div class="menu-item-dot-wrapper"><div class="menu-item-dot"/></div>
-                </xsl:when><xsl:otherwise>
-                    <xsl:attribute name="class">navigatie</xsl:attribute>
-                </xsl:otherwise>
-            </xsl:choose>
-               Voorbeeld <xsl:value-of select="position()"/></a>
+                       <xsl:attribute name="id">selected-menu-item</xsl:attribute>
+                       <div class="menu-item-dot-wrapper"><div class="menu-item-dot"/></div>
+                    </xsl:when>
+                    <xsl:otherwise>
+                       <xsl:attribute name="class">navigatie</xsl:attribute>
+                   </xsl:otherwise>
+                </xsl:choose>
+                
+                <xsl:choose>
+                    <xsl:when test="@targetgroup='techniek'">Techniek</xsl:when>
+                    <xsl:when test="@targetgroup='groen'">Groen</xsl:when>
+                    <xsl:when test="@targetgroup='economie'">Economie</xsl:when>
+                    <xsl:when test="@targetgroup='zorg'">Zorg / welzijn</xsl:when>
+                    <xsl:otherwise>
+                        Voorbeeld <xsl:value-of select="position()"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+           </a>
         </div>
    </xsl:for-each>
 </xsl:template>

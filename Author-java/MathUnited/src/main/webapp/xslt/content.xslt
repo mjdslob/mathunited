@@ -354,6 +354,9 @@ extension-element-prefixes="exsl">
         </xsl:choose>
     </iframe>
 </xsl:template>
+<xsl:template match="applet[@type='algebrakit']" mode="content">
+        <m4a-trainer exercise-id="{@exercise-id}"></m4a-trainer>
+</xsl:template>
 <xsl:template match="applet[@archive]" mode="content">
     <applet>
         <xsl:copy-of select="@*"/>

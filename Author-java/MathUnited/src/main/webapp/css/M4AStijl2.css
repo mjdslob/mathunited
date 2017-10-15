@@ -168,6 +168,22 @@ p {
     display:block;
     padding:4px 30px 4px 20px;
 }
+.menu-item-div[targetgroup='techniek'] {
+    background-color: #333366;
+}
+.menu-item-div[targetgroup='groen'] {
+    background-color: #006600;
+}
+.menu-item-div[targetgroup='economie'] {
+    background-color: #6699CC;
+}
+.menu-item-div[targetgroup='zorg'] {
+    background-color: #CC3333;
+}
+.menu-item-div[targetgroup] a.navigatie {
+    color: white;
+}
+
 .menu-item-padding {
     width:150px;
     height:10px;

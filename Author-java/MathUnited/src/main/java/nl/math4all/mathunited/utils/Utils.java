@@ -1,6 +1,9 @@
 package nl.math4all.mathunited.utils;
 
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +31,68 @@ public class Utils {
     public static Level LOGLEVEL = Level.FINE;
     private final static Logger LOGGER = Logger.getLogger(Utils.class.getName());
 
+    private static String serializeToJson(String str) { return "\""+str+"\""; }
+    private static String serializeToJson(Map<String, Object> params) {
+        StringBuilder result = new StringBuilder("{");
+        boolean first = true;
+        
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            if(first) {
+                first = false;
+            } else {
+                result.append(",");
+            }
+            result.append("\"")
+                    .append(entry.getKey())
+                    .append("\":");
+            
+            Object val = entry.getValue();
+            if(val instanceof String) {
+                result.append(serializeToJson((String)val));
+            } else if(val instanceof Map) {
+                result.append( serializeToJson((Map<String, Object>) val));
+            } else {
+                throw new Error("Unexpected content: "+val);
+            }
+        }
+ 
+        result.append("}");
+        System.out.println("MSLO-DEBUG: request = "+result.toString());
+        return result.toString();
+    }
+    private static String getParamsString(Map<String, Object> params) throws UnsupportedEncodingException{
+        String result = serializeToJson(params);
+        System.out.println("MSLO-DEBUG: request = "+result);
+        return result;
+    }
 
+    public static String httpPost(String dest, Map<String, Object> parameters) throws Exception {
+        try{
+            URL url = new URL(dest);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type", "application/json");
+            con.setDoOutput(true);
+            DataOutputStream out = new DataOutputStream(con.getOutputStream());
+            out.writeBytes(getParamsString(parameters));
+            out.flush();
+            out.close();
+
+            int status = con.getResponseCode();
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            return response.toString();
+        } catch(Exception e) {
+            throw e;
+        }
+    }
     public static Map<String, String> readParameters(HttpServletRequest request) {
         //read request parameters
         Map<String, String[]> paramMap = request.getParameterMap();

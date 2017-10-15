@@ -51,6 +51,11 @@ repos :
     baseRepo : m4a
     edit_permission: editor_saba
     defaultVariant: m4a_view_en
+  math4mbo :
+    id : ma-math4mbo-2017-09-29
+    path: content-ma/math4mbo
+    edit_permission: editor_m4a
+    defaultVariant: m4a_view
   studiovo :
     id : studiovo-2013-07-19
     path: content-studiovo/publish

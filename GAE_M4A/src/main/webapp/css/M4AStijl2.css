@@ -182,6 +182,22 @@ p {
 .menu-item-div a.navigatie:hover {
     color:#d21c24;
 }
+.menu-item-div[targetgroup='techniek'] {
+    background-color: #333366;
+}
+.menu-item-div[targetgroup='groen'] {
+    background-color: #006600;
+}
+.menu-item-div[targetgroup='economie'] {
+    background-color: #6699CC;
+}
+.menu-item-div[targetgroup='zorg'] {
+    background-color: #CC3333;
+}
+.menu-item-div[targetgroup] a.navigatie {
+    color: white;
+}
+
 /*
 .menu-item-dot {
     width:14px;

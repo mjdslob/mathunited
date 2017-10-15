@@ -73,4 +73,3 @@ define(['jquery', 'akit/Util', 'trainer/View', 'akit/Engine', 'mathjax', 'jquery
 );
 
 
-
