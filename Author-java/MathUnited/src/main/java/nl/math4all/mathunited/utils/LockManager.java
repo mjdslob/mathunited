@@ -161,13 +161,23 @@ public class LockManager {
         return lockData != null;
     }
 
-    /** Clean up times and theads. */
+    /** Clean up times and threads and locks. */
     public void shutdown() {
         timer.shutdownNow();
         try {
             timer.awaitTermination(10, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+
+        // Release all locks
+        for (Lock lock : locks.values()) {
+            try {
+                lock.release();
+            } catch (LockException e) {
+                LOGGER.warning("Could not release lock on " + lock.getRefbase() + " by user " +
+                        lock.getUsername() + ":" + e.getMessage());
+            }
         }
     }
 
@@ -183,6 +193,8 @@ public class LockManager {
     public static String normalizeRefbaseName(String refbase) {
         return StringUtils.appendIfMissing(refbase, "/");
     }
+
+
 
 }
 

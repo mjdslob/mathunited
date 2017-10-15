@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
@@ -55,6 +56,14 @@ public class Lock {
     /** Perform clean up actions to release the lock. */
     public void release() throws LockException {
         active = false;
+
+        ScriptRunner runner = new ScriptRunner(new PrintWriter(System.out));
+        try {
+            runner.runScript("svn-unlock-paragraph", true, refbase, username);
+        } catch (SvnException e) {
+            LOGGER.warning("svn-unlock-paragraph on " + refbase + " for user " + username + " failed.");
+        }
+
     }
 
     /**

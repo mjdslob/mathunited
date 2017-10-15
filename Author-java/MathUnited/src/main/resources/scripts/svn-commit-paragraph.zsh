@@ -97,12 +97,12 @@ fi
     svn commit ${commitdirs} -m "Changes by user $ARG2."
 
 
-# TODO: disabled locking/unlocking
-#    # Unlock
-#    if test -n "$(find ${ARG1} -maxdepth 1 -name '*.xml' -print -quit)"; then
-#      echo "--- Unlocking of files in ${ARG1}"
-#      find ${ARG1} -maxdepth 1 -name '*.xml' -exec svn unlock '{}' \;
-#    fi
+    #
+    # Unlocking files is delayed until paragraph lock is removed (see svn-unlock-file)
+    #
+    #xmllist=$(find ${ARG1} -maxdepth 1 -iname "*.xml" -and -not -name index.xml)
+    #svn unlock ${(f)xmllist}
+
 
     echo "*** DONE. SVN COMMIT OF PARAGRAPH '${ARG1}'"
 } |& println

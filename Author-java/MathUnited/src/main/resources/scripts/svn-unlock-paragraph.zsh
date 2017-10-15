@@ -22,29 +22,18 @@ fi
 
 # Capture all output
 {
-    echo "=== SVN UPDATE OF PARAGRAPH '${ARG1}'"
+    echo "=== SVN UNLOCK OF PARAGRAPH '${ARG1}'"
     if test ! -d "${ARG1}"; then
       echo "!!! '${ARG1}' is not a directory. Stopping."
       exit 1
     fi
 
-    # Parent dir
-    base=${ARG1:h}
-    # Image directory
-    imgdir=${base}/images/highres
-    # Geogebra dir
-    ggbdir=${base}/geogebra
-    # Other documents
-    doxdir=${base}/dox
 
-    echo "--- Running 'svn update' on path ${ARG1}"
-    svn update --accept mine-conflict ${ARG1} $imgdir $ggbdir $doxdir
-
-    # Lock files in svn system
+    #
+    # Unlock files
+    #
     xmllist=$(find ${ARG1} -maxdepth 1 -iname "*.xml" -and -not -name index.xml)
-    svn lock --force ${(f)xmllist}
+    svn unlock --force ${(f)xmllist}
 
-    echo "*** DONE. SVN UPDATE OF PARAGRAPH '${ARG1}'"
-
-
+    echo "*** DONE. SVN UNLOCK OF PARAGRAPH '${ARG1}'"
 } |& println

@@ -69,9 +69,16 @@ public class ShowLocksServlet extends HttpServlet {
             response.setContentType("text/plain");
 
             // Write a plain text table
-            writer.println("User,Base,SessionStart,Timestamp,Active");
+            writer.println("User,Base,SessionStart,Timestamp,Active,UpdateTime,CommitTime");
             for (Lock lock : locks.values()) {
-                writer.printf("%s,%s,%d,%d,%d", lock.getUsername(), lock.getRefbase(), lock.getSessionStart(), lock.getTimestamp(),lock.isActive() ? 1 : 0);
+                writer.printf("%s,%s,%d,%d,%d,%d,%d\n",
+                        lock.getUsername(),
+                        lock.getRefbase(),
+                        lock.getSessionStart(),
+                        lock.getTimestamp(),
+                        lock.isActive() ? 1 : 0,
+                        lock.getLastUpdate(),
+                        lock.getLastCommit());
             }
         } else if (StringUtils.equals(type, "xml")) {
             // XML output
@@ -80,8 +87,9 @@ public class ShowLocksServlet extends HttpServlet {
             writer.printf("<locks timestamp='%d'>", now.getTime());
                 // Write a plain text table
             for (Lock lock : locks.values()) {
-                writer.printf("\t<lock sessionStart='%d' timestamp='%d' active='%s'><user>%s</user><path>%s</path></lock>\n",
-                        lock.getSessionStart(), lock.getTimestamp(), lock.isActive(), lock.getUsername(), lock.getRefbase());
+                writer.printf("\t<lock sessionStart='%d' timestamp='%d' active='%s' updated='%d' comitted='%d'><user>%s</user><path>%s</path></lock>\n",
+                        lock.getSessionStart(), lock.getTimestamp(), lock.isActive(), lock.getLastUpdate(), lock.getLastCommit(),
+                        lock.getUsername(), lock.getRefbase());
             }
             writer.println("</locks>");
         } else {
