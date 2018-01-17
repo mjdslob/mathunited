@@ -169,7 +169,7 @@ indent="yes" encoding="utf-8" />
 		           jax: ["input/MathML","input/AsciiMath"]
 		      });
 		   </script>
-                   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML&amp;delayStartupUntil=configured" />
+                   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML&amp;delayStartupUntil=onload" />
 		   <link rel="stylesheet" href="/css/basis_wm.css" type="text/css"/>
 		   <link rel="stylesheet" href="/css/content.css" type="text/css"/>
 		   <link rel="stylesheet" href="/css/exercises.css" type="text/css"/>
@@ -191,7 +191,7 @@ indent="yes" encoding="utf-8" />
 		           jax: ["input/MathML","input/AsciiMath"]
 		      });
 		   </script>
-                   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML&amp;delayStartupUntil=configured" />
+                   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML&amp;delayStartupUntil=onload" />
 		   <link rel="stylesheet" href="css/basis_wm.css" type="text/css"/>
 		   <link rel="stylesheet" href="css/content.css" type="text/css"/>
 		   <link rel="stylesheet" href="css/exercises.css" type="text/css"/>

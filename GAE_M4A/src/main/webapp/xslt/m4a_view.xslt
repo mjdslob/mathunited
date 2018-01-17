@@ -11,6 +11,7 @@ extension-element-prefixes="exsl">
 
 <xsl:param name="item"/>
 <xsl:param name="num"/>
+<xsl:param name="sector"/>  <!-- mbo sector -->
 <xsl:param name="ws_id"/>   <!-- is of worksheet, if applicable -->
 <xsl:param name="comp"/>    <!-- id of component. Not needed as complete xml of component is given in $component-->
 <xsl:param name="subcomp"/> <!-- id of subcomponent, eg hv-me11 -->
@@ -59,6 +60,12 @@ extension-element-prefixes="exsl">
         <xsl:otherwise></xsl:otherwise>
     </xsl:choose>
 </xsl:variable>
+<xsl:variable name="arg_sector">
+    <xsl:choose>
+        <xsl:when test="$sector">&amp;sector=<xsl:value-of select="$sector"/></xsl:when>
+        <xsl:otherwise></xsl:otherwise>
+    </xsl:choose>
+</xsl:variable>
 <xsl:variable name="arg_parent">
     <xsl:choose>
         <xsl:when test="$parent">&amp;parent=<xsl:value-of select="$parent"/></xsl:when>
@@ -72,6 +79,9 @@ extension-element-prefixes="exsl">
     </xsl:choose>
 </xsl:variable>
 <xsl:variable name="intraLinkPrefix">
+    <xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',$subcomp,'&amp;variant=',$variant,$arg_option,$arg_parent,$arg_repo,$arg_sector,'&amp;item=')"/>
+</xsl:variable>
+<xsl:variable name="intraLinkPrefixNoSector">
     <xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',$subcomp,'&amp;variant=',$variant,$arg_option,$arg_parent,$arg_repo,'&amp;item=')"/>
 </xsl:variable>
 <xsl:variable name="overviewRef">
@@ -430,7 +440,7 @@ indent="yes" encoding="utf-8"/>
 <!--   **************** -->
 <!--    CONTENT TYPES   -->
 <!--   **************** -->
-<xsl:template match="explore">
+<xsl:template match="explore[@type=$sector or (not($sector) and not(@type))]">
     <xsl:param name="options"/>
     <xsl:if test="not($options and $options/options/mode[@type='answers'])">
         <h2 class="section-title">Verkennen</h2>
@@ -446,7 +456,14 @@ indent="yes" encoding="utf-8"/>
 
 <xsl:template match="introduction">
     <h2 class="section-title">Inleiding</h2>
+    <xsl:apply-templates select="/subcomponent/description/sectors/sector"/>
     <xsl:apply-templates/>
+</xsl:template>
+<xsl:template match="sector">
+    <a class="{@id}">
+        <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefixNoSector,'explore&amp;sector=',@id)"/></xsl:attribute>
+        <xsl:apply-templates mode="content"/>
+    </a>
 </xsl:template>
 <xsl:template match="introduction" mode="content">
     <xsl:apply-templates mode="content"/>
@@ -495,10 +512,17 @@ indent="yes" encoding="utf-8"/>
 </xsl:template>
 
 <xsl:template match="digest">
-    <h2 class="section-title">Verwerken</h2>
+    <xsl:choose>
+        <xsl:when test="count(/subcomponent/description/sectors/sector) gt 0">
+            <h2 class="section-title">Oefenen</h2>
+        </xsl:when>
+        <xsl:otherwise>
+            <h2 class="section-title">Verwerken</h2>
+        </xsl:otherwise>
+    </xsl:choose>
     <xsl:apply-templates/>
 </xsl:template>
-<xsl:template match="application">
+<xsl:template match="application[@type=$sector or (not($sector) and not(@type))]">
     <h2 class="section-title">Toepassen</h2>
     <xsl:apply-templates/>
 </xsl:template>
@@ -596,8 +620,11 @@ indent="yes" encoding="utf-8"/>
 <!--   **************** -->
 <!--     NAVIGATION     -->
 <!--   **************** -->
-<xsl:template match="explore" mode="navigation">
+<xsl:template match="explore[@type=$sector or (not($sector) and not(@type))]" mode="navigation">
    <div class="menu-item-div" item="explore">
+       <xsl:if test="@type">
+           <xsl:attribute name="context"><xsl:value-of select="@type"/></xsl:attribute>
+       </xsl:if>
        <a>
             <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefix,'explore')"/></xsl:attribute>
             <xsl:choose>
@@ -742,12 +769,24 @@ indent="yes" encoding="utf-8"/>
                     <xsl:attribute name="class">navigatie</xsl:attribute>
                 </xsl:otherwise>
             </xsl:choose>
-           Verwerken</a>
+
+            <xsl:choose>
+                <xsl:when test="/subcomponent/description/sectors">
+                    Oefenen
+                </xsl:when>
+                <xsl:otherwise>
+                    Verwerken
+                </xsl:otherwise>
+            </xsl:choose>
+       </a>
     </div>
 </xsl:template>
 
-<xsl:template match="application" mode="navigation">
+<xsl:template match="application[@type=$sector or (not($sector) and not(@type))]" mode="navigation">
    <div class="menu-item-div" item="application">
+       <xsl:if test="@type">
+           <xsl:attribute name="context"><xsl:value-of select="@type"/></xsl:attribute>
+       </xsl:if>
        <a>
             <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefix,'application')"/></xsl:attribute>
             <xsl:choose>

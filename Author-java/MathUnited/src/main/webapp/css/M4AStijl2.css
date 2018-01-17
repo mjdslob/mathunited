@@ -183,6 +183,25 @@ p {
 .menu-item-div[targetgroup] a.navigatie {
     color: white;
 }
+.menu-item-div[context] a.navigatie {
+    color:white;
+}
+.menu-item-div[context='bev'] {
+    background-color: #333366;
+    color:white;
+}
+.menu-item-div[context='asc'] {
+    background-color: #666699;
+    color:white;
+}
+.menu-item-div[context='eng'] {
+    background-color: #CCCCFF;
+    color:white;
+}
+.menu-item-div[context='ict'] {
+    background-color: #6699CC;
+    color:white;
+}
 
 .menu-item-padding {
     width:150px;

@@ -72,7 +72,7 @@ p {
     color:#666699;
     font-weight:bold;
     float:left;
-    width:670px;
+    width:570px;
     margin-left:10px;
     margin-right:10px;
 }
@@ -95,7 +95,7 @@ p {
     color:#666699;
     font-weight:bold;
     text-align: right;
-    float:left;
+    float:right;
     width:140px;
 }
 @media print {
@@ -116,6 +116,11 @@ p {
 .section-title {
     color: #d21c24;
     font-size:16px;
+}
+.subcomponent-id {
+    display:inline-block;
+    float:right;
+    margin-right:15px;
 }
 .menuDiv {
     font-family:Helvetiva,Arial;
@@ -163,6 +168,41 @@ p {
     display:block;
     padding:4px 30px 4px 20px;
 }
+.menu-item-div[targetgroup='techniek'] {
+    background-color: #333366;
+}
+.menu-item-div[targetgroup='groen'] {
+    background-color: #006600;
+}
+.menu-item-div[targetgroup='economie'] {
+    background-color: #6699CC;
+}
+.menu-item-div[targetgroup='zorg'] {
+    background-color: #CC3333;
+}
+.menu-item-div[targetgroup] a.navigatie {
+    color: white;
+}
+.menu-item-div[context] a.navigatie {
+    color:white;
+}
+.menu-item-div[context='bev'] {
+    background-color: #333366;
+    color:white;
+}
+.menu-item-div[context='asc'] {
+    background-color: #666699;
+    color:white;
+}
+.menu-item-div[context='eng'] {
+    background-color: #CCCCFF;
+    color:white;
+}
+.menu-item-div[context='ict'] {
+    background-color: #6699CC;
+    color:white;
+}
+
 .menu-item-padding {
     width:150px;
     height:10px;
@@ -182,22 +222,6 @@ p {
 .menu-item-div a.navigatie:hover {
     color:#d21c24;
 }
-.menu-item-div[targetgroup='techniek'] {
-    background-color: #333366;
-}
-.menu-item-div[targetgroup='groen'] {
-    background-color: #006600;
-}
-.menu-item-div[targetgroup='economie'] {
-    background-color: #6699CC;
-}
-.menu-item-div[targetgroup='zorg'] {
-    background-color: #CC3333;
-}
-.menu-item-div[targetgroup] a.navigatie {
-    color: white;
-}
-
 /*
 .menu-item-dot {
     width:14px;
@@ -314,7 +338,11 @@ p {
 .keyword {
     color: #333366;
     font-weight:bold;
-    
+}
+.author-remark {
+    color:blue;
+    font-style: italic;
+    background-color:yellow;
 }
 h1 {
     font-family: Helvetiva,Arial Black;
@@ -493,6 +521,9 @@ ol {
 }
 .exercise-with-heading {
 }
+.exercise-with-heading[clone] {
+    background-color:rgb(220,220,220);
+}
 .exercise-with-heading .opgave-label-button {
     width:12px; height:12px;
     background-image: url('../sources_ma/opgave_pijl_dicht.png');
@@ -539,6 +570,7 @@ ul,ol {
 }
 iframe {
     border:0;
+    overflow:hidden;
 }
 table.wm-default-table {
     border-collapse: collapse;
@@ -596,20 +628,5 @@ table.wm-default-table td, table.wm-default-table th{
     width:60px; height:60px;
     background-image: url('../sources/movie_icon_60.gif');
     float:right;
-}
-
-.commit-button {
-    width:128px;
-    height:128px;
-    background-image: url('../sources/upload-icon-small.png');
-}
-.commit-button:hover {
-    border:1px dashed gray;
-}
-.commit-button:active {
-    border:1px dashed gray;
-    position:relative;
-    left:5px;
-    top:5px;
 }
 

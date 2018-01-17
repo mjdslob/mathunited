@@ -36,11 +36,11 @@ repos :
     componentsURL: /index/math4all/components.xml
     threadsURL: /index/math4all/threads.xml
   m4a2015 :
-    path: content-ma/malmberg
+    path: content-ma/math4all-2015
     edit_permission: editor_m4a
     defaultVariant: m4a_view
-    componentsURL: /index/malmberg/components.xml
-    threadsURL: /index/malmberg/threads.xml
+    componentsURL: /index/math4all-2015/components.xml
+    threadsURL: /index/math4all-2015/threads.xml
   math4mbo :
     path: content-ma/math4mbo
     edit_permission: editor_m4a
@@ -48,11 +48,11 @@ repos :
     componentsURL: /index/math4mbo/components.xml
     threadsURL: /index/math4mbo/threads.xml
   mathplus :
-    path: content-ma/malmberg
+    path: content-ma/math4all-2015
     edit_permission: editor_m4a
     defaultVariant: m4a_view
-    componentsURL: /index/malmberg/components.xml
-    threadsURL: /index/malmberg/threads.xml
+    componentsURL: /index/math4all-2015/components.xml
+    threadsURL: /index/math4all-2015/threads.xml
   m4a_concept_alt :
     path: content-ma/concept_alt
     baseRepo : m4a
@@ -71,11 +71,11 @@ repos :
     edit_permission: editor_engels
     defaultVariant: m4a_view_engels
   malmberg_pragma :
-    path: content-ma/malmberg
+    path: content-ma/math4all-2015
     edit_permission: editor_malmberg
     defaultVariant: m4a_view
-    componentsURL: /index/malmberg/components.xml
-    threadsURL: /index/malmberg/threads.xml
+    componentsURL: /index/math4all-2015/components.xml
+    threadsURL: /index/math4all-2015/threads.xml
     contentItems: m4a-content-items.xml
   algebrakit :
     path: content-ma/algebrakit

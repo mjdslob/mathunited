@@ -42,7 +42,7 @@ repos :
     defaultVariant: m4a_view_old
   m4a2015 :
     id : m4a2015-2015-07-16
-    path: content-ma/malmberg
+    path: content-ma/math4all-2015
     edit_permission: editor_m4a
     defaultVariant: m4a_view
   m4a_en :
