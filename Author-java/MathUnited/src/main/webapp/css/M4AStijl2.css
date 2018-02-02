@@ -630,3 +630,9 @@ table.wm-default-table td, table.wm-default-table th{
     float:right;
 }
 
+.sector-tile[active='false'] {
+    opacity: 0.5;
+}
+.sector-tile[active='false'] img{
+    width:125px;
+}

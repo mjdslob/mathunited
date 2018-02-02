@@ -459,9 +459,16 @@ indent="yes" encoding="utf-8"/>
     <xsl:apply-templates select="/subcomponent/description/sectors/sector"/>
     <xsl:apply-templates/>
 </xsl:template>
+
 <xsl:template match="sector">
-    <a class="{@id}">
-        <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefixNoSector,'explore&amp;sector=',@id)"/></xsl:attribute>
+    <a>
+        <xsl:attribute name="class"><xsl:value-of select="concat(@id,' sector-tile')"/></xsl:attribute>
+        <xsl:attribute name="href">
+            <xsl:value-of select="concat($intraLinkPrefixNoSector,$item,'&amp;sector=',@id)"/>
+        </xsl:attribute>
+        <xsl:if test="$sector!=@id">
+            <xsl:attribute name="active">false</xsl:attribute>
+        </xsl:if>
         <xsl:apply-templates mode="content"/>
     </a>
 </xsl:template>
@@ -534,6 +541,7 @@ indent="yes" encoding="utf-8"/>
 
 <xsl:template match="summary">
     <h2 class="section-title">Samenvatten</h2>
+    <xsl:apply-templates select="/subcomponent/description/sectors/sector"/>
     <xsl:apply-templates mode="ma-content"/>
 </xsl:template>
 <xsl:template match="test">
