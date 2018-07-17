@@ -122,6 +122,13 @@ indent="yes" encoding="utf-8"/>
 <!--skip clone exercises -->
 <xsl:template match="exercises/include[document(concat($docbase,@filename))//exercise/metadata/clone[@active='true']]" mode="filter">
 </xsl:template>
+<xsl:template match="explore | application" mode="filter">
+    <xsl:if test="@type=$sector or (not($sector) and string-length(@type)=0)">
+        <xsl:copy>
+            <xsl:apply-templates select="@*|node()" mode="filter"/>
+        </xsl:copy>
+    </xsl:if>
+</xsl:template>
 <!--skip content that is explicitly not intended for math4all -->
 <xsl:template match="*[@publishing-platforms!='math4all']" mode="filter"></xsl:template>
 
@@ -440,7 +447,7 @@ indent="yes" encoding="utf-8"/>
 <!--   **************** -->
 <!--    CONTENT TYPES   -->
 <!--   **************** -->
-<xsl:template match="explore[@type=$sector or (not($sector) and not(@type))]">
+<xsl:template match="explore[@type=$sector or (not($sector) and string-length(@type)=0)]">
     <xsl:param name="options"/>
     <xsl:if test="not($options and $options/options/mode[@type='answers'])">
         <h2 class="section-title">Verkennen</h2>
@@ -464,7 +471,7 @@ indent="yes" encoding="utf-8"/>
     <a>
         <xsl:attribute name="class"><xsl:value-of select="concat(@id,' sector-tile')"/></xsl:attribute>
         <xsl:attribute name="href">
-            <xsl:value-of select="concat($intraLinkPrefixNoSector,$item,'&amp;sector=',@id)"/>
+            <xsl:value-of select="concat($intraLinkPrefixNoSector,$itemInner,'&amp;sector=',@id)"/>
         </xsl:attribute>
         <xsl:if test="$sector!=@id">
             <xsl:attribute name="active">false</xsl:attribute>
@@ -529,7 +536,7 @@ indent="yes" encoding="utf-8"/>
     </xsl:choose>
     <xsl:apply-templates/>
 </xsl:template>
-<xsl:template match="application[@type=$sector or (not($sector) and not(@type))]">
+<xsl:template match="application[@type=$sector or (not($sector) and string-length(@type)=0)]">
     <h2 class="section-title">Toepassen</h2>
     <xsl:apply-templates/>
 </xsl:template>
@@ -628,9 +635,9 @@ indent="yes" encoding="utf-8"/>
 <!--   **************** -->
 <!--     NAVIGATION     -->
 <!--   **************** -->
-<xsl:template match="explore[@type=$sector or (not($sector) and not(@type))]" mode="navigation">
+<xsl:template match="explore[@type=$sector or (not($sector) and string-length(@type)=0)]" mode="navigation">
    <div class="menu-item-div" item="explore">
-       <xsl:if test="@type">
+       <xsl:if test="string-length(@type) gt 0">
            <xsl:attribute name="context"><xsl:value-of select="@type"/></xsl:attribute>
        </xsl:if>
        <a>
@@ -790,9 +797,9 @@ indent="yes" encoding="utf-8"/>
     </div>
 </xsl:template>
 
-<xsl:template match="application[@type=$sector or (not($sector) and not(@type))]" mode="navigation">
+<xsl:template match="application[@type=$sector or (not($sector) and string-length(@type)=0)]" mode="navigation">
    <div class="menu-item-div" item="application">
-       <xsl:if test="@type">
+       <xsl:if test="string-length(@type) gt 0">
            <xsl:attribute name="context"><xsl:value-of select="@type"/></xsl:attribute>
        </xsl:if>
        <a>

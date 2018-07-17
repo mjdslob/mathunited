@@ -216,7 +216,7 @@ indent="yes" encoding="utf-8" />
             <div class="pageDiv">
                 <div id="fixed-heading-container">
                     <div class="headingDiv container_12 clearfix">
-                        <div class="grid_1">
+                        <div class="grid_2">
                             <div class="logo-header-div"/>
                             <div class="prev-subcomponent">
                                 <xsl:if test="number($subcomponent_index) gt 0">
@@ -228,12 +228,6 @@ indent="yes" encoding="utf-8" />
                                     </a>
                                 </xsl:if>
                             </div>
-                        </div>
-                        <div class="headingContentDiv grid_6">
-                            <span class="headingDiv-content">
-                                <xsl:value-of select="$component_number"/>.<xsl:value-of select="$subcomponent_number"/>&#160;
-                                <xsl:value-of select="$subcomponent_title"/>
-                            </span>
                             <xsl:if test="number($subcomponent_index) lt (number($subcomponent_count)-1)">
                                 <span id="next-subcomponent">
                                     <a>
@@ -243,7 +237,13 @@ indent="yes" encoding="utf-8" />
                                 </span>
                             </xsl:if>
                         </div>
-                        <div class="overzichtDiv grid_5">
+                        <div class="headingContentDiv grid_6">
+                            <span class="headingDiv-content">
+                                <xsl:value-of select="$component_number"/>.<xsl:value-of select="$subcomponent_number"/>&#160;
+                                <xsl:value-of select="$subcomponent_title"/>
+                            </span>
+                        </div>
+                        <div class="overzichtDiv grid_4">
                             <a class="navigatie">
                                 <xsl:attribute name="href"><xsl:value-of select="$overviewRef"/></xsl:attribute>
                                 Hoofdstukken
@@ -267,7 +267,6 @@ indent="yes" encoding="utf-8" />
                 <div class="menuDiv">
                     <div class="menuDiv-inner active">
                         <div class="gripdingetje"/>
-                        <xsl:apply-templates select="subcomponent/section/*" mode="navigation"/>
                         <div class="menu-item-div">
                             <xsl:choose>
                                 <xsl:when test="$item='answers'">
@@ -288,6 +287,7 @@ indent="yes" encoding="utf-8" />
                                 </xsl:otherwise>
                             </xsl:choose>
                         </div>
+                        <xsl:apply-templates select="subcomponent/section/*" mode="navigation"/>
                         <div style="clear:both"/>
                         <div class="gripdingetje"/>
                     </div>

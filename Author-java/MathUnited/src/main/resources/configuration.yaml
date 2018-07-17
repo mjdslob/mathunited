@@ -5,6 +5,7 @@ variants :
   studiovo_view : {path: /xslt/studiovo_view.xslt}
   wm_view : {path: /xslt/wm_view.xslt}
   m4a_view : {path: /xslt/m4a_view.xslt}
+  m4a_view_mbo : {path: /xslt/m4a_view_mbo.xslt}
   m4a_view_saba : {path: /xslt/m4a_view_saba.xslt}
   m4a_view_engels : {path: /xslt/m4a_view_engels.xslt}
   m4a_view_dedicon : {path: /xslt/m4a_view_dedicon.xslt}

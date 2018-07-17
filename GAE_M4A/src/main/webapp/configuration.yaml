@@ -7,7 +7,7 @@ variants :
   pulseon_studiovo_item : {path: /xslt/studiovo_pulseon_item.xslt}
   wm_view : {path: /xslt/wm_view.xslt}
   m4a_view : {path: /xslt/m4a_view.xslt}
-  m4a_view_old : {path: /xslt/m4a_view_old.xslt}
+  m4a_view_mbo : {path: /xslt/m4a_view_mbo.xslt}
   m4a_view_en : {path: /xslt/m4a_view_en.xslt}
   m4a_view_dedicon : {path: /xslt/m4a_view_dedicon.xslt}
   m4a_view_pulseon : {path: /xslt/m4a_view_pulseon.xslt}

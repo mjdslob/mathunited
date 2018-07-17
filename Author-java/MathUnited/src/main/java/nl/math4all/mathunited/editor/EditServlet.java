@@ -155,7 +155,7 @@ public class EditServlet extends HttpServlet {
             if (lock == null) {
                 // If not, that is a server error. Communicate to user. Details are in server log.
                 parameterMap.put("lock_errormsg", "locking error on server");
-            } else {
+            } else if(config.getSvnRepoRoot()!=null){
                 if (!StringUtils.equals(lock.getUsername(), usettings.username)) {
                     // Other user is locking. Notify and communicate which user,
                     parameterMap.put("lock_owner", lock.getUsername());

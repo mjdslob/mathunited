@@ -29,7 +29,8 @@ public class GeogebraGenerator extends HttpServlet {
 	private static final long serialVersionUID = 8160691505447446635L;
 	
 	private final static Logger LOGGER = Logger.getLogger(GeogebraGenerator.class.getName());
-    String ggbSource   = "www.geogebra.org/web/4.2/web/web.nocache.js";
+        String ggbSource = "web.geogebra.org/4.2/web/web.nocache.js";
+//    String ggbSource = "http://www.geogebra.org/web/4.2/web/web.nocache.js";
 
     @Override
     public void init(ServletConfig config) throws ServletException {

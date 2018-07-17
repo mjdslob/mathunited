@@ -17,67 +17,32 @@ extension-element-prefixes="exsl">
 <xsl:param name="subcomp"/> <!-- id of subcomponent, eg hv-me11 -->
 <xsl:param name="option"/>
 <xsl:param name="parent"/>  <!-- eg.: mathunited.nl/wiskundemenu/WM_overview.html -->
-<xsl:param name="thread"/>
 <xsl:param name="is_mobile"/>
 <xsl:param name="id"/>
-    <xsl:param name="component_id"/>
-    <xsl:param name="component_number"/>
-    <xsl:param name="component_file"/>
-    <xsl:param name="component_title"/>
-    <xsl:param name="component_subtitle"/>
-    <xsl:param name="subcomponent_number"/>
-    <xsl:param name="subcomponent_title"/>
-    <xsl:param name="subcomponent_index"/>
-    <xsl:param name="subcomponent_count"/>
-    <xsl:param name="refbase"/> <!-- used for includes: base path. Includes final / -->
+<xsl:param name="repo"/>
+<xsl:param name="component_id"/>
+<xsl:param name="component_number"/>
+<xsl:param name="component_file"/>
+<xsl:param name="component_title"/>
+<xsl:param name="component_subtitle"/>
+<xsl:param name="subcomponent_number"/>
+<xsl:param name="subcomponent_title"/>
+<xsl:param name="subcomponent_index"/>
+<xsl:param name="subcomponent_count"/>
+
+<xsl:param name="refbase"/> <!-- used for includes: base path. Includes final / -->
 <xsl:variable name="lang">nl</xsl:variable>
 
 <!--   /////////////////////////////////////////////   -->
-<!--  Specific for auteurssite (do not copy from GAE): -->
+<!--  Specific for GAE (do not copy from auteurssite): -->
 <!--   /////////////////////////////////////////////   -->
-<xsl:param name="repo"/>
-<xsl:variable name="host_type">auteur</xsl:variable>
-<xsl:variable name="docbase" select="$refbase"></xsl:variable>
-<xsl:variable name="urlbase"><xsl:value-of select="concat('../data/',$refbase)"/></xsl:variable>
-<xsl:variable name="indexDoc" select="document(concat($refbase,'../index.xml'))"/>
-<xsl:template match="subcomponent" mode="numbering">
-    <xsl:copy>
-        <xsl:apply-templates select="@*" mode="numbering"/>
-        <internal-meta>
-            <subcomponents>
-                <xsl:for-each select="$indexDoc/index/component[@id=$comp]/subcomponent">
-                    <xsl:if test="not(contains(@id,'test')) and not(contains(@id,'context'))">
-                        <subcomponent id="{@id}" nr="{@_nr}"/>
-                    </xsl:if>
-                </xsl:for-each>
-            </subcomponents>
-        </internal-meta>
-        <xsl:apply-templates mode="numbering"/>
-    </xsl:copy>
-</xsl:template>
-<xsl:template match="textref" mode="content">
-    <xsl:variable name="ref">
-        <xsl:choose>
-            <xsl:when test="@ref"><xsl:value-of select="@ref"/></xsl:when>
-            <xsl:otherwise><xsl:value-of select="@item"/></xsl:otherwise>
-        </xsl:choose>
-    </xsl:variable>
-    <xsl:choose>
-        <xsl:when test="$indexDoc/index/component[@id=$component_id]//*[@id=$ref]">
-            <span class="textref">
-                <xsl:value-of select="."/>&#160;<xsl:value-of select="$indexDoc/index/component[@id=$component_id]//*[@id=$ref]/@_nr"/>
-            </span>
-        </xsl:when>
-        <xsl:otherwise>
-            <span class="textref">
-                <xsl:apply-templates select="@*|node()" mode="content"/>
-            </span>
-        </xsl:otherwise>
-    </xsl:choose>
-</xsl:template>
+<xsl:variable name="host_type">GAE</xsl:variable>
+<xsl:variable name="docbase"></xsl:variable>
+<xsl:variable name="urlbase"><xsl:value-of select="concat('http://mathunited.pragma-ade.nl:41080/data/',$refbase)"/></xsl:variable>
+<xsl:variable name="prikbord-url" select="concat('/view?comp=',$comp,'&amp;subcomp=',$subcomp,'&amp;variant=prikbord-m4a')"/>
+<!--   /////////////////////////////////////////////   -->
+<!--   /////////////////////////////////////////////   -->
 
-<!--   /////////////////////////////////////////////   -->
-<!--   /////////////////////////////////////////////   -->
 
 <xsl:variable name="itemInner">
     <xsl:choose>
@@ -88,7 +53,7 @@ extension-element-prefixes="exsl">
     </xsl:choose>
 </xsl:variable>
 <xsl:variable name="cm2px" select="number(50)"/>
-<xsl:variable name="variant">m4a_view</xsl:variable>
+<xsl:variable name="variant">m4a_view_mbo</xsl:variable>
 <xsl:variable name="arg_option">
     <xsl:choose>
         <xsl:when test="$option">&amp;option=<xsl:value-of select="$option"/></xsl:when>
@@ -103,7 +68,7 @@ extension-element-prefixes="exsl">
 </xsl:variable>
 <xsl:variable name="arg_parent">
     <xsl:choose>
-        <xsl:when test="$parent">&amp;parent=<xsl:value-of select="$parent"/>&amp;thread=<xsl:value-of select="$thread"/></xsl:when>
+        <xsl:when test="$parent">&amp;parent=<xsl:value-of select="$parent"/></xsl:when>
         <xsl:otherwise></xsl:otherwise>
     </xsl:choose>
 </xsl:variable>
@@ -121,14 +86,11 @@ extension-element-prefixes="exsl">
 </xsl:variable>
 <xsl:variable name="overviewRef">
     <xsl:choose>
-       <xsl:when test="$parent and contains($parent, '?')">
-	    <xsl:value-of select="concat('http://',$parent,'&amp;thread=',$thread)"/>
-       </xsl:when>
        <xsl:when test="$parent">
-	    <xsl:value-of select="concat('http://',$parent,'?tab=tab-preview&amp;thread=',$thread)"/>
+	    <xsl:value-of select="concat('http://',replace($parent,'\^','&amp;'))"/>
        </xsl:when>
        <xsl:otherwise>
-           <xsl:value-of select="concat('/?tab=tab-preview&amp;thread=',$thread)"/>
+	    <xsl:value-of select="string('/wiskundemenu/WM_overview.html?tab=TabLeerlijn')"/>
        </xsl:otherwise>
     </xsl:choose>
 </xsl:variable>
@@ -157,14 +119,8 @@ indent="yes" encoding="utf-8"/>
     <xsl:apply-templates select="$xml" mode="process"/>
 </xsl:template>
 
-<!--skip clone exercises 
-[document(concat($docbase,@filename))/exercise/metadata/clone[@active='true']]-->
-<xsl:template match="exercises/include" mode="filter">
-    <xsl:if test="not(exists(document(concat($docbase,@filename))//exercise/metadata/clone[@active='true']))">
-        <xsl:copy>
-            <xsl:apply-templates select="@*|node()" mode="filter"/>
-        </xsl:copy>
-    </xsl:if>
+<!--skip clone exercises -->
+<xsl:template match="exercises/include[document(concat($docbase,@filename))//exercise/metadata/clone[@active='true']]" mode="filter">
 </xsl:template>
 <xsl:template match="explore | application" mode="filter">
     <xsl:if test="@type=$sector or (not($sector) and string-length(@type)=0)">
@@ -173,7 +129,6 @@ indent="yes" encoding="utf-8"/>
         </xsl:copy>
     </xsl:if>
 </xsl:template>
-
 <!--skip content that is explicitly not intended for math4all -->
 <xsl:template match="*[@publishing-platforms!='math4all']" mode="filter"></xsl:template>
 
@@ -188,15 +143,7 @@ indent="yes" encoding="utf-8"/>
     </xsl:apply-templates>
 </xsl:template>
 
-<!-- m4a-only: small picture should always be put to the right -->
-<xsl:template match="paperfigure[@location='here' and number(replace(content/resource/width,'cm','')) le 5]" mode="filter-content">
-    <xsl:copy>
-        <xsl:attribute name="location">right</xsl:attribute>
-        <xsl:apply-templates select="@*[name()!='location']" mode="filter-content"/>
-        <xsl:apply-templates select="*" mode="filter-content"/>
-    </xsl:copy>
-</xsl:template>
-<xsl:template match="resource[contains(name,'.png') and string-length(width)=0]" mode="filter-content">
+<xsl:template match="resource[contains(orgname,'.png') and string-length(width)=0]" mode="filter-content">
     <xsl:copy>
         <xsl:apply-templates select="@*" mode="filter-content"/>
         <width>4cm</width>
@@ -205,16 +152,55 @@ indent="yes" encoding="utf-8"/>
 </xsl:template>
 <xsl:template match="*[@medium='paper']" priority='10' mode="filter-content"/>
 
+<xsl:template match="application[@type=$sector or (not($sector) and string-length(@type)=0)]" mode="numbering">
+    <xsl:copy>
+        <xsl:apply-templates select="@*" mode="numbering"/>
+        <xsl:apply-templates select="include" mode="numbering"/>
+        <xsl:if test="exercises">
+            <exercises>
+                <xsl:for-each select="exercises/include">
+                    <xsl:copy>
+                        <xsl:attribute name="num" select="concat('A', position())"/>
+                        <xsl:apply-templates select="@*" mode="numbering"/>
+                        <xsl:apply-templates mode="numbering"/>
+                    </xsl:copy>
+                </xsl:for-each>
+            </exercises>
+        </xsl:if>
+    </xsl:copy>
+</xsl:template>
+<xsl:template match="test" mode="numbering">
+    <xsl:copy>
+        <xsl:apply-templates select="@*" mode="numbering"/>
+        <xsl:apply-templates select="include" mode="numbering"/>
+        <xsl:if test="exercises">
+            <exercises>
+                <xsl:for-each select="exercises/include">
+                    <xsl:copy>
+                        <xsl:attribute name="num" select="concat('T', position())"/>
+                        <xsl:apply-templates select="@*" mode="numbering"/>
+                        <xsl:apply-templates mode="numbering"/>
+                    </xsl:copy>
+                </xsl:for-each>
+            </exercises>
+        </xsl:if>
+    </xsl:copy>
+</xsl:template>
+<!--
 <xsl:template match="exercises/include" mode="numbering">
     <include>
         <xsl:attribute name="filename" select="@filename"/>
-        <xsl:attribute name="num" select="1+count(preceding-sibling::include)+count(preceding::exercises/include)+count(preceding::exercises/block[@medium='web']/include)"/>
+        <xsl:if test="not(@num)">
+            <xsl:attribute name="num" select="1+count(preceding-sibling::include)+count(preceding::exercises/include)+count(preceding::exercises/block[@medium='web']/include)"/>
+        </xsl:if>
     </include>
 </xsl:template>
 <xsl:template match="exercises/block[@medium='web']/include" mode="numbering">
     <include>
         <xsl:attribute name="filename" select="@filename"/>
-        <xsl:attribute name="num" select="1+count(preceding-sibling::include)+count(preceding::exercises/block[@medium='web']/include)"/>
+        <xsl:if test="not(@num)">
+            <xsl:attribute name="num" select="1+count(preceding-sibling::include)+count(preceding::exercises/block[@medium='web']/include)"/>
+        </xsl:if>
     </include>
 </xsl:template>
 <xsl:template match="examples/include" mode="numbering">
@@ -222,6 +208,14 @@ indent="yes" encoding="utf-8"/>
         <xsl:attribute name="filename" select="@filename"/>
         <xsl:attribute name="num" select="1+count(preceding::examples/include)"/>
     </include>
+</xsl:template>
+-->
+
+
+<xsl:template match="@*|node()" mode="numbering">
+    <xsl:copy>
+        <xsl:apply-templates select="@*|node()" mode="numbering"/>
+    </xsl:copy>
 </xsl:template>
 <xsl:template match="@*|node()" mode="filter">
     <xsl:copy>
@@ -233,11 +227,8 @@ indent="yes" encoding="utf-8"/>
         <xsl:apply-templates select="@*|node()" mode="filter-content"/>
     </xsl:copy>
 </xsl:template>
-<xsl:template match="@*|node()" mode="numbering">
-    <xsl:copy>
-        <xsl:apply-templates select="@*|node()" mode="numbering"/>
-    </xsl:copy>
-</xsl:template>
+
+
 
 <!--   **************** -->
 <!--   START PROCESSING -->
@@ -258,27 +249,19 @@ indent="yes" encoding="utf-8"/>
 		           AsciiMath: {
 		                decimal: ","
 		           },
-		           jax: ["input/MathML","input/AsciiMath"],
-                           "HTML-CSS": {
-                                availableFonts: [],
-                                preferredFont: "TeX",
-                                webFont: "",
-                                imageFont: "",
-                                undefinedFamily: "'Arial Unicode MS','sans-serif'",
-                                scale: 80
-                           }
+		           jax: ["input/MathML","input/AsciiMath"]
 		      });
-                   </script>
-          <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML&amp;delayStartupUntil=configured" />
-          <script type="text/javascript" src="/javascript/MathUnited.js"/>
-           <script type="text/javascript" src="/javascript/MathUnited_m4a.js"/>
-           <link rel="stylesheet" href="/css/content.css" type="text/css"/>
-           <link rel="stylesheet" href="/css/exercises.css" type="text/css"/>
-           <link rel="stylesheet" href="/css/M4AStijl2.css" type="text/css"/>
+		   </script>
+		   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js">
+		   </script>
+		   <script type="text/javascript" src="/javascript/MathUnited.js"/>
+		   <script type="text/javascript" src="/javascript/MathUnited_m4a.js"/>
+		   <link rel="stylesheet" href="/css/content.css" type="text/css"/>
+		   <link rel="stylesheet" href="/css/exercises.css" type="text/css"/>
+		   <link rel="stylesheet" href="/css/M4AStijl2.css" type="text/css"/>
       </xsl:when>
       <xsl:otherwise>
 		   <link type="text/css" href="javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
-                   <link rel='stylesheet' href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.css"/>
 		   <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
 		   <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
 		   <script type="text/x-mathjax-config">
@@ -288,21 +271,16 @@ indent="yes" encoding="utf-8"/>
 		           AsciiMath: {
 		                decimal: ","
 		           },
-		           jax: ["input/MathML","input/AsciiMath"],
-                           "HTML-CSS": {
-                                scale: 90
-                           }
+		           jax: ["input/MathML","input/AsciiMath"]
 		      });
 		   </script>
-           <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML&amp;delayStartupUntil=configured" />
-           <script type="text/javascript" src="javascript/MathUnited.js"/>
-           <script type="text/javascript" src="javascript/MathUnited_m4a.js"/>
-           <link rel="stylesheet" href="css/content.css" type="text/css"/>
-           <link rel="stylesheet" href="css/exercises.css" type="text/css"/>
-           <link rel="stylesheet" href="css/M4AStijl2.css" type="text/css"/>
-           <link rel="stylesheet" href="css/StepPanel.css" type="text/css"/>
-           <link rel="stylesheet" href="css/algebrakit.css" type="text/css"/>
-           <link rel="stylesheet" href="css/mathquill.css" type="text/css"/>
+		   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js">
+		   </script>
+		   <script type="text/javascript" src="javascript/MathUnited.js"/>
+		   <script type="text/javascript" src="javascript/MathUnited_m4a.js"/>
+		   <link rel="stylesheet" href="css/content.css" type="text/css"/>
+		   <link rel="stylesheet" href="css/exercises.css" type="text/css"/>
+		   <link rel="stylesheet" href="css/M4AStijl2.css" type="text/css"/>
       </xsl:otherwise>
    </xsl:choose>
 
@@ -313,16 +291,6 @@ indent="yes" encoding="utf-8"/>
 <!--        BODY        -->
 <!--   **************** -->
 <body>
-<!-- 
-<xsl:if test="$host_type='GAE'">
-<div id="prikbord-div">
-	<a>
-	   <xsl:attribute name="href"><xsl:value-of select="$prikbord-url"/></xsl:attribute>
-	   Prikbord
-	</a>
-</div>
-</xsl:if>
--->
 <div class="pageDiv">
     <xsl:choose>
         <xsl:when test="contains($option,'slechtziend')">
@@ -351,8 +319,8 @@ indent="yes" encoding="utf-8"/>
    <div class="balk">
        <xsl:call-template name="list-section-nrs">
            <xsl:with-param name="i"><xsl:value-of select="number(1)"/></xsl:with-param>
-           <xsl:with-param name="count"><xsl:value-of select="$subcomponent_count"/></xsl:with-param>
-           <xsl:with-param name="highlight"><xsl:value-of select="1+number($subcomponent_index)"/></xsl:with-param>
+           <xsl:with-param name="count"><xsl:value-of select="number($subcomponent_count)-2"/></xsl:with-param>
+           <xsl:with-param name="highlight"><xsl:value-of select="-1+number($subcomponent_index)"/></xsl:with-param>
            <xsl:with-param name="subcomponents" select="subcomponent/internal-meta/subcomponents"/>
        </xsl:call-template>
        <span class="subcomponent-title"><xsl:value-of select="$subcomponent_title"/></span>
@@ -474,11 +442,6 @@ indent="yes" encoding="utf-8"/>
         </a></span>
 </div>
 </div>
-    <!-- katex takes care of displaying math formula in latex -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/contrib/auto-render.min.js"></script>
-    <script src="http://algebrakit.eu/akit-widgets.js"></script>
-    <script data-main="javascript/algebrakit.js" src="javascript/require.js"></script>
 </body>
 </html>
 </xsl:template>
@@ -496,7 +459,7 @@ indent="yes" encoding="utf-8"/>
             <span class="list-section-nr">
                 <a>
                     <xsl:attribute name="href">
-                        <xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',$subcomponents/subcomponent[number(@nr)=number($i)]/@id,'&amp;variant=',$variant,$arg_parent,$arg_repo)"/>
+                       <xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',$subcomponents/subcomponent[number(@_nr)=number($i)]/@id,'&amp;variant=',$variant,$arg_parent,$arg_repo)"/>
                     </xsl:attribute>
                     <xsl:value-of select="$i"/>
                 </a>
@@ -526,38 +489,34 @@ indent="yes" encoding="utf-8"/>
     <xsl:for-each select="include">
         <xsl:apply-templates select="document(concat($docbase,@filename))/exercise">
             <xsl:with-param name="options" select="$options"/>
-            <xsl:with-param name="number" select="concat('V',position())"/> 
+            <xsl:with-param name="number" select="concat('V', position())"/>
             <xsl:with-param name="is-open">true</xsl:with-param>
         </xsl:apply-templates>
     </xsl:for-each>
 </xsl:template>
 
-<xsl:template match="context">
-    <h2 class="section-title">Context</h2>
-    <xsl:apply-templates/>
-</xsl:template>
-<!-- this 'introduction' exists within <subcomponent> -->
 <xsl:template match="introduction">
     <h2 class="section-title">Inleiding</h2>
     <xsl:apply-templates select="/subcomponent/description/sectors/sector"/>
     <xsl:apply-templates/>
 </xsl:template>
+
 <xsl:template match="sector">
     <a>
         <xsl:attribute name="class"><xsl:value-of select="concat(@id,' sector-tile')"/></xsl:attribute>
-        <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefixNoSector,$itemInner,'&amp;sector=',@id)"/></xsl:attribute>
+        <xsl:attribute name="href">
+            <xsl:value-of select="concat($intraLinkPrefixNoSector,$itemInner,'&amp;sector=',@id)"/>
+        </xsl:attribute>
         <xsl:if test="$sector!=@id">
             <xsl:attribute name="active">false</xsl:attribute>
         </xsl:if>
-        
         <xsl:apply-templates mode="content"/>
     </a>
 </xsl:template>
-
-<!-- this 'introduction' is the root element of an xml-file which is included -->
 <xsl:template match="introduction" mode="content">
     <xsl:apply-templates mode="content"/>
 </xsl:template>
+
 <xsl:template match="explanation">
     <h2 class="section-title">Uitleg</h2>
     <div class="explanation">
@@ -612,8 +571,16 @@ indent="yes" encoding="utf-8"/>
     <xsl:apply-templates/>
 </xsl:template>
 <xsl:template match="application[@type=$sector or (not($sector) and string-length(@type)=0)]">
+    <xsl:param name="options"/>
     <h2 class="section-title">Toepassen</h2>
-    <xsl:apply-templates/>
+    <xsl:apply-templates select="include"/>
+    <xsl:for-each select="exercises/include">
+        <xsl:apply-templates select="document(concat($docbase,@filename))/exercise">
+            <xsl:with-param name="options" select="$options"/>
+            <xsl:with-param name="number" select="concat('A', position())"/>
+            <xsl:with-param name="is-open">false</xsl:with-param>
+        </xsl:apply-templates>
+    </xsl:for-each>
 </xsl:template>
 
 <xsl:template match="extra">
@@ -624,11 +591,18 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="summary">
     <h2 class="section-title">Samenvatten</h2>
     <xsl:apply-templates select="/subcomponent/description/sectors/sector"/>
-    <xsl:apply-templates/>
+    <xsl:apply-templates mode="ma-content"/>
 </xsl:template>
 <xsl:template match="test">
+    <xsl:param name="options"/>
     <h2 class="section-title">Testen</h2>
-    <xsl:apply-templates/>
+    <xsl:for-each select="exercises/include">
+        <xsl:apply-templates select="document(concat($docbase,@filename))/exercise">
+            <xsl:with-param name="options" select="$options"/>
+            <xsl:with-param name="number" select="concat('T', position())"/>
+            <xsl:with-param name="is-open">true</xsl:with-param>
+        </xsl:apply-templates>
+    </xsl:for-each>
 </xsl:template>
 <xsl:template match="background">
     <h2 class="section-title">Achtergronden</h2>
@@ -639,7 +613,6 @@ indent="yes" encoding="utf-8"/>
     <h2 class="section-title">Examenopgaven</h2>
     <xsl:apply-templates/>
 </xsl:template>
-
 
 <xsl:template match="include">
     <xsl:param name="options"/>
@@ -674,15 +647,12 @@ indent="yes" encoding="utf-8"/>
                 <xsl:for-each select="include">
                     <xsl:apply-templates select="document(concat($docbase,@filename))/exercise">
                         <xsl:with-param name="options" select="$options"/>
-                        <xsl:with-param name="number" select="@num"/>
                     </xsl:apply-templates>
                 </xsl:for-each>
             </xsl:otherwise>
         </xsl:choose>
     </div>
 </xsl:template>
-
-
 <xsl:template match="exercise[metadata/clone/@active='true']"/>
 <xsl:template match="exercise">
     <xsl:param name="options"/>
@@ -697,22 +667,18 @@ indent="yes" encoding="utf-8"/>
                 <xsl:attribute name="class">exercise-with-heading</xsl:attribute>
             </xsl:otherwise>
         </xsl:choose>
-        <xsl:if test="metadata/clone/@active='true'">
-            <xsl:attribute name="clone" select="metadata/clone/text()"/>
-        </xsl:if>
-        
         <div class="exercise-heading">
             <xsl:choose>
-                <xsl:when test="metadata/clone/@active='true'">
-                    Kloonopgave <xsl:value-of select="$number"/> <span class="opgave-title-span"><xsl:value-of select="title"/></span> <div class="opgave-label-button"/>
+                <xsl:when test="$number">
+                    Opgave <xsl:value-of select="$number"/> <span class="opgave-title-span"><xsl:value-of select="title"/></span> <div class="opgave-label-button"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    Opgave <xsl:value-of select="$number"/> <span class="opgave-title-span"><xsl:value-of select="title"/></span> <div class="opgave-label-button"/>
+                    Opgave <xsl:value-of select="@_nr"/> <span class="opgave-title-span"><xsl:value-of select="title"/></span> <div class="opgave-label-button"/>
                 </xsl:otherwise>
             </xsl:choose>
         </div>
         <div class="exercise-contents">
-            <xsl:apply-templates select="*[name()!='metadata']" mode="ma-content">
+            <xsl:apply-templates mode="ma-content">
                 <xsl:with-param name="options" select="$options"/>
             </xsl:apply-templates>
         </div>
@@ -724,12 +690,11 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="p">
     <xsl:apply-templates mode="content"/>
 </xsl:template>
-
 <!--   **************** -->
 <!--     NAVIGATION     -->
 <!--   **************** -->
 <xsl:template match="explore[@type=$sector or (not($sector) and string-length(@type)=0)]" mode="navigation">
-   <div item="explore" class='menu-item-div'>
+   <div class="menu-item-div" item="explore">
        <xsl:if test="string-length(@type) gt 0">
            <xsl:attribute name="context"><xsl:value-of select="@type"/></xsl:attribute>
        </xsl:if>
@@ -813,32 +778,35 @@ indent="yes" encoding="utf-8"/>
         </div>
    </xsl:if>
    <xsl:for-each select="examples">
-        <div class="menu-item-div" item="example">
+       <div class="menu-item-div" item="example">
             <xsl:if test="@targetgroup">
                 <xsl:attribute name="targetgroup"><xsl:value-of select="@targetgroup"/></xsl:attribute>
             </xsl:if>
            <xsl:attribute name="num"><xsl:value-of select="position()"/></xsl:attribute>
            <a>
-                <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefix,'example&amp;num=',position())"/></xsl:attribute>
-                <xsl:choose>
-                    <xsl:when test="($itemInner='example' or $itemInner='theory') and position()=number($num)">
+               <xsl:attribute name="href">
+                   <xsl:value-of select="concat($intraLinkPrefix,'example&amp;num=',position())"/>
+               </xsl:attribute>
+               <xsl:choose>
+                   <xsl:when test="($itemInner='example' or $itemInner='theory') and position()=number($num)">
                        <xsl:attribute name="id">selected-menu-item</xsl:attribute>
-                       <div class="menu-item-dot-wrapper"><div class="menu-item-dot"/></div>
-                    </xsl:when>
-                    <xsl:otherwise>
+                       <div class="menu-item-dot-wrapper">
+                           <div class="menu-item-dot"/>
+                       </div>
+                   </xsl:when>
+                   <xsl:otherwise>
                        <xsl:attribute name="class">navigatie</xsl:attribute>
                    </xsl:otherwise>
-                </xsl:choose>
-                
-                <xsl:choose>
-                    <xsl:when test="@targetgroup='techniek'">Techniek</xsl:when>
-                    <xsl:when test="@targetgroup='groen'">Groen</xsl:when>
-                    <xsl:when test="@targetgroup='economie'">Economie</xsl:when>
-                    <xsl:when test="@targetgroup='zorg'">Zorg / welzijn</xsl:when>
-                    <xsl:otherwise>
-                        Voorbeeld <xsl:value-of select="position()"/>
-                    </xsl:otherwise>
-                </xsl:choose>
+               </xsl:choose>
+               <xsl:choose>
+                   <xsl:when test="@targetgroup='techniek'">Techniek</xsl:when>
+                   <xsl:when test="@targetgroup='groen'">Groen</xsl:when>
+                   <xsl:when test="@targetgroup='economie'">Economie</xsl:when>
+                   <xsl:when test="@targetgroup='zorg'">Zorg / welzijn</xsl:when>
+                   <xsl:otherwise>
+                       Voorbeeld <xsl:value-of select="position()"/>
+                   </xsl:otherwise>
+               </xsl:choose>
            </a>
         </div>
    </xsl:for-each>
@@ -874,7 +842,7 @@ indent="yes" encoding="utf-8"/>
                     <xsl:attribute name="class">navigatie</xsl:attribute>
                 </xsl:otherwise>
             </xsl:choose>
-            
+
             <xsl:choose>
                 <xsl:when test="/subcomponent/description/sectors">
                     Oefenen
@@ -1010,10 +978,7 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="exercise" mode="content">
     <xsl:param name="options"/>
     <div class="exercise">
-        <xsl:if test="metadata/clone/@active='true'">
-            <xsl:attribute name="clone" select="metadata/clone/text()"/>
-        </xsl:if>
-        <xsl:apply-templates select="*[name()!='metadata']" mode="content">
+        <xsl:apply-templates mode="content">
             <xsl:with-param name="options" select="$options"/>
         </xsl:apply-templates>
     </div>
@@ -1066,7 +1031,7 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="definition" mode="content">
    <div class="definition">
        <a>
-           <xsl:attribute name="href"><xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',@id,'&amp;variant=',$variant,$arg_parent,$arg_repo,'&amp;item=theory')"/></xsl:attribute>
+           <xsl:attribute name="href"><xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',@id,'&amp;variant=',$variant,$arg_repo, $arg_parent,'&amp;item=theory')"/></xsl:attribute>
            <xsl:apply-templates mode="content"/>
        </a>
    </div>
@@ -1082,7 +1047,7 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="activity" mode="content">
    <div class="definition">
        <a>
-           <xsl:attribute name="href"><xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',@id,'&amp;variant=',$arg_parent,$arg_repo,$variant,'&amp;item=theory')"/></xsl:attribute>
+           <xsl:attribute name="href"><xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',@id,'&amp;variant=',$variant,$arg_parent,$arg_repo,'&amp;item=theory')"/></xsl:attribute>
            <xsl:apply-templates mode="content"/>
        </a>
    </div>
@@ -1098,9 +1063,8 @@ indent="yes" encoding="utf-8"/>
    </div>
 </xsl:template>
 
-<xsl:template match="author-remark" mode="content" priority="10"/>
-
 <xsl:template match='block[@medium="web"]'><xsl:apply-templates/></xsl:template>
+<xsl:template match="author-remark" mode="content" priority="10"/>
 
 <xsl:template match="*"/>
 <xsl:template match="*" mode="navigation"/>
