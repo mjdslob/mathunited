@@ -131,7 +131,7 @@
                             });
                         </script>
                         <script type="text/javascript"
-                                src="http://cdn.mathjax.org/mathjax/latest/MathJax.js">
+                                src="https://cdn.mathjax.org/mathjax/latest/MathJax.js">
                         </script>
                         <link rel="stylesheet" href="/css/basis_wm.css" type="text/css"/>
                         <link rel="stylesheet" href="/css/content.css" type="text/css"/>
@@ -155,7 +155,7 @@
                             });
                         </script>
                         <script type="text/javascript"
-                                src="http://cdn.mathjax.org/mathjax/latest/MathJax.js">
+                                src="https://cdn.mathjax.org/mathjax/latest/MathJax.js">
                         </script>
                         <link rel="stylesheet" href="css/basis_wm.css" type="text/css"/>
                         <link rel="stylesheet" href="css/content.css" type="text/css"/>

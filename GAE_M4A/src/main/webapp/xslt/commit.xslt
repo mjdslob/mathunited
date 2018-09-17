@@ -89,7 +89,7 @@ indent="yes" encoding="utf-8"/>
 -->
 <!--
    <script type="text/javascript"
-      src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML-full&amp;delayStartupUntil=configured">
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML-full&amp;delayStartupUntil=configured">
    </script>
 -->
    <script type="text/javascript"
