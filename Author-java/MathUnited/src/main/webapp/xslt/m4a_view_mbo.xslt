@@ -277,28 +277,28 @@ indent="yes" encoding="utf-8"/>
    <xsl:choose>
       <!--  subtitle difference in references: leading slash or not -->
       <xsl:when test="$host_type='GAE'">
-		   <link type="text/css" href="/javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
-		   <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
-		   <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
-		   <script type="text/x-mathjax-config">
-		      MathJax.Hub.Config({
-		           extensions: ["mml2jax.js","asciimath2jax.js"],
-		           config : ["MMLorHTML.js" ],
-		           AsciiMath: {
-		                decimal: ","
-		           },
-		           jax: ["input/MathML","input/AsciiMath"],
-                           "HTML-CSS": {
-                                availableFonts: [],
-                                preferredFont: "TeX",
-                                webFont: "",
-                                imageFont: "",
-                                undefinedFamily: "'Arial Unicode MS','sans-serif'",
-                                scale: 80
-                           }
-		      });
-                   </script>
-          <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML&amp;delayStartupUntil=configured" />
+           <link type="text/css" href="/javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
+           <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
+           <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
+           <script type="text/x-mathjax-config">
+              MathJax.Hub.Config({
+                   extensions: ["mml2jax.js","asciimath2jax.js"],
+                   config : ["MMLorHTML.js" ],
+                   AsciiMath: {
+                        decimal: ","
+                   },
+                   jax: ["input/MathML","input/AsciiMath"],
+                   "HTML-CSS": {
+                        availableFonts: [],
+                        preferredFont: "TeX",
+                        webFont: "",
+                        imageFont: "",
+                        undefinedFamily: "'Arial Unicode MS','sans-serif'",
+                        scale: 80
+                   }
+              });
+           </script>
+          <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML" />
           <script type="text/javascript" src="/javascript/MathUnited.js"/>
            <script type="text/javascript" src="/javascript/MathUnited_m4a.js"/>
            <link rel="stylesheet" href="/css/content.css" type="text/css"/>
@@ -323,7 +323,7 @@ indent="yes" encoding="utf-8"/>
                            }
 		      });
 		   </script>
-           <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML&amp;delayStartupUntil=configured" />
+           <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML" />
            <script type="text/javascript" src="javascript/MathUnited.js"/>
            <script type="text/javascript" src="javascript/MathUnited_m4a.js"/>
            <link rel="stylesheet" href="css/content.css" type="text/css"/>
@@ -506,7 +506,6 @@ indent="yes" encoding="utf-8"/>
     <!-- katex takes care of displaying math formula in latex -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/contrib/auto-render.min.js"></script>
-    <script src="http://algebrakit.eu/akit-widgets.js"></script>
     <script data-main="javascript/algebrakit.js" src="javascript/require.js"></script>
 </body>
 </html>

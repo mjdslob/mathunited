@@ -215,10 +215,13 @@ indent="yes" encoding="utf-8"/>
 		           AsciiMath: {
 		                decimal: ","
 		           },
-		           jax: ["input/MathML","input/AsciiMath"]
+		           jax: ["input/MathML","input/AsciiMath"],
+                           "HTML-CSS": {
+                                scale: 90
+                           }
 		      });
 		   </script>
-		   <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js">
+		   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML">
 		   </script>
 		   <script type="text/javascript" src="/javascript/MathUnited.js"/>
 		   <script type="text/javascript" src="/javascript/MathUnited_m4a.js"/>
@@ -237,10 +240,18 @@ indent="yes" encoding="utf-8"/>
 		           AsciiMath: {
 		                decimal: ","
 		           },
-		           jax: ["input/MathML","input/AsciiMath"]
+		           jax: ["input/MathML","input/AsciiMath"],
+                           "HTML-CSS": {
+                                availableFonts: [],
+                                preferredFont: "TeX",
+                                webFont: "",
+                                imageFont: "",
+                                undefinedFamily: "'Arial Unicode MS','sans-serif'",
+                                scale: 80
+                           }
 		      });
 		   </script>
-		   <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js">
+		   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML">
 		   </script>
 		   <script type="text/javascript" src="javascript/MathUnited.js"/>
 		   <script type="text/javascript" src="javascript/MathUnited_m4a.js"/>

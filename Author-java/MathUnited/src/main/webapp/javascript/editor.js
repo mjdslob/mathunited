@@ -35,10 +35,8 @@ requirejs.config({
         jquery: 'jquery-ui-1.12.1.custom/external/jquery/jquery', //change here when using newer version of jquery,
         jqueryui: 'jquery-ui-1.12.1.custom/jquery-ui.min', //change here when using newer version of jquery,
         jqueryChosen: 'chosen_v1.1.0/chosen.jquery.min',
-//        touchpunch: 'jquery.ui.touch-punch.min',
         tinymce: '../tinymce/jquery.tinymce.min',
         mathjax: "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML&amp;delayStartupUntil=configured",
-        touchpunch: 'jquery.ui.touch-punch.min'
         
     },
     shim: {
@@ -50,19 +48,9 @@ requirejs.config({
             deps: ['jquery'],
             export: '$'
         },
-        'touchpunch': {
-            deps: ['jqueryui'],
-            export: 'touchpunch'
-        },
         'jqueryChosen': {
             deps: ['jquery']
         },
-/*        
-        'touchpunch': {
-            deps: ['jqueryui'],
-            export: 'touchpunch'
-        },
-*/        
         'tinymce': {
             deps: [],
             export: 'tinymce'

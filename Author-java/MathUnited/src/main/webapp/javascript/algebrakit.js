@@ -31,7 +31,6 @@ requirejs.config({
         jqueryui: 'jquery-ui-1.12.1.custom/jquery-ui.min', //change here when using newer version of jquery,
         //mathjax: "../../bower_components/MathJax/MathJax.js?config=TeX-AMS_HTML&amp;delayStartupUntil=configured",
         mathjax: "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML&amp;delayStartupUntil=configured",
-        touchpunch: 'jquery.ui.touch-punch.min'
     },
     shim: {
         'mathquill': {
@@ -41,10 +40,6 @@ requirejs.config({
         'jqueryui': {
             deps: ['jquery'],
             export: 'jqueryui'
-        },
-        'touchpunch': {
-            deps: ['jqueryui'],
-            export: 'touchpunch'
         },
         mathjax: {
             exports: "MathJax",
@@ -64,8 +59,8 @@ requirejs.config({
 });
 
 // Start the main app logic.
-requirejs(['jquery', 'akit/trainer/Main', 'touchpunch','mathjax'],
-function   ($,Trainer, touchpunch) {
+requirejs(['jquery', 'akit/trainer/Main','mathjax'],
+function   ($,Trainer) {
     /*
     $('.akit-exercise').each(function() {
         try{

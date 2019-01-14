@@ -7,5 +7,6 @@ xsi:schemaLocation='http://kenai.com/projects/nbappengine/downloads/download/sch
     <!--    <ssl-enabled>false</ssl-enabled>
     <sessions-enabled>true</sessions-enabled>
     -->
+    <runtime>java8</runtime>
     <threadsafe>true</threadsafe>
 </appengine-web-app>
