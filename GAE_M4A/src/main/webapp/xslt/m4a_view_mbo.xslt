@@ -510,12 +510,16 @@ indent="yes" encoding="utf-8"/>
 <xsl:template match="sector">
     <a>
         <xsl:attribute name="class"><xsl:value-of select="concat(@id,' sector-tile')"/></xsl:attribute>
-        <xsl:attribute name="href">
-            <xsl:value-of select="concat($intraLinkPrefixNoSector,$itemInner,'&amp;sector=',@id)"/>
-        </xsl:attribute>
-        <xsl:if test="$sector!=@id">
-            <xsl:attribute name="active">false</xsl:attribute>
-        </xsl:if>
+        <xsl:choose>
+            <xsl:when test="$sector=@id">
+                <!-- remove sector selection when clicking on the same sector button again -->
+                <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefixNoSector,$itemInner)"/></xsl:attribute>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefixNoSector,$itemInner,'&amp;sector=',@id)"/></xsl:attribute>
+                <xsl:attribute name="active">false</xsl:attribute>
+            </xsl:otherwise>
+        </xsl:choose>
         <xsl:apply-templates mode="content"/>
     </a>
 </xsl:template>
