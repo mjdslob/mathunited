@@ -1,0 +1,1157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsl:stylesheet version="2.0"
+xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns:saxon="http://saxon.sf.net/"
+xmlns:exsl="http://exslt.org/common"
+xmlns:m="http://www.w3.org/1998/Math/MathML"
+xmlns:cals="http://www.someplace.org/cals"
+exclude-result-prefixes="saxon cals"
+extension-element-prefixes="exsl">
+
+<xsl:param name="item"/>
+<xsl:param name="num"/>
+<xsl:param name="sector"/>  <!-- mbo sector -->
+<xsl:param name="ws_id"/>   <!-- is of worksheet, if applicable -->
+<xsl:param name="comp"/>    <!-- id of component. Not needed as complete xml of component is given in $component-->
+<xsl:param name="subcomp"/> <!-- id of subcomponent, eg hv-me11 -->
+<xsl:param name="option"/>
+<xsl:param name="parent"/>  <!-- eg.: mathunited.nl/wiskundemenu/WM_overview.html -->
+<xsl:param name="thread"/>
+<xsl:param name="is_mobile"/>
+<xsl:param name="id"/>
+    <xsl:param name="component_id"/>
+    <xsl:param name="component_number"/>
+    <xsl:param name="component_file"/>
+    <xsl:param name="component_title"/>
+    <xsl:param name="component_subtitle"/>
+    <xsl:param name="subcomponent_number"/>
+    <xsl:param name="subcomponent_title"/>
+    <xsl:param name="subcomponent_index"/>
+    <xsl:param name="subcomponent_count"/>
+    <xsl:param name="refbase"/> <!-- used for includes: base path. Includes final / -->
+<xsl:variable name="lang">nl</xsl:variable>
+
+<!--   /////////////////////////////////////////////   -->
+<!--  Specific for auteurssite (do not copy from GAE): -->
+<!--   /////////////////////////////////////////////   -->
+<xsl:param name="repo"/>
+<xsl:variable name="host_type">auteur</xsl:variable>
+<xsl:variable name="docbase" select="$refbase"></xsl:variable>
+<xsl:variable name="urlbase"><xsl:value-of select="concat('../data/',$refbase)"/></xsl:variable>
+<xsl:variable name="indexDoc" select="document(concat($refbase,'../index.xml'))"/>
+<xsl:template match="subcomponent" mode="numbering">
+    <xsl:copy>
+        <xsl:apply-templates select="@*" mode="numbering"/>
+        <internal-meta>
+            <subcomponents>
+                <xsl:for-each select="$indexDoc/index/component[@id=$comp]/subcomponent">
+                    <xsl:if test="not(contains(@id,'test')) and not(contains(@id,'context'))">
+                        <subcomponent id="{@id}" nr="{@_nr}"/>
+                    </xsl:if>
+                </xsl:for-each>
+            </subcomponents>
+        </internal-meta>
+        <xsl:apply-templates mode="numbering"/>
+    </xsl:copy>
+</xsl:template>
+<xsl:template match="application[@type=$sector or (not($sector) and string-length(@type)=0)]" mode="numbering">
+    <xsl:copy>
+        <xsl:apply-templates select="@*" mode="numbering"/>
+        <xsl:apply-templates select="include" mode="numbering"/>
+        <xsl:if test="exercises">
+            <exercises>
+                <xsl:for-each select="exercises/include">
+                    <xsl:copy>
+                        <xsl:attribute name="num" select="concat('A', position())"/>
+                        <xsl:apply-templates select="@*" mode="numbering"/>
+                        <xsl:apply-templates mode="numbering"/>
+                    </xsl:copy>
+                </xsl:for-each>
+            </exercises>
+        </xsl:if>
+    </xsl:copy>
+</xsl:template>
+<xsl:template match="test" mode="numbering">
+    <xsl:copy>
+        <xsl:apply-templates select="@*" mode="numbering"/>
+        <xsl:apply-templates select="include" mode="numbering"/>
+        <xsl:if test="exercises">
+            <exercises>
+                <xsl:for-each select="exercises/include">
+                    <xsl:copy>
+                        <xsl:attribute name="num" select="concat('T', position())"/>
+                        <xsl:apply-templates select="@*" mode="numbering"/>
+                        <xsl:apply-templates mode="numbering"/>
+                    </xsl:copy>
+                </xsl:for-each>
+            </exercises>
+        </xsl:if>
+    </xsl:copy>
+</xsl:template>
+
+<xsl:template match="textref" mode="content">
+    <xsl:variable name="ref">
+        <xsl:choose>
+            <xsl:when test="@ref"><xsl:value-of select="@ref"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="@item"/></xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+    <xsl:choose>
+        <xsl:when test="$indexDoc/index/component[@id=$component_id]//*[@id=$ref]">
+            <span class="textref">
+                <xsl:value-of select="."/>&#160;<xsl:value-of select="$indexDoc/index/component[@id=$component_id]//*[@id=$ref]/@_nr"/>
+            </span>
+        </xsl:when>
+        <xsl:otherwise>
+            <span class="textref">
+                <xsl:apply-templates select="@*|node()" mode="content"/>
+            </span>
+        </xsl:otherwise>
+    </xsl:choose>
+</xsl:template>
+
+<!--   /////////////////////////////////////////////   -->
+<!--   /////////////////////////////////////////////   -->
+
+<xsl:variable name="itemInner">
+    <xsl:choose>
+        <xsl:when test="string-length($id) > 0"><xsl:value-of select="name(subcomponent/componentcontent/*[descendant::include[@filename=concat($id,'.xml')]])"/></xsl:when>
+        <xsl:when test="$item=''"><xsl:value-of select="name(subcomponent/componentcontent/*[1])"/></xsl:when>
+        <xsl:when test="$item='theory' and not(subcomponent/componentcontent/theory/include)">explanation</xsl:when>
+        <xsl:otherwise><xsl:value-of select="$item"/></xsl:otherwise>
+    </xsl:choose>
+</xsl:variable>
+<xsl:variable name="cm2px" select="number(50)"/>
+<xsl:variable name="variant">m4a_view_mbo_en</xsl:variable>
+<xsl:variable name="arg_option">
+    <xsl:choose>
+        <xsl:when test="$option">&amp;option=<xsl:value-of select="$option"/></xsl:when>
+        <xsl:otherwise></xsl:otherwise>
+    </xsl:choose>
+</xsl:variable>
+<xsl:variable name="arg_sector">
+    <xsl:choose>
+        <xsl:when test="$sector">&amp;sector=<xsl:value-of select="$sector"/></xsl:when>
+        <xsl:otherwise></xsl:otherwise>
+    </xsl:choose>
+</xsl:variable>
+<xsl:variable name="arg_parent">
+    <xsl:choose>
+        <xsl:when test="$parent">&amp;parent=<xsl:value-of select="$parent"/>&amp;thread=<xsl:value-of select="$thread"/></xsl:when>
+        <xsl:otherwise></xsl:otherwise>
+    </xsl:choose>
+</xsl:variable>
+<xsl:variable name="arg_repo">
+    <xsl:choose>
+        <xsl:when test="$repo">&amp;repo=<xsl:value-of select="$repo"/></xsl:when>
+        <xsl:otherwise></xsl:otherwise>
+    </xsl:choose>
+</xsl:variable>
+<xsl:variable name="intraLinkPrefix">
+    <xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',$subcomp,'&amp;variant=',$variant,$arg_option,$arg_parent,$arg_repo,$arg_sector,'&amp;item=')"/>
+</xsl:variable>
+<xsl:variable name="intraLinkPrefixNoSector">
+    <xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',$subcomp,'&amp;variant=',$variant,$arg_option,$arg_parent,$arg_repo,'&amp;item=')"/>
+</xsl:variable>
+<xsl:variable name="overviewRef">
+    <xsl:choose>
+       <xsl:when test="$parent and contains($parent, '?')">
+	    <xsl:value-of select="concat('http://',$parent,'&amp;thread=',$thread)"/>
+       </xsl:when>
+       <xsl:when test="$parent">
+	    <xsl:value-of select="concat('http://',$parent,'?tab=tab-preview&amp;thread=',$thread)"/>
+       </xsl:when>
+       <xsl:otherwise>
+           <xsl:value-of select="concat('/?tab=tab-preview&amp;thread=',$thread)"/>
+       </xsl:otherwise>
+    </xsl:choose>
+</xsl:variable>
+<xsl:variable name="_cross_ref_as_links_" select="true()"/>
+<xsl:variable name="_sheetref_as_links_" select="true()"/>
+
+<xsl:output method="html" doctype-system="http://www.w3.org/TR/html4/strict.dtd" doctype-public="-//W3C//DTD HTML 4.01//EN"
+indent="yes" encoding="utf-8"/>
+
+<xsl:include href="tabulate.xslt"/>
+<xsl:include href="calstable.xslt"/>
+<xsl:include href="exercises.xslt"/>
+<xsl:include href="content.xslt"/>
+<xsl:include href="worksheet.xslt"/>
+
+<!--   **************** -->
+<!--   PRE PROCESS      -->
+<!--   **************** -->
+<xsl:template match="/">
+    <xsl:variable name="xml-filtered">
+        <xsl:apply-templates mode="filter"/>
+    </xsl:variable>
+    <xsl:variable name="xml">
+        <xsl:apply-templates select="$xml-filtered" mode="numbering"/>
+    </xsl:variable>
+    <xsl:apply-templates select="$xml" mode="process"/>
+</xsl:template>
+
+<!--skip clone exercises 
+[document(concat($docbase,@filename))/exercise/metadata/clone[@active='true']]-->
+<xsl:template match="exercises/include" mode="filter">
+    <xsl:if test="not(exists(document(concat($docbase,@filename))//exercise/metadata/clone[@active='true']))">
+        <xsl:copy>
+            <xsl:apply-templates select="@*|node()" mode="filter"/>
+        </xsl:copy>
+    </xsl:if>
+</xsl:template>
+<xsl:template match="explore | application" mode="filter">
+    <xsl:if test="@type=$sector or (not($sector) and string-length(@type)=0)">
+        <xsl:copy>
+            <xsl:apply-templates select="@*|node()" mode="filter"/>
+        </xsl:copy>
+    </xsl:if>
+</xsl:template>
+
+<!--skip content that is explicitly not intended for math4all -->
+<xsl:template match="*[@publishing-platforms!='math4all']" mode="filter"></xsl:template>
+
+<!-- hook to preprocess content-files (exercises, explanation, etc) before passing to the generic content.xslt -->
+<xsl:template match="*" mode="ma-content">
+    <xsl:param name="options"/>
+    <xsl:variable name="xml-filtered">
+        <xsl:apply-templates select="." mode="filter-content"/>
+    </xsl:variable>
+    <xsl:apply-templates select="$xml-filtered" mode="content">
+        <xsl:with-param name="options" select="$options"/>
+    </xsl:apply-templates>
+</xsl:template>
+
+<xsl:template match="resource[contains(name,'.png') and string-length(width)=0]" mode="filter-content">
+    <xsl:copy>
+        <xsl:apply-templates select="@*" mode="filter-content"/>
+        <width>4cm</width>
+        <xsl:apply-templates select="*[name() != 'width']" mode="filter-content"/>
+    </xsl:copy>
+</xsl:template>
+<xsl:template match="*[@medium='paper']" priority='10' mode="filter-content"/>
+
+<xsl:template match="exercises/include" mode="numbering">
+    <include>
+        <xsl:attribute name="filename" select="@filename"/>
+        <xsl:if test="not(@num)">
+            <xsl:attribute name="num" select="1+count(preceding-sibling::include)+count(preceding::exercises/include)+count(preceding::exercises/block[@medium='web']/include)"/>
+        </xsl:if>
+    </include>
+</xsl:template>
+<xsl:template match="exercises/block[@medium='web']/include" mode="numbering">
+    <include>
+        <xsl:attribute name="filename" select="@filename"/>
+        <xsl:attribute name="num" select="1+count(preceding-sibling::include)+count(preceding::exercises/block[@medium='web']/include)"/>
+    </include>
+</xsl:template>
+<xsl:template match="examples/include" mode="numbering">
+    <include>
+        <xsl:attribute name="filename" select="@filename"/>
+        <xsl:attribute name="num" select="1+count(preceding::examples/include)"/>
+    </include>
+</xsl:template>
+<xsl:template match="@*|node()" mode="filter">
+    <xsl:copy>
+        <xsl:apply-templates select="@*|node()" mode="filter"/>
+    </xsl:copy>
+</xsl:template>
+<xsl:template match="@*|node()" mode="filter-content">
+    <xsl:copy>
+        <xsl:apply-templates select="@*|node()" mode="filter-content"/>
+    </xsl:copy>
+</xsl:template>
+<xsl:template match="@*|node()" mode="numbering">
+    <xsl:copy>
+        <xsl:apply-templates select="@*|node()" mode="numbering"/>
+    </xsl:copy>
+</xsl:template>
+
+<!--   **************** -->
+<!--   START PROCESSING -->
+<!--   **************** -->
+<xsl:template match="/" mode="process" >
+<html  xmlns:m="http://www.w3.org/1998/Math/MathML">
+<head>
+   <xsl:choose>
+      <!--  subtitle difference in references: leading slash or not -->
+      <xsl:when test="$host_type='GAE'">
+           <link type="text/css" href="/javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
+           <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
+           <script type="text/javascript" src="/javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
+           <script type="text/x-mathjax-config">
+              MathJax.Hub.Config({
+                   extensions: ["mml2jax.js","asciimath2jax.js"],
+                   config : ["MMLorHTML.js" ],
+                   AsciiMath: {
+                        decimal: ","
+                   },
+                   jax: ["input/MathML","input/AsciiMath"],
+                   "HTML-CSS": {
+                        availableFonts: [],
+                        preferredFont: "TeX",
+                        webFont: "",
+                        imageFont: "",
+                        undefinedFamily: "'Arial Unicode MS','sans-serif'",
+                        scale: 80
+                   }
+              });
+           </script>
+          <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML" />
+          <script type="text/javascript" src="/javascript/MathUnited.js"/>
+           <script type="text/javascript" src="/javascript/MathUnited_m4a.js"/>
+           <link rel="stylesheet" href="/css/content.css" type="text/css"/>
+           <link rel="stylesheet" href="/css/exercises.css" type="text/css"/>
+           <link rel="stylesheet" href="/css/M4AStijl2.css" type="text/css"/>
+      </xsl:when>
+      <xsl:otherwise>
+		   <link type="text/css" href="javascript/jquery-ui-1.8.15.custom/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="Stylesheet" />
+                   <link rel='stylesheet' href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.css"/>
+		   <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-1.6.2.min.js"></script>
+		   <script type="text/javascript" src="javascript/jquery-ui-1.8.15.custom/js/jquery-ui-1.8.15.custom.min.js"></script>
+		   <script type="text/x-mathjax-config">
+		      MathJax.Hub.Config({
+		           extensions: ["mml2jax.js","asciimath2jax.js"],
+		           config : ["MMLorHTML.js" ],
+		           AsciiMath: {
+		                decimal: ","
+		           },
+		           jax: ["input/MathML","input/AsciiMath"],
+                           "HTML-CSS": {
+                                scale: 90
+                           }
+		      });
+		   </script>
+           <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML" />
+           <script type="text/javascript" src="javascript/MathUnited.js"/>
+           <script type="text/javascript" src="javascript/MathUnited_m4a.js"/>
+           <link rel="stylesheet" href="css/content.css" type="text/css"/>
+           <link rel="stylesheet" href="css/exercises.css" type="text/css"/>
+           <link rel="stylesheet" href="css/M4AStijl2.css" type="text/css"/>
+           <link rel="stylesheet" href="css/StepPanel.css" type="text/css"/>
+           <link rel="stylesheet" href="css/algebrakit.css" type="text/css"/>
+           <link rel="stylesheet" href="css/mathquill.css" type="text/css"/>
+      </xsl:otherwise>
+   </xsl:choose>
+
+   <title><xsl:value-of select="$component_title"/></title>
+</head>
+
+<!--   **************** -->
+<!--        BODY        -->
+<!--   **************** -->
+<body>
+<!-- 
+<xsl:if test="$host_type='GAE'">
+<div id="prikbord-div">
+	<a>
+	   <xsl:attribute name="href"><xsl:value-of select="$prikbord-url"/></xsl:attribute>
+	   Prikbord
+	</a>
+</div>
+</xsl:if>
+-->
+<div class="pageDiv">
+    <xsl:choose>
+        <xsl:when test="contains($option,'slechtziend')">
+            <xsl:attribute name="class">pageDiv sizeB</xsl:attribute>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:attribute name="class">pageDiv</xsl:attribute>
+        </xsl:otherwise>            
+    </xsl:choose>
+<div class="headingDiv">
+    <div class="headingContentDiv">
+        <img class="logo" src="sources_ma/LogoM4Ainvlak.gif" align="middle"  height="33" border="0"/>
+        <xsl:if test="$is_mobile='true'">
+            (m)
+        </xsl:if>
+        <xsl:value-of select="$component_title"/> &gt; <xsl:value-of select="$subcomponent_title"/>
+    </div>
+    <div class="overzichtDiv">
+        <a>
+              <xsl:attribute name="href"><xsl:value-of select="$overviewRef"/></xsl:attribute>Overzicht
+        </a>
+    </div>
+    <div style="clear:both"/>
+</div>
+<div class="sectionDiv">
+   <div class="balk">
+       <xsl:call-template name="list-section-nrs">
+           <xsl:with-param name="i"><xsl:value-of select="number(1)"/></xsl:with-param>
+           <xsl:with-param name="count"><xsl:value-of select="$subcomponent_count"/></xsl:with-param>
+           <xsl:with-param name="highlight"><xsl:value-of select="1+number($subcomponent_index)"/></xsl:with-param>
+           <xsl:with-param name="subcomponents" select="subcomponent/internal-meta/subcomponents"/>
+       </xsl:call-template>
+       <span class="subcomponent-title"><xsl:value-of select="$subcomponent_title"/></span>
+       <xsl:if test="contains($option, 'slechtziend')">
+           <span class="font-selector"><span class="sizeA" onclick="javascript:MU_fontSelect(1)">A</span><span class="sizeB" onclick="javascript:MU_fontSelect(2)">A</span><span class="sizeC" onclick="javascript:MU_fontSelect(3)">A</span></span>
+       </xsl:if>
+   </div>
+</div>
+<div class="contentDiv">
+<div class="contentDiv-content">
+    <xsl:choose>
+        <xsl:when test="string-length($ws_id) > 0">
+            <xsl:choose>
+                <xsl:when test="$itemInner='example' or $itemInner='theory'">
+                    <xsl:apply-templates select="subcomponent/componentcontent/theory/examples[position()=number($num)]"  mode="worksheet"/>
+                    <xsl:apply-templates select="subcomponent/componentcontent/theory/exercises[position()=number($num)]"  mode="worksheet"/>
+                </xsl:when>
+                <xsl:when test="$itemInner='explanation'">
+                    <xsl:choose>
+                        <xsl:when test="number($num) > 1">
+                            <xsl:apply-templates select="subcomponent/componentcontent/explanation[count(preceding-sibling::explanation)=number($num)-1]"  mode="worksheet"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:apply-templates select="subcomponent/componentcontent/explanation[count(preceding-sibling::explanation)=0]"  mode="worksheet"/>
+                        </xsl:otherwise>
+
+                    </xsl:choose>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates select="subcomponent/componentcontent/*[name()=$itemInner]" mode="worksheet"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:when>
+        <xsl:when test="($itemInner='example' or $itemInner='theory') and $num">
+            <xsl:apply-templates select="subcomponent/componentcontent/theory/examples[position()=number($num)]"/>
+            <xsl:apply-templates select="subcomponent/componentcontent/theory/exercises[position()=number($num)]"/>
+        </xsl:when>
+        <xsl:when test="$itemInner='explanation'">
+            <xsl:choose>
+                <xsl:when test="number($num) > 1">
+                    <xsl:apply-templates select="subcomponent/componentcontent/explanation[count(preceding-sibling::explanation)=number($num)-1]"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates select="subcomponent/componentcontent/explanation[count(preceding-sibling::explanation)=0]"/>
+                </xsl:otherwise>
+
+            </xsl:choose>
+        </xsl:when>
+        <xsl:when test="$itemInner='extra'">
+            <xsl:choose>
+                <xsl:when test="number($num) > 1">
+                    <xsl:apply-templates select="subcomponent/componentcontent/extra[count(preceding-sibling::extra)=number($num)-1]"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates select="subcomponent/componentcontent/extra[count(preceding-sibling::extra)=0]"/>
+                </xsl:otherwise>
+
+            </xsl:choose>
+        </xsl:when>
+        <xsl:when test="$itemInner='answers'">
+            <h2>Answers to the exercises</h2>
+            <xsl:apply-templates select="subcomponent/componentcontent/explore | subcomponent/componentcontent//exercises">
+                <xsl:with-param name="options">
+                    <options>
+                       <mode type="answers"/>
+                    </options>
+                </xsl:with-param>
+            </xsl:apply-templates>
+        </xsl:when>
+        <xsl:otherwise>
+           <xsl:apply-templates select="subcomponent/componentcontent/*[name()=$itemInner]" />
+        </xsl:otherwise>
+    </xsl:choose>
+</div>
+<div>
+    <xsl:if test="not( string-length($ws_id) > 0 )">
+        <xsl:choose>
+            <xsl:when test="$is_mobile='true'">
+                <xsl:attribute name="class">menuDiv mobile</xsl:attribute>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:attribute name="class">menuDiv</xsl:attribute>
+            </xsl:otherwise>
+        </xsl:choose>
+        <div class="menuDiv-shadow"/>
+        <div class="menuDiv-inner">
+            <div class="menu-item-padding"/>
+            <xsl:apply-templates select="subcomponent/componentcontent/*" mode="navigation"/>
+            <div class="menu-item-div menu-item-answer" item="answers">
+            <a>
+                <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefix,'answers')"/></xsl:attribute>
+                <xsl:choose>
+                    <xsl:when test="$itemInner='answers'">
+                         <xsl:attribute name="id">selected-menu-item</xsl:attribute>
+                         <div class="menu-item-dot-wrapper"><div class="menu-item-dot"/></div>
+                     </xsl:when><xsl:otherwise>
+                         <xsl:attribute name="class">navigatie</xsl:attribute>
+                     </xsl:otherwise>
+                </xsl:choose>
+                Answers</a>
+            </div>
+            <div class="menu-item-padding"/>
+        </div>
+        
+    </xsl:if>
+    <!--
+    <embed class="audio" src="http://www.basiswiskunde.nl/Vocal/ha-b11-ep1.mp3" autoplay="false" width="70" height="26" volume="80" align="right"></embed>
+    -->
+</div>
+<div style="clear:both"/>
+</div>
+<div class="terug-verder">
+        <span class="verder-span" id='verder-button'><a href="javascript:MU_verder()">
+            next
+        </a></span>
+        <span class="terug-verder-separator">|</span>
+        <span class="terug-span" id='terug-button'><a href="javascript:MU_terug()">
+            previous
+        </a></span>
+</div>
+</div>
+    <!-- katex takes care of displaying math formula in latex -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/contrib/auto-render.min.js"></script>
+    <script data-main="javascript/algebrakit.js" src="javascript/require.js"></script>
+</body>
+</html>
+</xsl:template>
+
+<xsl:template name="list-section-nrs">
+    <xsl:param name="i"/>
+    <xsl:param name="count"/>
+    <xsl:param name="highlight"/>
+    <xsl:param name="subcomponents"/>
+    <xsl:choose>
+        <xsl:when test="number($i) = number($highlight)">
+            <span class="list-section-nr highlight"><xsl:value-of select="$i"/></span>
+        </xsl:when>
+        <xsl:otherwise>
+            <span class="list-section-nr">
+                <a>
+                    <xsl:attribute name="href">
+                        <xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',$subcomponents/subcomponent[number(@nr)=number($i)]/@id,'&amp;variant=',$variant,$arg_parent,$arg_repo)"/>
+                    </xsl:attribute>
+                    <xsl:value-of select="$i"/>
+                </a>
+            </span>
+        </xsl:otherwise>
+    </xsl:choose>
+    
+    <xsl:if test="number($count) > number($i)">
+        <xsl:call-template name="list-section-nrs">
+           <xsl:with-param name="i"><xsl:value-of select="$i+1"/></xsl:with-param>
+           <xsl:with-param name="count"><xsl:value-of select="$count"/></xsl:with-param>
+           <xsl:with-param name="highlight"><xsl:value-of select="$highlight"/></xsl:with-param>
+           <xsl:with-param name="subcomponents" select="$subcomponents"/>
+        </xsl:call-template>
+    </xsl:if>
+</xsl:template>
+
+
+<!--   **************** -->
+<!--    CONTENT TYPES   -->
+<!--   **************** -->
+<xsl:template match="explore[@type=$sector or (not($sector) and string-length(@type)=0)]">
+    <xsl:param name="options"/>
+    <xsl:if test="not($options and $options/options/mode[@type='answers'])">
+        <h2 class="section-title">Explore</h2>
+    </xsl:if>
+    <xsl:for-each select="include">
+        <xsl:apply-templates select="document(concat($docbase,@filename))/exercise">
+            <xsl:with-param name="options" select="$options"/>
+            <xsl:with-param name="number" select="concat('V',position())"/> 
+            <xsl:with-param name="is-open">true</xsl:with-param>
+        </xsl:apply-templates>
+    </xsl:for-each>
+</xsl:template>
+
+<xsl:template match="context">
+    <h2 class="section-title">Context</h2>
+    <xsl:apply-templates/>
+</xsl:template>
+<!-- this 'introduction' exists within <subcomponent> -->
+<xsl:template match="introduction">
+    <h2 class="section-title">Introduction</h2>
+    <xsl:apply-templates select="/subcomponent/description/sectors/sector"/>
+    <xsl:apply-templates/>
+</xsl:template>
+<xsl:template match="sector">
+    <a>
+        <xsl:attribute name="class"><xsl:value-of select="concat(@id,' sector-tile')"/></xsl:attribute>
+        <xsl:choose>
+            <xsl:when test="$sector=@id">
+                <!-- remove sector selection when clicking on the same sector button again -->
+                <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefixNoSector,$itemInner)"/></xsl:attribute>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefixNoSector,$itemInner,'&amp;sector=',@id)"/></xsl:attribute>
+                <xsl:attribute name="active">false</xsl:attribute>
+            </xsl:otherwise>
+        </xsl:choose>
+        
+        <xsl:apply-templates mode="content"/>
+    </a>
+</xsl:template>
+
+<!-- this 'introduction' is the root element of an xml-file which is included -->
+<xsl:template match="introduction" mode="content">
+    <xsl:apply-templates mode="content"/>
+</xsl:template>
+<xsl:template match="explanation">
+    <h2 class="section-title">Explanation</h2>
+    <div class="explanation">
+        <xsl:apply-templates/>
+    </div>
+</xsl:template>
+
+<xsl:template match="theory">
+    <xsl:param name="options"/>
+    <xsl:if test="not($options and $options/options/mode[@type='answers'])">
+        <h2 class="section-title">Theory</h2>
+    </xsl:if>
+    <xsl:apply-templates select="include"/>
+</xsl:template>
+
+<xsl:template match="componentcontent/examples">
+    <h2 class="section-title">Example
+        <xsl:choose>
+            <xsl:when test="@targetgroup='techniek'">Technology</xsl:when>
+            <xsl:when test="@targetgroup='groen'">Agriculture</xsl:when>
+            <xsl:when test="@targetgroup='economie'">Economics</xsl:when>
+            <xsl:when test="@targetgroup='zorg'">Well-being</xsl:when>
+            <xsl:otherwise><xsl:value-of select="$num"/></xsl:otherwise>
+        </xsl:choose>
+    </h2>
+    <xsl:apply-templates/>
+</xsl:template>
+
+<xsl:template match="componentcontent/theory/examples">
+    <h2 class="section-title">Example
+        <xsl:choose>
+            <xsl:when test="@targetgroup='techniek'">Technology</xsl:when>
+            <xsl:when test="@targetgroup='groen'">Agriculture</xsl:when>
+            <xsl:when test="@targetgroup='economie'">Economics</xsl:when>
+            <xsl:when test="@targetgroup='zorg'">Well-being</xsl:when>
+            <xsl:otherwise><xsl:value-of select="$num"/></xsl:otherwise>
+        </xsl:choose>
+    </h2>
+    <xsl:variable name="cont" select = "document(concat($docbase,include/@filename))"/>
+    <xsl:apply-templates select="$cont" mode="ma-content"/>
+</xsl:template>
+
+<xsl:template match="digest">
+    <xsl:choose>
+        <xsl:when test="count(/subcomponent/description/sectors/sector) gt 0">
+            <h2 class="section-title">Practice</h2>
+        </xsl:when>
+        <xsl:otherwise>
+            <h2 class="section-title">Digest</h2>
+        </xsl:otherwise>
+    </xsl:choose>
+    <xsl:apply-templates/>
+</xsl:template>
+<xsl:template match="application[@type=$sector or (not($sector) and string-length(@type)=0)]">
+    <xsl:param name="options"/>
+    <h2 class="section-title">Applications</h2>
+    <xsl:apply-templates select="include"/>
+    <xsl:for-each select="exercises/include">
+        <xsl:apply-templates select="document(concat($docbase,@filename))/exercise">
+            <xsl:with-param name="options" select="$options"/>
+            <xsl:with-param name="number" select="concat('A', position())"/>
+            <xsl:with-param name="is-open">false</xsl:with-param>
+        </xsl:apply-templates>
+    </xsl:for-each>
+</xsl:template>
+
+<xsl:template match="extra">
+    <h2 class="section-title">Extra</h2>
+        <xsl:apply-templates/>
+</xsl:template>
+
+<xsl:template match="summary">
+    <h2 class="section-title">Summary</h2>
+    <xsl:apply-templates select="/subcomponent/description/sectors/sector"/>
+    <xsl:apply-templates/>
+</xsl:template>
+<xsl:template match="test">
+    <xsl:param name="options"/>
+    <h2 class="section-title">Test</h2>
+    <xsl:for-each select="exercises/include">
+        <xsl:apply-templates select="document(concat($docbase,@filename))/exercise">
+            <xsl:with-param name="options" select="$options"/>
+            <xsl:with-param name="number" select="concat('T', position())"/>
+            <xsl:with-param name="is-open">true</xsl:with-param>
+        </xsl:apply-templates>
+    </xsl:for-each>
+</xsl:template>
+<xsl:template match="background">
+    <h2 class="section-title">Background</h2>
+    <xsl:variable name="cont" select = "document(concat($docbase,include/@filename))"/>
+    <xsl:apply-templates select="$cont" mode="ma-content"/>
+</xsl:template>
+<xsl:template match="exam">
+    <h2 class="section-title">Exam questions</h2>
+    <xsl:apply-templates/>
+</xsl:template>
+
+
+<xsl:template match="include">
+    <xsl:param name="options"/>
+    <xsl:apply-templates select="document(concat($docbase,@filename))" mode="ma-content">
+        <xsl:with-param name="options" select="$options"/>
+    </xsl:apply-templates>
+        
+</xsl:template>
+<xsl:template match="exercises" mode="content">
+    <xsl:apply-templates select="."/>
+</xsl:template>
+<xsl:template match="exercises">
+    <xsl:param name="options"/>
+    <div class="exercises-container">
+        <xsl:choose>
+            <xsl:when test="not(ancestor::explore)">
+                <xsl:for-each select="include | block[@medium='web']/include">
+                    <xsl:apply-templates select="document(concat($docbase,@filename))/exercise">
+                        <xsl:with-param name="is-open">
+                            <xsl:choose>
+                                <xsl:when test="((exists(ancestor::digest) or exists(ancestor::test)) and (not(preceding-sibling::include))) or ($options and $options/options/mode[@type='answers']) or (concat($id,'.xml') = @filename)"
+                                >true</xsl:when>
+                                <xsl:otherwise>false</xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:with-param>
+                        <xsl:with-param name="options" select="$options"/>
+                        <xsl:with-param name="number" select="@num"/>
+                    </xsl:apply-templates>
+                </xsl:for-each>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:for-each select="include">
+                    <xsl:apply-templates select="document(concat($docbase,@filename))/exercise">
+                        <xsl:with-param name="options" select="$options"/>
+                        <xsl:with-param name="number" select="@num"/>
+                    </xsl:apply-templates>
+                </xsl:for-each>
+            </xsl:otherwise>
+        </xsl:choose>
+    </div>
+</xsl:template>
+
+
+<xsl:template match="exercise[metadata/clone/@active='true']"/>
+
+<xsl:template match="exercise">
+    <xsl:param name="options"/>
+    <xsl:param name="is-open"/>
+    <xsl:param name="number"/>
+    <div>
+        <xsl:choose>
+            <xsl:when test="$is-open='true'">
+                <xsl:attribute name="class">exercise-with-heading open</xsl:attribute>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:attribute name="class">exercise-with-heading</xsl:attribute>
+            </xsl:otherwise>
+        </xsl:choose>
+        <xsl:if test="metadata/clone/@active='true'">
+            <xsl:attribute name="clone" select="metadata/clone/text()"/>
+        </xsl:if>
+        
+        <div class="exercise-heading">
+            <xsl:choose>
+                <xsl:when test="metadata/clone/@active='true'">
+                    Kloonopgave <xsl:value-of select="$number"/> <span class="opgave-title-span"><xsl:value-of select="title"/></span> <div class="opgave-label-button"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    Exercise <xsl:value-of select="$number"/> <span class="opgave-title-span"><xsl:value-of select="title"/></span> <div class="opgave-label-button"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </div>
+        <div class="exercise-contents">
+            <xsl:apply-templates select="*[name()!='metadata']" mode="ma-content">
+                <xsl:with-param name="options" select="$options"/>
+            </xsl:apply-templates>
+        </div>
+    </div>
+</xsl:template>
+
+<xsl:template match="title" mode="content-title"><xsl:apply-templates mode="content"/></xsl:template>
+
+<xsl:template match="p">
+    <xsl:apply-templates mode="content"/>
+</xsl:template>
+
+<!--   **************** -->
+<!--     NAVIGATION     -->
+<!--   **************** -->
+<xsl:template match="explore[@type=$sector or (not($sector) and string-length(@type)=0)]" mode="navigation">
+   <div item="explore" class='menu-item-div'>
+       <xsl:if test="string-length(@type) gt 0">
+           <xsl:attribute name="context"><xsl:value-of select="@type"/></xsl:attribute>
+       </xsl:if>
+       <a>
+            <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefix,'explore')"/></xsl:attribute>
+            <xsl:choose>
+                <xsl:when test="$itemInner='explore'">
+                    <xsl:attribute name="id">selected-menu-item</xsl:attribute>
+                    <div class="menu-item-dot-wrapper"><div class="menu-item-dot"/></div>
+                </xsl:when><xsl:otherwise>
+                    <xsl:attribute name="class">navigatie</xsl:attribute>
+                </xsl:otherwise>
+            </xsl:choose>
+            Explore</a>
+   </div>
+</xsl:template>
+<xsl:template match="introduction" mode="navigation">
+   <div class="menu-item-div" item="introduction">
+       <a>
+            <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefix,'introduction')"/></xsl:attribute>
+            <xsl:choose>
+                <xsl:when test="$itemInner='introduction'">
+                    <xsl:attribute name="id">selected-menu-item</xsl:attribute>
+                    <div class="menu-item-dot-wrapper"><div class="menu-item-dot"/></div>
+                </xsl:when><xsl:otherwise>
+                    <xsl:attribute name="class">navigatie</xsl:attribute>
+                </xsl:otherwise>
+            </xsl:choose>
+            Introduction</a>
+   </div>
+</xsl:template>
+<xsl:template match="explanation" mode="navigation">
+    <xsl:variable name="explnum" select="count(preceding-sibling::explanation)+1"/>
+    <xsl:choose>
+        <xsl:when test="count(preceding-sibling::explanation)+count(following-sibling::explanation) > 0">
+           <div class="menu-item-div" item="explanation">
+               <a>
+                    <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefix,'explanation&amp;num=',$explnum)"/></xsl:attribute>
+                    <xsl:choose>
+                        <xsl:when test="$itemInner='explanation' and $explnum=number($num)">
+                            <xsl:attribute name="id">selected-menu-item</xsl:attribute>
+                            <div class="menu-item-dot-wrapper"><div class="menu-item-dot"/></div>
+                        </xsl:when><xsl:otherwise>
+                            <xsl:attribute name="class">navigatie</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                   Explanation <xsl:value-of select="$explnum"/></a>
+           </div>
+        </xsl:when>
+        <xsl:otherwise>
+           <div class="menu-item-div" item="explanation">
+               <a>
+                    <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefix,'explanation')"/></xsl:attribute>
+                    <xsl:choose>
+                        <xsl:when test="$itemInner='explanation' and not(number($num) > 1)">
+                            <xsl:attribute name="id">selected-menu-item</xsl:attribute>
+                            <div class="menu-item-dot-wrapper"><div class="menu-item-dot"/></div>
+                        </xsl:when><xsl:otherwise>
+                            <xsl:attribute name="class">navigatie</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                   Explanation</a>
+           </div>
+        </xsl:otherwise>
+    </xsl:choose>
+</xsl:template>
+<xsl:template match="theory" mode="navigation">
+   <xsl:if test="include">
+       <div class="menu-item-div" item="theory">
+           <a>
+                <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefix,'theory')"/></xsl:attribute>
+                <xsl:choose>
+                    <xsl:when test="$itemInner='theory'">
+                       <xsl:attribute name="id">selected-menu-item</xsl:attribute>
+                       <div class="menu-item-dot-wrapper"><div class="menu-item-dot"/></div>
+                    </xsl:when><xsl:otherwise>
+                    <xsl:attribute name="class">navigatie</xsl:attribute>
+                </xsl:otherwise>
+            </xsl:choose>
+               Theorie</a>
+        </div>
+   </xsl:if>
+   <xsl:for-each select="examples">
+        <div class="menu-item-div" item="example">
+            <xsl:if test="@targetgroup">
+                <xsl:attribute name="targetgroup"><xsl:value-of select="@targetgroup"/></xsl:attribute>
+            </xsl:if>
+           <xsl:attribute name="num"><xsl:value-of select="position()"/></xsl:attribute>
+           <a>
+                <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefix,'example&amp;num=',position())"/></xsl:attribute>
+                <xsl:choose>
+                    <xsl:when test="($itemInner='example' or $itemInner='theory') and position()=number($num)">
+                       <xsl:attribute name="id">selected-menu-item</xsl:attribute>
+                       <div class="menu-item-dot-wrapper"><div class="menu-item-dot"/></div>
+                    </xsl:when>
+                    <xsl:otherwise>
+                       <xsl:attribute name="class">navigatie</xsl:attribute>
+                   </xsl:otherwise>
+                </xsl:choose>
+                
+                <xsl:choose>
+                    <xsl:when test="@targetgroup='techniek'">Technology</xsl:when>
+                    <xsl:when test="@targetgroup='groen'">Agriculture</xsl:when>
+                    <xsl:when test="@targetgroup='economie'">Economics</xsl:when>
+                    <xsl:when test="@targetgroup='zorg'">Well-being</xsl:when>
+                    <xsl:otherwise>
+                        Example <xsl:value-of select="position()"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+           </a>
+        </div>
+   </xsl:for-each>
+</xsl:template>
+<!--
+<xsl:template match="componentcontent/examples" mode="navigation">
+   <xsl:for-each select="include">
+       <div class="menu-item-div">
+           <a>
+                <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefix,'example&amp;num=',position())"/></xsl:attribute>
+                <xsl:choose>
+                    <xsl:when test="$item='example' and position()=number($num)">
+                        <xsl:attribute name="id">selected-menu-item</xsl:attribute>
+                    </xsl:when><xsl:otherwise>
+                        <xsl:attribute name="class">navigatie</xsl:attribute>
+                    </xsl:otherwise>
+                </xsl:choose>
+                </xsl:choose>
+               Voorbeeld <xsl:value-of select="position()"/></a>
+        </div>
+    </xsl:for-each>
+</xsl:template>
+-->
+<xsl:template match="digest" mode="navigation">
+   <div class="menu-item-div" item="digest">
+       <a>
+            <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefix,'digest')"/></xsl:attribute>
+            <xsl:choose>
+                <xsl:when test="$itemInner='digest'">
+                    <xsl:attribute name="id">selected-menu-item</xsl:attribute>
+                    <div class="menu-item-dot-wrapper"><div class="menu-item-dot"/></div>
+                </xsl:when><xsl:otherwise>
+                    <xsl:attribute name="class">navigatie</xsl:attribute>
+                </xsl:otherwise>
+            </xsl:choose>
+            
+            <xsl:choose>
+                <xsl:when test="/subcomponent/description/sectors">
+                    Practice
+                </xsl:when>
+                <xsl:otherwise>
+                    Digest
+                </xsl:otherwise>
+            </xsl:choose>
+       </a>
+    </div>
+</xsl:template>
+
+<xsl:template match="application[@type=$sector or (not($sector) and string-length(@type)=0)]" mode="navigation">
+   <div class="menu-item-div" item="application">
+       <xsl:if test="string-length(@type) gt 0">
+           <xsl:attribute name="context"><xsl:value-of select="@type"/></xsl:attribute>
+       </xsl:if>
+       <a>
+            <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefix,'application')"/></xsl:attribute>
+            <xsl:choose>
+                <xsl:when test="$itemInner='application'">
+                    <xsl:attribute name="id">selected-menu-item</xsl:attribute>
+                    <div class="menu-item-dot-wrapper"><div class="menu-item-dot"/></div>
+                </xsl:when><xsl:otherwise>
+                    <xsl:attribute name="class">navigatie</xsl:attribute>
+                </xsl:otherwise>
+            </xsl:choose>
+           Application</a>
+   </div>
+</xsl:template>
+
+
+<xsl:template match="extra" mode="navigation">
+    <xsl:variable name="explnum" select="count(preceding-sibling::extra)+1"/>
+    <xsl:choose>
+        <xsl:when test="count(preceding-sibling::extra)+count(following-sibling::extra) > 0">
+           <div class="menu-item-div" item="extra">
+               <a>
+                    <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefix,'extra&amp;num=',$explnum)"/></xsl:attribute>
+                    <xsl:choose>
+                        <xsl:when test="$itemInner='extra' and $explnum=number($num)">
+                            <xsl:attribute name="id">selected-menu-item</xsl:attribute>
+                            <div class="menu-item-dot-wrapper"><div class="menu-item-dot"/></div>
+                        </xsl:when><xsl:otherwise>
+                            <xsl:attribute name="class">navigatie</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                   Use case <xsl:value-of select="$explnum"/></a>
+           </div>
+        </xsl:when>
+        <xsl:otherwise>
+           <div class="menu-item-div" item="extra">
+               <a>
+                    <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefix,'extra')"/></xsl:attribute>
+                    <xsl:choose>
+                        <xsl:when test="$itemInner='extra' and not(number($num) > 1)">
+                            <xsl:attribute name="id">selected-menu-item</xsl:attribute>
+                            <div class="menu-item-dot-wrapper"><div class="menu-item-dot"/></div>
+                        </xsl:when><xsl:otherwise>
+                            <xsl:attribute name="class">navigatie</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                   Use case </a>
+           </div>
+        </xsl:otherwise>
+    </xsl:choose>
+</xsl:template>
+
+<xsl:template match="exam" mode="navigation">
+   <div class="menu-item-div" item="digest">
+       <a>
+            <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefix,'exam')"/></xsl:attribute>
+            <xsl:choose>
+                <xsl:when test="$itemInner='exam'">
+                    <xsl:attribute name="id">selected-menu-item</xsl:attribute>
+                    <div class="menu-item-dot-wrapper"><div class="menu-item-dot"/></div>
+                </xsl:when><xsl:otherwise>
+                    <xsl:attribute name="class">navigatie</xsl:attribute>
+                </xsl:otherwise>
+            </xsl:choose>
+           Exam questions</a>
+    </div>
+</xsl:template>
+
+<xsl:template match="summary" mode="navigation">
+   <div class="menu-item-div" item="summary">
+       <a>
+            <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefix,'summary')"/></xsl:attribute>
+            <xsl:choose>
+                <xsl:when test="$itemInner='summary'">
+                    <xsl:attribute name="id">selected-menu-item</xsl:attribute>
+                    <div class="menu-item-dot-wrapper"><div class="menu-item-dot"/></div>
+                </xsl:when><xsl:otherwise>
+                    <xsl:attribute name="class">navigatie</xsl:attribute>
+                </xsl:otherwise>
+            </xsl:choose>
+           Summary</a>
+   </div>
+</xsl:template>
+<xsl:template match="test" mode="navigation">
+   <div class="menu-item-div" item="test">
+       <a>
+            <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefix,'test')"/></xsl:attribute>
+            <xsl:choose>
+                <xsl:when test="$itemInner='test'">
+                    <xsl:attribute name="id">selected-menu-item</xsl:attribute>
+                    <div class="menu-item-dot-wrapper"><div class="menu-item-dot"/></div>
+                </xsl:when><xsl:otherwise>
+                    <xsl:attribute name="class">navigatie</xsl:attribute>
+                </xsl:otherwise>
+            </xsl:choose>
+           Test</a>
+   </div>
+</xsl:template>
+
+<xsl:template match="background" mode="navigation">
+   <div class="menu-item-div" item="background">
+       <a>
+            <xsl:attribute name="href"><xsl:value-of select="concat($intraLinkPrefix,'background')"/></xsl:attribute>
+            <xsl:choose>
+                <xsl:when test="$itemInner='background'">
+                    <xsl:attribute name="id">selected-menu-item</xsl:attribute>
+                    <div class="menu-item-dot-wrapper"><div class="menu-item-dot"/></div>
+                </xsl:when><xsl:otherwise>
+                    <xsl:attribute name="class">navigatie</xsl:attribute>
+                </xsl:otherwise>
+            </xsl:choose>
+           Background</a>
+   </div>
+   <xsl:apply-templates select="examples" mode="navigation"/>
+</xsl:template>
+
+<xsl:template match="exercise" mode="content">
+    <xsl:param name="options"/>
+    <div class="exercise">
+        <xsl:if test="metadata/clone/@active='true'">
+            <xsl:attribute name="clone" select="metadata/clone/text()"/>
+        </xsl:if>
+        <xsl:apply-templates select="*[name()!='metadata']" mode="content">
+            <xsl:with-param name="options" select="$options"/>
+        </xsl:apply-templates>
+    </div>
+</xsl:template>
+
+<!--
+    Introduction
+-->
+<xsl:template match="learningaspects" mode="content">
+ <p>
+    <b>You will learn in this subject:</b>
+    <xsl:choose>
+        <xsl:when test="aspect">
+            <ul><xsl:for-each select="aspect">
+               <li><xsl:apply-templates mode="content"/></li>
+               </xsl:for-each>
+            </ul>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:apply-templates mode="content"/>
+        </xsl:otherwise>
+    </xsl:choose>
+ </p>
+</xsl:template>
+
+<xsl:template match="knownaspects" mode="content">
+ <p>
+    <b>Prerequisites:</b>
+    <xsl:choose>
+        <xsl:when test="aspect">
+            <ul><xsl:for-each select="aspect">
+               <li><xsl:apply-templates mode="content"/></li>
+               </xsl:for-each>
+            </ul>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:apply-templates mode="content"/>
+        </xsl:otherwise>
+    </xsl:choose>
+ </p>
+</xsl:template>
+
+<xsl:template match="definitions" mode="content">
+    <div class="definitions">
+        Key words
+    </div>
+    <xsl:apply-templates mode="content"/>
+</xsl:template>
+
+<xsl:template match="definition" mode="content">
+   <div class="definition">
+       <a>
+           <xsl:attribute name="href"><xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',@id,'&amp;variant=',$variant,$arg_parent,$arg_repo,'&amp;item=theory')"/></xsl:attribute>
+           <xsl:apply-templates mode="content"/>
+       </a>
+   </div>
+</xsl:template>
+
+<xsl:template match="activities" mode="content">
+    <div class="definitions">
+        Activities
+    </div>
+    <xsl:apply-templates mode="content"/>
+</xsl:template>
+
+<xsl:template match="activity" mode="content">
+   <div class="definition">
+       <a>
+           <xsl:attribute name="href"><xsl:value-of select="concat('view?comp=',$comp,'&amp;subcomp=',@id,'&amp;variant=',$arg_parent,$arg_repo,$variant,'&amp;item=theory')"/></xsl:attribute>
+           <xsl:apply-templates mode="content"/>
+       </a>
+   </div>
+</xsl:template>
+
+<xsl:template match="proof" mode="content">
+   <div class="m4a-example">
+        <div onclick="javascript:M4A_ShowExampleAnswer(this)" class="example-answer-button">&gt; bewijs</div>
+        <div class="m4a-answer">
+            <xsl:apply-templates mode="content"/>
+            <div  onclick="javascript:M4A_ShowExampleAnswer(this)" class="answerCloseButton"/>
+        </div>
+   </div>
+</xsl:template>
+
+<xsl:template match="author-remark" mode="content" priority="10"/>
+
+<xsl:template match='block[@medium="web"]'><xsl:apply-templates/></xsl:template>
+
+<xsl:template match="*"/>
+<xsl:template match="*" mode="navigation"/>
+</xsl:stylesheet>

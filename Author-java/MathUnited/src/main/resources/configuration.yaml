@@ -6,6 +6,7 @@ variants :
   wm_view : {path: /xslt/wm_view.xslt}
   m4a_view : {path: /xslt/m4a_view.xslt}
   m4a_view_mbo : {path: /xslt/m4a_view_mbo.xslt}
+  m4a_view_mbo_en : {path: /xslt/m4a_view_mbo_en.xslt}
   m4a_view_saba : {path: /xslt/m4a_view_saba.xslt}
   m4a_view_engels : {path: /xslt/m4a_view_engels.xslt}
   m4a_view_dedicon : {path: /xslt/m4a_view_dedicon.xslt}
@@ -48,6 +49,12 @@ repos :
     defaultVariant: m4a_view
     componentsURL: /index/math4mbo/components.xml
     threadsURL: /index/math4mbo/threads.xml
+  math4mbo_en :
+    path: content-ma/math4mbo_en
+    edit_permission: editor_m4a
+    defaultVariant: m4a_view_mbo_en
+    componentsURL: /index/math4mbo_en/components.xml
+    threadsURL: /index/math4mbo_en/threads.xml
   mathplus :
     path: content-ma/math4all-2015
     edit_permission: editor_m4a
