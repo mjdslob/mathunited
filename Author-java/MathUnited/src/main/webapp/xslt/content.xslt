@@ -569,6 +569,8 @@ extension-element-prefixes="exsl">
    </img>
 </xsl:template>
 
+<xsl:template match="nbsp" mode="content">&#160;</xsl:template>
+
 <xsl:template match="@*|node()" mode="content">
     <xsl:copy>
         <xsl:apply-templates select="@*|node()" mode="content"/>

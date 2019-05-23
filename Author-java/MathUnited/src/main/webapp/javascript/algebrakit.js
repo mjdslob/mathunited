@@ -48,7 +48,7 @@ requirejs.config({
                     extensions: ["mml2jax.js","asciimath2jax.js"],
                     config : ["MMLorHTML.js" ],
                     AsciiMath: {
-                    decimal: ","
+//                    decimal: "," //interferes with english versions
                     },
                     jax: ["input/MathML","input/AsciiMath"]
               });

@@ -284,9 +284,6 @@ indent="yes" encoding="utf-8"/>
               MathJax.Hub.Config({
                    extensions: ["mml2jax.js","asciimath2jax.js"],
                    config : ["MMLorHTML.js" ],
-                   AsciiMath: {
-                        decimal: ","
-                   },
                    jax: ["input/MathML","input/AsciiMath"],
                    "HTML-CSS": {
                         availableFonts: [],
@@ -314,9 +311,6 @@ indent="yes" encoding="utf-8"/>
 		      MathJax.Hub.Config({
 		           extensions: ["mml2jax.js","asciimath2jax.js"],
 		           config : ["MMLorHTML.js" ],
-		           AsciiMath: {
-		                decimal: ","
-		           },
 		           jax: ["input/MathML","input/AsciiMath"],
                            "HTML-CSS": {
                                 scale: 90
@@ -635,14 +629,7 @@ indent="yes" encoding="utf-8"/>
 </xsl:template>
 
 <xsl:template match="digest">
-    <xsl:choose>
-        <xsl:when test="count(/subcomponent/description/sectors/sector) gt 0">
-            <h2 class="section-title">Practice</h2>
-        </xsl:when>
-        <xsl:otherwise>
-            <h2 class="section-title">Digest</h2>
-        </xsl:otherwise>
-    </xsl:choose>
+    <h2 class="section-title">Practise</h2>
     <xsl:apply-templates/>
 </xsl:template>
 <xsl:template match="application[@type=$sector or (not($sector) and string-length(@type)=0)]">
@@ -859,7 +846,7 @@ indent="yes" encoding="utf-8"/>
                     <xsl:attribute name="class">navigatie</xsl:attribute>
                 </xsl:otherwise>
             </xsl:choose>
-               Theorie</a>
+               Theory</a>
         </div>
    </xsl:if>
    <xsl:for-each select="examples">
@@ -925,14 +912,7 @@ indent="yes" encoding="utf-8"/>
                 </xsl:otherwise>
             </xsl:choose>
             
-            <xsl:choose>
-                <xsl:when test="/subcomponent/description/sectors">
-                    Practice
-                </xsl:when>
-                <xsl:otherwise>
-                    Digest
-                </xsl:otherwise>
-            </xsl:choose>
+            Practise
        </a>
     </div>
 </xsl:template>
@@ -952,7 +932,7 @@ indent="yes" encoding="utf-8"/>
                     <xsl:attribute name="class">navigatie</xsl:attribute>
                 </xsl:otherwise>
             </xsl:choose>
-           Application</a>
+           Apply</a>
    </div>
 </xsl:template>
 
@@ -972,7 +952,7 @@ indent="yes" encoding="utf-8"/>
                             <xsl:attribute name="class">navigatie</xsl:attribute>
                         </xsl:otherwise>
                     </xsl:choose>
-                   Use case <xsl:value-of select="$explnum"/></a>
+                   Extra <xsl:value-of select="$explnum"/></a>
            </div>
         </xsl:when>
         <xsl:otherwise>
@@ -987,7 +967,7 @@ indent="yes" encoding="utf-8"/>
                             <xsl:attribute name="class">navigatie</xsl:attribute>
                         </xsl:otherwise>
                     </xsl:choose>
-                   Use case </a>
+                   Extra </a>
            </div>
         </xsl:otherwise>
     </xsl:choose>

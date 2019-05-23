@@ -446,7 +446,7 @@ indent="yes" encoding="utf-8"/>
     <xsl:apply-templates/>
 </xsl:template>
 <xsl:template match="application">
-    <h2 class="section-title">Application</h2>
+    <h2 class="section-title">Apply</h2>
     <xsl:apply-templates/>
 </xsl:template>
 
@@ -693,7 +693,7 @@ indent="yes" encoding="utf-8"/>
                     <xsl:attribute name="class">navigatie</xsl:attribute>
                 </xsl:otherwise>
             </xsl:choose>
-           Application</a>
+           Apply</a>
    </div>
 </xsl:template>
 
