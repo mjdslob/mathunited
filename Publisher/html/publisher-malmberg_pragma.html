@@ -21,8 +21,9 @@
                 repo: 'malmberg_pragma'
             });
             $(document).ready(function() {
-                wm.init();
-                initUI();
+                wm.init().then(function(){
+                    initUI();
+                });
             });
             
         </script>

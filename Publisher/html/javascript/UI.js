@@ -57,7 +57,6 @@ function refreshLog(doRepeat) {
     $.get(url, function success(data){
         var elem = $('#log-contents');
         elem.html(data);
-        elem[0].scrollTop = elem[0].scrollTop+.001; //force rendering
     });
     //if(doRepeat)
     //   setTimeout('refreshLog(true)', 1000);

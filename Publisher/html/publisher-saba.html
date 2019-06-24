@@ -20,8 +20,9 @@
                 repo :'m4a_en'
             });
             $(document).ready(function() {
-                wm.init();
-                initUI();
+                wm.init().then(function(){
+                    initUI();
+                });
             });
             
         </script>

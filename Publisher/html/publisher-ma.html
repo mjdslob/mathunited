@@ -22,8 +22,9 @@
                 repo: 'm4a'
             });
             $(document).ready(function() {
-                wm.init();
-                initUI();
+                wm.init().then(function(){
+                    initUI();
+                });
             });
             
         </script>

@@ -17,13 +17,14 @@
             viewURL['ma'] = '/MathUnited/view?parent=localhost/Publisher/html/publisher-ma.html&variant=basis';
             viewURL['wm'] = '/MathUnited/view?parent=ocalhost/Publisher/html/publisher-wm.html&variant=basis_wm&item=1';
             wm = new WM_Manager({
-                methodURL:  '/index/malmberg/components.xml',
-                threadsURL: '/index/malmberg/threads.xml',
+                methodURL:  '/index/math4all-2015/components.xml',
+                threadsURL: '/index/math4all-2015/threads.xml',
                 repo: 'm4a2015'
             });
             $(document).ready(function() {
-                wm.init();
-                initUI();
+                wm.init().then(function(){
+                    initUI();
+                });
             });
             
         </script>

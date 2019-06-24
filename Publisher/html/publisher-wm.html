@@ -23,8 +23,9 @@
                 repo: 'wm'
             });
             $(document).ready(function () {
-                wm.init();
-                initUI();
+                wm.init().then(function(){
+                    initUI();
+                });
             });
 
 
