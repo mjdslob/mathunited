@@ -142,6 +142,22 @@
         <servlet-name>getResourceUrl</servlet-name>
         <url-pattern>/getresourceurl</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>akit-generate</servlet-name>
+        <servlet-class>nl.math4all.gae_m4a.AkitGenerate</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>akit-generate</servlet-name>
+        <url-pattern>/akit-generate</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>akit-derivation</servlet-name>
+        <servlet-class>nl.math4all.gae_m4a.AkitDerivation</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>akit-derivation</servlet-name>
+        <url-pattern>/akit-derivation</url-pattern>
+    </servlet-mapping>
     
     <security-constraint>
         <web-resource-collection>

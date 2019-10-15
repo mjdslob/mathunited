@@ -477,7 +477,15 @@ indent="yes" encoding="utf-8"/>
     <!-- katex takes care of displaying math formula in latex -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/contrib/auto-render.min.js"></script>
-    <script data-main="javascript/algebrakit.js" src="javascript/require.js"></script>
+    <!--<script data-main="javascript/algebrakit.js" src="javascript/require.js"></script>-->
+    <script>
+            AlgebraKIT = {
+                config: {
+                    proxy: 'http://mathunited.pragma-ade.nl:41080/MathUnited'
+                }
+            };
+    </script>
+    <script src='https://algebrakit.eu/akit-widgets.min.js'></script>
 </body>
 </html>
 </xsl:template>

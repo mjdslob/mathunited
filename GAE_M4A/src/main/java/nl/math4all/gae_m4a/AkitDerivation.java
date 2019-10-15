@@ -1,4 +1,4 @@
-package nl.math4all.mathunited;
+package nl.math4all.gae_m4a;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,29 +16,18 @@ import java.net.URL;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import javax.net.ssl.SSLContext;
 import org.apache.commons.io.IOUtils;
 
-public class AkitGenerate extends HttpServlet {
-    static final String appId = "math4all-site";
-    static final String appSecret = "c321b556-ed9c-4f6d-87a3-faeeda976e3b";
+public class AkitDerivation extends HttpServlet {
     static URL url;
     
-    String GENERATE_REQ_TEMPLATE = "{"
-            + "   \"appId\": \"" + appId + "\", "
-            + "   \"appSecret\": \"" + appSecret + "\", "
-            + "   \"api-version\": 2, "
-            + "   \"exercises\": [${EXERCISE_SPEC}]"
-            + "}";
-
     private final static Logger LOGGER = Logger.getLogger(XSLTbean.class.getName());
     private static final long serialVersionUID = 7448591788669617325L;
     static {
         LOGGER.setLevel(Level.INFO);
         try {
-            url = new URL("https://algebrakit.eu/exercise/generate");
-//            url = new URL("http://localhost:3000/exercise/generate");
+            url = new URL("https://algebrakit.eu/derivation/metadata");
+//            url = new URL("http://localhost:3000/derivation/metadata");
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -49,27 +38,26 @@ public class AkitGenerate extends HttpServlet {
             throws IOException {
         //The following are CORS headers. Max age informs the 
         //browser to keep the results of this call for 1 day.
-        resp.setHeader("Access-Control-Allow-Origin", "*");
-        resp.setHeader("Access-Control-Allow-Methods", "GET, POST");
-        resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
-        resp.setHeader("Access-Control-Max-Age", "86400");
+//        resp.setHeader("Access-Control-Allow-Origin", "*");
+//        resp.setHeader("Access-Control-Allow-Methods", "GET, POST");
+//        resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
+//        resp.setHeader("Access-Control-Max-Age", "86400");
         //Tell the browser what requests we allow.
-        resp.setHeader("Allow", "GET, HEAD, POST, TRACE, OPTIONS");
+//        resp.setHeader("Allow", "GET, HEAD, POST, TRACE, OPTIONS");
     }    
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"))) {
-//		String inputStr = br.lines().collect(Collectors.joining(System.lineSeparator()));
+		//String req = br.lines().collect(Collectors.joining(System.lineSeparator()));
                 StringBuilder buf = new StringBuilder();
                 String line = br.readLine();
                 while(line!=null) {
                     buf.append(line);
                     line = br.readLine();
                 }
-                String inputStr = buf.toString();
-                String req = GENERATE_REQ_TEMPLATE.replace("${EXERCISE_SPEC}", inputStr);
+                String req = buf.toString();
                 
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
                 con.setRequestMethod("POST");
@@ -84,12 +72,12 @@ public class AkitGenerate extends HttpServlet {
                 out.close();
                 
                 response.setContentType("application/json; charset=utf-8");
-                response.setHeader("Access-Control-Allow-Origin", "*");
-                response.setHeader("Access-Control-Allow-Methods", "GET, POST");
-                response.setHeader("Access-Control-Allow-Headers", "Content-Type");
-                response.setHeader("Access-Control-Max-Age", "86400");
-                //Tell the browser what requests we allow.
-                response.setHeader("Allow", "GET, HEAD, POST, TRACE, OPTIONS");
+//                response.setHeader("Access-Control-Allow-Origin", "*");
+//                response.setHeader("Access-Control-Allow-Methods", "GET, POST");
+//                response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+//                response.setHeader("Access-Control-Max-Age", "86400");
+//                //Tell the browser what requests we allow.
+//                response.setHeader("Allow", "GET, HEAD, POST, TRACE, OPTIONS");
 
                 IOUtils.copy(con.getInputStream(),response.getOutputStream());
                 

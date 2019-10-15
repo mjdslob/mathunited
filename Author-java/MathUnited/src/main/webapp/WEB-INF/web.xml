@@ -6,10 +6,6 @@
         <servlet-class>nl.math4all.mathunited.ViewServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>akit-generate</servlet-name>
-        <servlet-class>nl.math4all.mathunited.AkitGenerate</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>edit</servlet-name>
         <servlet-class>nl.math4all.mathunited.editor.EditServlet</servlet-class>
     </servlet>
@@ -122,10 +118,6 @@
         <url-pattern>/view</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>akit-generate</servlet-name>
-        <url-pattern>/akit-generate</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>edit</servlet-name>
         <url-pattern>/edit</url-pattern>
     </servlet-mapping>
@@ -232,6 +224,22 @@
     <servlet-mapping>
         <servlet-name>svn-image-notify</servlet-name>
         <url-pattern>/svn-image-notify</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>akit-generate</servlet-name>
+        <servlet-class>nl.math4all.mathunited.AkitGenerate</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>akit-generate</servlet-name>
+        <url-pattern>/akit-generate</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>akit-derivation</servlet-name>
+        <servlet-class>nl.math4all.mathunited.AkitDerivation</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>akit-derivation</servlet-name>
+        <url-pattern>/akit-derivation</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -117,11 +117,19 @@ extension-element-prefixes="exsl">
             </xsl:choose>
             <xsl:attribute name="style">width:<xsl:value-of select="@width"/>px;height:<xsl:value-of select="@height"/>px;</xsl:attribute>
             <xsl:choose>
-                <xsl:when test="substring(@href,1,18) = 'http://www.youtube' or substring(@href,1,14) = 'http://youtube'">
+                <xsl:when test="substring(@href,1,18) = 'http://www.youtube' or substring(@href,1,14) = 'http://youtube' or substring(@href,1,15) = 'https://youtube' or substring(@href,1,19) = 'https://www.youtube'" >
                     <iframe frameborder="0" allowfullscreen="true">
                         <xsl:attribute name="height"><xsl:value-of select="@height"/></xsl:attribute>
                         <xsl:attribute name="width"><xsl:value-of select="@width"/></xsl:attribute>
-                        <xsl:attribute name="src"><xsl:value-of select="@href"/></xsl:attribute>
+                        <xsl:attribute name="src"><xsl:value-of select="replace(@href, 'http:', 'https:')"/></xsl:attribute>
+                    </iframe>
+                </xsl:when>
+                <xsl:when test="substring(@src,1,18) = 'http://www.youtube' or substring(@src,1,14) = 'http://youtube' or substring(@src,1,15) = 'https://youtube' or substring(@src,1,19) = 'https://www.youtube'" >
+                    <iframe frameborder="0" allowfullscreen="true">
+                        <xsl:attribute name="height"><xsl:value-of select="@height"/></xsl:attribute>
+                        <xsl:attribute name="width"><xsl:value-of select="@width"/></xsl:attribute>
+                        <xsl:attribute name="src"><xsl:value-of select="replace(@src, 'http:', 'https:')"/></xsl:attribute>
+                        <xsl:attribute name="effe"><xsl:value-of select="@src"/></xsl:attribute>
                     </iframe>
                 </xsl:when>
                 <xsl:otherwise>
@@ -157,7 +165,7 @@ extension-element-prefixes="exsl">
                 <xsl:when test="name()='href'">
 	                <xsl:choose>
 	                   <xsl:when test="$host_type='GAE'">
-		                    <xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
+		                    <xsl:attribute name="href"><xsl:value-of select="replace(., 'http:', 'https:')"/></xsl:attribute>
 	                   </xsl:when>
 	                   <xsl:otherwise>
 		                    <xsl:attribute name="href"><xsl:value-of select="concat($urlbase,'../dox/',.)"/></xsl:attribute>
@@ -230,7 +238,7 @@ extension-element-prefixes="exsl">
 
 <xsl:template match="website" mode="content">
     <a target="_blank">
-        <xsl:attribute name="href">http://<xsl:value-of select="."/></xsl:attribute>
+        <xsl:attribute name="href">https://<xsl:value-of select="."/></xsl:attribute>
         <xsl:value-of select="."/>
     </a>
 </xsl:template>
@@ -295,7 +303,7 @@ extension-element-prefixes="exsl">
                 </xsl:if>
                 <xsl:choose>
                    <xsl:when test="$host_type='GAE'">
-            	       <xsl:attribute name="src"><xsl:value-of select="concat('http://math4allview.appspot.com/geogebra?file=',encode-for-uri(@filename))"/></xsl:attribute>
+            	       <xsl:attribute name="src"><xsl:value-of select="concat('https://content.math4all.nl/geogebra?file=',encode-for-uri(@filename))"/></xsl:attribute>
                    </xsl:when>
                    <xsl:otherwise>
 		       <xsl:attribute name="src"><xsl:value-of select="concat('http://mathunited.pragma-ade.nl:41080/MathUnited/geogebra?file=',$urlbase,replace(@filename,'GeoGebra/','../geogebra/'))"/></xsl:attribute>
@@ -327,22 +335,10 @@ extension-element-prefixes="exsl">
 
 
 <xsl:template match="applet[@type='akit']" mode="content">
-    <iframe>
-        <xsl:if test="@width">
-            <xsl:attribute name="width"><xsl:value-of select="@width"/></xsl:attribute>
-        </xsl:if>
-        <xsl:if test="@height">
-            <xsl:attribute name="height"><xsl:value-of select="@height"/></xsl:attribute>
-        </xsl:if>
-        <xsl:choose>
-            <xsl:when test="$host_type='GAE'">
-		        <xsl:attribute name="src"><xsl:value-of select="concat('http://algebrakit2012.appspot.com/trainerRemote_MU.html?audience=',@audience,'&amp;assignment=',@assignment)"/></xsl:attribute>
-            </xsl:when>
-            <xsl:otherwise>
-		        <xsl:attribute name="src"><xsl:value-of select="concat('../AKIT_RemoteServer/trainerRemote_MU.html?audience=',@audience,'&amp;assignment=',@assignment)"/></xsl:attribute>
-            </xsl:otherwise>
-        </xsl:choose>
-    </iframe>
+    <akit-algebra-generator version="latest">
+        <xsl:attribute name="level"><xsl:value-of select="@level"/></xsl:attribute>
+        <xsl:attribute name="exercise-id"><xsl:value-of select="@exercise-id"/></xsl:attribute>
+    </akit-algebra-generator>
 </xsl:template>
 <xsl:template match="applet[@archive]" mode="content">
     <applet>
@@ -364,6 +360,9 @@ extension-element-prefixes="exsl">
     <iframe>
         <xsl:choose>
             <xsl:when test="starts-with(@src,'http://')">
+                <xsl:copy-of select="@*"/>
+            </xsl:when>
+            <xsl:when test="starts-with(@src,'https://')">
                 <xsl:copy-of select="@*"/>
             </xsl:when>
             <xsl:otherwise>

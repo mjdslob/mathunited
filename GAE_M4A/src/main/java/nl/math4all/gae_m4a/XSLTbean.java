@@ -117,6 +117,7 @@ public class XSLTbean {
 
         Templates templ = getTemplate(variant, transformationMap);
         Transformer transformer = templ.newTransformer();
+LOGGER.info("P-2");
 
         for(Map.Entry<String,String> entry : parameterMap.entrySet()) {
             transformer.setParameter(entry.getKey(), entry.getValue());
@@ -126,6 +127,8 @@ public class XSLTbean {
             
         //Start the transformation and rendering process
         transformer.transform(xmlSource, result);  //xml->html
+LOGGER.info("P-3");
+        
     }
 
     //this method takes as input a XML source, a XSL source, and returns the output of the transformation to the servlet output stream

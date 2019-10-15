@@ -20,25 +20,16 @@ import java.util.stream.Collectors;
 import javax.net.ssl.SSLContext;
 import org.apache.commons.io.IOUtils;
 
-public class AkitGenerate extends HttpServlet {
-    static final String appId = "math4all-site";
-    static final String appSecret = "c321b556-ed9c-4f6d-87a3-faeeda976e3b";
+public class AkitDerivation extends HttpServlet {
     static URL url;
     
-    String GENERATE_REQ_TEMPLATE = "{"
-            + "   \"appId\": \"" + appId + "\", "
-            + "   \"appSecret\": \"" + appSecret + "\", "
-            + "   \"api-version\": 2, "
-            + "   \"exercises\": [${EXERCISE_SPEC}]"
-            + "}";
-
     private final static Logger LOGGER = Logger.getLogger(XSLTbean.class.getName());
     private static final long serialVersionUID = 7448591788669617325L;
     static {
         LOGGER.setLevel(Level.INFO);
         try {
-            url = new URL("https://algebrakit.eu/exercise/generate");
-//            url = new URL("http://localhost:3000/exercise/generate");
+            url = new URL("https://algebrakit.eu/derivation/metadata");
+//            url = new URL("http://localhost:3000/derivation/metadata");
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -61,15 +52,14 @@ public class AkitGenerate extends HttpServlet {
             throws ServletException, IOException {
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"))) {
-//		String inputStr = br.lines().collect(Collectors.joining(System.lineSeparator()));
+		//String req = br.lines().collect(Collectors.joining(System.lineSeparator()));
                 StringBuilder buf = new StringBuilder();
                 String line = br.readLine();
                 while(line!=null) {
                     buf.append(line);
                     line = br.readLine();
                 }
-                String inputStr = buf.toString();
-                String req = GENERATE_REQ_TEMPLATE.replace("${EXERCISE_SPEC}", inputStr);
+                String req = buf.toString();
                 
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
                 con.setRequestMethod("POST");

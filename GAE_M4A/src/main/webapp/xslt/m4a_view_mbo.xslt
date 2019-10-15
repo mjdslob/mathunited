@@ -448,6 +448,14 @@ indent="yes" encoding="utf-8"/>
         </a></span>
 </div>
 </div>
+    <script>
+            AlgebraKIT = {
+                config: {
+                    proxy: 'https://content.math4all.nl'
+                }
+            };
+    </script>
+    <script src='https://algebrakit.eu/akit-widgets.min.js'></script>
 </body>
 </html>
 </xsl:template>
