@@ -120,8 +120,7 @@ indent="yes" encoding="utf-8"/>
 </xsl:template>
 
 <!--skip clone exercises -->
-<xsl:template match="exercises/include[document(concat($docbase,@filename))//exercise/metadata/clone[@active='true']]" mode="filter">
-</xsl:template>
+<xsl:template match="exercises/include[contains(@filename, '-clone')]" mode="filter"></xsl:template>
 <xsl:template match="explore | application" mode="filter">
     <xsl:if test="@type=$sector or (not($sector) and string-length(@type)=0)">
         <xsl:copy>
