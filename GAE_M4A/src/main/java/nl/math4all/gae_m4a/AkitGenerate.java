@@ -16,8 +16,6 @@ import java.net.URL;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import javax.net.ssl.SSLContext;
 import org.apache.commons.io.IOUtils;
 
 public class AkitGenerate extends HttpServlet {

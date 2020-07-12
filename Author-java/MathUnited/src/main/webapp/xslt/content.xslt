@@ -17,7 +17,10 @@ extension-element-prefixes="exsl">
 
 <!-- ASCIIMATH -->
 <xsl:template match="am" mode="content">
-    `<xsl:value-of select='.'/>`
+    <!--`<xsl:value-of select='.'/>`-->
+    <script class="asciimath" type="math/asciimath">
+        <xsl:value-of select='.'/>
+    </script>
 </xsl:template>
 
 <!--         -->
