@@ -231,6 +231,7 @@ indent="yes" encoding="utf-8"/>
     </xsl:copy>
 </xsl:template>
 <xsl:template match="*[@medium='paper']" priority='10' mode="filter-content"/>
+<xsl:template match="*[@medium='lms']" priority='10' mode="filter-content"/>
 
 <xsl:template match="exercises/include" mode="numbering">
     <include>
@@ -442,8 +443,8 @@ indent="yes" encoding="utf-8"/>
             </xsl:choose>
         </xsl:when>
         <xsl:when test="$itemInner='answers'">
-            <h2>Antwoorden van de opgaven</h2>
-            <xsl:apply-templates select="subcomponent/componentcontent/explore | subcomponent/componentcontent//exercises">
+            <h2>Antwoorden van de opgaven!!</h2>
+            <xsl:apply-templates select="subcomponent/componentcontent/explore | subcomponent/componentcontent//exercises[not(ancestor::teachertest)]">
                 <xsl:with-param name="options">
                     <options>
                        <mode type="answers"/>
