@@ -232,6 +232,7 @@ indent="yes" encoding="utf-8"/>
 </xsl:template>
 <xsl:template match="*[@medium='paper']" priority='10' mode="filter-content"/>
 <xsl:template match="*[@medium='lms']" priority='10' mode="filter-content"/>
+<xsl:template match="interaction" mode="filter-content"/>
 
 <xsl:template match="exercises/include" mode="numbering">
     <include>
