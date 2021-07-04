@@ -20,7 +20,8 @@ import java.nio.file.Path;
 
 public class GeogebraGenerator extends HttpServlet {
     private final static Logger LOGGER = Logger.getLogger(GeogebraGenerator.class.getName());
-        String ggbSource = "http://web.geogebra.org/4.2/web/web.nocache.js";
+        String ggbSource = "https://www.geogebra.org/apps/deployggb.js";
+//    String ggbSource = "http://web.geogebra.org/4.2/web/web.nocache.js";
 //    String ggbSource = "http://www.geogebra.org/web/4.2/web/web.nocache.js";
 //    String ggbSource = "http://js.geogebra.at/web/web.nocache.js";
 //    String ggbSource = "http://www.geogebratube.org/scripts/deployggb.js";
@@ -68,7 +69,15 @@ public class GeogebraGenerator extends HttpServlet {
             response.setContentType("text/html");
             pw.println("<html style='overflow:hidden'><head><style type='text/css'><!--body { font-family:Arial,Helvetica,sans-serif; margin-left:40px }--></style><script type='text/javascript' language='javascript' src='"+ggbSource+"'></script></head>");
             pw.println("<body><article class='geogebraweb' style='display:inline-block;' data-param-ggbbase64='"+b64+"'></article>");
-            pw.println("<script type='text/javascript'>var ggbApplet = document.ggbApplet;function ggbOnInit() {}</script></body></html>");
+            pw.println("<div id=\"ggb-element\"></div>");
+            pw.println("<script>  \n" +
+                    "    var params = {\"appName\": \"geometry\", \"showToolBar\": false, \"showAlgebraInput\": false, \"showMenuBar\": false };\n" +
+                    "    var applet = new GGBApplet(params, true);\n" +
+                    "    window.addEventListener(\"load\", function() { \n" +
+                    "        applet.inject('ggb-element');\n" +
+                    "    });\n" +
+                    "</script>");
+            pw.println("</body></html>");
         } catch(Exception e) {
             e.printStackTrace();
             pw.println("An error occured: "+e.getMessage());
